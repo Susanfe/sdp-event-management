@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-    android:name=".EventManagerApplication">
+        android:name=".EventManagerApplication">
         <activity android:name=".ui.eventSelector.EventPickingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,7 +17,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EventActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".MapActivity"
+            android:parentActivityName=".EventActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".EventActivity" />
+        </activity>
+        <activity android:name=".TicketActivity"
+            android:parentActivityName=".EventActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".TicketActivity" />
+        </activity>
+        <activity android:name=".ScheduleActivity"
+            android:parentActivityName=".EventActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ScheduleActivity" />
+        </activity>
     </application>
 
 </manifest>
