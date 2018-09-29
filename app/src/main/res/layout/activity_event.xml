@@ -16,13 +16,14 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="goToMap"
         android:text="Map"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/scheduleButton"
         app:layout_constraintHorizontal_bias="0.06"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.201" />
+        app:layout_constraintVertical_bias="0.185" />
 
     <Button
         android:id="@+id/scheduleButton"
@@ -34,12 +35,14 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="goToSchedule"
         android:text="Schedule"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buyingTicketButton"
+        app:layout_constraintHorizontal_bias="0.917"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.201" />
+        app:layout_constraintVertical_bias="0.185" />
 
     <Button
         android:id="@+id/buyingTicketButton"
@@ -51,26 +54,37 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="goToBuyingTicket"
         android:text="Buying Ticket"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.967"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.201" />
+        app:layout_constraintVertical_bias="0.185" />
 
     <ImageView
         android:id="@+id/imageEvent"
-        android:layout_width="394dp"
-        android:layout_height="122dp"
-        app:srcCompat="?android:attr/colorFocusedHighlight"
-        tools:layout_editor_absoluteX="-11dp"
-        tools:layout_editor_absoluteY="-9dp" />
+        android:layout_width="0dp"
+        android:layout_height="91dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="?android:attr/colorFocusedHighlight" />
 
     <TextView
         android:id="@+id/descriptionEvent"
         android:layout_width="367dp"
-        android:layout_height="109dp"
+        android:layout_height="247dp"
         android:layout_marginBottom="104dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -80,6 +94,8 @@
         android:text="This is the description of the event"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageEvent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageEvent"
+        app:layout_constraintVertical_bias="0.977" />
 </android.support.constraint.ConstraintLayout>
