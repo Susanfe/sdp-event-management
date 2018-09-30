@@ -17,7 +17,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".EventActivity"
+            android:parentActivityName=".EventPickingActivity">
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".EventPickingActivity" />
+        </activity>
         <activity android:name=".MapActivity"
             android:parentActivityName=".EventActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -40,5 +46,4 @@
                 android:value=".ScheduleActivity" />
         </activity>
     </application>
-
 </manifest>
