@@ -1,28 +1,28 @@
-package ch.epfl.sweng.eventmanager;
+package ch.epfl.sweng.eventmanager.ui.eventSelector;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.viewmodel.DaggerViewModelFactory;
+import dagger.android.AndroidInjection;
 
-import org.w3c.dom.Text;
+import javax.inject.Inject;
 
 public class EventPickingActivity extends AppCompatActivity {
-    private final String[] EVENTS = {
-      "Japan Impact",
-      "Sysmic",
-      "Souper de section"
-    };
+    private EventListModel model;
+    @Inject
+    DaggerViewModelFactory factory;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_picking);
 
@@ -31,14 +31,20 @@ public class EventPickingActivity extends AppCompatActivity {
         helpText.setTypeface(helpText.getTypeface(), Typeface.BOLD);
         helpText.setText("Please select an event to continue.");
 
+
         // Event list
         RecyclerView eventList = (RecyclerView) findViewById(R.id.event_list);
         eventList.setHasFixedSize(true);
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
 
-        EventListAdapter eventListAdapter = new EventListAdapter(EVENTS);
-        eventList.setAdapter(eventListAdapter);
-    }
 
+        this.model = ViewModelProviders.of(this, factory).get(EventListModel.class);
+        this.model.init();
+        this.model.getEvents().observe(this, list -> {
+            EventListAdapter eventListAdapter = new EventListAdapter(list);
+            eventList.setAdapter(eventListAdapter);
+        });
+
+    }
 }

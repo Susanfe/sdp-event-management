@@ -5,6 +5,8 @@ import android.arch.lifecycle.MutableLiveData;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventOrganizer;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
 /**
  * @author Louis Vialar
  */
+@Singleton
 public class EventRepository {
     // In the future, the events data will come from Firebase
     // From now, we just get them from a static list
@@ -32,6 +35,9 @@ public class EventRepository {
                         new EventOrganizer(3, "CLIC", "L'association des étudiants en IC", null),
                         null));
     }
+
+    @Inject
+    public EventRepository() {}
 
     public LiveData<List<Event>> getEvents() {
         final MutableLiveData<List<Event>> data = new MutableLiveData<>();
