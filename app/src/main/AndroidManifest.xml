@@ -18,11 +18,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".EventActivity"
-            android:parentActivityName=".EventPickingActivity">
+            android:parentActivityName=".ui.eventSelector.EventPickingActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".EventPickingActivity" />
+                android:value=".ui.eventSelector.EventPickingActivity" />
         </activity>
         <activity android:name=".MapActivity"
             android:parentActivityName=".EventActivity">
