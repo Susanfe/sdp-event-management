@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.inject;
 
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivityModule;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseModule;
 import dagger.Module;
 import dagger.android.AndroidInjectionModule;
 
@@ -9,7 +10,7 @@ import dagger.android.AndroidInjectionModule;
  * When creating a new activity, its module should be registered here.
  * @author Louis Vialar
  */
-@Module(includes = {AndroidInjectionModule.class, EventPickingActivityModule.class})
+@Module(includes = {AndroidInjectionModule.class, EventPickingActivityModule.class, EventShowcaseModule.class})
 public abstract class ActivityBuilder {
 
     /*

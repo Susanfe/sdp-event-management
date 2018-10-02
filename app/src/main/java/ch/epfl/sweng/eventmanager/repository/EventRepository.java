@@ -46,4 +46,18 @@ public class EventRepository {
 
         return data;
     }
+
+    public LiveData<Event> getEvent(int eventId) {
+        MutableLiveData<Event> ret = new MutableLiveData<>();
+        for (Event ev : EVENTS) {
+            if (ev.getId() == eventId) {
+                ret.setValue(ev);
+                return ret;
+            }
+        }
+
+        // TODO: handle not found
+        ret.setValue(null);
+        return ret;
+    }
 }

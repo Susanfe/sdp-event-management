@@ -1,5 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,12 +10,23 @@ import android.view.View;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.viewmodel.DaggerViewModelFactory;
+import dagger.android.AndroidInjection;
+
+import javax.inject.Inject;
 
 public class EventActivity extends AppCompatActivity {
     private static final String TAG = "EventActivity";
 
+    @Inject
+    DaggerViewModelFactory factory;
+
+    private EventShowcaseModel model;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
@@ -24,7 +37,11 @@ public class EventActivity extends AppCompatActivity {
             // TODO: find a way to pass the event ID between the different views
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
-            Log.v(TAG, "Got event ID#" + eventID + " but don't know what to do ;-(");
+            this.model = ViewModelProviders.of(this, factory).get(EventShowcaseModel.class);
+            this.model.init(eventID);
+            this.model.getEvent().observe(this, ev -> {
+                Log.v(TAG, "Got event ID#" + eventID + " -> event " + ev);
+            });
         }
     }
 
