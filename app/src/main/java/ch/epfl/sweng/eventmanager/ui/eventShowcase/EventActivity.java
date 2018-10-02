@@ -18,9 +18,14 @@ public class EventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event);
 
         Intent intent = getIntent();
-        int eventID = intent.getIntExtra(EventPickingActivity.SELECTED_EVENT_ID, 0);
+        int eventID = intent.getIntExtra(EventPickingActivity.SELECTED_EVENT_ID, -1);
         // TODO: fetch event, update displayed values.
-        Log.e(TAG, "Got event ID#" + eventID + " but don't know what to do ;-(");
+        if (eventID <= 0) { // Suppose that negative or null event ID are invalids
+            // TODO: find a way to pass the event ID between the different views
+            Log.e(TAG, "Got invalid event ID#" + eventID + ".");
+        } else {
+            Log.v(TAG, "Got event ID#" + eventID + " but don't know what to do ;-(");
+        }
     }
 
     public void goToMap(View view) {
