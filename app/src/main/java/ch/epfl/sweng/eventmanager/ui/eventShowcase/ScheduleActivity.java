@@ -1,13 +1,15 @@
-package ch.epfl.sweng.eventmanager;
+package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class TicketActivity extends AppCompatActivity {
+import ch.epfl.sweng.eventmanager.R;
+
+public class ScheduleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ticket);
+        setContentView(R.layout.activity_schedule);
     }
 }

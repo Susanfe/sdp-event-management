@@ -17,33 +17,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EventActivity"
+        <activity android:name=".ui.eventShowcase.EventActivity"
             android:parentActivityName=".ui.eventSelector.EventPickingActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.eventSelector.EventPickingActivity" />
         </activity>
-        <activity android:name=".MapActivity"
-            android:parentActivityName=".EventActivity">
+        <activity android:name=".ui.eventShowcase.MapActivity"
+            android:parentActivityName=".ui.eventShowcase.EventActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".EventActivity" />
+                android:value=".ui.eventShowcase.EventActivity" />
         </activity>
-        <activity android:name=".TicketActivity"
-            android:parentActivityName=".EventActivity">
+        <activity android:name=".ui.eventShowcase.TicketActivity"
+            android:parentActivityName=".ui.eventShowcase.EventActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".TicketActivity" />
+                android:value=".ui.eventShowcase.EventActivity" />
         </activity>
-        <activity android:name=".ScheduleActivity"
-            android:parentActivityName=".EventActivity">
+        <activity android:name=".ui.eventShowcase.ScheduleActivity"
+            android:parentActivityName=".ui.eventShowcase.EventActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ScheduleActivity" />
+                android:value=".ui.eventShowcase.EventActivity" />
         </activity>
     </application>
 </manifest>

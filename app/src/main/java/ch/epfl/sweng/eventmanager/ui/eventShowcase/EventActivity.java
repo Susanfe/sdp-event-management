@@ -1,9 +1,12 @@
-package ch.epfl.sweng.eventmanager;
+package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.TicketActivity;
 
 public class EventActivity extends AppCompatActivity {
 

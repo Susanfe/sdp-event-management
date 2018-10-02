@@ -1,13 +1,17 @@
 package ch.epfl.sweng.eventmanager.ui.eventSelector;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
+
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventActivity;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.viewmodel.DaggerViewModelFactory;
 import dagger.android.AndroidInjection;
@@ -46,5 +50,10 @@ public class EventPickingActivity extends AppCompatActivity {
             eventList.setAdapter(eventListAdapter);
         });
 
+    }
+
+    public void selectEvent(View view) {
+       Intent intent = new Intent(this, EventActivity.class);
+       startActivity(intent);
     }
 }

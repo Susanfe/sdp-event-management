@@ -19,8 +19,8 @@
         android:id="@+id/select_event_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="selectEvent"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:textSize="10sp"
-        />
+        android:textSize="10sp" />
 </LinearLayout>
