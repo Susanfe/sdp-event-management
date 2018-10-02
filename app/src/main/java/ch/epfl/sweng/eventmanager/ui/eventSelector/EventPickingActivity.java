@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.eventSelector;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,21 +8,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.TextView;
 
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventActivity;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.viewmodel.DaggerViewModelFactory;
+import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
 
 public class EventPickingActivity extends AppCompatActivity {
-    private EventListModel model;
+    private EventPickingModel model;
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
     @Inject
-    DaggerViewModelFactory factory;
+    ViewModelFactory factory;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +46,7 @@ public class EventPickingActivity extends AppCompatActivity {
         );
         eventList.addItemDecoration(eventListDividerItemDecoration);
 
-        this.model = ViewModelProviders.of(this, factory).get(EventListModel.class);
+        this.model = ViewModelProviders.of(this, factory).get(EventPickingModel.class);
         this.model.init();
         this.model.getEvents().observe(this, list -> {
             EventListAdapter eventListAdapter = new EventListAdapter(list);

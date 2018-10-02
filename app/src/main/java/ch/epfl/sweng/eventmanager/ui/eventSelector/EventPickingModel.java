@@ -17,13 +17,13 @@ import java.util.List;
  *
  * @author Louis Vialar
  */
-public class EventListModel extends ViewModel {
+public class EventPickingModel extends ViewModel {
     private LiveData<List<Event>> events;
 
     private EventRepository eventRepository;
 
     @Inject
-    public EventListModel(EventRepository eventRepository) {
+    public EventPickingModel(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 

@@ -12,11 +12,11 @@ import java.util.Map;
  * https://stackoverflow.com/questions/51232149/how-can-i-create-viewmodel-and-inject-repository-to-it-with-dagger-2
  */
 @Singleton
-public class DaggerViewModelFactory implements ViewModelProvider.Factory {
+public class ViewModelFactory implements ViewModelProvider.Factory {
     private final Map<Class<? extends ViewModel>, Provider<ViewModel>> creators;
 
     @Inject
-    public DaggerViewModelFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
+    public ViewModelFactory(Map<Class<? extends ViewModel>, Provider<ViewModel>> creators) {
         this.creators = creators;
     }
 

@@ -1,6 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +9,7 @@ import android.view.View;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.viewmodel.DaggerViewModelFactory;
+import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
@@ -19,7 +18,7 @@ public class EventActivity extends AppCompatActivity {
     private static final String TAG = "EventActivity";
 
     @Inject
-    DaggerViewModelFactory factory;
+    ViewModelFactory factory;
 
     private EventShowcaseModel model;
 
