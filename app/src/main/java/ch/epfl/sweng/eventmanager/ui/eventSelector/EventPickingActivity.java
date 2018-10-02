@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -42,7 +43,11 @@ public class EventPickingActivity extends AppCompatActivity {
         eventList.setHasFixedSize(true);
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
-
+        DividerItemDecoration eventListDividerItemDecoration = new DividerItemDecoration(
+                eventList.getContext(),
+                eventListLayoutManager.getOrientation()
+        );
+        eventList.addItemDecoration(eventListDividerItemDecoration);
 
         this.model = ViewModelProviders.of(this, factory).get(EventListModel.class);
         this.model.init();
