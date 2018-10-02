@@ -20,6 +20,7 @@ import javax.inject.Inject;
 
 public class EventPickingActivity extends AppCompatActivity {
     private EventListModel model;
+    public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
     @Inject
     DaggerViewModelFactory factory;
 
@@ -50,10 +51,5 @@ public class EventPickingActivity extends AppCompatActivity {
             eventList.setAdapter(eventListAdapter);
         });
 
-    }
-
-    public void selectEvent(View view) {
-       Intent intent = new Intent(this, EventActivity.class);
-       startActivity(intent);
     }
 }

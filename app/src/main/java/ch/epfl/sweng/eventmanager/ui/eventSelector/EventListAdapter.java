@@ -1,5 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventSelector;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,21 +10,33 @@ import android.widget.Button;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventActivity;
 
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
     private List<Event> mEvents;
 
     // Provide a reference to the views for each data item
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
         public TextView eventNameTextView;
-        public Button selectEventButton;
         public ViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             eventNameTextView = (TextView) itemView.findViewById(R.id.event_name);
-            selectEventButton = (Button) itemView.findViewById(R.id.select_event_button);
+        }
+
+        @Override
+        public void onClick(View view) {
+            // TODO: display animation on click?
+            Context context = itemView.getContext();
+            Intent intent = new Intent(context, EventActivity.class);
+            Event selectedEvent = mEvents.get(getAdapterPosition());
+            intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, selectedEvent.getId());
+            context.startActivity(intent);
         }
     }
 
@@ -44,7 +58,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.eventNameTextView.setText(mEvents.get(position).getName());
-        holder.selectEventButton.setText("Select »");
     }
 
     @Override
