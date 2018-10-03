@@ -34,7 +34,6 @@ public class EventPickingActivity extends AppCompatActivity {
         helpText.setTypeface(helpText.getTypeface(), Typeface.BOLD);
         helpText.setText("Please select an event to continue.");
 
-
         // Event list
         RecyclerView eventList = (RecyclerView) findViewById(R.id.event_list);
         eventList.setHasFixedSize(true);

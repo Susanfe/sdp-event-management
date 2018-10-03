@@ -3,7 +3,7 @@ package ch.epfl.sweng.eventmanager.repository.data;
 import android.graphics.Bitmap;
 
 /**
- * This class holds the basic elements about an organized event.<br>
+ * This class holds the basic elements about an organized event.
  *     This class might hold way more data in the future, depending on how the backend will be organized
  *
  * @author Louis Vialar

@@ -41,7 +41,7 @@ public class EventActivity extends AppCompatActivity {
             this.model.init(eventID);
             this.model.getEvent().observe(this, ev -> {
                 Log.v(TAG, "Got event ID#" + eventID + " -> event " + ev);
-                TextView eventDescription = (TextView) findViewById(R.id.eventDescription);
+                TextView eventDescription = (TextView) findViewById(R.id.event_description);
                 eventDescription.setText(ev.getDescription());
             });
         }

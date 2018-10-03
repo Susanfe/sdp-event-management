@@ -7,7 +7,7 @@
     tools:context=".ui.eventShowcase.EventActivity">
 
     <Button
-        android:id="@+id/mapButton"
+        android:id="@+id/map_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -19,14 +19,14 @@
         android:onClick="goToMap"
         android:text="Map"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/scheduleButton"
+        app:layout_constraintEnd_toStartOf="@+id/schedule_button"
         app:layout_constraintHorizontal_bias="0.06"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.185" />
 
     <Button
-        android:id="@+id/scheduleButton"
+        android:id="@+id/schedule_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -38,14 +38,14 @@
         android:onClick="goToSchedule"
         android:text="Schedule"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buyingTicketButton"
+        app:layout_constraintEnd_toStartOf="@+id/buy_ticket_button"
         app:layout_constraintHorizontal_bias="0.917"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.185" />
 
     <Button
-        android:id="@+id/buyingTicketButton"
+        android:id="@+id/buy_ticket_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -64,7 +64,7 @@
         app:layout_constraintVertical_bias="0.185" />
 
     <ImageView
-        android:id="@+id/imageEvent"
+        android:id="@+id/event_image"
         android:layout_width="0dp"
         android:layout_height="91dp"
         android:layout_marginBottom="8dp"
@@ -82,7 +82,7 @@
         app:srcCompat="?android:attr/colorFocusedHighlight" />
 
     <TextView
-        android:id="@+id/eventDescription"
+        android:id="@+id/event_description"
         android:layout_width="367dp"
         android:layout_height="247dp"
         android:layout_marginStart="8dp"
@@ -91,11 +91,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="104dp"
-        android:text="This is the description of the event"
+        android:text="Could not load event description."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageEvent"
+        app:layout_constraintTop_toBottomOf="@+id/event_image"
         app:layout_constraintVertical_bias="0.977" />
 </android.support.constraint.ConstraintLayout>
