@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Event Manager</string>
+    <string name="title_activity_event_picking">EventPickingActivity</string>
 </resources>
