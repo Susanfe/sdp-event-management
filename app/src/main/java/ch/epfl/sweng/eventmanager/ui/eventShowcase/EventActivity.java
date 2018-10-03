@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
@@ -40,6 +41,8 @@ public class EventActivity extends AppCompatActivity {
             this.model.init(eventID);
             this.model.getEvent().observe(this, ev -> {
                 Log.v(TAG, "Got event ID#" + eventID + " -> event " + ev);
+                TextView eventDescription = (TextView) findViewById(R.id.eventDescription);
+                eventDescription.setText(ev.getDescription());
             });
         }
     }
