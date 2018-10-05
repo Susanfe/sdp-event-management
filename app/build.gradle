@@ -31,6 +31,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
@@ -42,6 +43,14 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.17'
     implementation 'com.google.dagger:dagger-android:2.17'
     implementation 'com.google.dagger:dagger-android-support:2.17'
+
+//    ScheduleActivity depencies
+    implementation 'com.github.vipulasri:timelineview:1.0.6'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.17'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
     testImplementation 'junit:junit:4.12'
