@@ -1,10 +1,11 @@
-package ch.epfl.sweng.eventmanager.repository.database;
+package ch.epfl.sweng.eventmanager.room;
 
 import android.arch.persistence.room.Database;
-import ch.epfl.sweng.eventmanager.room.data.Event;
-import ch.epfl.sweng.eventmanager.room.data.EventDao;
+import android.arch.persistence.room.RoomDatabase;
+import ch.epfl.sweng.eventmanager.room.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.room.data.JoinedEventDao;
 
-@Database(entities = {Event.class}, version = 1)
-public abstract class AppDatabase {
-    public abstract EventDao eventDao();
+@Database(entities = {JoinedEvent.class}, version = 1)
+public abstract class AppDataBase extends RoomDatabase {
+    public abstract JoinedEventDao getJoinedEventDao();
 }
