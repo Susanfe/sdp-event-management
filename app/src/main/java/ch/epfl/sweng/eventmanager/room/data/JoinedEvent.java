@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity(tableName = "joined-events")
-public class Event {
+public class JoinedEvent {
 
 
     @PrimaryKey

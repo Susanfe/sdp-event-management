@@ -1,36 +1,37 @@
 package ch.epfl.sweng.eventmanager.room.data;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.db.SupportSQLiteQuery;
 import android.arch.persistence.room.*;
 
 import java.util.List;
 
-public interface EventDao {
+public interface JoinedEventDao {
     @Query("SELECT * FROM `joined-events`")
-    List<JoinedEvent> getAll();
+    LiveData<List<JoinedEvent>> getAll();
 
     @Query("SELECT * FROM `joined-events` WHERE `event-id` IN (:eventIds)")
-    List<JoinedEvent> loadAllByIds(int[] eventIds);
+    LiveData<List<JoinedEvent>> loadAllByIds(int[] eventIds);
 
     @Query("SELECT * FROM `joined-events` WHERE name LIKE :eventName LIMIT 1")
-    JoinedEvent findByName(String eventName);
+    LiveData<JoinedEvent> findByName(String eventName);
 
-    @Insert
-    void insertAll(JoinedEvent... joinedEvents);
+    @Query("SELECT * FROM `joined-events` WHERE `event-id` LIKE :eventId LIMIT 1")
+    LiveData<JoinedEvent> findById(int eventId);
 
-    @Insert
-    void insert(JoinedEvent joinedEvent);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insertAll(JoinedEvent... joinedEvents);
 
-    @Update
-    void update(JoinedEvent joinedEvent);
-
-    @Delete
-    void deleteAll(JoinedEvent... joinedEvents);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insert(JoinedEvent joinedEvent);
 
     @Delete
-    void delete(JoinedEvent joinedEvent);
+    int deleteAll(JoinedEvent... joinedEvents);
+
+    @Delete
+    int delete(JoinedEvent joinedEvent);
 
     @RawQuery
-    JoinedEvent getEventViaQuery(SupportSQLiteQuery query);
+    LiveData<JoinedEvent> getEventViaQuery(SupportSQLiteQuery query);
 
 }
