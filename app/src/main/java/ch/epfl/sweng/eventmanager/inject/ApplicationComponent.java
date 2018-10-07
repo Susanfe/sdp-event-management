@@ -16,8 +16,7 @@ import javax.inject.Singleton;
 @Component(modules = {
         AndroidInjectionModule.class,
         ActivityBuilder.class,
-        ApplicationModule.class,
-        RoomModule.class})
+        ApplicationModule.class, RoomModule.class})
 @Singleton
 public interface ApplicationComponent {
     void inject(EventManagerApplication application);
@@ -26,6 +25,9 @@ public interface ApplicationComponent {
     interface Builder {
         @BindsInstance
         Builder application(Application application);
+
+        @BindsInstance
+        Builder room(RoomModule roomModule);
 
         ApplicationComponent build();
     }
