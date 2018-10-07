@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager;
 import android.app.Activity;
 import android.app.Application;
 import ch.epfl.sweng.eventmanager.inject.DaggerApplicationComponent;
+import ch.epfl.sweng.eventmanager.room.RoomModule;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 
@@ -21,6 +22,7 @@ public class EventManagerApplication extends Application implements HasActivityI
         DaggerApplicationComponent
                 .builder()
                 .application(this)
+                .room(new RoomModule(this))
                 .build()
                 .inject(this);
 
