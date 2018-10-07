@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.room.JoinedEventRepository;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;

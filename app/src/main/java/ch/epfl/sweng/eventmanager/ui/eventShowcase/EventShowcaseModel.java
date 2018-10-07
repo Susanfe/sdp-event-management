@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.room.JoinedEventRepository;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -18,10 +19,12 @@ public class EventShowcaseModel extends ViewModel {
     private LiveData<Event> event;
 
     private EventRepository eventRepository;
+    private JoinedEventRepository joinedEventRepository;
 
     @Inject
-    public EventShowcaseModel(EventRepository eventRepository) {
+    public EventShowcaseModel(EventRepository eventRepository, JoinedEventRepository joinedEventRepository) {
         this.eventRepository = eventRepository;
+        this.joinedEventRepository = joinedEventRepository;
     }
 
     public void init(int eventId) {
