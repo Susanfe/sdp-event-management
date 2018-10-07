@@ -1,11 +1,11 @@
 package ch.epfl.sweng.eventmanager.room.data;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.persistence.db.SupportSQLiteQuery;
 import android.arch.persistence.room.*;
 
 import java.util.List;
 
+@Dao
 public interface JoinedEventDao {
     @Query("SELECT * FROM `joined-events`")
     LiveData<List<JoinedEvent>> getAll();
@@ -20,18 +20,14 @@ public interface JoinedEventDao {
     LiveData<JoinedEvent> findById(int eventId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insertAll(JoinedEvent... joinedEvents);
+    void insertAll(JoinedEvent... joinedEvents);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(JoinedEvent joinedEvent);
+    void insert(JoinedEvent joinedEvent);
 
     @Delete
     int deleteAll(JoinedEvent... joinedEvents);
 
     @Delete
     int delete(JoinedEvent joinedEvent);
-
-    @RawQuery
-    LiveData<JoinedEvent> getEventViaQuery(SupportSQLiteQuery query);
-
 }
