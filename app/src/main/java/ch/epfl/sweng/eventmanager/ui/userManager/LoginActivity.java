@@ -1,0 +1,157 @@
+package ch.epfl.sweng.eventmanager.ui.userManager;
+
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
+
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+
+import ch.epfl.sweng.eventmanager.R;
+
+/**
+ * A login screen that offers login via email/password.
+ */
+public class LoginActivity extends AppCompatActivity {
+
+    // Login task.
+    private UserLoginTask mAuthTask = null;
+
+    // UI references.
+    private EditText mEmailView;
+    private EditText mPasswordView;
+    private Button mSignInButton;
+    private ProgressBar mProgressBar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        mEmailView = (EditText)  findViewById(R.id.email_field);
+        mEmailView.setHint("Mail address");
+        mPasswordView = (EditText) findViewById(R.id.password_field);
+        mPasswordView.setHint("Password");
+
+        mSignInButton = (Button) findViewById(R.id.sign_in_button);
+        mSignInButton.setText("Sign in »");
+        mSignInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLogin();
+            }
+        });
+
+        mProgressBar = findViewById(R.id.sign_in_progress_bar);
+        mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void attemptLogin() {
+        if (mAuthTask != null) {
+            return;
+        }
+
+        // Reset errors.
+        mEmailView.setError(null);
+        mPasswordView.setError(null);
+
+        // Store values at the time of the login attempt.
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        // Check for a valid password.
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError("Password cannot be empty");
+            focusView = mPasswordView;
+        }
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError("Email cannot be empty");
+            focusView = mEmailView;
+        } else if (!isEmailValid(email)) {
+            mEmailView.setError("Invalid Email address");
+            focusView = mEmailView;
+        }
+
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+            mAuthTask = new UserLoginTask(email, password, this);
+            mAuthTask.execute((Void) null);
+        }
+    }
+
+    private boolean isEmailValid(String email) {
+        // FIXME: run a proper regex on the given email.
+        return email.contains("@");
+    }
+
+    private void showProgress(Boolean displayed) {
+       if (displayed) {
+           mProgressBar.setVisibility(View.VISIBLE);
+           mSignInButton.setEnabled(false);
+       } else {
+           mProgressBar.setVisibility(View.INVISIBLE);
+           mSignInButton.setEnabled(true);
+       }
+    }
+
+    /**
+     * Represents an asynchronous login task used to authenticate the user.
+     */
+    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String mEmail;
+        private final String mPassword;
+        private final Context mContext;
+
+        UserLoginTask(String email, String password, Context context) {
+            mEmail = email;
+            mPassword = password;
+            mContext = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            showProgress(true);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mAuthTask = null;
+            showProgress(false);
+
+            if (success) {
+                Intent intent = new Intent(mContext, DisplayAccountActivity.class);
+                startActivity(intent);
+            } else {
+                mPasswordView.setError("Incorrect password");
+                mPasswordView.requestFocus();
+            }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventSelector;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.userManager.LoginActivity;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -52,5 +56,13 @@ public class EventPickingActivity extends AppCompatActivity {
             eventList.setAdapter(eventListAdapter);
         });
 
+        // Login button
+        Button loginButton = (Button) findViewById(R.id.login_button);
+        loginButton.setText("Sign in »");
+    }
+
+    public void openLoginForm(View view) {
+       Intent intent = new Intent(this, LoginActivity.class);
+       startActivity(intent);
     }
 }
