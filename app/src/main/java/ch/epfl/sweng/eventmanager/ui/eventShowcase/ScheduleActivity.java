@@ -5,20 +5,24 @@ import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.github.vipulasri.timelineview.TimelineView;
-
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Concert;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.scheduleUtils.TimeLineAdapter;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.scheduleUtils.TimeLineModel;
 
 public class ScheduleActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private List<TimeLineModel> mDataList = new ArrayList<>();
-    private TimeLineAdapter mTimeLineAdapter;
+    private List<TimeLineModel> dataList = new ArrayList<>();
+    private TimeLineAdapter timeLineAdapter;
+    private List<Concert> concertsList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,12 +31,27 @@ public class ScheduleActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setHasFixedSize(true);
-        mDataList.add(new TimeLineModel("Item successfully delivered", ""));
-        mDataList.add(new TimeLineModel("Courier is out to delivery your order", "2017-02-12 08:00"));
-        mDataList.add(new TimeLineModel("Item has reached courier facility at New Delhi", "2017-02-11 21:00"));
-        mDataList.add(new TimeLineModel("Item has been given to the courier", "2017-02-11 18:00"));
-        mTimeLineAdapter = new TimeLineAdapter(mDataList);
-        recyclerView.setAdapter(mTimeLineAdapter);
+
+        //
+        // Get the concert List for the event into concertsList
+        //
+        concertsList = new LinkedList<>();
+        // Above is temporary
+
+        // Temp fake for visual example
+        concertsList.add(new Concert(new Date(2018, 11, 15, 23, 30),
+                "David Guetta", "Electro/ Dance",
+                "Incredible stage performance by famous DJ David Guetta!"));
+        concertsList.add(new Concert(new Date(2018, 11, 15, 21, 15),
+                "ABBA", "Rock",
+                "Wow! This is the great comeback of the well-known success group!"));
+
+        for (Concert c : concertsList) {
+            dataList.add(new TimeLineModel(c.getArtist(), c.getDate(), c.getGenre(), c.getDescription()));
+        }
+
+        timeLineAdapter = new TimeLineAdapter(dataList);
+        recyclerView.setAdapter(timeLineAdapter);
     }
 
 
