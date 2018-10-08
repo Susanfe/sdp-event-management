@@ -1,6 +1,8 @@
 package ch.epfl.sweng.eventmanager.room;
 
 import android.arch.lifecycle.LiveData;
+import android.os.AsyncTask;
+import android.util.Log;
 import ch.epfl.sweng.eventmanager.room.data.JoinedEvent;
 import ch.epfl.sweng.eventmanager.room.data.JoinedEventDao;
 
@@ -27,18 +29,44 @@ public class JoinedEventRepository {
     }
 
     public void insert(JoinedEvent joinedEvent){
-        joinedEventDao.insert(joinedEvent);
+        new InsertAsyncTask(joinedEventDao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR , joinedEvent);
     }
 
-    public void insertAll(JoinedEvent... joinedEvents){
-        joinedEventDao.insertAll(joinedEvents);
+    public void delete(JoinedEvent joinedEvent){
+        new DeleteAsyncTask(joinedEventDao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedEvent);
     }
 
-    public int delete(JoinedEvent joinedEvent){
-        return joinedEventDao.delete(joinedEvent);
+
+    private static class InsertAsyncTask extends AsyncTask<JoinedEvent, Void, Void> {
+
+        private JoinedEventDao mAsyncTaskDao;
+
+        InsertAsyncTask(JoinedEventDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+
+        @Override
+        protected Void doInBackground(final JoinedEvent... joinedEvents) {
+            mAsyncTaskDao.insert(joinedEvents[0]);
+            Log.v("Teuteu", "Trying to add event : " + joinedEvents[0].getName());
+            return null;
+        }
     }
 
-    public int deleteAll(JoinedEvent... joinedEvents){
-        return joinedEventDao.deleteAll(joinedEvents);
+    private static class DeleteAsyncTask extends AsyncTask<JoinedEvent, Void, Void> {
+
+        private JoinedEventDao mAsyncTaskDao;
+
+        DeleteAsyncTask(JoinedEventDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final JoinedEvent... joinedEvents) {
+            mAsyncTaskDao.delete(joinedEvents[0]);
+            Log.v("Teuteu", "Trying to delete event : " + joinedEvents[0].getName());
+            return null;
+        }
     }
 }
