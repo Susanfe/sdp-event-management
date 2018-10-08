@@ -34,20 +34,32 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/text_timeline_date"
                 android:textSize="12sp"
-                tools:text="24 JAN"/>
+                tools:text="2018-1-1 12:00"/>
 
-            <android.support.v7.widget.AppCompatTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:id="@+id/text_timeline_title"
                 android:textColor="@android:color/black"
-                tools:text="Order Successfully Completed"/>
+                tools:text="Unknown artist"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Unknown genre"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                tools:text="Description"
+                />
 
         </LinearLayout>
 
