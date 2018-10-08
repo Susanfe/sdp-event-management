@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import ch.epfl.sweng.eventmanager.R;
@@ -44,6 +46,14 @@ public class EventActivity extends AppCompatActivity {
                 Log.v(TAG, "Got event ID#" + eventID + " -> event " + ev);
                 TextView eventDescription = (TextView) findViewById(R.id.event_description);
                 eventDescription.setText(ev.getDescription());
+
+                Switch joinEventSwitch = (Switch) findViewById(R.id.join_event_switch);
+                joinEventSwitch.setChecked(this.model.isJoined(ev));
+                joinEventSwitch.setOnClickListener(view -> {
+                    if (joinEventSwitch.isChecked()) this.model.joinEvent(ev);
+                    else this.model.unjoinEvent(ev);
+                    Log.v(TAG, "user clicked on switch");
+                });
             });
         }
     }
