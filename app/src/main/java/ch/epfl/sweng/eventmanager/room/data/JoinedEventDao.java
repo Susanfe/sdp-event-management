@@ -20,8 +20,8 @@ public interface JoinedEventDao {
     LiveData<JoinedEvent> findById(int eventId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(JoinedEvent joinedEvent);
+    void insert(JoinedEvent... joinedEvent);
 
     @Delete
-    int delete(JoinedEvent joinedEvent);
+    int delete(JoinedEvent... joinedEvent);
 }
