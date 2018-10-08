@@ -33,9 +33,6 @@ public abstract class EventShowcaseModule {
     bindEventActivityInjectorFactory(EventActivitySubcomponent.Builder builder);
 
     @ContributesAndroidInjector
-    abstract MapActivity contributeMapActivityInjector();
-
-    @ContributesAndroidInjector
     abstract ScheduleActivity contributeScheduleActivityInjector();
 
     @ContributesAndroidInjector

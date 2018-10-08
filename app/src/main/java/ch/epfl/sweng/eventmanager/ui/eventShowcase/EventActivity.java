@@ -48,7 +48,7 @@ public class EventActivity extends AppCompatActivity {
     }
 
     public void goToMap(View view) {
-        Intent intent = new Intent(this, MapActivity.class);
+        Intent intent = new Intent(this, MapsActivity.class);
         startActivity(intent);
     }
 
