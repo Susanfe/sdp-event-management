@@ -26,12 +26,12 @@ public class JoinedEventRepository {
         return joinedEventDao.findByName(name);
     }
 
-    public long insert(JoinedEvent joinedEvent){
-        return joinedEventDao.insert(joinedEvent);
+    public void insert(JoinedEvent joinedEvent){
+        joinedEventDao.insert(joinedEvent);
     }
 
-    public long insertAll(JoinedEvent... joinedEvents){
-        return joinedEventDao.insertAll(joinedEvents);
+    public void insertAll(JoinedEvent... joinedEvents){
+        joinedEventDao.insertAll(joinedEvents);
     }
 
     public int delete(JoinedEvent joinedEvent){

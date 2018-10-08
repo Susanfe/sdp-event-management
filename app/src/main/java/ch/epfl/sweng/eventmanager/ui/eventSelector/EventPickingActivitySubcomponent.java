@@ -5,7 +5,7 @@ import dagger.android.AndroidInjector;
 
 import javax.inject.Singleton;
 
-@Subcomponent @Singleton
+@Subcomponent
 public interface EventPickingActivitySubcomponent extends AndroidInjector<EventPickingActivity> {
   @Subcomponent.Builder
   public abstract class Builder extends AndroidInjector.Builder<EventPickingActivity> {}
