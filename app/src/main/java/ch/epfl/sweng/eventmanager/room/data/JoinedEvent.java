@@ -3,13 +3,23 @@ package ch.epfl.sweng.eventmanager.room.data;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 
-@Entity(tableName = "joined-events")
+@Entity(tableName = "joined_events")
 public class JoinedEvent {
 
+    public JoinedEvent(int uid, String name) {
+        this.uid = uid;
+        this.name = name;
+    }
+
+    public JoinedEvent(Event event) {
+        this.uid = event.getId();
+        this.name = event.getName();
+    }
 
     @PrimaryKey
-    @ColumnInfo(name = "event-id")
+    @ColumnInfo(name = "event_id")
     private int uid;
 
     @ColumnInfo(name = "name")
