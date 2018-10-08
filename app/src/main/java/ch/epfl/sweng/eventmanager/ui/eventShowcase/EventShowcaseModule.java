@@ -22,14 +22,15 @@ public abstract class EventShowcaseModule {
     @ViewModelKey(EventShowcaseModel.class)
     abstract ViewModel provideEventListModel(EventShowcaseModel eventListModel);
 
+
+    @ContributesAndroidInjector
+    abstract EventActivity contributeEventActivityInjector();
+
     @ContributesAndroidInjector
     abstract MapActivity contributeMapActivityInjector();
 
     @ContributesAndroidInjector
     abstract ScheduleActivity contributeScheduleActivityInjector();
-
-    @ContributesAndroidInjector
-    abstract EventActivity contributeEventActivityInjector();
 
     @ContributesAndroidInjector
     abstract TicketActivity contributeTicketActivityInjector();
