@@ -70,4 +70,20 @@ public final class Event {
     public List<Concert> getConcertList() {
         return concertList;
     }
+
+    /**
+     * Adds a concert to the event's concert list.
+     * The method will return true if the concert already exists in the list.
+     * @param concert Concert to be added to the List, can be null.
+     * @return true if the concert is in the list after returning.
+     */
+    public boolean addConcert(Concert concert) {
+        if (concert != null) {
+            if (!concertList.contains(concert)) {
+                concertList.add(concert);
+            }
+            return true;
+        }
+        return false;
+    }
 }
