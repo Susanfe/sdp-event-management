@@ -26,7 +26,6 @@ public interface ApplicationComponent {
         @BindsInstance
         Builder application(Application application);
 
-        @BindsInstance
         Builder room(RoomModule roomModule);
 
         ApplicationComponent build();

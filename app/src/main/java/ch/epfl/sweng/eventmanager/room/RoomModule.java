@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.room;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import ch.epfl.sweng.eventmanager.room.data.JoinedEventDao;
 import dagger.Module;
 import dagger.Provides;
