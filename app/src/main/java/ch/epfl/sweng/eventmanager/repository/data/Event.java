@@ -12,23 +12,23 @@ public final class Event {
     /**
      * An internal id, identifying this event uniquely. Might have to be completed by an UUID in the future.
      */
-    private final int id;
+    private int id;
     /**
      * The name of the event
      */
-    private final String name;
+    private String name;
     /**
      * A short description of the event
      */
-    private final String description;
+    private String description;
     /**
      * The entity organizing this event
      */
-    private final EventOrganizer organizer;
+    private EventOrganizer organizer;
     /**
      * An image representing the event, may be null
      */
-    private final Bitmap image;
+    private Bitmap image;
 
     public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image) {
         this.id = id;
@@ -36,6 +36,9 @@ public final class Event {
         this.description = description;
         this.organizer = organizer;
         this.image = image;
+    }
+
+    public Event() {
     }
 
     public int getId() {
