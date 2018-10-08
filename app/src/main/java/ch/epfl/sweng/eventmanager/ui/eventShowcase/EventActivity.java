@@ -47,7 +47,9 @@ public class EventActivity extends AppCompatActivity {
                 TextView eventDescription = (TextView) findViewById(R.id.event_description);
                 eventDescription.setText(ev.getDescription());
 
+                // Binds the EventActivity switch to the database
                 Switch joinEventSwitch = (Switch) findViewById(R.id.join_event_switch);
+                // State of the switch depends on if the user joined the event
                 joinEventSwitch.setChecked(this.model.isJoined(ev));
                 joinEventSwitch.setOnClickListener(view -> {
                     if (joinEventSwitch.isChecked()) this.model.joinEvent(ev);
