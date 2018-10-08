@@ -15,7 +15,7 @@ import dagger.multibindings.IntoMap;
 /**
  * @author Louis Vialar
  */
-@Module(subcomponents = {EventActivitySubcomponent.class})
+@Module
 public abstract class EventShowcaseModule {
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
@@ -26,11 +26,8 @@ public abstract class EventShowcaseModule {
     abstract ViewModel provideEventListModel(EventShowcaseModel eventListModel);
 
 
-    @Binds
-    @IntoMap
-    @ActivityKey(EventActivity.class)
-    abstract AndroidInjector.Factory<? extends Activity>
-    bindEventActivityInjectorFactory(EventActivitySubcomponent.Builder builder);
+    @ContributesAndroidInjector
+    abstract EventActivity contributeEventActivityInjector();
 
     @ContributesAndroidInjector
     abstract MapActivity contributeMapActivityInjector();
