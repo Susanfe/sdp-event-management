@@ -3,12 +3,12 @@ package ch.epfl.sweng.eventmanager.repository.data;
 public final class User {
     private final int id;
     private String name;
-    private String mail;
+    private String email;
 
-    public User(int id, String name, String mail) {
+    public User(int id, String name, String email) {
         this.id = id;
         this.name = name;
-        this.mail = mail;
+        this.email = email;
     }
 
     public int getId() {
@@ -19,8 +19,8 @@ public final class User {
         return name;
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
     public Boolean checkPassword(String password) {

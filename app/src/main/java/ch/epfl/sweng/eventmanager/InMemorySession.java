@@ -1,5 +1,10 @@
 package ch.epfl.sweng.eventmanager;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
+import java.util.Optional;
+
 import javax.inject.Singleton;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 
@@ -13,7 +18,7 @@ public class InMemorySession {
     private String token;
 
     private void setCurrentUser(User user){
-        user = user;
+        this.user = user;
     }
 
     private void reset(){
@@ -39,8 +44,10 @@ public class InMemorySession {
         return user != null;
     }
 
-    public String getName() {
-        return user.getName();
+    // FIXME: find a way to do it while keeping compatibility with API level 15.
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Optional<User> getUser() {
+        return Optional.ofNullable(user);
     }
 
     // FIXME: move to another class?
@@ -59,5 +66,10 @@ public class InMemorySession {
             reset();
             return false;
         }
+    }
+
+    // FIXME: move to another class?
+    public void logout() {
+        reset();
     }
 }

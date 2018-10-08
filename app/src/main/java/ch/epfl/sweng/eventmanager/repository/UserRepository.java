@@ -43,7 +43,7 @@ public class UserRepository {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Optional<User> getUserByEmail(String email) {
         List<User> filtered = USERS.stream()
-                .filter(u -> Objects.equals(u.getMail(), email))
+                .filter(u -> Objects.equals(u.getEmail(), email))
                 .collect(Collectors.toList());
 
         if (filtered.isEmpty()) {
