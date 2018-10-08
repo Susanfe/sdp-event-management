@@ -28,9 +28,9 @@ public final class Concert {
      */
     private String description;
 
-    private static final String NO_ARTIST = "Unknown artist";
-    private static final String NO_GENRE = "Unknown genre";
-    private static final String NO_DESCRIPTION = "This event does not have a description.";
+    public static final String NO_ARTIST = "Unknown artist";
+    public static final String NO_GENRE = "Unknown genre";
+    public static final String NO_DESCRIPTION = "This event does not have a description.";
 
 
     public Concert(Date date, String artist) {

@@ -19,6 +19,22 @@ public class TimeLineModel implements Parcelable {
         this.description = description;
     }
 
+    String getArtist() {
+        return artist;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    String getGenre() {
+        return genre;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -32,7 +48,7 @@ public class TimeLineModel implements Parcelable {
         dest.writeString(description);
     }
 
-    protected TimeLineModel(Parcel in) {
+    private TimeLineModel(Parcel in) {
         this.artist = in.readString();
         this.date = in.readString();
         this.genre = in.readString();
