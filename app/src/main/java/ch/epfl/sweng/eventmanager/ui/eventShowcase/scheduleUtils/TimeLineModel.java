@@ -3,39 +3,21 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.scheduleUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by HP-HP on 05-12-2015.
- */
+import java.util.Date;
+
 public class TimeLineModel implements Parcelable {
 
-    private String mMessage;
-    private String mDate;
+    private String artist;
+    private String date;
+    private String genre;
+    private String description;
 
-    public TimeLineModel() {
+    public TimeLineModel(String artist, Date date, String genre, String description) {
+        this.artist = artist;
+        this.date = date.toString();
+        this.genre = genre;
+        this.description = description;
     }
-
-    public TimeLineModel(String mMessage, String mDate) {
-        this.mMessage = mMessage;
-        this.mDate = mDate;
-    }
-
-    public String getMessage() {
-        return mMessage;
-    }
-
-    public void semMessage(String message) {
-        this.mMessage = message;
-    }
-
-    public String getDate() {
-        return mDate;
-    }
-
-    public void setDate(String date) {
-        this.mDate = date;
-    }
-
-
 
     @Override
     public int describeContents() {
@@ -44,14 +26,17 @@ public class TimeLineModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mMessage);
-        dest.writeString(this.mDate);
+        dest.writeString(this.artist);
+        dest.writeString(date);
+        dest.writeString(genre);
+        dest.writeString(description);
     }
 
     protected TimeLineModel(Parcel in) {
-        this.mMessage = in.readString();
-        this.mDate = in.readString();
-        int tmpMStatus = in.readInt();
+        this.artist = in.readString();
+        this.date = in.readString();
+        this.genre = in.readString();
+        this.description = in.readString();
     }
 
     public static final Creator<TimeLineModel> CREATOR = new Creator<TimeLineModel>() {
