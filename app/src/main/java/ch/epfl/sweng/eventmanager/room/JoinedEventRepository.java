@@ -7,6 +7,7 @@ import ch.epfl.sweng.eventmanager.room.data.JoinedEvent;
 import ch.epfl.sweng.eventmanager.room.data.JoinedEventDao;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class JoinedEventRepository {
 
@@ -20,8 +21,15 @@ public class JoinedEventRepository {
         return joinedEventDao.getAll();
     }
 
-    public LiveData<JoinedEvent> findById(int eventId){
-        return joinedEventDao.findById(eventId);
+    public LiveData<JoinedEvent> findById(int eventId) {
+        try {
+            return new FindByIdAsyncTask(joinedEventDao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, eventId).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public LiveData<JoinedEvent> findByName(String name){
@@ -67,6 +75,21 @@ public class JoinedEventRepository {
             mAsyncTaskDao.delete(joinedEvents[0]);
             Log.v("Teuteu", "Trying to delete event : " + joinedEvents[0].getName());
             return null;
+        }
+    }
+
+    private static class FindByIdAsyncTask extends AsyncTask<Integer, Void, LiveData<JoinedEvent>> {
+
+        private JoinedEventDao mAsyncTaskDao;
+
+        FindByIdAsyncTask(JoinedEventDao dao){
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected LiveData<JoinedEvent> doInBackground(Integer... ids) {
+            Log.v("Teuteu", "Trying to retrieve id = " + ids[0]);
+            return mAsyncTaskDao.findById(ids[0]);
         }
     }
 }
