@@ -52,7 +52,6 @@ public class EventActivity extends AppCompatActivity {
                 joinEventSwitch.setOnClickListener(view -> {
                     if (joinEventSwitch.isChecked()) this.model.joinEvent(ev);
                     else this.model.unjoinEvent(ev);
-                    Log.v(TAG, "user clicked on switch");
                 });
             });
         }
