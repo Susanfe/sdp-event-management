@@ -60,4 +60,13 @@ public final class Concert {
     public String getGenre() {
         return genre;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Concert) {
+            Concert compared = (Concert) obj;
+            return compared.date.equals(date) && compared.artist.equals(artist) &&
+                    compared.genre.equals(genre);
+        } else return super.equals(obj);
+    }
 }
