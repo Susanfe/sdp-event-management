@@ -6,13 +6,17 @@ import android.util.Log;
 import ch.epfl.sweng.eventmanager.room.data.JoinedEvent;
 import ch.epfl.sweng.eventmanager.room.data.JoinedEventDao;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+@Singleton
 public class JoinedEventRepository {
 
     private JoinedEventDao joinedEventDao;
 
+    @Inject
     public JoinedEventRepository(JoinedEventDao joinedEventDao){
         this.joinedEventDao = joinedEventDao;
     }
@@ -22,14 +26,7 @@ public class JoinedEventRepository {
     }
 
     public LiveData<JoinedEvent> findById(int eventId) {
-        try {
-            return new FindByIdAsyncTask(joinedEventDao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, eventId).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return joinedEventDao.findById(eventId);
     }
 
     public LiveData<JoinedEvent> findByName(String name){
@@ -56,8 +53,7 @@ public class JoinedEventRepository {
 
         @Override
         protected Void doInBackground(final JoinedEvent... joinedEvents) {
-            mAsyncTaskDao.insert(joinedEvents[0]);
-            Log.v("Teuteu", "Trying to add event : " + joinedEvents[0].getName());
+            mAsyncTaskDao.insert(joinedEvents);
             return null;
         }
     }
@@ -73,23 +69,7 @@ public class JoinedEventRepository {
         @Override
         protected Void doInBackground(final JoinedEvent... joinedEvents) {
             mAsyncTaskDao.delete(joinedEvents[0]);
-            Log.v("Teuteu", "Trying to delete event : " + joinedEvents[0].getName());
             return null;
-        }
-    }
-
-    private static class FindByIdAsyncTask extends AsyncTask<Integer, Void, LiveData<JoinedEvent>> {
-
-        private JoinedEventDao mAsyncTaskDao;
-
-        FindByIdAsyncTask(JoinedEventDao dao){
-            mAsyncTaskDao = dao;
-        }
-
-        @Override
-        protected LiveData<JoinedEvent> doInBackground(Integer... ids) {
-            Log.v("Teuteu", "Trying to retrieve id = " + ids[0]);
-            return mAsyncTaskDao.findById(ids[0]);
         }
     }
 }

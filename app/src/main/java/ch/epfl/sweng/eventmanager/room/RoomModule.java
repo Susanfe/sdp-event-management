@@ -15,7 +15,7 @@ public class RoomModule {
     private AppDataBase appDatabase;
 
     public RoomModule(Application mApplication) {
-        appDatabase = Room.databaseBuilder(mApplication, AppDataBase.class, "joined-events-db").build();
+        appDatabase = Room.databaseBuilder(mApplication, AppDataBase.class, "sdp-event-management").build();
     }
 
     @Singleton
@@ -28,12 +28,6 @@ public class RoomModule {
     @Provides
     JoinedEventDao providesProductDao(AppDataBase appDatabase) {
         return appDatabase.getJoinedEventDao();
-    }
-
-    @Singleton
-    @Provides
-    JoinedEventRepository EventRepository(JoinedEventDao joinedEventDao) {
-        return new JoinedEventRepository(joinedEventDao);
     }
 
 }

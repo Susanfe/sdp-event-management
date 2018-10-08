@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.*;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
@@ -43,15 +43,13 @@ public class EventShowcaseModel extends ViewModel {
 
     public void joinEvent(Event event){
         joinedEventRepository.insert(new JoinedEvent(event));
-    //    Log.v("teuteu", "Try to insert new event :" + event.getName() + " and id =" + event.getId());
     }
 
-    public boolean isJoined(Event event){
-        return joinedEventRepository.findById(event.getId()).getValue() != null;
+    public LiveData<Boolean> isJoined(Event event) {
+        return Transformations.map(joinedEventRepository.findById(event.getId()), ev -> ev != null);
     }
 
     public void unjoinEvent(Event event){
         joinedEventRepository.delete(new JoinedEvent(event));
-    //    Log.v("teuteu", "Try to delete event :" + event.getName() + " and id =" + event.getId());
     }
 }
