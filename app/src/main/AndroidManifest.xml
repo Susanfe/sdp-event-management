@@ -56,7 +56,8 @@
         <activity
             android:name=".ui.userManager.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".ui.userManager.DisplayAccountActivity"></activity>
+        <activity android:name=".ui.userManager.DisplayAccountActivity"
+            android:label="@string/title_activity_account_display" />
     </application>
 
 </manifest>
