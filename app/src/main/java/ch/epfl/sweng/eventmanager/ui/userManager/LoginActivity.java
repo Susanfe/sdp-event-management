@@ -2,6 +2,8 @@ package ch.epfl.sweng.eventmanager.ui.userManager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.AsyncTask;
 
@@ -13,7 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import java.util.Optional;
+
+import ch.epfl.sweng.eventmanager.InMemorySession;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.UserRepository;
+import ch.epfl.sweng.eventmanager.repository.data.User;
 
 /**
  * A login screen that offers login via email/password.
@@ -126,18 +133,17 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(true);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+            // FIXME: we might not want to directly load the repository in this class
+            UserRepository repo = UserRepository.getInstance();
+            Optional<User> user = repo.getUserByEmail(mEmail);
+            if (user.isPresent()) {
+               return InMemorySession.getInstance().login(user.get(), mPassword);
+            } else {
                 return false;
             }
-
-            return true;
         }
 
         @Override
