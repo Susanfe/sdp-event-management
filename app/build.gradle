@@ -42,6 +42,7 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.17'
     implementation 'com.google.dagger:dagger-android:2.17'
     implementation 'com.google.dagger:dagger-android-support:2.17'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.17'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
     testImplementation 'junit:junit:4.12'
@@ -71,3 +72,4 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
             'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
     ])
 }
+apply plugin: 'com.google.gms.google-services'
