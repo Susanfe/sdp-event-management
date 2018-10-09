@@ -43,13 +43,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-33.854, 151.209);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        LatLng epfl = new LatLng(46.518510, 6.563249);
+        mMap.addMarker(new MarkerOptions().position(epfl).title("EPFL"));
         float zoomLevel = 19.0f; //This goes up to 21
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomLevel));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(epfl, zoomLevel));
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(true);
-        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID); // make the map in satellite view
     }
 }
