@@ -99,7 +99,7 @@
         app:layout_constraintTop_toBottomOf="@+id/event_image"
         app:layout_constraintVertical_bias="0.977" />
     <Switch
-            android:text="Join the event"
+            android:text="@string/title_activity_join_the_event_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/join-event-switch" android:layout_marginTop="8dp"

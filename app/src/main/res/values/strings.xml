@@ -4,4 +4,5 @@
     <string name="picking_activity_help_text">Please select an event to continue.</string>
     <string name="picking_activity_joined_help_text">Events you joined:</string>
     <string name="picking_activity_not_joined_help_text">Other events:</string>
+    <string name="title_activity_join_the_event_switch">Join the event</string>
 </resources>
