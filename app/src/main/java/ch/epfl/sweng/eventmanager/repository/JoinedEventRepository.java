@@ -1,16 +1,13 @@
-package ch.epfl.sweng.eventmanager.room;
+package ch.epfl.sweng.eventmanager.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
-import android.util.Log;
-import ch.epfl.sweng.eventmanager.room.data.JoinedEvent;
-import ch.epfl.sweng.eventmanager.room.data.JoinedEventDao;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.repository.room.JoinedEventDao;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 @Singleton
 public class JoinedEventRepository {

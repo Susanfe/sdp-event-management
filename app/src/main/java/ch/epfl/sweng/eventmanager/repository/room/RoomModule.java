@@ -1,9 +1,9 @@
-package ch.epfl.sweng.eventmanager.room;
+package ch.epfl.sweng.eventmanager.repository.room;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
-import android.content.Context;
-import ch.epfl.sweng.eventmanager.room.data.JoinedEventDao;
+import ch.epfl.sweng.eventmanager.repository.room.AppDataBase;
+import ch.epfl.sweng.eventmanager.repository.room.JoinedEventDao;
 import dagger.Module;
 import dagger.Provides;
 
