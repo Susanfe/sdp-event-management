@@ -9,6 +9,10 @@ import dagger.Provides;
 
 import javax.inject.Singleton;
 
+/**
+ * Module for the Room persistence library
+ * More info {https://medium.com/@marco_cattaneo/integrate-dagger-2-with-room-persistence-library-in-few-lines-abf48328eaeb}
+ */
 @Module
 public class RoomModule {
 

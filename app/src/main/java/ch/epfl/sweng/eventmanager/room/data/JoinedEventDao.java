@@ -5,6 +5,10 @@ import android.arch.persistence.room.*;
 
 import java.util.List;
 
+/**
+ * Defines the Data Access Object of the JoinedEvent Entity.
+ * Here are all the SQL queries.
+ */
 @Dao
 public interface JoinedEventDao {
     @Query("SELECT * FROM joined_events")
