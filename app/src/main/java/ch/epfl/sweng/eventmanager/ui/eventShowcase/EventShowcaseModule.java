@@ -1,11 +1,14 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
 import dagger.Binds;
 import dagger.Module;
+import dagger.android.ActivityKey;
+import dagger.android.AndroidInjector;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoMap;
 
