@@ -33,7 +33,7 @@ public final class Concert {
      */
     private double duration;
 
-    public static final String NO_ARTIST = "Unknown artist";
+    public static final String  NO_ARTIST ="Unknown artist";
     public static final String NO_GENRE = "Unknown genre";
     public static final String NO_DESCRIPTION = "This event does not have a description.";
     private static final double STANDARD_DURATION = 1;
