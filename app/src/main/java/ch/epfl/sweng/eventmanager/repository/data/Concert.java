@@ -12,8 +12,10 @@ import java.util.GregorianCalendar;
 public final class Concert {
     /**
      * Indicates the time of the concert, precision required is minutes.
+     *
+     * This is a long because firebase doesn't understand Date objects.
      */
-    private Date date;
+    private long date;
 
     /**
      * Indicates the artist or band performing.
@@ -38,7 +40,7 @@ public final class Concert {
     private static final double STANDARD_DURATION = 1;
 
     public Concert(Date date, String artist, String genre, String description, double duration) {
-        this.date = (Date) date.clone();
+        this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
         this.description = description;
@@ -48,7 +50,10 @@ public final class Concert {
     public Concert() {}
 
     public Date getDate() {
-        return date;
+        if (date <= 0) {
+            return null;
+        }
+        return new Date(date);
     }
 
     public String getArtist() {
@@ -71,13 +76,13 @@ public final class Concert {
     public boolean equals(Object obj) {
         if (obj instanceof Concert) {
             Concert compared = (Concert) obj;
-            return compared.date.equals(date) && compared.artist.equals(artist) &&
+            return compared.date == date && compared.artist.equals(artist) &&
                     compared.genre.equals(genre) && compared.duration==duration;
         } else return super.equals(obj);
     }
 
     public String dateAsString() {
-        return date != null ? date.toString() : null;
+        return new Date(date).toString();
     }
 
     public Date getEndOfConcert() {

@@ -22,32 +22,31 @@ import java.util.List;
 public class ConcertRepository {
     private static String TAG = "ConcertRepository";
 
-    private List<Concert> CONCERTS;
-
-    {
-        List<Concert> concertsList = new LinkedList<>();
-        // Above is temporary
-
-        // Temp fake for visual example
-        concertsList.add(new Concert(new Date(2018, 11, 15, 23, 30),
-                "David Guetta", "Electro/ Dance",
-                "Incredible stage performance by famous DJ David Guetta!", 1.5));
-        concertsList.add(new Concert(new Date(2018, 11, 15, 21, 15),
-                "ABBA", "Rock",
-                "Wow! This is the great comeback of the well-known success group!", 2));
-
-        CONCERTS = Collections.unmodifiableList(concertsList);
-    }
-
     @Inject
     public ConcertRepository() {
     }
 
     public LiveData<List<Concert>> getConcerts(int eventId) {
         final MutableLiveData<List<Concert>> data = new MutableLiveData<>();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference("schedule_items")
+                .child("event_" + eventId);
 
-        // TODO: implement proper database sync
-        data.setValue(CONCERTS);
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<List<Concert>> typeToken = new GenericTypeIndicator<List<Concert>>() {
+                };
+
+                List<Concert> concerts = dataSnapshot.getValue(typeToken);
+                data.postValue(concerts);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w(TAG, "Error when getting schedule for event " + eventId, databaseError.toException());
+            }
+        });
 
         return data;
     }
