@@ -61,10 +61,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-
-
-
         <activity
             android:name=".ui.eventShowcase.MapsActivity"
             android:label="@string/title_activity_maps">
@@ -74,7 +70,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
     </application>
 

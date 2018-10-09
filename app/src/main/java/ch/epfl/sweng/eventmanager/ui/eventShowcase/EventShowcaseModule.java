@@ -35,5 +35,8 @@ public abstract class EventShowcaseModule {
     @ContributesAndroidInjector
     abstract TicketActivity contributeTicketActivityInjector();
 
+    @ContributesAndroidInjector
+    abstract MapsActivity contributeMapActivityInjector();
+
 }
 
