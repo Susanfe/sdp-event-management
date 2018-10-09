@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.repository;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import com.google.firebase.database.*;
 
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @Singleton
 public class EventRepository {
+    private static String TAG = "EventRepository";
 
     @Inject
     public EventRepository() {
@@ -39,7 +41,7 @@ public class EventRepository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.w(TAG, "Error when getting events.", databaseError.toException());
             }
         });
 
@@ -61,7 +63,7 @@ public class EventRepository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.w(TAG, "Error when getting event " + eventId + ".", databaseError.toException());
             }
         });
 
