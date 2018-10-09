@@ -6,7 +6,6 @@ import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * This is the model for the event list. It connects with the repository to pull a list of events and communicate them
