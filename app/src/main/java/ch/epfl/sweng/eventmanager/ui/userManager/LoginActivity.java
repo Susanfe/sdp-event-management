@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
-    private Button mSignInButton;
+    private Button mLoginButton;
     private ProgressBar mProgressBar;
 
     @Override
@@ -46,9 +46,9 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView = (EditText) findViewById(R.id.password_field);
         mPasswordView.setHint("Password");
 
-        mSignInButton = (Button) findViewById(R.id.sign_in_button);
-        mSignInButton.setText("Sign in »");
-        mSignInButton.setOnClickListener(new OnClickListener() {
+        mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoginButton.setText("Sign in »");
+        mLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
@@ -109,10 +109,10 @@ public class LoginActivity extends AppCompatActivity {
     private void showProgress(Boolean displayed) {
        if (displayed) {
            mProgressBar.setVisibility(View.VISIBLE);
-           mSignInButton.setEnabled(false);
+           mLoginButton.setEnabled(false);
        } else {
            mProgressBar.setVisibility(View.INVISIBLE);
-           mSignInButton.setEnabled(true);
+           mLoginButton.setEnabled(true);
        }
     }
 
