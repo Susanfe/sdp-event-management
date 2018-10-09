@@ -18,14 +18,14 @@ public class TimeLineModel implements Parcelable {
     public TimeLineModel(String artist, Date date, String genre, String description, double duration) {
         this.artist = artist;
         this.date = date;
-        this.stringDate = date.toString();
+        this.stringDate = date != null ? date.toString() : null;
         this.genre = genre;
         this.description = description;
         this.duration = duration;
         if (!setIsNow()) isNow = 1;
     }
 
-    String getArtist() {
+    public String getArtist() {
         return artist;
     }
 
@@ -33,7 +33,7 @@ public class TimeLineModel implements Parcelable {
         return date;
     }
 
-    String getGenre() {
+    public String getGenre() {
         return genre;
     }
 
@@ -41,15 +41,15 @@ public class TimeLineModel implements Parcelable {
         return description;
     }
 
-    double getDuration() {
+    public double getDuration() {
         return duration;
     }
 
-    String getStringDate() {
+    public String getStringDate() {
         return stringDate;
     }
 
-    int getIsNow() {
+    public int getIsNow() {
         return isNow;
     }
 

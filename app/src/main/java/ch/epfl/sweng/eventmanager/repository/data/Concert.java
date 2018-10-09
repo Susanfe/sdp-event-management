@@ -33,23 +33,18 @@ public final class Concert {
      */
     private double duration;
 
-    public static final String  NO_ARTIST ="Unknown artist";
-    public static final String NO_GENRE = "Unknown genre";
-    public static final String NO_DESCRIPTION = "This event does not have a description.";
     private static final double STANDARD_DURATION = 1;
 
 
     public Concert(Date date, String artist) {
-        new Concert(date, artist, NO_GENRE, NO_DESCRIPTION, STANDARD_DURATION);
+        new Concert(date, artist, null, null, STANDARD_DURATION);
     }
 
     public Concert(Date date, String artist, String genre, String description, double duration) {
         this.date = (Date) date.clone();
-        this.artist = (artist == null) ? NO_ARTIST : artist;
-
-        this.genre = (genre == null) ? NO_GENRE : genre;
-        this.description = (description == null) ? NO_DESCRIPTION : description;
-
+        this.artist = artist;
+        this.genre = genre;
+        this.description = description;
         this.duration = duration;
     }
 

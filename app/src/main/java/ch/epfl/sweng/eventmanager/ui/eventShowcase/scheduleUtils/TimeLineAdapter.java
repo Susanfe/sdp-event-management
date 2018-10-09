@@ -49,10 +49,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
         TimeLineModel timeLineModel = dataList.get(position);
 
-        String artistText = timeLineModel.getArtist().isEmpty() ? context.getString(R.string.concert_no_artist) : timeLineModel.getArtist();
-        String dateText = timeLineModel.getStringDate().isEmpty() ? context.getString(R.string.concert_no_date) : timeLineModel.getStringDate();
-        String genreText = timeLineModel.getGenre().isEmpty() ? context.getString(R.string.concert_no_genre) : timeLineModel.getGenre();
-        String descriptionText = timeLineModel.getDescription().isEmpty() ? context.getString(R.string.concert_no_genre) : timeLineModel.getDescription();
+        String artistText = timeLineModel.getArtist() == null ? context.getString(R.string.concert_no_artist) : timeLineModel.getArtist();
+        String dateText = timeLineModel.getStringDate() == null ? context.getString(R.string.concert_no_date) : timeLineModel.getStringDate();
+        String genreText = timeLineModel.getGenre() == null ? context.getString(R.string.concert_no_genre) : timeLineModel.getGenre();
+        String descriptionText = timeLineModel.getDescription() == null ? context.getString(R.string.concert_no_genre) : timeLineModel.getDescription();
         String durationText = transformDuration(timeLineModel.getDuration());
 
         holder.mArtist.setText(artistText);
