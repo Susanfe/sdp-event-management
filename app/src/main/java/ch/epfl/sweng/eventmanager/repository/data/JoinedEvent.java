@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.util.Objects;
+
 /**
  * Defines the JoinedEvent Entity. We only store the event-id and the name of the event to minimise storage space
  */
@@ -68,11 +70,9 @@ public class JoinedEvent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         JoinedEvent that = (JoinedEvent) o;
-
-        if (uid != that.uid) return false;
-        return name != null ? name.equals(that.name) : that.name == null;
+        return uid == that.uid &&
+                Objects.equals(name, that.name);
     }
 
     @Override
