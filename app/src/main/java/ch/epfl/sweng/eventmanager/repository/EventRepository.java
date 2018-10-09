@@ -2,6 +2,9 @@ package ch.epfl.sweng.eventmanager.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventOrganizer;
 
@@ -19,21 +22,22 @@ public class EventRepository {
     // In the future, the events data will come from Firebase
     // From now, we just get them from a static list
     private final List<Event> EVENTS = new ArrayList<>(3);
+    private final LatLng EPFLLocation = new LatLng(46.518510, 6.563249);
 
     {
         EVENTS.add(
                 new Event(1, "Japan Impact", "La plus grande convention sur la culture japonaise " +
                         "de Suisse Romande !",
                         new EventOrganizer(1, "PolyJapan", "La commission de l'AGEPoly qui promeut la culture japonaise sur le campus et ses environs", null),
-                        null));
+                        null, EPFLLocation));
         EVENTS.add(
                 new Event(2, "Sysmic", "Le festival de musique de l'association des étudiants de Microtechnique",
                         new EventOrganizer(2, "Sysmic", "L'association des étudiants de Microtechnique", null),
-                        null));
+                        null, EPFLLocation));
         EVENTS.add(
                 new Event(3, "Souper de section", "Retrouve tes professeurs et camarades lors du souper de section",
                         new EventOrganizer(3, "CLIC", "L'association des étudiants en IC", null),
-                        null));
+                        null, EPFLLocation));
     }
 
     @Inject

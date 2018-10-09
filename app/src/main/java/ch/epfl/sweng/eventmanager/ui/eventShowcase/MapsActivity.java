@@ -42,7 +42,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
         LatLng epfl = new LatLng(46.518510, 6.563249);
         mMap.addMarker(new MarkerOptions().position(epfl).title("EPFL"));
         float zoomLevel = 19.0f; //This goes up to 21

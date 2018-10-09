@@ -2,6 +2,8 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * This class holds the basic elements about an organized event.<br>
  *     This class might hold way more data in the future, depending on how the backend will be organized
@@ -29,13 +31,18 @@ public final class Event {
      * An image representing the event, may be null
      */
     private final Bitmap image;
+    /**
+     * The location of the event
+     */
+    private final LatLng location;
 
-    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image) {
+    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image, LatLng location) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.organizer = organizer;
         this.image = image;
+        this.location = location;
     }
 
     public int getId() {
@@ -57,4 +64,6 @@ public final class Event {
     public Bitmap getImage() {
         return image;
     }
+
+    public LatLng getLocation(){return location;}
 }
