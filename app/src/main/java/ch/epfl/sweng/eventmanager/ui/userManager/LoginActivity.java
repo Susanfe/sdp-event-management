@@ -2,25 +2,25 @@ package ch.epfl.sweng.eventmanager.ui.userManager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.os.AsyncTask;
-
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-
-import java.util.Optional;
-
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.UserRepository;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.userManagement.Session;
+import dagger.android.AndroidInjection;
+
+import javax.inject.Inject;
+import java.util.Optional;
 
 /**
  * A login screen that offers login via email/password.
@@ -36,12 +36,17 @@ public class LoginActivity extends AppCompatActivity {
     private Button mLoginButton;
     private ProgressBar mProgressBar;
 
+    @Inject
+    UserRepository repository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mEmailView = (EditText)  findViewById(R.id.email_field);
+        mEmailView = (EditText) findViewById(R.id.email_field);
         mEmailView.setHint(R.string.email_field);
         mPasswordView = (EditText) findViewById(R.id.password_field);
         mPasswordView.setHint(R.string.password_field);
@@ -128,11 +133,9 @@ public class LoginActivity extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected Boolean doInBackground(Void... params) {
-            // FIXME: we might not want to directly load the repository in this class
-            UserRepository repo = UserRepository.getInstance();
-            Optional<User> user = repo.getUserByEmail(mEmail);
+            Optional<User> user = repository.getUserByEmail(mEmail);
             if (user.isPresent()) {
-               return Session.login(user.get(), mPassword);
+                return Session.login(user.get(), mPassword);
             } else {
                 return false;
             }

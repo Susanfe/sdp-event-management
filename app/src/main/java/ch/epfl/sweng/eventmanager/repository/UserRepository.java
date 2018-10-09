@@ -5,6 +5,7 @@ import android.support.annotation.RequiresApi;
 
 import ch.epfl.sweng.eventmanager.repository.data.User;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,6 @@ import java.util.stream.Collectors;
 @Singleton
 public class UserRepository {
     private final List<User> USERS = new ArrayList<>(1);
-    private static UserRepository instance = null;
 
     {
         USERS.add(
@@ -23,15 +23,9 @@ public class UserRepository {
         );
     }
 
-   // Private constructor to disable instantiation.
-   private UserRepository() {}
-
-   public static UserRepository getInstance() {
-      if(instance == null) {
-         instance = new UserRepository();
-      }
-      return instance;
-   }
+    // Private constructor to disable instantiation.
+    @Inject
+    public UserRepository() {}
 
     public List<User> getUsers() {
         return USERS;
