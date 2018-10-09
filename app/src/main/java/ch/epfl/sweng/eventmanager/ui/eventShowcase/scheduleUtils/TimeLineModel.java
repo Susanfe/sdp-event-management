@@ -79,7 +79,7 @@ public class TimeLineModel implements Parcelable {
         date = null;
     }
 
-    public static final Parcelable.Creator<TimeLineModel> CREATOR = new Creator<TimeLineModel>() {
+    public static final Creator<TimeLineModel> CREATOR = new Creator<TimeLineModel>() {
         @Override
         public TimeLineModel createFromParcel(Parcel source) {
             return new TimeLineModel(source);
