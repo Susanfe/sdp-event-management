@@ -7,7 +7,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import ch.epfl.sweng.eventmanager.R;
@@ -41,10 +43,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-33.852, 151.211);
+        LatLng sydney = new LatLng(-33.854, 151.209);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         float zoomLevel = 19.0f; //This goes up to 21
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, zoomLevel));
+        mMap.getUiSettings().setCompassEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(true);
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
     }
 }
