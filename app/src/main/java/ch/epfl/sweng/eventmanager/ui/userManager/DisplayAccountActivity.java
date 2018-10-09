@@ -9,9 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import ch.epfl.sweng.eventmanager.InMemorySession;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.userManagement.Session;
 
 public class DisplayAccountActivity extends AppCompatActivity {
 
@@ -21,11 +21,9 @@ public class DisplayAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_account);
 
-        InMemorySession session = InMemorySession.getInstance();
-
-        // We assume the user is logged in.
+        // We assume the user is logged in when the activity is opened.
         TextView helpText = (TextView) findViewById(R.id.main_text);
-        helpText.setText("Logged as: " + session.getUser().get().getEmail());
+        helpText.setText("Logged as: " + Session.getCurrentUser().get().getEmail());
 
 
         Button logoutButton = (Button) findViewById(R.id.logout_button);
@@ -40,8 +38,7 @@ public class DisplayAccountActivity extends AppCompatActivity {
     }
 
     public void logoutThenRedirectToEventSelector(View view) {
-        InMemorySession session = InMemorySession.getInstance();
-        session.logout();
+        Session.logout();
         openEventSelector(view);
     }
 }

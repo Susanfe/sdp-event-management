@@ -17,10 +17,10 @@ import android.widget.ProgressBar;
 
 import java.util.Optional;
 
-import ch.epfl.sweng.eventmanager.InMemorySession;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.UserRepository;
 import ch.epfl.sweng.eventmanager.repository.data.User;
+import ch.epfl.sweng.eventmanager.userManagement.Session;
 
 /**
  * A login screen that offers login via email/password.
@@ -140,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
             UserRepository repo = UserRepository.getInstance();
             Optional<User> user = repo.getUserByEmail(mEmail);
             if (user.isPresent()) {
-               return InMemorySession.getInstance().login(user.get(), mPassword);
+               return Session.login(user.get(), mPassword);
             } else {
                 return false;
             }

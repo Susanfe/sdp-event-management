@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-// FIXME: check if we can do something intelligent with dependency injection?
 @Singleton
 public class UserRepository {
     private final List<User> USERS = new ArrayList<>(1);
@@ -24,9 +23,8 @@ public class UserRepository {
         );
     }
 
-   private UserRepository() {
-      // Exists only to defeat instantiation.
-   }
+   // Private constructor to disable instantiation.
+   private UserRepository() {}
 
    public static UserRepository getInstance() {
       if(instance == null) {
@@ -39,7 +37,6 @@ public class UserRepository {
         return USERS;
     }
 
-    // FIXME: rewrite it to be compatible with older APIs revisions
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Optional<User> getUserByEmail(String email) {
         List<User> filtered = USERS.stream()
