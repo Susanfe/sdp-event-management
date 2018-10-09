@@ -40,7 +40,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
     public TimeLineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         mLayoutInflater = LayoutInflater.from(context);
-        View view = mLayoutInflater.inflate(R.layout.event_list_item, parent, false);
+        View view = mLayoutInflater.inflate(R.layout.item_timeline, parent, false);
         return new TimeLineViewHolder(view, viewType);
     }
 

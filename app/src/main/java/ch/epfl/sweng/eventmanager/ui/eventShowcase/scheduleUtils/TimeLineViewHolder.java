@@ -6,15 +6,11 @@ import android.widget.TextView;
 
 import com.github.vipulasri.timelineview.TimelineView;
 
-import org.w3c.dom.Text;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 
 class TimeLineViewHolder extends RecyclerView.ViewHolder {
-
-    private TimelineView timelineView;
 
     @BindView(R.id.text_timeline_date)
     TextView mDate;
@@ -32,6 +28,6 @@ class TimeLineViewHolder extends RecyclerView.ViewHolder {
     TimeLineViewHolder(View itemView, int viewType) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        timelineView.initLine(viewType);
+        mTimelineView.initLine(viewType);
     }
 }

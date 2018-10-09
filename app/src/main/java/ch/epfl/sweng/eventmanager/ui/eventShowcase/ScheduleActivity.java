@@ -29,8 +29,9 @@ public class ScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule);
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
+
 
         //
         // Get the concert List for the event into concertsList
@@ -52,6 +53,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
         timeLineAdapter = new TimeLineAdapter(dataList);
         recyclerView.setAdapter(timeLineAdapter);
+
     }
 
 
