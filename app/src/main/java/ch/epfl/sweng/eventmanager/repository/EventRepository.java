@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.repository;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 import com.google.android.gms.maps.model.LatLng;
 
 import ch.epfl.sweng.eventmanager.repository.data.Event;
@@ -22,7 +23,7 @@ public class EventRepository {
     // In the future, the events data will come from Firebase
     // From now, we just get them from a static list
     private final List<Event> EVENTS = new ArrayList<>(3);
-    private final LatLng EPFLLocation = new LatLng(46.518510, 6.563249);
+    private final EventLocation EPFLLocation = new EventLocation("EPFL", 46.518510, 6.563249);
 
     {
         EVENTS.add(
