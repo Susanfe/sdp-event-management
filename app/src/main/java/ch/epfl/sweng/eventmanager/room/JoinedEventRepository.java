@@ -9,6 +9,7 @@ import ch.epfl.sweng.eventmanager.room.data.JoinedEventDao;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 @Singleton
@@ -23,6 +24,10 @@ public class JoinedEventRepository {
 
     public LiveData<List<JoinedEvent>> findAll(){
         return joinedEventDao.getAll();
+    }
+
+    public LiveData<List<Integer>> findAllIds(){
+        return joinedEventDao.getAllIds();
     }
 
     public LiveData<JoinedEvent> findById(int eventId) {
