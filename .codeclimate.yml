@@ -1,5 +1,0 @@
-plugin :
-  checkstyle :
-    enabled: true
-  sonar-java:
-    enabled : true

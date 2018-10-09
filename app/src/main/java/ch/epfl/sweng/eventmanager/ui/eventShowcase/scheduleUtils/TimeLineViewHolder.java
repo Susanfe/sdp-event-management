@@ -29,7 +29,6 @@ class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
     TimeLineViewHolder(View itemView, int viewType) {
         super(itemView);
-
         ButterKnife.bind(this, itemView);
         mTimelineView.initLine(viewType);
     }
