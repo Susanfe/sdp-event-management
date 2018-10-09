@@ -79,15 +79,18 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError("Password cannot be empty");
             focusView = mPasswordView;
+            cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError("Email cannot be empty");
             focusView = mEmailView;
+            cancel = true;
         } else if (!isEmailValid(email)) {
             mEmailView.setError("Invalid Email address");
             focusView = mEmailView;
+            cancel = true;
         }
 
         if (cancel) {
