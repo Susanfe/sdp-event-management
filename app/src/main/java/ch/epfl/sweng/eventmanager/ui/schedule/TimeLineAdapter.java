@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.eventShowcase.scheduleUtils;
+package ch.epfl.sweng.eventmanager.ui.schedule;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -17,7 +17,6 @@ import com.github.vipulasri.timelineview.TimelineView;
 import java.util.List;
 
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.Concert;
 
 
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {

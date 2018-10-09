@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.eventShowcase.scheduleUtils;
+package ch.epfl.sweng.eventmanager.ui.schedule;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.eventShowcase;
+package ch.epfl.sweng.eventmanager.ui.schedule;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +12,6 @@ import java.util.List;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Concert;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.scheduleUtils.TimeLineAdapter;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.scheduleUtils.TimeLineModel;
 
 public class ScheduleActivity extends AppCompatActivity {
 
