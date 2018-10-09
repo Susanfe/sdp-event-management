@@ -12,25 +12,28 @@ public final class EventOrganizer {
     /**
      * An internal id, identifying this organizer uniquely. Might have to be completed by an UUID in the future.
      */
-    private final int id;
+    private int id;
     /**
      * The name of the organizer
      */
-    private final String name;
+    private String name;
     /**
      * A short description of the organizer
      */
-    private final String description;
+    private String description;
     /**
      * The logo of this organizer, might be null
      */
-    private final Bitmap logo;
+    private Bitmap logo;
 
     public EventOrganizer(int id, String name, String description, Bitmap logo) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.logo = logo;
+    }
+
+    public EventOrganizer() {
     }
 
     public int getId() {

@@ -16,19 +16,19 @@ public final class Event {
     /**
      * An internal id, identifying this event uniquely. Might have to be completed by an UUID in the future.
      */
-    private final int id;
+    private int id;
     /**
      * The name of the event
      */
-    private final String name;
+    private String name;
     /**
      * A short description of the event
      */
-    private final String description;
+    private String description;
     /**
      * The entity organizing this event
      */
-    private final EventOrganizer organizer;
+    private EventOrganizer organizer;
     /**
      * An image representing the event, may be null
      */
@@ -47,6 +47,9 @@ public final class Event {
         this.image = image;
 
         this.concertList = concertList;
+    }
+
+    public Event() {
     }
 
     public int getId() {
