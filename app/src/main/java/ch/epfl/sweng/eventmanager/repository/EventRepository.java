@@ -48,7 +48,10 @@ public class EventRepository {
 
     public LiveData<Event> getEvent(int eventId) {
         final MutableLiveData<Event> ret = new MutableLiveData<>();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("events").child(String.valueOf(eventId));
+        DatabaseReference dbRef = FirebaseDatabase
+                .getInstance()
+                .getReference("events")
+                .child(String.valueOf(eventId));
 
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
