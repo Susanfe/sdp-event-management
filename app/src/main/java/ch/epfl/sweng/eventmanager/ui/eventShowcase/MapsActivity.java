@@ -1,8 +1,14 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import android.util.Log;
+import android.widget.TextView;
+import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -13,19 +19,41 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import ch.epfl.sweng.eventmanager.R;
+import dagger.android.AndroidInjection;
+
+import javax.inject.Inject;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static String TAG = "MapsActivity";
 
+    @Inject
+    ViewModelFactory factory;
+
+    private EventShowcaseModel model;
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+        Intent intent = getIntent();
+        int eventID = intent.getIntExtra(EventPickingActivity.SELECTED_EVENT_ID, -1);
+        // TODO: fetch event, update displayed values.
+        if (eventID <= 0) { // Suppose that negative or null event ID are invalids
+            // TODO: find a way to pass the event ID between the different views
+            Log.e(TAG, "Got invalid event ID#" + eventID + ".");
+        } else {
+            this.model = ViewModelProviders.of(this, factory).get(EventShowcaseModel.class);
+            this.model.init(eventID);
+
+            mapFragment.getMapAsync(this);
+        }
     }
 
 
@@ -40,15 +68,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        if (this.model == null) {
+            return;
+        }
+
         mMap = googleMap;
 
-        LatLng epfl = new LatLng(46.518510, 6.563249);
-        mMap.addMarker(new MarkerOptions().position(epfl).title("EPFL"));
         float zoomLevel = 19.0f; //This goes up to 21
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(epfl, zoomLevel));
+
+        this.model.getLocation().observe(this, loc -> {
+            if (loc != null) {
+                LatLng place = new LatLng(loc.getLatitude(), loc.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(place).title(loc.getName()));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, zoomLevel));
+            }
+        });
+
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(true);
-        //mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID); // make the map in satellite view
     }
 }
