@@ -41,7 +41,10 @@ public class JoinedEventRepository {
         new DeleteAsyncTask(joinedEventDao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedEvent);
     }
 
-
+    /**
+     * Defines adding to the database with an asynchronous task
+     * @see android.os.AsyncTask
+     */
     private static class InsertAsyncTask extends AsyncTask<JoinedEvent, Void, Void> {
 
         private JoinedEventDao mAsyncTaskDao;
@@ -50,7 +53,6 @@ public class JoinedEventRepository {
             mAsyncTaskDao = dao;
         }
 
-
         @Override
         protected Void doInBackground(final JoinedEvent... joinedEvents) {
             mAsyncTaskDao.insert(joinedEvents);
@@ -58,6 +60,10 @@ public class JoinedEventRepository {
         }
     }
 
+    /**
+     * Defines deleting a JoinedEvent from the database with an asynchronous task
+     * @see android.os.AsyncTask
+     */
     private static class DeleteAsyncTask extends AsyncTask<JoinedEvent, Void, Void> {
 
         private JoinedEventDao mAsyncTaskDao;
