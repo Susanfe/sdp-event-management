@@ -27,9 +27,9 @@ public class DisplayAccountActivity extends AppCompatActivity {
 
 
         Button logoutButton = (Button) findViewById(R.id.logout_button);
-        logoutButton.setText("Logout");
+        logoutButton.setText(R.string.logout_button);
         Button backButton = (Button) findViewById(R.id.back_button);
-        backButton.setText("Back");
+        backButton.setText(R.string.back_button);
     }
 
     public void openEventSelector(View view) {

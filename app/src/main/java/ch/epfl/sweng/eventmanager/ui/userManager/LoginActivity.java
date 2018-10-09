@@ -42,12 +42,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mEmailView = (EditText)  findViewById(R.id.email_field);
-        mEmailView.setHint("Mail address");
+        mEmailView.setHint(R.string.email_field);
         mPasswordView = (EditText) findViewById(R.id.password_field);
-        mPasswordView.setHint("Password");
+        mPasswordView.setHint(R.string.password_field);
 
         mLoginButton = (Button) findViewById(R.id.login_button);
-        mLoginButton.setText("Sign in »");
+        mLoginButton.setText(R.string.login_button);
         mLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

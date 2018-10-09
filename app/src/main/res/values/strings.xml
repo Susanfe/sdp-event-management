@@ -7,4 +7,13 @@
     <string name="invalid_email_activity_login">Invalid email address</string>
     <string name="empty_password_activity_login">The password cannot be empty</string>
     <string name="invalid_credentials_activity_login">Incorrect email/password combination</string>
+    <string name="help_text_activity_event_picking">Please select an event to continue.</string>
+
+    <string name="email_field">Email address</string>
+    <string name="password_field">Password</string>
+
+    <string name="login_button">Sign in »</string>
+    <string name="logout_button">Log out</string>
+    <string name="account_button">My account »</string>
+    <string name="back_button">Back</string>
 </resources>

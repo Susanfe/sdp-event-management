@@ -38,7 +38,7 @@ public class EventPickingActivity extends AppCompatActivity {
         // Help text
         TextView helpText = (TextView) findViewById(R.id.help_text);
         helpText.setTypeface(helpText.getTypeface(), Typeface.BOLD);
-        helpText.setText("Please select an event to continue.");
+        helpText.setText(R.string.help_text_activity_event_picking);
 
         // Event list
         RecyclerView eventList = (RecyclerView) findViewById(R.id.event_list);
@@ -61,9 +61,9 @@ public class EventPickingActivity extends AppCompatActivity {
         // Login button
         Button loginButton = (Button) findViewById(R.id.login_button);
         if (Session.isLoggedIn()) {
-            loginButton.setText("My account »");
+            loginButton.setText(R.string.account_button);
         } else {
-            loginButton.setText("Sign in »");
+            loginButton.setText(R.string.login_button);
         }
     }
 
