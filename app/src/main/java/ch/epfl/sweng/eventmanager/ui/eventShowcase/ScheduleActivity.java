@@ -41,13 +41,13 @@ public class ScheduleActivity extends AppCompatActivity {
         // Temp fake for visual example
         concertsList.add(new Concert(new Date(2018, 11, 15, 23, 30),
                 "David Guetta", "Electro/ Dance",
-                "Incredible stage performance by famous DJ David Guetta!"));
+                "Incredible stage performance by famous DJ David Guetta!", 1.5));
         concertsList.add(new Concert(new Date(2018, 11, 15, 21, 15),
                 "ABBA", "Rock",
-                "Wow! This is the great comeback of the well-known success group!"));
+                "Wow! This is the great comeback of the well-known success group!", 2));
 
         for (Concert c : concertsList) {
-            dataList.add(new TimeLineModel(c.getArtist(), c.getDate(), c.getGenre(), c.getDescription()));
+            dataList.add(new TimeLineModel(c.getArtist(), c.getDate(), c.getGenre(), c.getDescription(), c.getDuration()));
         }
 
         timeLineAdapter = new TimeLineAdapter(dataList);
