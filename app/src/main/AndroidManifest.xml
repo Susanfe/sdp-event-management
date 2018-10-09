@@ -18,32 +18,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.eventShowcase.EventActivity"
-            android:parentActivityName=".ui.eventSelector.EventPickingActivity">
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.eventSelector.EventPickingActivity" />
-        </activity>
+            android:parentActivityName=".ui.eventSelector.EventPickingActivity" />
         <activity android:name=".ui.eventShowcase.MapActivity"
-            android:parentActivityName=".ui.eventShowcase.EventActivity">
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.eventShowcase.EventActivity" />
-        </activity>
+            android:parentActivityName=".ui.eventShowcase.EventActivity" />
         <activity android:name=".ui.eventShowcase.TicketActivity"
-            android:parentActivityName=".ui.eventShowcase.EventActivity">
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.eventShowcase.EventActivity" />
-        </activity>
+            android:parentActivityName=".ui.eventShowcase.EventActivity" />
         <activity android:name=".ui.eventShowcase.ScheduleActivity"
-            android:parentActivityName=".ui.eventShowcase.EventActivity">
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.eventShowcase.EventActivity" />
-        </activity>
+            android:parentActivityName=".ui.eventShowcase.EventActivity" />
     </application>
 </manifest>
