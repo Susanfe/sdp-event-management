@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import ch.epfl.sweng.eventmanager.R;
@@ -15,6 +16,8 @@ import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class EventPickingActivity extends AppCompatActivity {
     private EventPickingModel model;
@@ -30,13 +33,15 @@ public class EventPickingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_picking);
 
         // Help text
-        TextView helpText = (TextView) findViewById(R.id.help_text);
-        helpText.setTypeface(helpText.getTypeface(), Typeface.BOLD);
-        helpText.setText("Please select an event to continue.");
+        // Both invisible by default
+        TextView joinedHelpText = (TextView) findViewById(R.id.joined_help_text);
+        joinedHelpText.setVisibility(View.INVISIBLE);
 
-        // Event list
+        TextView notJoinedHelpText = (TextView) findViewById(R.id.not_joined_help_text);
+        notJoinedHelpText.setVisibility(View.INVISIBLE);
+
+        // Event lists
         RecyclerView eventList = (RecyclerView) findViewById(R.id.event_list);
-        eventList.setHasFixedSize(true);
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
         DividerItemDecoration eventListDividerItemDecoration = new DividerItemDecoration(
@@ -45,11 +50,37 @@ public class EventPickingActivity extends AppCompatActivity {
         );
         eventList.addItemDecoration(eventListDividerItemDecoration);
 
+
+        RecyclerView joinedEventList = (RecyclerView) findViewById(R.id.joined_events_list);
+        LinearLayoutManager joinedEventListLayoutManager = new LinearLayoutManager(this);
+        joinedEventList.setLayoutManager(joinedEventListLayoutManager);
+        DividerItemDecoration joinedEventListDividerItemDecoration = new DividerItemDecoration(
+                joinedEventList.getContext(),
+                joinedEventListLayoutManager.getOrientation()
+        );
+        joinedEventList.addItemDecoration(joinedEventListDividerItemDecoration);
+
+        // Set empty adapters
+        eventList.setAdapter(new EventListAdapter(Collections.emptyList()));
+        joinedEventList.setAdapter(new EventListAdapter(Collections.emptyList()));
+
         this.model = ViewModelProviders.of(this, factory).get(EventPickingModel.class);
         this.model.init();
-        this.model.getEvents().observe(this, list -> {
-            EventListAdapter eventListAdapter = new EventListAdapter(list);
-            eventList.setAdapter(eventListAdapter);
+        this.model.getEventsPair().observe(this, list -> {
+            if (list == null) {
+                return;
+            }
+
+            eventList.setAdapter(new EventListAdapter(list.getOtherEvents()));
+            joinedEventList.setAdapter(new EventListAdapter(list.getJoinedEvents()));
+
+            if (!list.getJoinedEvents().isEmpty()) {
+                joinedHelpText.setVisibility(View.VISIBLE);
+                notJoinedHelpText.setVisibility(View.VISIBLE);
+            } else {
+                joinedHelpText.setVisibility(View.INVISIBLE);
+                notJoinedHelpText.setVisibility(View.INVISIBLE);
+            }
         });
 
     }

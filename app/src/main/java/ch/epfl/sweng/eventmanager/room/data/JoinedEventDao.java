@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.*;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Defines the Data Access Object of the JoinedEvent Entity.
@@ -13,6 +14,9 @@ import java.util.List;
 public interface JoinedEventDao {
     @Query("SELECT * FROM joined_events")
     LiveData<List<JoinedEvent>> getAll();
+
+    @Query("SELECT event_id FROM joined_events")
+    LiveData<List<Integer>> getAllIds();
 
     @Query("SELECT * FROM joined_events WHERE event_id IN (:eventIds)")
     LiveData<List<JoinedEvent>> loadAllByIds(int[] eventIds);
