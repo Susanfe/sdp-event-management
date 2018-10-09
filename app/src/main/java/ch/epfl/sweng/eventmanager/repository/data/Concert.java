@@ -37,11 +37,6 @@ public final class Concert {
 
     private static final double STANDARD_DURATION = 1;
 
-
-    public Concert(Date date, String artist) {
-        new Concert(date, artist, null, null, STANDARD_DURATION);
-    }
-
     public Concert(Date date, String artist, String genre, String description, double duration) {
         this.date = (Date) date.clone();
         this.artist = artist;
@@ -49,6 +44,8 @@ public final class Concert {
         this.description = description;
         this.duration = duration;
     }
+
+    public Concert() {}
 
     public Date getDate() {
         return date;
@@ -88,11 +85,11 @@ public final class Concert {
             return null;
         }
 
-        int durationHours = (int) Math.abs(getDuration());
+        int durationMinutes = (int) Math.abs(getDuration() * 60);
 
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(getDate());
-        calendar.add(Calendar.HOUR, durationHours);
+        calendar.add(Calendar.MINUTE, durationMinutes);
 
         return calendar.getTime();
     }
