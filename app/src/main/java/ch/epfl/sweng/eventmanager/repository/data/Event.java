@@ -32,7 +32,7 @@ public final class Event {
     /**
      * An image representing the event, may be null
      */
-    private final Bitmap image;
+    private Bitmap image;
     /**
      * A list of all the concerts taking place in the event.
      */
