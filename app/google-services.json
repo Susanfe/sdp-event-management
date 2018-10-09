@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "637805770514",
+    "firebase_url": "https://sdp-event-management.firebaseio.com",
+    "project_id": "sdp-event-management",
+    "storage_bucket": "sdp-event-management.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637805770514:android:c7dc69d2c95469bc",
+        "android_client_info": {
+          "package_name": "ch.epfl.sweng.eventmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637805770514-jdnkq2eolql8ja2dirc7suaiil1i72ee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6AqigsfBEa_DCzn6zyNpUnUluc7GoXBU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
