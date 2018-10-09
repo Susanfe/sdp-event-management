@@ -75,20 +75,14 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password.
+        // Validate input from login form.
         if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError("Password cannot be empty");
+            mPasswordView.setError(getString(R.string.empty_password_activity_login));
             focusView = mPasswordView;
             cancel = true;
         }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError("Email cannot be empty");
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError("Invalid Email address");
+        if (TextUtils.isEmpty(email) || !isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.invalid_email_activity_login));
             focusView = mEmailView;
             cancel = true;
         }
@@ -158,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext, DisplayAccountActivity.class);
                 startActivity(intent);
             } else {
-                mPasswordView.setError("Incorrect password");
+                mPasswordView.setError(getString(R.string.invalid_credentials_activity_login));
                 mPasswordView.requestFocus();
             }
         }

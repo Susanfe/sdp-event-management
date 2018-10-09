@@ -3,4 +3,8 @@
     <string name="title_activity_event_picking">EventPickingActivity</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_account_display">My account</string>
+
+    <string name="invalid_email_activity_login">Invalid email address</string>
+    <string name="empty_password_activity_login">The password cannot be empty</string>
+    <string name="invalid_credentials_activity_login">Incorrect email/password combination</string>
 </resources>
