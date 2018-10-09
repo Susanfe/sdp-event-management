@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.room.data;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 
 import java.util.Objects;
@@ -27,8 +28,7 @@ public class JoinedEvent {
      * Prioritize use of this constructor instead
      * @param event not null
      */
-    public JoinedEvent(Event event) {
-        Objects.requireNonNull(event);
+    public JoinedEvent(@NonNull Event event) {
         this.uid = event.getId();
         this.name = event.getName();
     }
@@ -57,6 +57,32 @@ public class JoinedEvent {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "JoinedEvent{" +
+                "uid=" + uid +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JoinedEvent that = (JoinedEvent) o;
+
+        if (uid != that.uid) return false;
+        return name != null ? name.equals(that.name) : that.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = uid;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
     }
 }
 
