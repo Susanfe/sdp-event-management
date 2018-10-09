@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
         return email.contains("@");
     }
 
-    private void showProgress(Boolean displayed) {
+    private void showProgress(boolean displayed) {
        if (displayed) {
            mProgressBar.setVisibility(View.VISIBLE);
            mLoginButton.setEnabled(false);
