@@ -9,7 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -27,17 +27,47 @@ import java.util.Optional;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    @Inject
+    UserRepository repository;
     // Login task.
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
     private Button mLoginButton;
     private ProgressBar mProgressBar;
 
-    @Inject
-    UserRepository repository;
+    private void setupFields() {
+        mEmailView = (EditText) findViewById(R.id.email_field);
+        mEmailView.setHint(R.string.email_field);
+
+        // When the next button is clicked on the keyboard, move to the next field
+        mEmailView.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                mPasswordView.requestFocus();
+                return true;
+            }
+            return false;
+        });
+
+        mPasswordView = (EditText) findViewById(R.id.password_field);
+        mPasswordView.setHint(R.string.password_field);
+
+        // When the done button is clicked on the keyboard, try to login
+        mPasswordView.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                attemptLogin();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void setupButton() {
+        mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoginButton.setText(R.string.login_button);
+        mLoginButton.setOnClickListener(view -> attemptLogin());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +76,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mEmailView = (EditText) findViewById(R.id.email_field);
-        mEmailView.setHint(R.string.email_field);
-        mPasswordView = (EditText) findViewById(R.id.password_field);
-        mPasswordView.setHint(R.string.password_field);
-
-        mLoginButton = (Button) findViewById(R.id.login_button);
-        mLoginButton.setText(R.string.login_button);
-        mLoginButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        setupFields();
+        setupButton();
 
         mProgressBar = findViewById(R.id.sign_in_progress_bar);
         mProgressBar.setVisibility(View.INVISIBLE);
