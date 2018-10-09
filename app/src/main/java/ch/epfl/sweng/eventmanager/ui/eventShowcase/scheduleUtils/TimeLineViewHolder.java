@@ -14,6 +14,8 @@ import ch.epfl.sweng.eventmanager.R;
 
 class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
+    public TimelineView timelineView;
+/*
     @BindView(R.id.text_timeline_date)
     TextView mDate;
     @BindView(R.id.text_timeline_artist)
@@ -25,11 +27,11 @@ class TimeLineViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.text_timeline_duration)
     TextView mDuration;
     @BindView(R.id.time_marker)
-    TimelineView mTimelineView;
+    TimelineView mTimelineView;*/
 
     TimeLineViewHolder(View itemView, int viewType) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-        mTimelineView.initLine(viewType);
+        timelineView.initLine(viewType);
     }
 }
