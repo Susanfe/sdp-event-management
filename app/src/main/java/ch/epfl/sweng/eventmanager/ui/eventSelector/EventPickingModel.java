@@ -43,10 +43,11 @@ public class EventPickingModel extends ViewModel {
      * Returns a pair of joined and not joined events
      */
     public LiveData<EventsPair> getEventsPair() {
+        LiveData<List<Integer>> joinedEvents = joinedEventRepository.findAllIds();
+
         return Transformations.switchMap(events, events -> {
             // Each time the events change, this transformation is triggered
 
-            LiveData<List<Integer>> joinedEvents = joinedEventRepository.findAllIds();
             return Transformations.map(joinedEvents, set -> {
                 // Build a set of all the joined event IDs
                 List<Event> joined = new ArrayList<>();
