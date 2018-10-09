@@ -16,7 +16,6 @@ import ch.epfl.sweng.eventmanager.repository.data.Concert;
 public class ScheduleActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private List<TimeLineModel> dataList = new ArrayList<>();
     private TimeLineAdapter timeLineAdapter;
     private List<Concert> concertsList;
 
@@ -29,7 +28,6 @@ public class ScheduleActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-
 
         //
         // Get the concert List for the event into concertsList
@@ -45,11 +43,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 "ABBA", "Rock",
                 "Wow! This is the great comeback of the well-known success group!", 2));
 
-        for (Concert c : concertsList) {
-            dataList.add(new TimeLineModel(c.getArtist(), c.getDate(), c.getGenre(), c.getDescription(), c.getDuration()));
-        }
-
-        timeLineAdapter = new TimeLineAdapter(dataList);
+        timeLineAdapter = new TimeLineAdapter(concertsList);
         recyclerView.setAdapter(timeLineAdapter);
 
     }

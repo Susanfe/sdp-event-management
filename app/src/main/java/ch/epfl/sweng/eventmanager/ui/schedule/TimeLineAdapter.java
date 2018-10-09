@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ch.epfl.sweng.eventmanager.repository.data.Concert;
 import com.github.vipulasri.timelineview.TimelineView;
 
 import java.util.List;
@@ -21,11 +22,11 @@ import ch.epfl.sweng.eventmanager.R;
 
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
-    private List<TimeLineModel> dataList;
+    private List<Concert> dataList;
     private Context context;
     private LayoutInflater mLayoutInflater;
 
-    public TimeLineAdapter(List<TimeLineModel> feedList) {
+    public TimeLineAdapter(List<Concert> feedList) {
         dataList = feedList;
     }
 
@@ -46,13 +47,13 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull TimeLineViewHolder holder, int position) {
 
-        TimeLineModel timeLineModel = dataList.get(position);
+        Concert concert = dataList.get(position);
 
-        String artistText = timeLineModel.getArtist() == null ? context.getString(R.string.concert_no_artist) : timeLineModel.getArtist();
-        String dateText = timeLineModel.getStringDate() == null ? context.getString(R.string.concert_no_date) : timeLineModel.getStringDate();
-        String genreText = timeLineModel.getGenre() == null ? context.getString(R.string.concert_no_genre) : timeLineModel.getGenre();
-        String descriptionText = timeLineModel.getDescription() == null ? context.getString(R.string.concert_no_genre) : timeLineModel.getDescription();
-        String durationText = transformDuration(timeLineModel.getDuration());
+        String artistText = concert.getArtist() == null ? context.getString(R.string.concert_no_artist) : concert.getArtist();
+        String dateText = concert.dateAsString() == null ? context.getString(R.string.concert_no_date) : concert.dateAsString();
+        String genreText = concert.getGenre() == null ? context.getString(R.string.concert_no_genre) : concert.getGenre();
+        String descriptionText = concert.getDescription() == null ? context.getString(R.string.concert_no_genre) : concert.getDescription();
+        String durationText = transformDuration(concert.getDuration());
 
         holder.mArtist.setText(artistText);
         holder.mDate.setText(dateText);
@@ -60,10 +61,12 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
         holder.mDescription.setText(descriptionText);
         holder.mDuration.setText(durationText);
 
+        Concert.ConcertStatus status = concert.getStatus();
+
         // Sets Marker according to the concert status
-        if (timeLineModel.getIsNow() == -1) {
+        if (status == Concert.ConcertStatus.PASSED) {
             holder.mTimelineView.setMarker(getMarkerDrawable(context, R.drawable.ic_marker_inactive, android.R.color.darker_gray));
-        } else if (timeLineModel.getIsNow() == 0) {
+        } else if (status == Concert.ConcertStatus.IN_PROGRESS) {
             holder.mTimelineView.setMarker(getMarkerDrawable(context, R.drawable.ic_marker_active, R.color.colorPrimary));
         } else {
             holder.mTimelineView.setMarker(ContextCompat.getDrawable(context, R.drawable.ic_marker), ContextCompat.getColor(context, R.color.colorPrimary));
