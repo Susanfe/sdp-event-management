@@ -33,20 +33,13 @@ public final class Event {
      * An image representing the event, may be null
      */
     private Bitmap image;
-    /**
-     * A list of all the concerts taking place in the event.
-     */
-    private List<Concert> concertList;
 
-    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image,
-                 List<Concert> concertList) {
+    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.organizer = organizer;
         this.image = image;
-
-        this.concertList = concertList;
     }
 
     public Event() {
@@ -70,25 +63,5 @@ public final class Event {
 
     public Bitmap getImage() {
         return image;
-    }
-
-    public List<Concert> getConcertList() {
-        return Collections.unmodifiableList(concertList);
-    }
-
-    /**
-     * Adds a concert to the event's concert list.
-     * The method will return true if the concert already exists in the list.
-     * @param concert Concert to be added to the List, can be null.
-     * @return true if the concert is in the list after returning.
-     */
-    public boolean addConcert(Concert concert) {
-        if (concert != null) {
-            if (!concertList.contains(concert)) {
-                concertList.add(concert);
-            }
-            return true;
-        }
-        return false;
     }
 }
