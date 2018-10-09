@@ -1,15 +1,12 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.*;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.room.JoinedEventRepository;
-import ch.epfl.sweng.eventmanager.room.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * This is the model for the event list. It connects with the repository to pull a list of events and communicate them

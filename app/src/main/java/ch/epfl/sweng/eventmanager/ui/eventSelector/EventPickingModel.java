@@ -5,14 +5,11 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.room.JoinedEventRepository;
-import ch.epfl.sweng.eventmanager.room.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
 
 import javax.inject.Inject;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * This is the model for the event list. It connects with the repository to pull a list of events and communicate them

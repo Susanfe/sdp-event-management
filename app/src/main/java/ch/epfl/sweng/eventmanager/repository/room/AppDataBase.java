@@ -1,9 +1,9 @@
-package ch.epfl.sweng.eventmanager.room;
+package ch.epfl.sweng.eventmanager.repository.room;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
-import ch.epfl.sweng.eventmanager.room.data.JoinedEvent;
-import ch.epfl.sweng.eventmanager.room.data.JoinedEventDao;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.repository.room.JoinedEventDao;
 
 /**
  * Defines the database for storing joined events.

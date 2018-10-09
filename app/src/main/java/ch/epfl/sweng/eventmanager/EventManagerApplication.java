@@ -3,7 +3,7 @@ package ch.epfl.sweng.eventmanager;
 import android.app.Activity;
 import android.app.Application;
 import ch.epfl.sweng.eventmanager.inject.DaggerApplicationComponent;
-import ch.epfl.sweng.eventmanager.room.RoomModule;
+import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 

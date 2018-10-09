@@ -1,10 +1,10 @@
-package ch.epfl.sweng.eventmanager.room.data;
+package ch.epfl.sweng.eventmanager.repository.room;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.*;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Defines the Data Access Object of the JoinedEvent Entity.
