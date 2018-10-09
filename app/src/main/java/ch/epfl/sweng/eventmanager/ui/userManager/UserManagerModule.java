@@ -1,6 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.userManager;
 
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.MapActivity;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
