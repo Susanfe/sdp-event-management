@@ -101,13 +101,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showProgress(boolean displayed) {
-       if (displayed) {
-           mProgressBar.setVisibility(View.VISIBLE);
-           mLoginButton.setEnabled(false);
-       } else {
-           mProgressBar.setVisibility(View.INVISIBLE);
-           mLoginButton.setEnabled(true);
-       }
+        mLoginButton.setEnabled(!displayed);
+        mProgressBar.setVisibility(displayed ? View.VISIBLE : View.INVISIBLE);
     }
 
     /**
