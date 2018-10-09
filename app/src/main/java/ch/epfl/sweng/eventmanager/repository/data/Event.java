@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,14 +38,15 @@ public final class Event {
      */
     private List<Concert> concertList;
 
-    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image) {
+    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image,
+                 List<Concert> concertList) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.organizer = organizer;
         this.image = image;
 
-        this.concertList = new LinkedList<>();
+        this.concertList = concertList;
     }
 
     public int getId() {
@@ -68,7 +70,7 @@ public final class Event {
     }
 
     public List<Concert> getConcertList() {
-        return concertList;
+        return Collections.unmodifiableList(concertList);
     }
 
     /**
