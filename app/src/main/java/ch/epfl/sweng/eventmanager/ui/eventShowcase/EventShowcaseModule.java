@@ -15,9 +15,6 @@ import dagger.multibindings.IntoMap;
 @Module
 public abstract class EventShowcaseModule {
     @Binds
-    abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
-
-    @Binds
     @IntoMap
     @ViewModelKey(EventShowcaseModel.class)
     abstract ViewModel provideEventListModel(EventShowcaseModel eventListModel);
