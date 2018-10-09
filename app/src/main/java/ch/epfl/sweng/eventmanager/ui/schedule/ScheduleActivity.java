@@ -51,6 +51,8 @@ public class ScheduleActivity extends AppCompatActivity {
             this.model.getConcerts().observe(this, concerts -> {
                 timeLineAdapter = new TimeLineAdapter(concerts);
                 recyclerView.setAdapter(timeLineAdapter);
+
+                // TODO: we should display a message when concerts == null to let the user know that this event has no schedule
             });
         }
 
