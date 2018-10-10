@@ -78,6 +78,8 @@ public class JoinedEvent {
     @Override
     public int hashCode() {
         int result = uid;
+        // Inspired (including magic numbers) by Java's standard hashCode()
+        // method. Please refer on the original method for details.
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
