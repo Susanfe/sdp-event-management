@@ -9,7 +9,7 @@
 
     <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" android:id="@+id/event_picking_layout">
         <LinearLayout
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -20,12 +20,12 @@
                     android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" android:text="@string/picking_activity_help_text"
+                    app:layout_constraintTop_toTopOf="parent" android:text="@string/help_text_activity_event_picking"
                     android:textStyle="bold" android:gravity="center_horizontal" android:textSize="18sp"/>
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/joined_help_text"
-                    android:text="@string/picking_activity_joined_help_text" android:textStyle="italic"
+                    android:text="@string/joined_help_text_activity_event_picking" android:textStyle="italic"
                     android:gravity="center_horizontal"/>
             <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                     android:layout_margin="8dp">
             </android.support.v7.widget.RecyclerView>
             <TextView
-                    android:text="@string/picking_activity_not_joined_help_text"
+                    android:text="@string/not_joined_help_text_activity_event_picking"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/not_joined_help_text"
                     android:textStyle="italic" android:gravity="center_horizontal"/>
@@ -54,5 +54,15 @@
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
     </ScrollView>
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:onClick="openLoginOrAccountActivity"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_picking_layout" />
 
 </android.support.constraint.ConstraintLayout>
