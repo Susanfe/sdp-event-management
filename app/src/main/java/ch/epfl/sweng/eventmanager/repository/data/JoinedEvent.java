@@ -71,8 +71,7 @@ public class JoinedEvent {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JoinedEvent that = (JoinedEvent) o;
-        return uid == that.uid &&
-                Objects.equals(name, that.name);
+        return uid == that.uid && name.equals(that.name);
     }
 
     @Override
