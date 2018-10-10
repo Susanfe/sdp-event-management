@@ -15,22 +15,15 @@ import dagger.multibindings.IntoMap;
 @Module
 public abstract class EventShowcaseModule {
     @Binds
-    abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
-
-    @Binds
     @IntoMap
     @ViewModelKey(EventShowcaseModel.class)
     abstract ViewModel provideEventListModel(EventShowcaseModel eventListModel);
-
 
     @ContributesAndroidInjector
     abstract EventActivity contributeEventActivityInjector();
 
     @ContributesAndroidInjector
     abstract MapActivity contributeMapActivityInjector();
-
-    @ContributesAndroidInjector
-    abstract ScheduleActivity contributeScheduleActivityInjector();
 
     @ContributesAndroidInjector
     abstract TicketActivity contributeTicketActivityInjector();

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.schedule.ScheduleActivity;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -23,6 +24,7 @@ public class EventActivity extends AppCompatActivity {
     ViewModelFactory factory;
 
     private EventShowcaseModel model;
+    private int eventID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class EventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event);
 
         Intent intent = getIntent();
-        int eventID = intent.getIntExtra(EventPickingActivity.SELECTED_EVENT_ID, -1);
+        eventID = intent.getIntExtra(EventPickingActivity.SELECTED_EVENT_ID, -1);
         // TODO: fetch event, update displayed values.
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             // TODO: find a way to pass the event ID between the different views
@@ -67,6 +69,7 @@ public class EventActivity extends AppCompatActivity {
 
     public void goToSchedule(View view) {
         Intent intent = new Intent(this, ScheduleActivity.class);
+        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
         startActivity(intent);
     }
 

@@ -45,7 +45,7 @@
                 android:value=".ui.eventShowcase.EventActivity" />
         </activity>
         <activity
-            android:name=".ui.eventShowcase.ScheduleActivity"
+            android:name=".ui.schedule.ScheduleActivity"
             android:parentActivityName=".ui.eventShowcase.EventActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
