@@ -149,12 +149,11 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(true);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected Boolean doInBackground(Void... params) {
-            Optional<User> user = repository.getUserByEmail(mEmail);
-            if (user.isPresent()) {
-                return Session.login(user.get(), mPassword);
+            User user = repository.getUserByEmail(mEmail);
+            if (user != null) {
+                return Session.login(user, mPassword);
             } else {
                 return false;
             }

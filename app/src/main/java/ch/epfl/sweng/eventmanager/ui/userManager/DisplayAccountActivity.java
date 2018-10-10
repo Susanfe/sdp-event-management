@@ -1,8 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.userManager;
 
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +13,6 @@ import ch.epfl.sweng.eventmanager.userManagement.Session;
 
 public class DisplayAccountActivity extends AppCompatActivity {
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +20,7 @@ public class DisplayAccountActivity extends AppCompatActivity {
 
         // We assume the user is logged in when the activity is opened.
         TextView helpText = (TextView) findViewById(R.id.main_text);
-        helpText.setText("Logged as: " + Session.getCurrentUser().get().getEmail());
+        helpText.setText("Logged as: " + Session.getCurrentUser().getEmail());
 
 
         Button logoutButton = (Button) findViewById(R.id.logout_button);

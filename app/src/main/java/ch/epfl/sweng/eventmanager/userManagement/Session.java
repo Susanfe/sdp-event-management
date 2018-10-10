@@ -50,8 +50,7 @@ public final class Session {
     /**
      * @return an Optional containing the logged user
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static Optional<User> getCurrentUser() {
-       return Optional.ofNullable(session.getUser());
+    public static User getCurrentUser() {
+       return session.getUser();
     }
 }

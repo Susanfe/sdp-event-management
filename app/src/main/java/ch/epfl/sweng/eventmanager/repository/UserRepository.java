@@ -1,8 +1,5 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
 import ch.epfl.sweng.eventmanager.repository.data.User;
 
 import javax.inject.Inject;
@@ -31,16 +28,15 @@ public class UserRepository {
         return USERS;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public Optional<User> getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         List<User> filtered = USERS.stream()
                 .filter(u -> Objects.equals(u.getEmail(), email))
                 .collect(Collectors.toList());
 
         if (filtered.isEmpty()) {
-            return Optional.ofNullable(null);
+            return null;
         } else {
-            return Optional.ofNullable(filtered.get(0));
+            return filtered.get(0);
         }
     }
 }
