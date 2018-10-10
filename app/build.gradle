@@ -65,7 +65,20 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
         html.enabled = true
     }
 
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def fileFilter = [
+      '**/R.class',
+      '**/R$*.class',
+      '**/BuildConfig.*',
+      '**/Manifest*.*',
+      '**/*Test*.*',
+      'android/**/*.*',
+      '**/*_MembersInjector.class',
+      '**/Dagger*Component*.class',
+      '**/Dagger*Subcomponent*.class',
+      '**/*Subcomponent$Builder.class',
+      '**/*_*Factory.class',
+      '**/*_Impl*.class',
+    ]
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"
 
