@@ -29,9 +29,12 @@ public class UserRepository {
     }
 
     public User getUserByEmail(String email) {
-        List<User> filtered = USERS.stream()
-                .filter(u -> Objects.equals(u.getEmail(), email))
-                .collect(Collectors.toList());
+        List<User> filtered = new ArrayList<>();
+        for (User user : USERS) {
+            if (email.equals((user.getEmail()))) {
+                filtered.add(user);
+            }
+        }
 
         if (filtered.isEmpty()) {
             return null;
