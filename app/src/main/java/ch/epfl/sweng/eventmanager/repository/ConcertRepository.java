@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Singleton
 public class ConcertRepository {
-    private static String TAG = "ConcertRepository";
+    private static final String TAG = "ConcertRepository";
 
     @Inject
     public ConcertRepository() {
