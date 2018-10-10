@@ -2,6 +2,10 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * This class holds the basic elements about an organized event.<br>
  *     This class might hold way more data in the future, depending on how the backend will be organized

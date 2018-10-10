@@ -23,7 +23,7 @@
             android:parentActivityName=".ui.eventShowcase.EventActivity" />
         <activity android:name=".ui.eventShowcase.TicketActivity"
             android:parentActivityName=".ui.eventShowcase.EventActivity" />
-        <activity android:name=".ui.eventShowcase.ScheduleActivity"
+        <activity android:name=".ui.schedule.ScheduleActivity"
             android:parentActivityName=".ui.eventShowcase.EventActivity" />
     </application>
 </manifest>
