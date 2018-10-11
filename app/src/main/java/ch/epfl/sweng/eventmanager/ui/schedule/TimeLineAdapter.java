@@ -19,6 +19,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Concert;
 import com.github.vipulasri.timelineview.TimelineView;
 
 import java.util.List;
+import java.util.Locale;
 
 import ch.epfl.sweng.eventmanager.R;
 
@@ -84,7 +85,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
     private String transformDuration(double duration) {
         double intPart = Math.floor(duration);
         int fractionalPart = (int)((duration - intPart)*60);
-        return (int)intPart+"h"+String.format("%02d", fractionalPart);
+        return (int)intPart+"h"+ String.format(Locale.getDefault(),"%02d", fractionalPart);
     }
 
 

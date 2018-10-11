@@ -83,7 +83,11 @@ public final class Concert {
     }
 
     public String dateAsString() {
-        return new Date(date).toString();
+        if (date <= 0) {
+            return null;
+        }
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        return f.format(date);
     }
 
     public Date getEndOfConcert() {

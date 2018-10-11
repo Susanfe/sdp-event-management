@@ -49,13 +49,15 @@ public class ScheduleActivity extends AppCompatActivity {
             this.model = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
             this.model.init(eventID);
             this.model.getConcerts().observe(this, concerts -> {
-                Collections.sort(concerts, (Concert o1, Concert o2) -> {
-                    if (o1.getDate().before(o2.getDate())) {
-                        return -1;
-                    } else if (o1.getDate().equals(o2.getDate())) {
-                        return 0;
-                    } else return 1;
-                });
+                if (concerts != null) {
+                    Collections.sort(concerts, (Concert o1, Concert o2) -> {
+                        if (o1.getDate().before(o2.getDate())) {
+                            return -1;
+                        } else if (o1.getDate().equals(o2.getDate())) {
+                            return 0;
+                        } else return 1;
+                    });
+                }
                 timeLineAdapter = new TimeLineAdapter(concerts);
                 recyclerView.setAdapter(timeLineAdapter);
 
