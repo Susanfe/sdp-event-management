@@ -15,12 +15,8 @@ import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+
 
 public class ScheduleActivity extends AppCompatActivity {
 
