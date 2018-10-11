@@ -48,6 +48,14 @@ public abstract class AbstractScheduleFragment extends Fragment {
         }
 
         this.getScheduledItems().observe(this, concerts -> {
+            Collections.sort(concerts, (Concert o1, Concert o2) -> {
+                if (o1.getDate().before(o2.getDate())) {
+                    return -1;
+                } else if (o1.getDate().equals(o2.getDate())) {
+                    return 0;
+                } else return 1;
+            });
+
             timeLineAdapter = new TimeLineAdapter(concerts, model);
             recyclerView.setAdapter(timeLineAdapter);
 
