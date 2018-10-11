@@ -11,7 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import com.github.vipulasri.timelineview.TimelineView;
@@ -28,7 +31,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
     private LayoutInflater mLayoutInflater;
     private ScheduleViewModel model;
 
-    public TimeLineAdapter(List<ScheduledItem> feedList, ScheduleViewModel model) {
+    TimeLineAdapter(List<ScheduledItem> feedList, ScheduleViewModel model) {
         dataList = feedList;
         this.model = model;
     }
@@ -80,7 +83,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
     @Override
     public int getItemCount() {
-        return (dataList !=null? dataList.size():0);
+        return (dataList != null ? dataList.size() : 0);
     }
 
     private String transformDuration(double duration) {
@@ -89,14 +92,49 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
         return (int)intPart+"h"+String.format("%02d", fractionalPart);
     }
 
+
     private static Drawable getMarkerDrawable(Context context, int drawableResId, int colorFilter) {
         Drawable drawable = VectorDrawableCompat.create(context.getResources(), drawableResId, context.getTheme());
-        try {
+            if (drawable == null) {
+                Log.i("ERROR", "setColorFilter method returned null in TimeLineAdapter while " +
+                        "fetching marker drawable");
+                return null;
+            }
             drawable.setColorFilter(ContextCompat.getColor(context, colorFilter), PorterDuff.Mode.SRC_IN);
-        } catch (NullPointerException n) {
-            Log.i("ERROR", "setColorFilter method returned null in TimeLineAdapter while " +
-                    "fetching marker drawable");
-        }
-        return drawable;
+            return drawable;
+    }
+}
+
+class TimeLineViewHolder extends RecyclerView.ViewHolder {
+
+    @BindView(R.id.text_timeline_date)
+    TextView mDate;
+    @BindView(R.id.text_timeline_artist)
+    TextView mArtist;
+    @BindView(R.id.text_timeline_genre)
+    TextView mGenre;
+    @BindView(R.id.text_timeline_description)
+    TextView mDescription;
+    @BindView(R.id.text_timeline_duration)
+    TextView mDuration;
+    @BindView(R.id.time_marker)
+    TimelineView mTimelineView;
+    private Runnable onToggle;
+
+
+    TimeLineViewHolder(View itemView, int viewType) {
+        super(itemView);
+
+        ButterKnife.bind(this, itemView);
+        mTimelineView.initLine(viewType);
+
+        itemView.setOnLongClickListener(v -> {
+            onToggle.run();
+            return true;
+        });
+    }
+
+    public void setOnToggle(Runnable onToggle) {
+        this.onToggle = onToggle;
     }
 }

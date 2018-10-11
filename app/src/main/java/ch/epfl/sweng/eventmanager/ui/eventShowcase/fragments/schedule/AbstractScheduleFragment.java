@@ -14,6 +14,7 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractScheduleFragment extends Fragment {
@@ -48,7 +49,7 @@ public abstract class AbstractScheduleFragment extends Fragment {
         }
 
         this.getScheduledItems().observe(this, concerts -> {
-            Collections.sort(concerts, (Concert o1, Concert o2) -> {
+            Collections.sort(concerts, (ScheduledItem o1, ScheduledItem o2) -> {
                 if (o1.getDate().before(o2.getDate())) {
                     return -1;
                 } else if (o1.getDate().equals(o2.getDate())) {
