@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -82,9 +83,6 @@ public final class Concert {
     }
 
     public String dateAsString() {
-        if (date <= 0) {
-            return null;
-        }
         return new Date(date).toString();
     }
 
