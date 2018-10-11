@@ -84,9 +84,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
     }
 
     private String transformDuration(double duration) {
-        double intPart = Math.abs(duration);
-        double fractionalPart = Math.round((duration - intPart)*60 / 10d)*10d;
-        return intPart+":"+fractionalPart;
+        double intPart = Math.floor(duration);
+        int fractionalPart = (int)((duration - intPart)*60);
+        return (int)intPart+"h"+String.format("%02d", fractionalPart);
     }
 
     private static Drawable getMarkerDrawable(Context context, int drawableResId, int colorFilter) {
