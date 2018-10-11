@@ -82,6 +82,9 @@ public final class Concert {
     }
 
     public String dateAsString() {
+        if (date <= 0) {
+            return null;
+        }
         return new Date(date).toString();
     }
 
