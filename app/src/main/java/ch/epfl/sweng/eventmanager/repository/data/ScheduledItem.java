@@ -108,6 +108,9 @@ public final class ScheduledItem {
     }
 
     public String dateAsString() {
+        if (date <= 0) {
+            return null;
+        }
         SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
         return f.format(date);
     }
