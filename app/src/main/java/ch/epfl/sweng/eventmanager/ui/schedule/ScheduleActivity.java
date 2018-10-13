@@ -19,6 +19,8 @@ import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Objects;
 
 
 public class ScheduleActivity extends AppCompatActivity {
@@ -55,13 +57,7 @@ public class ScheduleActivity extends AppCompatActivity {
             this.model.init(eventID);
             this.model.getConcerts().observe(this, concerts -> {
                 if (concerts != null) {
-                    Collections.sort(concerts, (Concert o1, Concert o2) -> {
-                        if (o1.getDate().before(o2.getDate())) {
-                            return -1;
-                        } else if (o1.getDate().equals(o2.getDate())) {
-                            return 0;
-                        } else return 1;
-                    });
+                    Collections.sort(concerts,(c1,c2) -> Objects.requireNonNull(c1.getDate()).compareTo(c2.getDate()));
                 timeLineAdapter.setDataList(concerts);
                 } else {
                     showAlertOnEmptyConcerts(recyclerView);
