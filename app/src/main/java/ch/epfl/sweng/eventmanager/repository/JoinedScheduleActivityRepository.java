@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.persistence.room.Query;
 import android.os.AsyncTask;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleActivity;
 import ch.epfl.sweng.eventmanager.repository.room.JoinedScheduleActivityDao;
@@ -8,6 +9,7 @@ import ch.epfl.sweng.eventmanager.repository.room.JoinedScheduleActivityDao;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
+import java.util.UUID;
 
 @Singleton
 public class JoinedScheduleActivityRepository {
@@ -23,12 +25,16 @@ public class JoinedScheduleActivityRepository {
         return joinedScheduleActivityDao.getAll();
     }
 
-    public LiveData<List<Integer>> findAllIds(){
+    public LiveData<List<UUID>> findAllIds(){
         return joinedScheduleActivityDao.getAllIds();
     }
 
-    public LiveData<JoinedScheduleActivity> findById(int scheduleActivityId) {
+    public LiveData<JoinedScheduleActivity> findById(UUID scheduleActivityId) {
         return joinedScheduleActivityDao.findById(scheduleActivityId);
+    }
+
+    public LiveData<List<JoinedScheduleActivity>> findByEventId(int id) {
+        return joinedScheduleActivityDao.findByEventId(id);
     }
 
     public void insert(JoinedScheduleActivity joinedScheduleActivity){
