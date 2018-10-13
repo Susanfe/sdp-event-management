@@ -32,8 +32,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
     private LayoutInflater mLayoutInflater;
     private ScheduleViewModel model;
 
-    TimeLineAdapter(List<ScheduledItem> feedList, ScheduleViewModel model) {
-        dataList = feedList;
+    TimeLineAdapter(ScheduleViewModel model) {
         this.model = model;
     }
 
@@ -103,6 +102,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
             }
             drawable.setColorFilter(ContextCompat.getColor(context, colorFilter), PorterDuff.Mode.SRC_IN);
             return drawable;
+    }
+
+     void setDataList(List<ScheduledItem> dataList) {
+        this.dataList = dataList;
+        this.notifyDataSetChanged();
     }
 }
 

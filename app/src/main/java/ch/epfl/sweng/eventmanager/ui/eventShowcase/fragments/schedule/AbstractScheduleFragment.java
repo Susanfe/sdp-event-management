@@ -2,8 +2,10 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,6 +37,10 @@ public abstract class AbstractScheduleFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
+
+        timeLineAdapter = new TimeLineAdapter(model);
+        recyclerView.setAdapter(timeLineAdapter);
+
         return view;
     }
 
@@ -57,14 +63,23 @@ public abstract class AbstractScheduleFragment extends Fragment {
                         return 0;
                     } else return 1;
                 });
+
+                timeLineAdapter.setDataList(concerts);
+            } else {
+                showAlertOnEmptyConcerts(recyclerView);
             }
-
-            timeLineAdapter = new TimeLineAdapter(concerts, model);
-            recyclerView.setAdapter(timeLineAdapter);
-
-            // TODO: we should display a message when concerts == null to let the user know that this event has no schedule
         });
     }
+
+    /**
+      * Show an alert message if there are no registered concerts for this event
+      * @param view view
+      */
+    private void showAlertOnEmptyConcerts(View view) {
+         AlertDialog.Builder myAlert = new AlertDialog.Builder(getActivity());
+         myAlert.setMessage(R.string.concerts_empty).create();
+         myAlert.show();
+     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
