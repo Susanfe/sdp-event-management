@@ -18,6 +18,7 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractScheduleFragment extends Fragment {
 
@@ -56,14 +57,7 @@ public abstract class AbstractScheduleFragment extends Fragment {
 
         this.getScheduledItems().observe(this, concerts -> {
             if (concerts != null) {
-                Collections.sort(concerts, (ScheduledItem o1, ScheduledItem o2) -> {
-                    if (o1.getDate().before(o2.getDate())) {
-                        return -1;
-                    } else if (o1.getDate().equals(o2.getDate())) {
-                        return 0;
-                    } else return 1;
-                });
-
+                Collections.sort(concerts,(c1,c2) -> Objects.requireNonNull(c1.getDate()).compareTo(c2.getDate()));
                 timeLineAdapter.setDataList(concerts);
             } else {
                 showAlertOnEmptyConcerts(recyclerView);
