@@ -12,7 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 
-class TimeLineViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
     private LiveData<Boolean> isEventJoined;
     private Runnable onScheduleAdd;
@@ -37,21 +37,20 @@ class TimeLineViewHolder extends RecyclerView.ViewHolder implements View.OnLongC
 
         ButterKnife.bind(this, itemView);
         mTimelineView.initLine(viewType);
-    }
 
+        itemView.setOnLongClickListener(v -> {
 
-    @Override
-    public boolean onLongClick(View v) {
-        Boolean state = isEventJoined.getValue(); // at the time of the call
+            Boolean state = isEventJoined.getValue(); // at the time of the call
 
-        if (state == null || !state) {
-            this.onScheduleAdd.run(); // Join the event
-            Toast.makeText(this.itemView.getContext(), R.string.timeline_view_added_to_own_schedule, Toast.LENGTH_SHORT).show();
-        } else {
-            this.onScheduleRemove.run(); // Leave the event
-            Toast.makeText(this.itemView.getContext(), R.string.timeline_view_removed_from_own_schedule, Toast.LENGTH_SHORT).show();
-        }
-        return false;
+            if (state == null || !state) {
+                TimeLineViewHolder.this.onScheduleAdd.run(); // Join the event
+                Toast.makeText(itemView.getContext(), R.string.timeline_view_added_to_own_schedule, Toast.LENGTH_SHORT).show();
+            } else {
+                TimeLineViewHolder.this.onScheduleRemove.run(); // Leave the event
+                Toast.makeText(itemView.getContext(), R.string.timeline_view_removed_from_own_schedule, Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        });
     }
 
 

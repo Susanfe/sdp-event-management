@@ -41,7 +41,7 @@ public final class ScheduledItem {
     /**
      * An UUID identifying this scheduled item uniquely
      */
-    private UUID id;
+    private String id;
 
     /**
      * The type of the item<br>
@@ -63,7 +63,7 @@ public final class ScheduledItem {
         this.genre = genre;
         this.description = description;
         this.duration = duration;
-        this.id = id;
+        this.id = id.toString();
         this.itemType = itemType;
         this.itemLocation = itemLocation;
     }
@@ -94,7 +94,7 @@ public final class ScheduledItem {
     }
 
     public UUID getId() {
-        return id;
+        return UUID.fromString(id);
     }
 
     @Override
