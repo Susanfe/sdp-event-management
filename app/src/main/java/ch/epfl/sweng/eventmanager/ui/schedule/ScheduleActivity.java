@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.JoinedScheduleActivityRepository;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
@@ -18,6 +19,8 @@ public class ScheduleActivity extends AppCompatActivity {
 
     @Inject
     ViewModelFactory factory;
+    @Inject
+    JoinedScheduleActivityRepository joinedScheduleActivityRepository;
     private ScheduleViewModel model;
 
     private static String TAG = "ScheduleActivity";
@@ -45,7 +48,7 @@ public class ScheduleActivity extends AppCompatActivity {
             this.model = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
             this.model.init(eventID);
             this.model.getConcerts().observe(this, concerts -> {
-                timeLineAdapter = new TimeLineAdapter(concerts);
+                timeLineAdapter = new TimeLineAdapter(eventID, concerts, joinedScheduleActivityRepository);
                 recyclerView.setAdapter(timeLineAdapter);
 
                 // TODO: we should display a message when concerts == null to let the user know that this event has no schedule

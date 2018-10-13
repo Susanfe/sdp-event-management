@@ -34,4 +34,10 @@ public class RoomModule {
         return appDatabase.getJoinedEventDao();
     }
 
+    @Singleton
+    @Provides
+    JoinedScheduleActivityDao providesMyScheduleDAO(AppDataBase appDatabase) {
+        return appDatabase.getJoinedScheduleActivityDao();
+    }
+
 }

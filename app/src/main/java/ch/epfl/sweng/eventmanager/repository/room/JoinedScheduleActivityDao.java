@@ -5,6 +5,7 @@ import android.arch.persistence.room.*;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleActivity;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,9 +26,12 @@ public interface JoinedScheduleActivityDao {
     @Query("SELECT * FROM joined_schedule_activities WHERE event_id LIKE :id LIMIT 1")
     LiveData<List<JoinedScheduleActivity>> findByEventId(int id);
 
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(JoinedScheduleActivity... joinedScheduleActivities);
 
     @Delete
     int delete(JoinedScheduleActivity... joinedScheduleActivities);
+
 }

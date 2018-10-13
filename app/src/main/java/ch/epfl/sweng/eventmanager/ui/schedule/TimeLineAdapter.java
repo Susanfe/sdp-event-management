@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.schedule;
 
+import android.arch.lifecycle.Transformations;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ch.epfl.sweng.eventmanager.repository.JoinedScheduleActivityRepository;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleActivity;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import com.github.vipulasri.timelineview.TimelineView;
 
@@ -22,12 +25,16 @@ import ch.epfl.sweng.eventmanager.R;
 
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
+    private int eventId;
     private List<ScheduledItem> dataList;
     private Context context;
     private LayoutInflater mLayoutInflater;
+    private JoinedScheduleActivityRepository repository;
 
-    public TimeLineAdapter(List<ScheduledItem> feedList) {
+    public TimeLineAdapter(int eventId, List<ScheduledItem> feedList, JoinedScheduleActivityRepository repository) {
+        this.eventId = eventId;
         dataList = feedList;
+        this.repository = repository;
     }
 
     @Override
@@ -71,6 +78,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
         } else {
             holder.mTimelineView.setMarker(ContextCompat.getDrawable(context, R.drawable.ic_marker), ContextCompat.getColor(context, R.color.colorPrimary));
         }
+
+        holder.setIsEventJoined(Transformations.map(repository.findById(scheduledItem.getId()), act -> act != null))
+                .setOnScheduleAdd(() -> repository.insert(new JoinedScheduleActivity(scheduledItem.getId(), eventId)))
+                .setOnScheduleRemove(() -> repository.insert(new JoinedScheduleActivity(scheduledItem.getId(), eventId)));
     }
 
     @Override
