@@ -2,10 +2,8 @@ package ch.epfl.sweng.eventmanager.ui.schedule;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-import ch.epfl.sweng.eventmanager.repository.ConcertRepository;
-import ch.epfl.sweng.eventmanager.repository.EventRepository;
-import ch.epfl.sweng.eventmanager.repository.data.Concert;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.ScheduledItemRepository;
+import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -17,12 +15,12 @@ import java.util.List;
  * @author Louis Vialar
  */
 public class ScheduleViewModel extends ViewModel {
-    private LiveData<List<Concert>> concerts;
+    private LiveData<List<ScheduledItem>> concerts;
 
-    private ConcertRepository repository;
+    private ScheduledItemRepository repository;
 
     @Inject
-    public ScheduleViewModel(ConcertRepository repository) {
+    public ScheduleViewModel(ScheduledItemRepository repository) {
         this.repository = repository;
     }
 
@@ -34,7 +32,7 @@ public class ScheduleViewModel extends ViewModel {
         this.concerts = repository.getConcerts(eventId);
     }
 
-    public LiveData<List<Concert>> getConcerts() {
+    public LiveData<List<ScheduledItem>> getConcerts() {
         return concerts;
     }
 }
