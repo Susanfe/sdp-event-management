@@ -35,7 +35,6 @@ public class EventActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         eventID = intent.getIntExtra(EventPickingActivity.SELECTED_EVENT_ID, -1);
-        // TODO: fetch event, update displayed values.
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             // TODO: find a way to pass the event ID between the different views
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
@@ -46,11 +45,14 @@ public class EventActivity extends AppCompatActivity {
                 if (ev == null)
                     return;
 
-                Log.v(TAG, "Got event ID#" + eventID + " -> event " + ev);
+                // Set the window's title
+                setTitle(ev.getName());
+
+                // Populate the event's details
                 TextView eventDescription = (TextView) findViewById(R.id.event_description);
                 eventDescription.setText(ev.getDescription());
 
-                // Binds the EventActivity switch to the database
+                // Binds the 'join event' switch to the database
                 Switch joinEventSwitch = (Switch) findViewById(R.id.join_event_switch);
                 // State of the switch depends on if the user joined the event
                 this.model.isJoined(ev).observe(this, joinEventSwitch::setChecked);
