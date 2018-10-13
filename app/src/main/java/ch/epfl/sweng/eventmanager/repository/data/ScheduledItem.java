@@ -6,10 +6,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * Class describing a single concert in an event. The class is for the moment only used by the
- * ScheduleActivity.
+ * Class describing a single scheduled item (concert, activity...) in an event. The class is for the moment only used by
+ * the ScheduleActivity.
  */
-public final class Concert {
+public final class ScheduledItem {
     /**
      * Indicates the time of the concert, precision required is minutes.
      *
@@ -39,7 +39,7 @@ public final class Concert {
 
     private static final double STANDARD_DURATION = 1;
 
-    public Concert(Date date, String artist, String genre, String description, double duration) {
+    public ScheduledItem(Date date, String artist, String genre, String description, double duration) {
         this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
@@ -47,7 +47,7 @@ public final class Concert {
         this.duration = duration;
     }
 
-    public Concert() {}
+    public ScheduledItem() {}
 
     public Date getDate() {
         if (date <= 0) {
@@ -74,8 +74,8 @@ public final class Concert {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Concert) {
-            Concert compared = (Concert) obj;
+        if (obj instanceof ScheduledItem) {
+            ScheduledItem compared = (ScheduledItem) obj;
             return compared.date == date && compared.artist.equals(artist) &&
                     compared.genre.equals(genre) && compared.duration==duration;
         } else return super.equals(obj);
