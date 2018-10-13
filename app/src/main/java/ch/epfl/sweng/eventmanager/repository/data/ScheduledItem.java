@@ -4,6 +4,7 @@ package ch.epfl.sweng.eventmanager.repository.data;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.UUID;
 
 /**
  * Class describing a single scheduled item (concert, activity...) in an event. The class is for the moment only used by
@@ -37,14 +38,34 @@ public final class ScheduledItem {
      */
     private double duration;
 
+    /**
+     * An UUID identifying this scheduled item uniquely
+     */
+    private UUID id;
+
+    /**
+     * The type of the item<br>
+     * It would make sense to have an enum, but a single string allows the organizer to defines its own types of items
+     */
+    private String itemType;
+
+    /**
+     * The place (room, usually) where the event takes place<br>
+     *     // FIXME Depending on how the map works, we might want to add more data here so that the user can click and go to the map.
+     */
+    private String itemLocation;
+
     private static final double STANDARD_DURATION = 1;
 
-    public ScheduledItem(Date date, String artist, String genre, String description, double duration) {
+    public ScheduledItem(Date date, String artist, String genre, String description, double duration, UUID id, String itemType, String itemLocation) {
         this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
         this.description = description;
         this.duration = duration;
+        this.id = id;
+        this.itemType = itemType;
+        this.itemLocation = itemLocation;
     }
 
     public ScheduledItem() {}
@@ -72,6 +93,10 @@ public final class ScheduledItem {
         return duration;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ScheduledItem) {
@@ -83,6 +108,14 @@ public final class ScheduledItem {
 
     public String dateAsString() {
         return new Date(date).toString();
+    }
+
+    public String getItemType() {
+        return itemType;
+    }
+
+    public String getItemLocation() {
+        return itemLocation;
     }
 
     public Date getEndOfConcert() {
@@ -99,26 +132,26 @@ public final class ScheduledItem {
         return calendar.getTime();
     }
 
-    public ConcertStatus getStatus() {
+    public ScheduledItemStatus getStatus() {
         // If we don't have a date, it's in the future
         if (getDate() == null) {
-            return ConcertStatus.NOT_STARTED;
+            return ScheduledItemStatus.NOT_STARTED;
         }
 
         Date currentDate = new Date();
 
         if (currentDate.after(getDate())) {
             if (currentDate.before(getEndOfConcert())) {
-                return ConcertStatus.IN_PROGRESS; //concert is taking place
+                return ScheduledItemStatus.IN_PROGRESS; //concert is taking place
             } else {
-                return ConcertStatus.NOT_STARTED; //concert is later
+                return ScheduledItemStatus.NOT_STARTED; //concert is later
             }
         } else {
-            return ConcertStatus.PASSED; //concert happened
+            return ScheduledItemStatus.PASSED; //concert happened
         }
     }
 
-    public static enum ConcertStatus {
+    public static enum ScheduledItemStatus {
         /**
          * The concert already happened
          */

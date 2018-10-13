@@ -61,12 +61,12 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
         holder.mDescription.setText(descriptionText);
         holder.mDuration.setText(durationText);
 
-        ScheduledItem.ConcertStatus status = scheduledItem.getStatus();
+        ScheduledItem.ScheduledItemStatus status = scheduledItem.getStatus();
 
         // Sets Marker according to the scheduledItem status
-        if (status == ScheduledItem.ConcertStatus.PASSED) {
+        if (status == ScheduledItem.ScheduledItemStatus.PASSED) {
             holder.mTimelineView.setMarker(getMarkerDrawable(context, R.drawable.ic_marker_inactive, android.R.color.darker_gray));
-        } else if (status == ScheduledItem.ConcertStatus.IN_PROGRESS) {
+        } else if (status == ScheduledItem.ScheduledItemStatus.IN_PROGRESS) {
             holder.mTimelineView.setMarker(getMarkerDrawable(context, R.drawable.ic_marker_active, R.color.colorPrimary));
         } else {
             holder.mTimelineView.setMarker(ContextCompat.getDrawable(context, R.drawable.ic_marker), ContextCompat.getColor(context, R.color.colorPrimary));
