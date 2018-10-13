@@ -30,9 +30,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
     private Context context;
     private LayoutInflater mLayoutInflater;
 
-    TimeLineAdapter(List<Concert> feedList) {
-        dataList = feedList;
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -98,6 +95,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
             }
             drawable.setColorFilter(ContextCompat.getColor(context, colorFilter), PorterDuff.Mode.SRC_IN);
             return drawable;
+    }
+
+     void setDataList(List<Concert> dataList) {
+        this.dataList = dataList;
+        this.notifyDataSetChanged();
     }
 }
 
