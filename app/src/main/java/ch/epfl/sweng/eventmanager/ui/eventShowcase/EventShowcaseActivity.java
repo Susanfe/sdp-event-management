@@ -72,9 +72,23 @@ public class EventShowcaseActivity extends AppCompatActivity
         // close drawer when item is tapped
         mDrawerLayout.closeDrawers();
 
-        if (menuItem.getItemId() == R.id.nav_pick_event) {
-            Intent intent = new Intent(this, EventPickingActivity.class);
-            startActivity(intent);
+        switch(menuItem.getItemId()) {
+            case R.id.nav_pick_event :
+                Intent intent = new Intent(this, EventPickingActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.nav_main :
+                changeFragment(EventMainFragment.newInstance(model), true);
+                break;
+
+            case R.id.nav_map :
+                changeFragment(EventMapFragment.newInstance(model), true);
+                break;
+
+            case R.id.nav_tickets :
+                changeFragment(EventMapFragment.newInstance(model), true);
+                break;
         }
 
         return true;

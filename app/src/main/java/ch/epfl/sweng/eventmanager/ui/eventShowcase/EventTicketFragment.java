@@ -18,14 +18,14 @@ import ch.epfl.sweng.eventmanager.R;
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
- * Use the {@link EventMainFragment#newInstance} factory method to
+ * Use the {@link EventTicketFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EventMainFragment extends Fragment {
-    private static final String TAG = "EventMainFragment";
+public class EventTicketFragment extends Fragment {
+    private static final String TAG = "EventMapFragment";
     private EventShowcaseModel model;
 
-    public EventMainFragment() {
+    public EventTicketFragment() {
         // Required empty public constructor
     }
 
@@ -35,8 +35,8 @@ public class EventMainFragment extends Fragment {
      *
      * @return A new instance of fragment EventMainFragment.
      */
-    public static EventMainFragment newInstance(EventShowcaseModel model) {
-        EventMainFragment fragment = new EventMainFragment();
+    public static EventTicketFragment newInstance(EventShowcaseModel model) {
+        EventTicketFragment fragment = new EventTicketFragment();
         Bundle args = new Bundle();
         args.putSerializable("model", (Serializable) model);
         fragment.setArguments(args);
@@ -57,29 +57,7 @@ public class EventMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_event_main, container, false);
-        model.getEvent().observe(this, ev -> {
-            if (ev == null) {
-                Log.e(TAG, "Got null model from parent activity");
-                return;
-            }
-
-            // Set window title
-            getActivity().setTitle(ev.getName());
-
-            TextView eventDescription = (TextView) view.findViewById(R.id.event_description);
-            eventDescription.setText(ev.getDescription());
-
-            // Binds the 'joined event' switch to the database
-            Switch joinEventSwitch = (Switch) view.findViewById(R.id.join_event_switch);
-            // State of the switch depends on if the user joined the event
-            this.model.isJoined(ev).observe(this, joinEventSwitch::setChecked);
-            joinEventSwitch.setOnClickListener(v -> {
-                if (joinEventSwitch.isChecked()) this.model.joinEvent(ev);
-                else this.model.unjoinEvent(ev);
-            });
-        });
-
+        View view = inflater.inflate(R.layout.fragment_event_ticket, container, false);
         return view;
     }
 
