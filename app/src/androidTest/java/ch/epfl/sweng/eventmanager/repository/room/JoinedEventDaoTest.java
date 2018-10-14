@@ -55,7 +55,9 @@ public class JoinedEventDaoTest extends JoinedEventTestUtils {
 
         //Testing for getAllIds
         List<Integer> ids = LiveDataTestUtil.getValue(mJoinedEventDao.getAllIds());
-        assertEquals(joinedEvents.stream().map(JoinedEvent::getUid).collect(Collectors.toList()), ids);
+        List<Integer> expectedIds = new ArrayList<>();
+        for (JoinedEvent ev : joinedEvents) expectedIds.add(ev.getUid());
+        assertEquals(expectedIds, ids);
 
         //Testing for loadAllByIds
         int[] lookFor = {1, 3, 5, 7, 9, 11};

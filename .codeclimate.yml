@@ -5,3 +5,7 @@ checks:
   method-lines:
     config:
       threshold: 35
+
+exclude_patterns:
+  - "app/src/androidTest/"
+  - "app/test/"

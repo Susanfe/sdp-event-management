@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,9 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
     @Before
     public void setupdb() {
         this.events = insertEvents(10);
-        this.eventIds = events.stream().map(JoinedEvent::getUid).collect(Collectors.toList());
+        this.eventIds = new ArrayList<>();
+        for (JoinedEvent ev : events)
+            eventIds.add(ev.getUid());
         this.repository = new JoinedEventRepository(mJoinedEventDao);
     }
 
