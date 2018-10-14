@@ -66,10 +66,13 @@ public class EventMainFragment extends Fragment {
                 return;
             }
 
+            // Set window title
+            getActivity().setTitle(ev.getName());
+
             TextView eventDescription = (TextView) view.findViewById(R.id.event_description);
             eventDescription.setText(ev.getDescription());
 
-            // Binds the EventActivity switch to the database
+            // Binds the 'joined event' switch to the database
             Switch joinEventSwitch = (Switch) view.findViewById(R.id.join_event_switch);
             // State of the switch depends on if the user joined the event
             this.model.isJoined(ev).observe(this, joinEventSwitch::setChecked);
