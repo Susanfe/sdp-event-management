@@ -2,10 +2,10 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +21,8 @@ import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
-public class EventShowcaseActivity extends AppCompatActivity {
+public class EventShowcaseActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
     private static final String TAG = "EventShowcaseActivity";
 
     @Inject
@@ -57,16 +58,26 @@ public class EventShowcaseActivity extends AppCompatActivity {
             this.model.init(eventID);
             changeFragment(EventMainFragment.newInstance(model), true);
         }
+
+        // Handle drawer events
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        // set item as selected to persist highlight
+        menuItem.setChecked(true);
+
+        // close drawer when item is tapped
+        mDrawerLayout.closeDrawers();
+
+        if (menuItem.getItemId() == R.id.nav_pick_event) {
+            Intent intent = new Intent(this, EventPickingActivity.class);
+            startActivity(intent);
         }
-        return super.onOptionsItemSelected(item);
+
+        return true;
     }
 
     /**
