@@ -77,4 +77,6 @@ public final class Event {
     public EventLocation getLocation() {
         return location;
     }
+
+    public List<Spot> getSpotList() { return spotList; }
 }

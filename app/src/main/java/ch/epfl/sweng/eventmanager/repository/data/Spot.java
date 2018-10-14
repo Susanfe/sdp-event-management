@@ -15,7 +15,7 @@ public class Spot {
     /**
      * The description of the spot
      */
-    private String description;
+    private SpotType spotType;
     /**
      * The latitude of the location
      */
@@ -25,9 +25,9 @@ public class Spot {
      */
     private double longitude;
 
-    public Spot(String name, String description, double latitude, double longitude) {
+    public Spot(String name, SpotType spotType, double latitude, double longitude) {
         this.name = name;
-        this.description = description;
+        this.spotType = spotType;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -36,8 +36,8 @@ public class Spot {
         return name;
     }
 
-    public String getDescription() {
-        return description;
+    public SpotType getSpotType() {
+        return spotType;
     }
 
     public double getLatitude() {

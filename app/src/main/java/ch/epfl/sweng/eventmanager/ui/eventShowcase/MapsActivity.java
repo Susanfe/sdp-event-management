@@ -7,6 +7,9 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.widget.TextView;
+
+import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -14,9 +17,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.epfl.sweng.eventmanager.R;
 import dagger.android.AndroidInjection;
@@ -83,6 +90,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, zoomLevel));
             }
         });
+
+
+
+        Spot spot1 = new Spot("Grande scène", SpotType.SCENE, 46.517799, 6.566737);
+        Spot spot2 = new Spot("Satellite", SpotType.BAR, 46.520433, 6.567822);
+        List<Spot> spotList= new ArrayList<>();
+        spotList.add(spot1);
+        spotList.add(spot2);
+        for (Spot s: spotList) {
+
+            LatLng spotLocation = new LatLng(s.getLatitude(), s.getLongitude());
+            switch (s.getSpotType()) {
+                case STAND:
+                    //if(mMap.getCameraPosition().zoom <= 19.0f) {
+                    mMap.addMarker(new MarkerOptions().position(spotLocation).snippet("stand")
+                            .title(s.getName()).icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+                    //}
+
+                case BAR:
+                    mMap.addMarker(new MarkerOptions().position(spotLocation).snippet("bar")
+                           .title(s.getName()).icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                case SCENE:
+                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("scene")
+                            .title(s.getName()).icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                case ROOM:
+                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("room")
+                            .title(s.getName()).icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                case WC:
+                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("toilet")
+                            .title(s.getName()).icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                case NURSERY:
+                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("nursery")
+                            .title(s.getName()).icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                case ATM:
+                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("atm")
+                            .title(s.getName()).icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                case INFORMATION:
+                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("information")
+                            .title(s.getName()).icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                default:
+
+            }
+        }
 
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
