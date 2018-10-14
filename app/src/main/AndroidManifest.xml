@@ -58,5 +58,6 @@
             android:label="@string/title_activity_login" />
         <activity android:name=".ui.userManager.DisplayAccountActivity"
             android:label="@string/title_activity_account_display" />
+        <activity android:name=".ui.schedule.MyScheduleActivity"/>
     </application>
 </manifest>

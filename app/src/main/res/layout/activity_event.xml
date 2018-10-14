@@ -104,5 +104,6 @@
             android:text="MySchedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" tools:layout_editor_absoluteY="443dp"
+            android:onClick="goToMySchedule"
             tools:layout_editor_absoluteX="29dp" android:id="@+id/myschedule_button"/>
 </android.support.constraint.ConstraintLayout>

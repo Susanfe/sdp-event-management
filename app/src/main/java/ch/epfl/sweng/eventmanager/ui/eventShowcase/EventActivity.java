@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.schedule.MyScheduleActivity;
 import ch.epfl.sweng.eventmanager.ui.schedule.ScheduleActivity;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
@@ -75,6 +76,12 @@ public class EventActivity extends AppCompatActivity {
 
     public void goToBuyingTicket(View view) {
         Intent intent = new Intent(this, TicketActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToMySchedule(View view) {
+        Intent intent = new Intent(this, MyScheduleActivity.class);
+        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
         startActivity(intent);
     }
 
