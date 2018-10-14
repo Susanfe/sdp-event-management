@@ -57,7 +57,7 @@ public class EventShowcaseActivity extends AppCompatActivity
         } else {
             this.model = ViewModelProviders.of(this, factory).get(EventShowcaseModel.class);
             this.model.init(eventID);
-            changeFragment(EventMainFragment.newInstance(model), true);
+            changeFragment(new EventMainFragment(), true);
         }
 
         // Handle drawer events
@@ -90,15 +90,15 @@ public class EventShowcaseActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_main :
-                changeFragment(EventMainFragment.newInstance(model), true);
+                changeFragment(new EventMainFragment(), true);
                 break;
 
             case R.id.nav_map :
-                changeFragment(EventMapFragment.newInstance(model), true);
+                changeFragment(new EventMapFragment(), true);
                 break;
 
             case R.id.nav_tickets :
-                changeFragment(EventMapFragment.newInstance(model), true);
+                changeFragment(new EventMapFragment(), true);
                 break;
         }
 

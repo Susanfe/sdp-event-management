@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,8 +19,6 @@ import ch.epfl.sweng.eventmanager.R;
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
- * Use the {@link EventTicketFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class EventTicketFragment extends Fragment {
     private static final String TAG = "EventMapFragment";
@@ -29,28 +28,10 @@ public class EventTicketFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment EventMainFragment.
-     */
-    public static EventTicketFragment newInstance(EventShowcaseModel model) {
-        EventTicketFragment fragment = new EventTicketFragment();
-        Bundle args = new Bundle();
-        args.putSerializable("model", (Serializable) model);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            model = (EventShowcaseModel) getArguments().getSerializable("model");
-        }
-
-        // FIXME: handle null model
+        model = ViewModelProviders.of(getActivity()).get(EventShowcaseModel.class);
     }
 
     @Override
