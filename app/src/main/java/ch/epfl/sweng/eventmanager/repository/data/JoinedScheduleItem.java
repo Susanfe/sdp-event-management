@@ -3,23 +3,22 @@ package ch.epfl.sweng.eventmanager.repository.data;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverter;
 import android.support.annotation.NonNull;
 
 import java.util.UUID;
 
 
-@Entity(tableName = "joined_schedule_activities")
-public class JoinedScheduleActivity {
+@Entity(tableName = "joined_schedule_items")
+public class JoinedScheduleItem {
 
 
-    public JoinedScheduleActivity(UUID uid, int eventId) {
+    public JoinedScheduleItem(UUID uid, int eventId) {
         this.uid = uid;
         this.eventId = eventId;
     }
 
     @PrimaryKey
-    @ColumnInfo(name = "schedule_activity_id")
+    @ColumnInfo(name = "schedule_item_id")
     @NonNull
     private UUID uid;
 
@@ -50,7 +49,7 @@ public class JoinedScheduleActivity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        JoinedScheduleActivity that = (JoinedScheduleActivity) o;
+        JoinedScheduleItem that = (JoinedScheduleItem) o;
 
         if (eventId != that.eventId) return false;
         return uid != null ? uid.equals(that.uid) : that.uid == null;
@@ -65,7 +64,7 @@ public class JoinedScheduleActivity {
 
     @Override
     public String toString() {
-        return "JoinedScheduleActivity{" +
+        return "JoinedScheduleItem{" +
                 "uid=" + uid +
                 ", eventId=" + eventId +
                 '}';
