@@ -36,8 +36,14 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
         this.model = model;
     }
 
+    /**
+     * Gets the TimeLine view type for the item at a given position (start, middle, end).
+     * @param position position of the iterated item in the list held of the array adapter.
+     * @return the view type (int) of the TimeLine view to use for this element.
+     */
     @Override
     public int getItemViewType(int position) {
+        if (position < 0) position = -2; // Triggers the Line.NORMAL view id to be returned.
         return TimelineView.getTimeLineViewType(position,getItemCount());
     }
 
@@ -104,7 +110,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
             return drawable;
     }
 
-     void setDataList(List<ScheduledItem> dataList) {
+    public void setDataList(List<ScheduledItem> dataList) {
         this.dataList = dataList;
         this.notifyDataSetChanged();
     }
