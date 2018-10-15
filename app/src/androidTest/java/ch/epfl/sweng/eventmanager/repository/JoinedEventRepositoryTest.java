@@ -77,7 +77,12 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
         assertNotNull(getValue(repository.findById(50)));
         assertNotNull(getValue(repository.findByName(nameFromId(50))));
         assertTrue(getValue(repository.findAllIds()).contains(50));
-        assertTrue(getValue(repository.findAll()).stream().mapToInt(JoinedEvent::getUid).anyMatch(i -> i == 50));
+
+        boolean test = false;
+        for (JoinedEvent ev : getValue(repository.findAll()))
+            if (ev.getUid() == 50)
+                test = true;
+        assertTrue(test);
     }
 
     @Test
@@ -89,6 +94,11 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
         assertNull(getValue(repository.findById(1)));
         assertNull(getValue(repository.findByName(nameFromId(1))));
         assertFalse(getValue(repository.findAllIds()).contains(1));
-        assertFalse(getValue(repository.findAll()).stream().mapToInt(JoinedEvent::getUid).anyMatch(i -> i == 1));
+
+        boolean test = false;
+        for (JoinedEvent ev : getValue(repository.findAll()))
+            if (ev.getUid() == 1)
+                test = true;
+        assertTrue(test);
     }
 }
