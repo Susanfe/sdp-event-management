@@ -10,74 +10,21 @@ import javax.inject.Singleton;
 import java.util.List;
 
 @Singleton
-public class JoinedEventRepository {
-
-    private JoinedEventDao joinedEventDao;
-
+public class JoinedEventRepository extends AbstractRoomRepository<JoinedEvent, JoinedEventDao> {
     @Inject
     public JoinedEventRepository(JoinedEventDao joinedEventDao){
-        this.joinedEventDao = joinedEventDao;
-    }
-
-    public LiveData<List<JoinedEvent>> findAll(){
-        return joinedEventDao.getAll();
+        super(joinedEventDao);
     }
 
     public LiveData<List<Integer>> findAllIds(){
-        return joinedEventDao.getAllIds();
+        return dao.getAllIds();
     }
 
     public LiveData<JoinedEvent> findById(int eventId) {
-        return joinedEventDao.findById(eventId);
+        return dao.findById(eventId);
     }
 
     public LiveData<JoinedEvent> findByName(String name){
-        return joinedEventDao.findByName(name);
-    }
-
-    public void insert(JoinedEvent joinedEvent){
-        new InsertAsyncTask(joinedEventDao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR , joinedEvent);
-    }
-
-    public void delete(JoinedEvent joinedEvent){
-        new DeleteAsyncTask(joinedEventDao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedEvent);
-    }
-
-    /**
-     * Defines adding to the database with an asynchronous task
-     * @see android.os.AsyncTask
-     */
-    private static class InsertAsyncTask extends AsyncTask<JoinedEvent, Void, Void> {
-
-        private JoinedEventDao mAsyncTaskDao;
-
-        InsertAsyncTask(JoinedEventDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final JoinedEvent... joinedEvents) {
-            mAsyncTaskDao.insert(joinedEvents);
-            return null;
-        }
-    }
-
-    /**
-     * Defines deleting a JoinedEvent from the database with an asynchronous task
-     * @see android.os.AsyncTask
-     */
-    private static class DeleteAsyncTask extends AsyncTask<JoinedEvent, Void, Void> {
-
-        private JoinedEventDao mAsyncTaskDao;
-
-        DeleteAsyncTask(JoinedEventDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final JoinedEvent... joinedEvents) {
-            mAsyncTaskDao.delete(joinedEvents[0]);
-            return null;
-        }
+        return dao.findByName(name);
     }
 }

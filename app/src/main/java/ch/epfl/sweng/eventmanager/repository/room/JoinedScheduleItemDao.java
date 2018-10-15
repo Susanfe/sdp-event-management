@@ -2,13 +2,14 @@ package ch.epfl.sweng.eventmanager.repository.room;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.*;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 
 import java.util.List;
 import java.util.UUID;
 
 @Dao
-public interface JoinedScheduleItemDao {
+public interface JoinedScheduleItemDao extends GenericDAO<JoinedScheduleItem> {
     @Query("SELECT * FROM joined_schedule_items")
     LiveData<List<JoinedScheduleItem>> getAll();
 
