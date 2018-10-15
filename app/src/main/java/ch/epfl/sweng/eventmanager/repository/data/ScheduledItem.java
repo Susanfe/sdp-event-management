@@ -156,7 +156,7 @@ public final class ScheduledItem {
         }
     }
 
-    public static enum ScheduledItemStatus {
+    public enum ScheduledItemStatus {
         /**
          * The concert already happened
          */
