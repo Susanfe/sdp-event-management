@@ -71,7 +71,7 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
     @Test
     public void insert() throws InterruptedException, ExecutionException {
         // Should insert
-        repository.insert(new JoinedEvent(50, nameFromId(50))).get();
+        repository.insert(new JoinedEvent(50, nameFromId(50)));
 
         // Should be in db after insert
         assertNotNull(getValue(repository.findById(50)));
@@ -88,7 +88,7 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
     @Test
     public void delete() throws InterruptedException, ExecutionException {
         // Should remove
-        repository.delete(new JoinedEvent(1, nameFromId(1))).get();
+        repository.delete(new JoinedEvent(1, nameFromId(1)));
 
         // Should not be in db after delete
         assertNull(getValue(repository.findById(1)));
