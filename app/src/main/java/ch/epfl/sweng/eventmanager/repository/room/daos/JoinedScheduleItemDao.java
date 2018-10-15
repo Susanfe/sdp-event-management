@@ -24,7 +24,6 @@ public interface JoinedScheduleItemDao extends GenericEventDAO<JoinedScheduleIte
     @Query("SELECT * FROM joined_schedule_items WHERE event_id LIKE :id LIMIT 1")
     LiveData<List<JoinedScheduleItem>> findByEventId(int id);
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(JoinedScheduleItem... joinedScheduleItems);
 

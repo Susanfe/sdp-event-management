@@ -25,7 +25,7 @@ public interface JoinedEventDao extends GenericEventDAO<JoinedEvent, Integer> {
     LiveData<JoinedEvent> findByName(String eventName);
 
     @Query("SELECT * FROM joined_events WHERE event_id LIKE :eventId LIMIT 1")
-    LiveData<JoinedEvent> findById(int eventId);
+    LiveData<JoinedEvent> findById(Integer eventId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(JoinedEvent... joinedEvent);

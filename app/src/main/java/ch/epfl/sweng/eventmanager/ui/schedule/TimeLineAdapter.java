@@ -25,16 +25,14 @@ import ch.epfl.sweng.eventmanager.R;
 
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
-    private int eventId;
     private List<ScheduledItem> dataList;
     private Context context;
     private LayoutInflater mLayoutInflater;
-    private JoinedScheduleItemRepository repository;
+    private ScheduleViewModel model;
 
-    public TimeLineAdapter(int eventId, List<ScheduledItem> feedList, JoinedScheduleItemRepository repository) {
-        this.eventId = eventId;
+    public TimeLineAdapter(List<ScheduledItem> feedList, ScheduleViewModel model) {
         dataList = feedList;
-        this.repository = repository;
+        this.model = model;
     }
 
     @Override
@@ -79,9 +77,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
             holder.mTimelineView.setMarker(ContextCompat.getDrawable(context, R.drawable.ic_marker), ContextCompat.getColor(context, R.color.colorPrimary));
         }
 
-        holder.setIsEventJoined(Transformations.map(repository.findById(scheduledItem.getId()), act -> act != null))
-                .setOnScheduleAdd(() -> repository.insert(new JoinedScheduleItem(scheduledItem.getId(), eventId)))
-                .setOnScheduleRemove(() -> repository.insert(new JoinedScheduleItem(scheduledItem.getId(), eventId)));
+        holder.setIsEventJoined(model.isConcertJoined(scheduledItem.getId()))
+                .setOnScheduleAdd(() -> model.addToMySchedule(scheduledItem.getId()))
+                .setOnScheduleRemove(() -> model.removeFromMySchedule(scheduledItem.getId()));
     }
 
     @Override

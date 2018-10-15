@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import ch.epfl.sweng.eventmanager.ui.schedule.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
 import dagger.Binds;
@@ -18,6 +19,11 @@ public abstract class EventShowcaseModule {
     @IntoMap
     @ViewModelKey(EventShowcaseModel.class)
     abstract ViewModel provideEventListModel(EventShowcaseModel eventListModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ScheduleViewModel.class)
+    abstract ViewModel provideScheduleViewModel(ScheduleViewModel scheduleViewModel);
 
     @ContributesAndroidInjector
     abstract EventShowcaseActivity contributeEventShowcaseActivityInjector();

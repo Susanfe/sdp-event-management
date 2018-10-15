@@ -18,8 +18,4 @@ public abstract class ScheduleModule {
     @ContributesAndroidInjector
     abstract MyScheduleActivity contributeMyScheduleActivityInjector();
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(ScheduleViewModel.class)
-    abstract ViewModel provideScheduleViewModel(ScheduleViewModel scheduleViewModel);
-}
+    }

@@ -11,6 +11,7 @@ import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This is the model for the concert list. It connects with the repository to pull a list of concerts and communicate them
@@ -25,6 +26,8 @@ public class ScheduleViewModel extends ViewModel {
     private ScheduledItemRepository repository;
     private JoinedScheduleItemRepository joinedScheduleItemRepository;
 
+    private int eventId;
+
     @Inject
     public ScheduleViewModel(ScheduledItemRepository repository, JoinedScheduleItemRepository joinedScheduleItemRepository) {
         this.repository = repository;
@@ -36,6 +39,7 @@ public class ScheduleViewModel extends ViewModel {
             return;
         }
 
+        this.eventId = eventId;
         this.concerts = repository.getConcerts(eventId);
         this.joinedConcerts = joinedScheduleItemRepository.findByEventId(eventId);
     }
@@ -44,23 +48,40 @@ public class ScheduleViewModel extends ViewModel {
         return concerts;
     }
 
+    public LiveData<Boolean> isConcertJoined(UUID concert) {
+        return Transformations.map(getConcerts(), list -> {
+            for (ScheduledItem i : list)
+                if (i.getId().equals(concert))
+                    return true;
+
+            return false;
+        });
+    }
+
+    public void addToMySchedule(UUID concert) {
+        joinedScheduleItemRepository.insert(new JoinedScheduleItem(concert, eventId));
+    }
+    public void removeFromMySchedule(UUID concert) {
+        joinedScheduleItemRepository.delete(new JoinedScheduleItem(concert, eventId));
+    }
+
     public LiveData<List<ScheduledItem>> getAddedConcerts() {
         LiveData<List<ScheduledItem>> allItems = getConcerts();
 
         return Transformations.switchMap(allItems, items ->
-            Transformations.map(this.joinedConcerts, joinedScheduleItems -> {
-                List<ScheduledItem> joined = new ArrayList<>();
+                Transformations.map(this.joinedConcerts, joinedScheduleItems -> {
+                    List<ScheduledItem> joined = new ArrayList<>();
 
-                for (ScheduledItem scheduledItem : items) {
-                    for (JoinedScheduleItem joinedScheduleItem : joinedScheduleItems) {
-                        if (joinedScheduleItem.getUid().equals(scheduledItem.getId())) {
-                            joined.add(scheduledItem);
-                            break;
+                    for (ScheduledItem scheduledItem : items) {
+                        for (JoinedScheduleItem joinedScheduleItem : joinedScheduleItems) {
+                            if (joinedScheduleItem.getUid().equals(scheduledItem.getId())) {
+                                joined.add(scheduledItem);
+                                break;
+                            }
                         }
                     }
-                }
-                return joined;
-            })
+                    return joined;
+                })
         );
     }
 

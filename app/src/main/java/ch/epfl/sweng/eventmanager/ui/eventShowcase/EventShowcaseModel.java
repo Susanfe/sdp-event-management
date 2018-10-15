@@ -23,6 +23,7 @@ public class EventShowcaseModel extends ViewModel implements Serializable {
     private EventRepository eventRepository;
     private JoinedEventRepository joinedEventRepository;
 
+
     @Inject
     public EventShowcaseModel(EventRepository eventRepository, JoinedEventRepository joinedEventRepository) {
         this.eventRepository = eventRepository;

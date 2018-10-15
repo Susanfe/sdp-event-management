@@ -20,8 +20,4 @@ public abstract class AbstractEventRepository<T, U extends GenericEventDAO<T, Id
     public LiveData<T> findById(IdType eventId) {
         return dao.findById(eventId);
     }
-
-    public LiveData<T> findByName(String name){
-        return dao.findByName(name);
-    }
 }

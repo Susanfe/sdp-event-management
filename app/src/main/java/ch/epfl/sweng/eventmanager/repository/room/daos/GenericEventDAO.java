@@ -10,7 +10,5 @@ import java.util.List;
 public interface GenericEventDAO<T, IdType> extends GenericDAO<T> {
     LiveData<List<IdType>> getAllIds();
 
-    LiveData<T> findByName(String eventName);
-
-    LiveData<T> findById(IdType eventId);
+    LiveData<T> findById(IdType objId);
 }
