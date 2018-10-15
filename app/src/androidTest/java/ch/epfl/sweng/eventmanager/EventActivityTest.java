@@ -28,6 +28,12 @@ public class EventActivityTest {
     @Rule
     public final ActivityTestRule<EventActivity> mActivityRule =
             new ActivityTestRule<>(EventActivity.class);
+
+    @Test
+    public void pass() {
+        assertEquals(1,1);
+    }
+
 /*
     @Test
     public void goToMapWork() {
