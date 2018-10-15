@@ -91,8 +91,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        setMap();
+    }
 
-
+    private void setMap() {
         Spot spot1 = new Spot("Grande scène", SpotType.SCENE, 46.517799, 6.566737);
         Spot spot2 = new Spot("Satellite", SpotType.BAR, 46.520433, 6.567822);
         List<Spot> spotList= new ArrayList<>();
@@ -103,40 +105,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng spotLocation = new LatLng(s.getLatitude(), s.getLongitude());
             switch (s.getSpotType()) {
                 case STAND:
+                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_YELLOW);
                     //if(mMap.getCameraPosition().zoom <= 19.0f) {
-                    mMap.addMarker(new MarkerOptions().position(spotLocation).snippet("stand")
-                            .title(s.getName()).icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-                    //}
-
                 case BAR:
-                    mMap.addMarker(new MarkerOptions().position(spotLocation).snippet("bar")
-                           .title(s.getName()).icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_ORANGE);
                 case SCENE:
-                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("scene")
-                            .title(s.getName()).icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_AZURE);
                 case ROOM:
-                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("room")
-                            .title(s.getName()).icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_ROSE);
                 case WC:
-                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("toilet")
-                            .title(s.getName()).icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_BLUE);
                 case NURSERY:
-                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("nursery")
-                            .title(s.getName()).icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_GREEN);
                 case ATM:
-                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("atm")
-                            .title(s.getName()).icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_VIOLET);
                 case INFORMATION:
-                    mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet("information")
-                            .title(s.getName()).icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_RED);
                 default:
 
             }
@@ -145,5 +129,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(true);
+    }
+
+    private void setSpot(LatLng spotLocation, Spot s, Float color) {
+        mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet(s.getName())
+                .title(s.getName()).icon(BitmapDescriptorFactory
+                        .defaultMarker(color)));
     }
 }
