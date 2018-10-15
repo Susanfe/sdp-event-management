@@ -114,6 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         List<Spot> spotList= new ArrayList<>();
         spotList.add(spot1);
         spotList.add(spot2);
+        return spotList;
     }
 
     private void spotSelection(List<Spot> spotList) {
