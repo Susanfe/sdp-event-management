@@ -95,11 +95,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void setMap() {
+        List<Spot> spotList = setFakeSpot();
+        spotSelection(spotList);
+        mMap.getUiSettings().setCompassEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(true);
+    }
+
+    private void setSpot(LatLng spotLocation, Spot s, Float color) {
+        mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet(s.getName())
+                .title(s.getName()).icon(BitmapDescriptorFactory
+                        .defaultMarker(color)));
+    }
+
+    private List<Spot> setFakeSpot() {
         Spot spot1 = new Spot("Grande scène", SpotType.SCENE, 46.517799, 6.566737);
         Spot spot2 = new Spot("Satellite", SpotType.BAR, 46.520433, 6.567822);
         List<Spot> spotList= new ArrayList<>();
         spotList.add(spot1);
         spotList.add(spot2);
+    }
+
+    private void spotSelection(List<Spot> spotList) {
         for (Spot s: spotList) {
 
             LatLng spotLocation = new LatLng(s.getLatitude(), s.getLongitude());
@@ -122,18 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 case INFORMATION:
                     setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_RED);
                 default:
-
             }
         }
-
-        mMap.getUiSettings().setCompassEnabled(true);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setMapToolbarEnabled(true);
-    }
-
-    private void setSpot(LatLng spotLocation, Spot s, Float color) {
-        mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet(s.getName())
-                .title(s.getName()).icon(BitmapDescriptorFactory
-                        .defaultMarker(color)));
     }
 }
