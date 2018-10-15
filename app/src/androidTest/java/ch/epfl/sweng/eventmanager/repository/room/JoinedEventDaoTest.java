@@ -64,7 +64,10 @@ public class JoinedEventDaoTest extends JoinedEventTestUtils {
         Set<Integer> lookForSet = new HashSet<>();
         for (int i : lookFor) lookForSet.add(i);
         List<JoinedEvent> someEvents = LiveDataTestUtil.getValue(mJoinedEventDao.loadAllByIds(lookFor));
-        List<JoinedEvent> expectedEvents = joinedEvents.stream().filter(ev -> lookForSet.contains(ev.getUid())).collect(Collectors.toList());
+        List<JoinedEvent> expectedEvents = new ArrayList<>();
+        for (JoinedEvent ev : joinedEvents)
+            if (lookForSet.contains(ev.getUid()))
+                expectedEvents.add(ev);
         assertEquals(expectedEvents, someEvents);
     }
 
