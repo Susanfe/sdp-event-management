@@ -15,7 +15,6 @@ import java.util.List;
 public abstract class AbstractRoomRepository<T, U extends GenericDAO<T>> {
     protected U dao;
 
-    @Inject
     public AbstractRoomRepository(U dao) {
         this.dao = dao;
     }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Dao
-public interface JoinedScheduleItemDao extends GenericDAO<JoinedScheduleItem> {
+public interface JoinedScheduleItemDao extends GenericEventDAO<JoinedScheduleItem, UUID> {
     @Query("SELECT * FROM joined_schedule_items")
     LiveData<List<JoinedScheduleItem>> getAll();
 

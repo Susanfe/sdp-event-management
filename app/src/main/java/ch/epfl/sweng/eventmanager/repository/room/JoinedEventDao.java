@@ -11,7 +11,7 @@ import java.util.List;
  * Here are all the SQL queries.
  */
 @Dao
-public interface JoinedEventDao extends GenericDAO<JoinedEvent> {
+public interface JoinedEventDao extends GenericEventDAO<JoinedEvent, Integer> {
     @Query("SELECT * FROM joined_events")
     LiveData<List<JoinedEvent>> getAll();
 
