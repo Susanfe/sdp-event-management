@@ -18,45 +18,41 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.eventShowcase.EventActivity"
-            android:parentActivityName=".ui.eventSelector.EventPickingActivity">
-
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.eventSelector.EventPickingActivity" />
-        </activity>
-        <activity
             android:name=".ui.eventShowcase.MapActivity"
-            android:parentActivityName=".ui.eventShowcase.EventActivity">
+            android:parentActivityName=".ui.eventShowcase.EventShowcaseActivity" >
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.eventShowcase.EventActivity" />
+                android:value=".ui.eventShowcase.EventShowcaseActivity" />
         </activity>
         <activity
             android:name=".ui.eventShowcase.TicketActivity"
-            android:parentActivityName=".ui.eventShowcase.EventActivity">
+            android:parentActivityName=".ui.eventShowcase.EventShowcaseActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.eventShowcase.EventActivity" />
+                android:value=".ui.eventShowcase.EventShowcaseActivity" />
         </activity>
         <activity
             android:name=".ui.schedule.ScheduleActivity"
-            android:parentActivityName=".ui.eventShowcase.EventActivity">
+            android:parentActivityName=".ui.eventShowcase.EventShowcaseActivity">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.eventShowcase.EventActivity" />
+                android:value=".ui.eventShowcase.EventShowcaseActivity" />
         </activity>
         <activity
             android:name=".ui.userManager.LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".ui.userManager.DisplayAccountActivity"
+        <activity
+            android:name=".ui.userManager.DisplayAccountActivity"
             android:label="@string/title_activity_account_display" />
+        <activity
+            android:name=".ui.eventShowcase.EventShowcaseActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
+
 </manifest>
