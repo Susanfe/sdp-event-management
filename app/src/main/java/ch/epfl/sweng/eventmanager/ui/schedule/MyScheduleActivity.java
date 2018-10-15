@@ -20,55 +20,9 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyScheduleActivity extends AppCompatActivity {
-    @Inject
-    ViewModelFactory factory;
-    @Inject
-    JoinedScheduleItemRepository joinedScheduleItemRepository;
-    private ScheduleViewModel model;
-
-    private static String TAG = "MyScheduleActivity";
-
-    private RecyclerView recyclerView;
-    private TimeLineAdapter timeLineAdapter;
-
+public class MyScheduleActivity extends AbstractScheduleActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
-
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-
-        Intent intent = getIntent();
-        int eventID = intent.getIntExtra(EventPickingActivity.SELECTED_EVENT_ID, -1);
-
-        this.model = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
-        this.model.init(eventID);
-        LiveData<List<JoinedScheduleItem>> joinedScheduleActivites = joinedScheduleItemRepository.findByEventId(eventID);
-
-        LiveData<List<ScheduledItem>> scheduleItems = this.model.getConcerts();
-
-        LiveData<List<ScheduledItem>> joinedScheduleItems = Transformations.switchMap(scheduleItems, items -> {
-            return Transformations.map(joinedScheduleActivites, joinedScheduleActivity -> {
-                List<ScheduledItem> joined = new ArrayList<>();
-
-                    for (ScheduledItem scheduledItem : items) {
-                        if (joinedScheduleActivity.contains(new JoinedScheduleItem(scheduledItem.getId(), eventID)))
-                            joined.add(scheduledItem);
-                    }
-                return joined;
-            });
-        });
-
-        joinedScheduleItems.observe(this, concerts -> {
-            timeLineAdapter = new TimeLineAdapter(eventID, concerts, joinedScheduleItemRepository);
-            recyclerView.setAdapter(timeLineAdapter);
-        });
+    protected LiveData<List<ScheduledItem>> getScheduledItems() {
+        return this.model.getAddedConcerts();
     }
-
-
 }

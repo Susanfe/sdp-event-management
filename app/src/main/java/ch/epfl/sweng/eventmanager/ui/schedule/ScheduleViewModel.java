@@ -1,11 +1,15 @@
 package ch.epfl.sweng.eventmanager.ui.schedule;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
 import ch.epfl.sweng.eventmanager.repository.ScheduledItemRepository;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,12 +20,15 @@ import java.util.List;
  */
 public class ScheduleViewModel extends ViewModel {
     private LiveData<List<ScheduledItem>> concerts;
+    private LiveData<List<JoinedScheduleItem>> joinedConcerts;
 
     private ScheduledItemRepository repository;
+    private JoinedScheduleItemRepository joinedScheduleItemRepository;
 
     @Inject
-    public ScheduleViewModel(ScheduledItemRepository repository) {
+    public ScheduleViewModel(ScheduledItemRepository repository, JoinedScheduleItemRepository joinedScheduleItemRepository) {
         this.repository = repository;
+        this.joinedScheduleItemRepository = joinedScheduleItemRepository;
     }
 
     public void init(int eventId) {
@@ -30,9 +37,32 @@ public class ScheduleViewModel extends ViewModel {
         }
 
         this.concerts = repository.getConcerts(eventId);
+        this.joinedConcerts = joinedScheduleItemRepository.findByEventId(eventId);
     }
 
     public LiveData<List<ScheduledItem>> getConcerts() {
         return concerts;
     }
+
+    public LiveData<List<ScheduledItem>> getAddedConcerts() {
+        LiveData<List<ScheduledItem>> allItems = getConcerts();
+
+        return Transformations.switchMap(allItems, items ->
+            Transformations.map(this.joinedConcerts, joinedScheduleItems -> {
+                List<ScheduledItem> joined = new ArrayList<>();
+
+                for (ScheduledItem scheduledItem : items) {
+                    for (JoinedScheduleItem joinedScheduleItem : joinedScheduleItems) {
+                        if (joinedScheduleItem.getUid().equals(scheduledItem.getId())) {
+                            joined.add(scheduledItem);
+                            break;
+                        }
+                    }
+                }
+                return joined;
+            })
+        );
+    }
+
+
 }
