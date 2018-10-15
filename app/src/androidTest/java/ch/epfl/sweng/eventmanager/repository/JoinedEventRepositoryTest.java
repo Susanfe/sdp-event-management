@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -68,9 +69,9 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
     }
 
     @Test
-    public void insert() throws InterruptedException {
+    public void insert() throws InterruptedException, ExecutionException {
         // Should insert
-        repository.insert(new JoinedEvent(50, nameFromId(50)));
+        repository.insert(new JoinedEvent(50, nameFromId(50))).get();
 
         // Should be in db after insert
         assertNotNull(getValue(repository.findById(50)));
@@ -80,9 +81,9 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
     }
 
     @Test
-    public void delete() throws InterruptedException {
+    public void delete() throws InterruptedException, ExecutionException {
         // Should remove
-        repository.delete(new JoinedEvent(1, nameFromId(1)));
+        repository.delete(new JoinedEvent(1, nameFromId(1))).get();
 
         // Should not be in db after delete
         assertNull(getValue(repository.findById(1)));
