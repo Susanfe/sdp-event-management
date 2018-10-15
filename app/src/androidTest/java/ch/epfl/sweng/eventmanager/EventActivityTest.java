@@ -33,13 +33,13 @@ public class EventActivityTest {
     public void goToMapWork() {
         assertTrue(onView(withId(R.id.map_button)).perform(click()).getClass().equals(MapsActivity.class));
     }*/
-
+/*
     @Test
     public void goToScheduleWork() {
         Context context = InstrumentationRegistry.getTargetContext();
         println("class = " + getClass());
         onView(withId(R.id.schedule_button)).perform(click());
         //assertTrue(getClass().equals(scheduleActivity.class));
-    }
+    }*/
 
 }
