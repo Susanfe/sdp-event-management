@@ -123,7 +123,7 @@ public final class Concert {
         }
     }
 
-    public static enum ConcertStatus {
+    public enum ConcertStatus {
         /**
          * The concert already happened
          */
