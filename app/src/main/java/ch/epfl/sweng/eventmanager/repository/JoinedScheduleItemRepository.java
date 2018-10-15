@@ -1,13 +1,10 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import android.arch.lifecycle.LiveData;
-import android.os.AsyncTask;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
-import ch.epfl.sweng.eventmanager.repository.room.JoinedScheduleItemDao;
+import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.List;
 import java.util.UUID;
 
 @Singleton

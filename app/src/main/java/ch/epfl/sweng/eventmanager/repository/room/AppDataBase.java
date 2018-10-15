@@ -5,6 +5,8 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
+import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedEventDao;
+import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
 
 /**
  * Defines the database for storing joined events.

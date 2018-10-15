@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.room;
+package ch.epfl.sweng.eventmanager.repository.room.daos;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.*;

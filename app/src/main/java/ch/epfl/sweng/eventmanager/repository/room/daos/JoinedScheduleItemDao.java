@@ -1,8 +1,7 @@
-package ch.epfl.sweng.eventmanager.repository.room;
+package ch.epfl.sweng.eventmanager.repository.room.daos;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.*;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 
 import java.util.List;

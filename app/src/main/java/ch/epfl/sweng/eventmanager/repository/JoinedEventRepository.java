@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository;
 
 import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
-import ch.epfl.sweng.eventmanager.repository.room.JoinedEventDao;
+import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedEventDao;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
