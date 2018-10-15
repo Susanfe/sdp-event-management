@@ -99,6 +99,6 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
         for (JoinedEvent ev : getValue(repository.findAll()))
             if (ev.getUid() == 1)
                 test = true;
-        assertTrue(test);
+        assertFalse(test);
     }
 }
