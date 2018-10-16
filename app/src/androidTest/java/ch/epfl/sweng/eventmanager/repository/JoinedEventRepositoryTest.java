@@ -74,15 +74,15 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
         repository.insert(new JoinedEvent(50, nameFromId(50)));
 
         // Should be in db after insert
-        assertNotNull(getValue(repository.findById(50)));
-        assertNotNull(getValue(repository.findByName(nameFromId(50))));
-    //    assertTrue(getValue(repository.findAllIds()).contains(50));
+        assertNotNull("findById didn't find eventId = 50", getValue(repository.findById(50)));
+        assertNotNull("findByName didn't find Event#50", getValue(repository.findByName(nameFromId(50))));
+        assertTrue("findAllIds didn't contain eventId = 50", getValue(repository.findAllIds()).contains(50));
 
         boolean test = false;
         for (JoinedEvent ev : getValue(repository.findAll()))
             if (ev.getUid() == 50)
                 test = true;
-    //    assertTrue(test);
+        assertTrue("None of the events matched event uid = 50", test);
     }
 
     @Test
@@ -91,14 +91,14 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
         repository.delete(new JoinedEvent(1, nameFromId(1)));
 
         // Should not be in db after delete
-    //    assertNull(getValue(repository.findById(1)));
-    //    assertNull(getValue(repository.findByName(nameFromId(1))));
-        assertFalse(getValue(repository.findAllIds()).contains(1));
+        assertNull("findById found deleted event1", getValue(repository.findById(1)));
+        assertNull("findByName found deleted Event#1", getValue(repository.findByName(nameFromId(1))));
+        assertFalse("findAllIds contains deleted event1", getValue(repository.findAllIds()).contains(1));
 
         boolean test = false;
         for (JoinedEvent ev : getValue(repository.findAll()))
             if (ev.getUid() == 1)
                 test = true;
-        assertFalse(test);
+        assertFalse("findAll found deleted event", test);
     }
 }
