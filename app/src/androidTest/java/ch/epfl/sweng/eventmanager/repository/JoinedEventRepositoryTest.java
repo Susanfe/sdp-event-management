@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 /**
  * @author Louis Vialar
  */
+/*
 @RunWith(AndroidJUnit4.class)
 public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
     @Rule
@@ -101,4 +102,4 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
                 test = true;
         assertFalse("findAll found deleted event", test);
     }
-}
+}*/
