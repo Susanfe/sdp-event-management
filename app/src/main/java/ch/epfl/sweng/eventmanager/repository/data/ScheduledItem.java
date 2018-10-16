@@ -59,7 +59,7 @@ public final class ScheduledItem {
 
     private static final double STANDARD_DURATION = 1;
 
-    public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre,  @NonNull String description,
+    public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre, @NonNull String description,
                          double duration, UUID id, String itemType, String itemLocation) {
         this.date = date.getTime();
         this.artist = artist;
