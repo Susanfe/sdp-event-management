@@ -72,6 +72,10 @@ public class ScheduleViewModel extends ViewModel {
                 Transformations.map(this.joinedConcerts, joinedScheduleItems -> {
                     List<ScheduledItem> joined = new ArrayList<>();
 
+                    if (items == null || joinedScheduleItems == null) {
+                        return null;
+                    }
+
                     for (ScheduledItem scheduledItem : items) {
                         for (JoinedScheduleItem joinedScheduleItem : joinedScheduleItems) {
                             if (joinedScheduleItem.getUid().equals(scheduledItem.getId())) {
