@@ -17,7 +17,6 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/*
 @RunWith(AndroidJUnit4.class)
 public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtils {
     @Rule
@@ -75,7 +74,7 @@ public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtil
         assertTrue(test);
     }
 
-    @Test
+    /*@Test
     public void delete() throws InterruptedException, ExecutionException {
 
         UUID uuid1 = Converters.fromString(RANDOM_FIXED_UUID_TAG + "1");
@@ -84,7 +83,7 @@ public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtil
         repository.delete(new JoinedScheduleItem(uuid1, 1));
 
         // Should not be in db after delete
-     //   assertNull(getValue(repository.findById(uuid1)));
+        assertNull(getValue(repository.findById(uuid1)));
         assertFalse(getValue(repository.findAllIds()).contains(uuid1));
 
         boolean test = false;
@@ -92,7 +91,6 @@ public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtil
             if (it.getUid() == uuid1)
                 test = true;
         assertFalse(test);
-    }
+    }*/
 
 }
-*/

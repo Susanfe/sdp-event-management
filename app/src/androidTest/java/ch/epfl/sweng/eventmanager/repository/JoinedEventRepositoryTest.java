@@ -19,7 +19,6 @@ import static org.junit.Assert.*;
 /**
  * @author Louis Vialar
  */
-/*
 @RunWith(AndroidJUnit4.class)
 public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
     @Rule
@@ -69,7 +68,7 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
         assertNull(getValue(repository.findByName("not existing")));
     }
 
-    @Test
+    /*@Test
     public void insert() throws InterruptedException, ExecutionException {
         // Should insert
         repository.insert(new JoinedEvent(50, nameFromId(50)));
@@ -101,5 +100,5 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
             if (ev.getUid() == 1)
                 test = true;
         assertFalse("findAll found deleted event", test);
-    }
-}*/
+    }*/
+}
