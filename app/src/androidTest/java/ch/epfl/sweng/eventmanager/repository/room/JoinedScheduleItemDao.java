@@ -94,6 +94,7 @@ public class JoinedScheduleItemDao extends JoinedScheduleItemTestUtils {
 
         //Testing for findById
         JoinedScheduleItem updatedEvent = LiveDataTestUtil.getValue(dao.findById(Converters.fromString(RANDOM_FIXED_UUID_TAG + 3)));
-        assertEquals(updatedEvent, newScheduleItem);statu
+        assertEquals(updatedEvent, newScheduleItem);
+
     }
 }
