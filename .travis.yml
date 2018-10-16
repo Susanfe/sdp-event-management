@@ -1,4 +1,5 @@
 language: android
+sudo: required # gives us actual VMs that are longer to boot but faster to build
 android:
   components:
     # The BuildTools version used by your project
