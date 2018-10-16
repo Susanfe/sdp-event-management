@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author Louis Vialar
- */
 @Singleton
 public class MockConcertRepository {
     private static final String TAG = "ConcertRepository";

@@ -11,12 +11,6 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import javax.inject.Inject;
 import java.util.List;
 
-/**
- * This is the model for the concert list. It connects with the repository to pull a list of concerts and communicate them
- * to the view (here, the activity).
- *
- * @author Louis Vialar
- */
 public class MockScheduleViewModel extends ViewModel {
     private LiveData<List<Concert>> concerts;
 
