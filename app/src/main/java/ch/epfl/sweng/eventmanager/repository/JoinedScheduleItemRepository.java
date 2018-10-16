@@ -1,6 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository;
 
 import android.arch.lifecycle.LiveData;
+import android.os.AsyncTask;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
 
@@ -18,5 +20,13 @@ public class JoinedScheduleItemRepository extends AbstractEventRepository<Joined
 
     public LiveData<List<JoinedScheduleItem>> findByEventId(int id) {
         return dao.findByEventId(id);
+    }
+
+    public void insert(JoinedScheduleItem joinedItem){
+        new InsertAsyncTask<>(dao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedItem);
+    }
+
+    public void delete(JoinedScheduleItem joinedItem){
+        new DeleteAsyncTask<>(dao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedItem);
     }
 }

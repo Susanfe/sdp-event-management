@@ -20,19 +20,11 @@ public abstract class AbstractRoomRepository<T, U extends GenericDAO<T>> {
         return dao.getAll();
     }
 
-    public void insert(T joinedEvent){
-        new InsertAsyncTask<>(dao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR , joinedEvent);
-    }
-
-    public void delete(T joinedEvent){
-        new DeleteAsyncTask<>(dao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedEvent);
-    }
-
     /**
      * Defines adding to the database with an asynchronous task
      * @see android.os.AsyncTask
      */
-    private static class InsertAsyncTask<T, U extends GenericDAO<T>> extends AsyncTask<T, Void, Void> {
+    protected static class InsertAsyncTask<T, U extends GenericDAO<T>> extends AsyncTask<T, Void, Void> {
 
         private U mAsyncTaskDao;
 
@@ -51,7 +43,7 @@ public abstract class AbstractRoomRepository<T, U extends GenericDAO<T>> {
      * Defines deleting a JoinedEvent from the database with an asynchronous task
      * @see android.os.AsyncTask
      */
-    private static class DeleteAsyncTask<T, U extends GenericDAO<T>> extends AsyncTask<T, Void, Void> {
+    protected static class DeleteAsyncTask<T, U extends GenericDAO<T>> extends AsyncTask<T, Void, Void> {
 
         private U mAsyncTaskDao;
 
