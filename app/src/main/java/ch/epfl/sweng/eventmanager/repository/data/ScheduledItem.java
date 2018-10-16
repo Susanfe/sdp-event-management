@@ -103,35 +103,36 @@ public final class ScheduledItem {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof ScheduledItem) {
-            ScheduledItem compared = (ScheduledItem) obj;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-            if (!date_verif(getDate()) || ! date_verif(compared.getDate())) return false;
+        ScheduledItem that = (ScheduledItem) o;
 
-            return compareFields(compared);
-        } else return super.equals(obj);
+        if (date != that.date) return false;
+        if (Double.compare(that.duration, duration) != 0) return false;
+        if (artist != null ? !artist.equals(that.artist) : that.artist != null) return false;
+        if (genre != null ? !genre.equals(that.genre) : that.genre != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (itemType != null ? !itemType.equals(that.itemType) : that.itemType != null) return false;
+        return itemLocation != null ? itemLocation.equals(that.itemLocation) : that.itemLocation == null;
     }
 
-    /**
-     * Verifies if the date is valid as it can be null.
-     * @param d Date to be verified (should come from getDate()).
-     * @return true if date is NonNull.
-     */
-    public boolean date_verif(Date d) {
-        return d == null;
-    }
-
-    /**
-     * Compares all the fields of the input Concert with those of this Concert.
-     * @param compared Concert with checked fields.
-     * @return true if compared has all fields similar to this.
-     */
-    public boolean compareFields(Concert compared) {
-        return compared.equals(getDate()) && compared.getArtist().equals(getArtist())&&
-                compared.getGenre().equals(getGenre()) &&
-                compared.getDescription().equals(getDescription())&&
-                compared.getDuration()==getDuration();
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = (int) (date ^ (date >>> 32));
+        result = 31 * result + (artist != null ? artist.hashCode() : 0);
+        result = 31 * result + (genre != null ? genre.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        temp = Double.doubleToLongBits(duration);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (itemType != null ? itemType.hashCode() : 0);
+        result = 31 * result + (itemLocation != null ? itemLocation.hashCode() : 0);
+        return result;
     }
 
     public String dateAsString() {
