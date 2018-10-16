@@ -10,7 +10,7 @@ import java.util.List;
 
 public class JoinedScheduleItemTestUtils extends AbstractTestUtils<JoinedScheduleItemDao, JoinedScheduleItem> {
 
-    final String RANDOM_FIXED_UUID_TAG = "123e4567-e89b-12d3-a456-55664244000";
+    public final String RANDOM_FIXED_UUID_TAG = "123e4567-e89b-12d3-a456-55664244000";
 
     @Override
     JoinedScheduleItemDao getDao() {
