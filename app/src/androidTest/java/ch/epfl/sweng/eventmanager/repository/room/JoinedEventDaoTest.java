@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 /**
  * Test Unit. Contains all tests linked to the Room Database.
  */
-/*
+
 @RunWith(AndroidJUnit4.class)
 public class JoinedEventDaoTest extends JoinedEventTestUtils {
 
@@ -26,7 +26,7 @@ public class JoinedEventDaoTest extends JoinedEventTestUtils {
     public TestRule testRule = new InstantTaskExecutorRule();
     /**
      * Tests if we can retrieve data from the database
-     */                         /*
+     */
     @Test
     public void joinEventsAndRead() throws InterruptedException {
         int numEvents = 10;
@@ -75,7 +75,7 @@ public class JoinedEventDaoTest extends JoinedEventTestUtils {
      * Tests if we can delete data from the database
      */
 
-     /*
+
     @Test
     public void deleteEventsAndRead() throws InterruptedException {
         int numEvents = 10;
@@ -119,4 +119,4 @@ public class JoinedEventDaoTest extends JoinedEventTestUtils {
 
 }
 
-*/
+
