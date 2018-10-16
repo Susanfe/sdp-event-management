@@ -1,11 +1,14 @@
 package ch.epfl.sweng.eventmanager.ui.schedule;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 
+import ch.epfl.sweng.eventmanager.EventManagerApplication;
+import ch.epfl.sweng.eventmanager.inject.DaggerApplicationComponent;
+import ch.epfl.sweng.eventmanager.mock.inject.MockComponent;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class ScheduleActivityTest {
 
@@ -13,9 +16,14 @@ public class ScheduleActivityTest {
     public final ActivityTestRule<ScheduleActivity> mActivityRule =
             new ActivityTestRule<>(ScheduleActivity.class);
 
-    @Test
-    public void Check() {
+
+    @Before
+    public void init() {
+        //getting the application class
+        EventManagerApplication myApp = (EventManagerApplication) InstrumentationRegistry
+                .getInstrumentation()
+                .getTargetContext()
+                .getApplicationContext();
 
     }
-
 }

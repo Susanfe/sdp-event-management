@@ -42,7 +42,7 @@ public final class Concert {
 
     static final double STANDARD_DURATION = 1;
 
-    Concert(@NonNull Date date,@NonNull String artist,@NonNull String genre,
+    public Concert(@NonNull Date date,@NonNull String artist,@NonNull String genre,
                    @NonNull String description, double duration) {
         this.date = date.getTime();
         this.artist = artist;
