@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.onIdle;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -21,7 +22,6 @@ import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
-/*
 @RunWith(AndroidJUnit4.class)
 public class EventShowcaseActivityTest {
     @Rule
@@ -29,7 +29,7 @@ public class EventShowcaseActivityTest {
             new ActivityTestRule<>(EventShowcaseActivity.class);
 
     @Test
-    public void testNavigation() {
+    public void testNavigation() throws InterruptedException {
         Intent intent = new Intent();
         intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 1);
         mActivityRule.launchActivity(intent);
@@ -41,6 +41,10 @@ public class EventShowcaseActivityTest {
         // Switch displayed fragment
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_map));
+
+
+
+        onIdle();
 
         // Open event picker
         String help_text = getResourceString(R.string.help_text_activity_event_picking);
@@ -59,4 +63,3 @@ public class EventShowcaseActivityTest {
         return targetContext.getResources().getString(id);
     }
 }
-*/
