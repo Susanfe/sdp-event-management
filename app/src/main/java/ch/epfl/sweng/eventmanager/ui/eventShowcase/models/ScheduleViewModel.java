@@ -48,14 +48,16 @@ public class ScheduleViewModel extends ViewModel {
         return concerts;
     }
 
-    public LiveData<Boolean> isConcertJoined(UUID concert) {
-        return Transformations.map(getConcerts(), list -> {
-            for (ScheduledItem i : list)
-                if (i.getId().equals(concert))
-                    return true;
+    public Boolean isConcertJoined(UUID concert) {
+        // This method doesn't return a live-data because it's not watched by anything
+        // we only need to get a value at some point, and LiveDatas don't suit this model
+        List<ScheduledItem> events = getConcerts().getValue();
 
-            return false;
-        });
+        for (ScheduledItem i : events)
+            if (i.getId().equals(concert))
+                return true;
+
+        return false;
     }
 
     public void addToMySchedule(UUID concert) {

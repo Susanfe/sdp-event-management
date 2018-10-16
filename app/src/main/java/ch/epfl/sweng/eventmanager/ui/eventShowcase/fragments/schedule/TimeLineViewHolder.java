@@ -12,9 +12,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 
+import java.util.function.Supplier;
+
+
 class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
-    private LiveData<Boolean> isEventJoined;
+    private Supplier<Boolean> isEventJoined;
     private Runnable onScheduleAdd;
     private Runnable onScheduleRemove;
 
@@ -40,7 +43,7 @@ class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
         itemView.setOnLongClickListener(v -> {
 
-            Boolean state = isEventJoined.getValue(); // at the time of the call
+            Boolean state = isEventJoined.get(); // at the time of the call
 
             if (state == null || !state) {
                 TimeLineViewHolder.this.onScheduleAdd.run(); // Join the event
@@ -64,7 +67,7 @@ class TimeLineViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
-    public TimeLineViewHolder setIsEventJoined(LiveData<Boolean> isEventJoined) {
+    public TimeLineViewHolder setIsEventJoined(Supplier<Boolean> isEventJoined) {
         this.isEventJoined = isEventJoined;
         return this;
     }
