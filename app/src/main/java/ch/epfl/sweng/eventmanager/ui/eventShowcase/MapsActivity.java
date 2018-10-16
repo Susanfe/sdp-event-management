@@ -119,7 +119,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void spotSelection(List<Spot> spotList) {
         for (Spot s: spotList) {
-
             LatLng spotLocation = new LatLng(s.getLatitude(), s.getLongitude());
             switch (s.getSpotType()) {
                 case STAND:
