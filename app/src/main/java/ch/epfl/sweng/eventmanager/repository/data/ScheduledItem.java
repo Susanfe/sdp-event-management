@@ -59,8 +59,8 @@ public final class ScheduledItem {
 
     private static final double STANDARD_DURATION = 1;
 
-    public ScheduledItem(@NonNull Date date,@NonNull String artist,@NonNull String genre,
-                   @NonNull String description, double duration, UUID id, String itemType, String itemLocation) {
+    public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre,  @NonNull String description,
+                         double duration, UUID id, String itemType, String itemLocation) {
         this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
@@ -106,8 +106,16 @@ public final class ScheduledItem {
     public boolean equals(Object obj) {
         if (obj instanceof ScheduledItem) {
             ScheduledItem compared = (ScheduledItem) obj;
-            return compared.date == date && compared.artist.equals(artist) &&
-                    compared.genre.equals(genre) && compared.duration==duration;
+
+            Date d_actual = getDate();
+            if (d_actual == null) {return false;}
+            Date d_compared = compared.getDate();
+            if (d_compared == null) return false;
+
+            return d_compared.equals(d_actual) && compared.getArtist().equals(getArtist())&&
+                    compared.getGenre().equals(getGenre()) &&
+                    compared.getDescription().equals(getDescription())&&
+                    compared.getDuration()==getDuration();
         } else return super.equals(obj);
     }
 
@@ -151,12 +159,12 @@ public final class ScheduledItem {
 
         if (currentDate.after(getDate())) {
             if (currentDate.before(getEndOfConcert())) {
-                return ScheduledItemStatus.IN_PROGRESS; //concert is taking place
+                return ScheduledItemStatus.IN_PROGRESS; // concert is taking place
             } else {
-                return ScheduledItemStatus.NOT_STARTED; //concert is later
+                return ScheduledItemStatus.PASSED; // concert is finished
             }
         } else {
-            return ScheduledItemStatus.PASSED; //concert happened
+            return ScheduledItemStatus.NOT_STARTED; // concert didn't start yet
         }
     }
 
