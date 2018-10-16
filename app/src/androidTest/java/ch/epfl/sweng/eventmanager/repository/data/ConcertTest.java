@@ -1,11 +1,14 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.content.res.Resources;
+import android.util.Log;
 
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import ch.epfl.sweng.eventmanager.R;
 
@@ -13,56 +16,45 @@ import static org.junit.Assert.*;
 
 public class ConcertTest {
 
-    private Date now = new Date();
-    private String mj = "Michael Jackson";
-    private String pop = "Pop";
-    private String des = "Amazing event as it is the resurrection of the King!";
-    double dur = 3.5;
+    private final Date now = new Date();
+    private final String mj = "Michael Jackson";
+    private final String pop = "Pop";
+    private final String des = "Amazing event as it is the resurrection of the King!";
+    private final double dur = 3.5;
 
-    private Concert c1 = new Concert();
-    private Concert c2 = new Concert(now, mj, pop,
-            des, dur);
+    private Concert c1 = new Concert(now, mj, pop, des, -12);
+    private Concert c2 = new Concert(now, mj, pop, des, dur);
 
     @Test
     public void getDate() {
-        String no_date = Resources.getSystem().getString(R.string.concert_no_date);
-        //assertEquals(c1.getDate(), -----); impossible to test as the time is get and set in constructor
         assertEquals(c2.getDate(), now);
     }
 
     @Test
     public void getArtist() {
-        String no_artist = Resources.getSystem().getString(R.string.concert_no_artist);
-        assertEquals(c1.getArtist(), no_artist);
         assertEquals(c2.getArtist(), mj);
     }
 
     @Test
     public void getDescription() {
-        String no_description = Resources.getSystem().getString(R.string.concert_no_description);
-        assertEquals(c1.getDescription(), no_description);
         assertEquals(c2.getDescription(), des);
     }
 
     @Test
     public void getGenre() {
-        String no_genre = Resources.getSystem().getString(R.string.concert_no_genre);
-        assertEquals(c1.getGenre(), no_genre);
         assertEquals(c2.getGenre(), pop);
     }
 
     @Test
     public void getDuration() {
-        int STANDARD_DURATION = 1;
+        double STANDARD_DURATION = Concert.STANDARD_DURATION;
         assertTrue(c1.getDuration() == STANDARD_DURATION);
-        assertTrue(c2.getDuration() == 3);
+        assertTrue(c2.getDuration() == dur);
     }
 
     @Test
     public void equals() {
         assertFalse(c1.equals(c2));
-        Concert copy1 = new Concert();
-        assertTrue(c1.equals(copy1));
 
         Concert copy2 = new Concert(now, mj, pop, des, dur);
         assertTrue(c2.equals(copy2));
@@ -84,23 +76,51 @@ public class ConcertTest {
         SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
         String now_s = f.format(now);
         assertEquals(now_s, c2.dateAsString());
-
-        String no_date_string = Resources.getSystem().getString(R.string.concert_no_date);
-        assertEquals(no_date_string, c1.dateAsString());
-
     }
 
     @Test
     public void getEndOfConcert() {
-         assertNull(c1.getEndOfConcert());
-
          Date end = new Date(now.getYear(), now.getMonth(), now.getDate(), now.getHours()+3, now.getMinutes() +30);
-         assertEquals(end, c2.getEndOfConcert());
+         assertEquals(setPrecisionToMinutes(end), setPrecisionToMinutes(c2.getEndOfConcert()));
     }
 
     @Test
     public void getStatus() {
-        assertEquals(Concert.ConcertStatus.PASSED, c1.getStatus());
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.YEAR, 2999);
+        Concert fake1 = new Concert(c.getTime(), mj, pop, des, dur);
+        c.set(Calendar.YEAR, 1970);
+        Concert fake2 = new Concert(c.getTime(), mj, pop, des, dur);
+
+        System.out.print(fake1.dateAsString());
+        assertEquals(Concert.ConcertStatus.NOT_STARTED, fake1.getStatus());
+        assertEquals(Concert.ConcertStatus.PASSED, fake2.getStatus());
         assertEquals(Concert.ConcertStatus.IN_PROGRESS, c2.getStatus());
     }
+
+    /**
+     * Erases seconds precision from the String
+     * @param date String with format DDDD MMMM dd HH:mm:ss GMT yyyy
+     * @return the broader precision string
+     */
+    public String setPrecisionToMinutes(Date date) {
+        //String regex = "[a-zA-Z]{3,} [a-zA-Z]{3,} [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} GMT[\\+\\-][0-9]{2}:[0-9]{2}[0-9]{4}";
+        String dateS =date.toString();
+        String[] splitted = dateS.split(":");
+        dateS = splitted[0] + ':' +
+                splitted[1] + ' ' +
+                dateS.split(" ")[1] + ':' +
+                splitted[3];
+
+        /* "Mon Oct 15 22:11:00 GMT+02:00 2018" is first split into
+         * [Mon Oct 15 22] [11] [00 GMT+02] [00 2018]
+         *
+         * And then date is reconstituted as follows
+         * date = [Mon Oct 15 22] : [11]  [GMT+02] : [00 2018]
+         */
+
+        return dateS;
+    }
+
+
 }
