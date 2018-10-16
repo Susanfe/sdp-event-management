@@ -1,6 +1,9 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 
+import android.support.annotation.NonNull;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -37,17 +40,17 @@ public final class Concert {
      */
     private double duration;
 
-    private static final double STANDARD_DURATION = 1;
+    static final double STANDARD_DURATION = 1;
 
-    public Concert(Date date, String artist, String genre, String description, double duration) {
+    public Concert(@NonNull Date date,@NonNull String artist,@NonNull String genre,
+                   @NonNull String description, double duration) {
         this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
         this.description = description;
-        this.duration = duration;
+        if (duration <= 0) this.duration = STANDARD_DURATION;
+        else this.duration = duration;
     }
-
-    public Concert() {}
 
     public Date getDate() {
         if (date <= 0) {
@@ -56,17 +59,11 @@ public final class Concert {
         return new Date(date);
     }
 
-    public String getArtist() {
-        return artist;
-    }
+    public String getArtist() {return artist; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() {return description; }
 
-    public String getGenre() {
-        return genre;
-    }
+    public String getGenre() {return genre; }
 
     public double getDuration() {
         return duration;
@@ -76,16 +73,43 @@ public final class Concert {
     public boolean equals(Object obj) {
         if (obj instanceof Concert) {
             Concert compared = (Concert) obj;
-            return compared.date == date && compared.artist.equals(artist) &&
-                    compared.genre.equals(genre) && compared.duration==duration;
+
+            if (!date_verif(getDate()) || ! date_verif(compared.getDate())) return false;
+
+            return compareFields(compared);
         } else return super.equals(obj);
     }
 
-    public String dateAsString() {
-        return new Date(date).toString();
+    /**
+     * Verifies if the date is valid as it can be null.
+     * @param d Date to be verified (should come from getDate()).
+     * @return true if date is NonNull.
+     */
+    public boolean date_verif(Date d) {
+        return d == null;
     }
 
-    public Date getEndOfConcert() {
+    /**
+     * Compares all the fields of the input Concert with those of this Concert.
+     * @param compared Concert with checked fields.
+     * @return true if compared has all fields similar to this.
+     */
+    public boolean compareFields(Concert compared) {
+        return compared.equals(getDate()) && compared.getArtist().equals(getArtist())&&
+                compared.getGenre().equals(getGenre()) &&
+                compared.getDescription().equals(getDescription())&&
+                compared.getDuration()==getDuration();
+    }
+
+    public String dateAsString() {
+        if (date <= 0) {
+            return null;
+        }
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        return f.format(date);
+    }
+
+    Date getEndOfConcert() {
         if (getDate() == null) {
             return null;
         }
@@ -111,14 +135,14 @@ public final class Concert {
             if (currentDate.before(getEndOfConcert())) {
                 return ConcertStatus.IN_PROGRESS; //concert is taking place
             } else {
-                return ConcertStatus.NOT_STARTED; //concert is later
+                return ConcertStatus.PASSED; //concert is later
             }
         } else {
-            return ConcertStatus.PASSED; //concert happened
+            return ConcertStatus.NOT_STARTED; //concert happened
         }
     }
 
-    public static enum ConcertStatus {
+    public enum ConcertStatus {
         /**
          * The concert already happened
          */
