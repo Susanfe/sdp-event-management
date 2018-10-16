@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.schedule;
+package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
 import android.arch.lifecycle.LiveData;
 import android.support.v7.widget.RecyclerView;

@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.schedule;
+package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
@@ -11,12 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 
 import java.util.List;
 
-public abstract class AbstractScheduleActivity extends Fragment {
+public abstract class AbstractScheduleFragment extends Fragment {
 
-    private static String TAG = "AbstractScheduleActivity";
+    private static String TAG = "AbstractScheduleFragment";
     protected ScheduleViewModel model;
     private RecyclerView recyclerView;
     private TimeLineAdapter timeLineAdapter;

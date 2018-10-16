@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.eventShowcase;
+package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -11,9 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.io.Serializable;
-
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 
 /**
  * A simple {@link Fragment} subclass.

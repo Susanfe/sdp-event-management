@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.schedule.ScheduleActivity">
+            android:name=".ui.eventShowcase.fragments.schedule.ScheduleFragment">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
@@ -34,7 +34,7 @@
         <activity
             android:name=".ui.eventShowcase.EventShowcaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.schedule.MyScheduleActivity"/>
+        <activity android:name=".ui.eventShowcase.fragments.schedule.MyScheduleFragment"/>
     </application>
 
 </manifest>

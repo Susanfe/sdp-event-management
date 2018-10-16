@@ -8,7 +8,7 @@ import java.util.UUID;
 
 /**
  * Class describing a single scheduled item (concert, activity...) in an event. The class is for the moment only used by
- * the ScheduleActivity.
+ * the ScheduleFragment.
  */
 public final class ScheduledItem {
     /**

@@ -19,9 +19,12 @@ import javax.inject.Inject;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.ui.schedule.MyScheduleActivity;
-import ch.epfl.sweng.eventmanager.ui.schedule.ScheduleActivity;
-import ch.epfl.sweng.eventmanager.ui.schedule.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.MyScheduleFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -110,11 +113,11 @@ public class EventShowcaseActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_schedule :
-                changeFragment(new ScheduleActivity(), true);
+                changeFragment(new ScheduleFragment(), true);
                 break;
 
             case R.id.nav_my_schedule :
-                changeFragment(new MyScheduleActivity(), true);
+                changeFragment(new MyScheduleFragment(), true);
                 break;
         }
 

@@ -1,9 +1,8 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import ch.epfl.sweng.eventmanager.ui.schedule.ScheduleViewModel;
-import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
 import dagger.Binds;
 import dagger.Module;

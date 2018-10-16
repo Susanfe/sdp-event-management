@@ -1,6 +1,5 @@
-package ch.epfl.sweng.eventmanager.ui.schedule;
+package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
-import android.arch.lifecycle.Transformations;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -13,9 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import com.github.vipulasri.timelineview.TimelineView;
 
 import java.util.List;
