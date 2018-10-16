@@ -22,6 +22,6 @@ public abstract class EventShowcaseModule {
     @ContributesAndroidInjector
     abstract MapsActivity contributeMapActivityInjector();
 
+    @ContributesAndroidInjector
     abstract EventShowcaseActivity contributeEventShowcaseActivityInjector();
 }
-
