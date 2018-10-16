@@ -35,12 +35,12 @@ public class JoinedEventRepository {
         return joinedEventDao.findByName(name);
     }
 
-    public void insert(JoinedEvent joinedEvent){
-        new InsertAsyncTask(joinedEventDao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR , joinedEvent);
+    public AsyncTask<JoinedEvent, Void, Void> insert(JoinedEvent joinedEvent){
+        return new InsertAsyncTask(joinedEventDao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR , joinedEvent);
     }
 
-    public void delete(JoinedEvent joinedEvent){
-        new DeleteAsyncTask(joinedEventDao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedEvent);
+    public AsyncTask<JoinedEvent, Void, Void> delete(JoinedEvent joinedEvent){
+        return new DeleteAsyncTask(joinedEventDao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedEvent);
     }
 
     /**
