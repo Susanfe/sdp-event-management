@@ -1,43 +1,28 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * to handle interaction events.
  */
-public class EventMainFragment extends Fragment {
+public class EventMainFragment extends AbstractShowcaseFragment {
     private static final String TAG = "EventMainFragment";
-    private EventShowcaseModel model;
 
     public EventMainFragment() {
         // Required empty public constructor
+        super(R.layout.fragment_event_main);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        model = ViewModelProviders.of(getActivity()).get(EventShowcaseModel.class);
-    }
+    public void onResume() {
+        super.onResume();
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_event_main, container, false);
         model.getEvent().observe(this, ev -> {
             if (ev == null) {
                 Log.e(TAG, "Got null model from parent activity");
@@ -59,17 +44,5 @@ public class EventMainFragment extends Fragment {
                 else this.model.unjoinEvent(ev);
             });
         });
-
-        return view;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }
