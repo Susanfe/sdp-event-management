@@ -11,27 +11,22 @@ import static org.junit.Assert.assertTrue;
 
 public class SpotTest {
 
-    Spot spot1 = new Spot("satelitte", SpotType.BAR, 46.520433, 6.567822);
+    private Spot spot1 = new Spot("satelitte", SpotType.BAR, 46.520433, 6.567822);
 
 
     @Test
-    public void getNameWork() {
-        assertEquals(spot1.getName(), "satelitte");
+    public void getTitleWork() {
+        assertEquals(spot1.getTitle(), "satelitte");
     }
 
     @Test
-    public void getSpotTypeWork() {
-        assertEquals(spot1.getSpotType(), SpotType.BAR);
+    public void getSnippetWork() {
+        assertEquals(spot1.getSnippet(), "bar");
     }
 
     @Test
-    public void getLatitudeWork() {
-        assertTrue(spot1.getLatitude() == 46.520433);
-    }
-
-    @Test
-    public void getLongitudeWork() {
-        assertTrue(spot1.getLongitude() == 6.567822);
+    public void getPositionWork() {
+        assertTrue(spot1.getPosition().latitude == 46.520433 && spot1.getPosition().longitude == 6.567822);
     }
 
 }
