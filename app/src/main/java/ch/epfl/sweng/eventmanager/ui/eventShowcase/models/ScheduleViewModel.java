@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
 import ch.epfl.sweng.eventmanager.repository.ScheduledItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
@@ -60,11 +61,8 @@ public class ScheduleViewModel extends ViewModel {
         return false;
     }
 
-    public void addToMySchedule(UUID concert) {
-        joinedScheduleItemRepository.insert(new JoinedScheduleItem(concert, eventId));
-    }
-    public void removeFromMySchedule(UUID concert) {
-        joinedScheduleItemRepository.delete(new JoinedScheduleItem(concert, eventId));
+    public void toggleMySchedule(UUID concert, Context context) {
+        joinedScheduleItemRepository.toggle(new JoinedScheduleItem(concert, eventId), context);
     }
 
     public LiveData<List<ScheduledItem>> getJoinedScheduleItems() {
