@@ -6,15 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventActivity;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 
 import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
     private List<Event> mEvents;
@@ -33,7 +30,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         public void onClick(View view) {
             // TODO: display animation on click?
             Context context = itemView.getContext();
-            Intent intent = new Intent(context, EventActivity.class);
+            Intent intent = new Intent(context, EventShowcaseActivity.class);
             Event selectedEvent = mEvents.get(getAdapterPosition());
             intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, selectedEvent.getId());
             context.startActivity(intent);
