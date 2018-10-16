@@ -1,10 +1,17 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.support.annotation.NonNull;
+import android.test.mock.MockContext;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import ch.epfl.sweng.eventmanager.R;
 
 /**
  * Class describing a single concert in an event. The class is for the moment only used by the
@@ -40,15 +47,15 @@ public final class Concert {
 
     private static final double STANDARD_DURATION = 1;
 
-    public Concert(Date date, String artist, String genre, String description, double duration) {
+    public Concert(@NonNull Date date,@NonNull String artist,@NonNull String genre,
+                   @NonNull String description, double duration) {
         this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
         this.description = description;
-        this.duration = duration;
+        if (duration <= 0) this.duration = STANDARD_DURATION;
+        else this.duration = duration;
     }
-
-    public Concert() {}
 
     public Date getDate() {
         if (date <= 0) {
@@ -57,17 +64,11 @@ public final class Concert {
         return new Date(date);
     }
 
-    public String getArtist() {
-        return artist;
-    }
+    public String getArtist() {return artist; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() {return description; }
 
-    public String getGenre() {
-        return genre;
-    }
+    public String getGenre() {return genre; }
 
     public double getDuration() {
         return duration;
@@ -77,8 +78,8 @@ public final class Concert {
     public boolean equals(Object obj) {
         if (obj instanceof Concert) {
             Concert compared = (Concert) obj;
-            return compared.date == date && compared.artist.equals(artist) &&
-                    compared.genre.equals(genre) && compared.duration==duration;
+            return compared.getDate() == getDate() && compared.getArtist().equals(getArtist()) &&
+                    compared.getGenre().equals(getGenre()) && compared.getDuration()==getDuration();
         } else return super.equals(obj);
     }
 
