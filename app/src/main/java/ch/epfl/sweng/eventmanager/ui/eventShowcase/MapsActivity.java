@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private EventShowcaseModel model;
     private GoogleMap mMap;
+
+    private ClusterManager<Spot> mClusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,58 +91,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng place = new LatLng(loc.getLatitude(), loc.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(place).title(loc.getName()));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, zoomLevel));
+
+                setUpClusterer(setFakeSpot());
+                mMap.getUiSettings().setCompassEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+                mMap.getUiSettings().setMapToolbarEnabled(true);
             }
         });
 
-        setMap();
-    }
-
-    private void setMap() {
-        List<Spot> spotList = setFakeSpot();
-        spotSelection(spotList);
-        mMap.getUiSettings().setCompassEnabled(true);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setMapToolbarEnabled(true);
-    }
-
-    private void setSpot(LatLng spotLocation, Spot s, Float color) {
-        mMap.addMarker(new MarkerOptions().position(spotLocation).alpha(0.5f).snippet(s.getName())
-                .title(s.getName()).icon(BitmapDescriptorFactory
-                        .defaultMarker(color)));
     }
 
     private List<Spot> setFakeSpot() {
         Spot spot1 = new Spot("Grande scène", SpotType.SCENE, 46.517799, 6.566737);
         Spot spot2 = new Spot("Satellite", SpotType.BAR, 46.520433, 6.567822);
+        Spot spot3 = new Spot("test3", SpotType.NURSERY, 46.523, 6.567822);
+        Spot spot4 = new Spot("test4", SpotType.WC, 46.520433, 6.5679);
+        Spot spot5 = new Spot("test5", SpotType.INFORMATION, 46.520433, 6.55555);
         List<Spot> spotList= new ArrayList<>();
         spotList.add(spot1);
         spotList.add(spot2);
+        spotList.add(spot3);
+        spotList.add(spot4);
+        spotList.add(spot5);
         return spotList;
     }
 
-    private void spotSelection(List<Spot> spotList) {
-        for (Spot s: spotList) {
-            LatLng spotLocation = new LatLng(s.getLatitude(), s.getLongitude());
-            switch (s.getSpotType()) {
-                case STAND:
-                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_YELLOW);
-                    //if(mMap.getCameraPosition().zoom <= 19.0f) {
-                case BAR:
-                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_ORANGE);
-                case SCENE:
-                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_AZURE);
-                case ROOM:
-                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_ROSE);
-                case WC:
-                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_BLUE);
-                case NURSERY:
-                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_GREEN);
-                case ATM:
-                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_VIOLET);
-                case INFORMATION:
-                    setSpot(spotLocation, s, BitmapDescriptorFactory.HUE_RED);
-                default:
-            }
+
+    private void setUpClusterer(List<Spot> spotList) {
+
+        mClusterManager = new ClusterManager<Spot>(this, mMap);
+
+        // Point the map's listeners at the listeners implemented by the cluster
+        // manager.
+        mMap.setOnCameraIdleListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+
+        for(Spot s: spotList){
+            mClusterManager.addItem(s);
         }
+        mClusterManager.setAnimation(true);
     }
 }
