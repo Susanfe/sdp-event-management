@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import android.support.annotation.NonNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,15 +59,18 @@ public final class ScheduledItem {
 
     private static final double STANDARD_DURATION = 1;
 
-    public ScheduledItem(Date date, String artist, String genre, String description, double duration, UUID id, String itemType, String itemLocation) {
+    public ScheduledItem(@NonNull Date date,@NonNull String artist,@NonNull String genre,
+                   @NonNull String description, double duration, UUID id, String itemType, String itemLocation) {
         this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
         this.description = description;
-        this.duration = duration;
         this.id = id.toString();
         this.itemType = itemType;
         this.itemLocation = itemLocation;
+
+        if (duration <= 0) this.duration = STANDARD_DURATION;
+        else this.duration = duration;
     }
 
     public ScheduledItem() {}
