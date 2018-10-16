@@ -20,13 +20,6 @@ public abstract class EventShowcaseModule {
     abstract ViewModel provideEventListModel(EventShowcaseModel eventListModel);
 
     @ContributesAndroidInjector
-    abstract EventActivity contributeEventActivityInjector();
-
-    @ContributesAndroidInjector
-    abstract MapActivity contributeMapActivityInjector();
-
-    @ContributesAndroidInjector
-    abstract TicketActivity contributeTicketActivityInjector();
-
+    abstract EventShowcaseActivity contributeEventShowcaseActivityInjector();
 }
 
