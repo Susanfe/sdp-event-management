@@ -74,16 +74,31 @@ public final class Concert {
         if (obj instanceof Concert) {
             Concert compared = (Concert) obj;
 
-            Date d_actual = getDate();
-            if (d_actual == null) {return false;}
-            Date d_compared = compared.getDate();
-            if (d_compared == null) return false;
+            if (!date_verif(getDate()) || ! date_verif(compared.getDate())) return false;
 
-            return d_compared.equals(d_actual) && compared.getArtist().equals(getArtist())&&
-                    compared.getGenre().equals(getGenre()) &&
-                    compared.getDescription().equals(getDescription())&&
-                    compared.getDuration()==getDuration();
+            return compareFields(compared);
         } else return super.equals(obj);
+    }
+
+    /**
+     * Verifies if the date is valid as it can be null.
+     * @param d Date to be verified (should come from getDate()).
+     * @return true if date is NonNull.
+     */
+    public boolean date_verif(Date d) {
+        return d == null;
+    }
+
+    /**
+     * Compares all the fields of the input Concert with those of this Concert.
+     * @param compared Concert with checked fields.
+     * @return true if compared has all fields similar to this.
+     */
+    public boolean compareFields(Concert compared) {
+        return compared.equals(getDate()) && compared.getArtist().equals(getArtist())&&
+                compared.getGenre().equals(getGenre()) &&
+                compared.getDescription().equals(getDescription())&&
+                compared.getDuration()==getDuration();
     }
 
     public String dateAsString() {
