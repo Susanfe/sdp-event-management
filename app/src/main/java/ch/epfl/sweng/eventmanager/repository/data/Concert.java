@@ -1,17 +1,12 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
-import android.test.mock.MockContext;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import ch.epfl.sweng.eventmanager.R;
 
 /**
  * Class describing a single concert in an event. The class is for the moment only used by the
@@ -45,9 +40,9 @@ public final class Concert {
      */
     private double duration;
 
-    private static final double STANDARD_DURATION = 1;
+    static final double STANDARD_DURATION = 1;
 
-    public Concert(@NonNull Date date,@NonNull String artist,@NonNull String genre,
+    Concert(@NonNull Date date,@NonNull String artist,@NonNull String genre,
                    @NonNull String description, double duration) {
         this.date = date.getTime();
         this.artist = artist;
@@ -78,8 +73,16 @@ public final class Concert {
     public boolean equals(Object obj) {
         if (obj instanceof Concert) {
             Concert compared = (Concert) obj;
-            return compared.getDate() == getDate() && compared.getArtist().equals(getArtist()) &&
-                    compared.getGenre().equals(getGenre()) && compared.getDuration()==getDuration();
+
+            Date d_actual = getDate();
+            if (d_actual == null) {return false;}
+            Date d_compared = compared.getDate();
+            if (d_compared == null) return false;
+
+            return d_compared.equals(d_actual) && compared.getArtist().equals(getArtist())&&
+                    compared.getGenre().equals(getGenre()) &&
+                    compared.getDescription().equals(getDescription())&&
+                    compared.getDuration()==getDuration();
         } else return super.equals(obj);
     }
 
@@ -91,7 +94,7 @@ public final class Concert {
         return f.format(date);
     }
 
-    public Date getEndOfConcert() {
+    Date getEndOfConcert() {
         if (getDate() == null) {
             return null;
         }
@@ -117,10 +120,10 @@ public final class Concert {
             if (currentDate.before(getEndOfConcert())) {
                 return ConcertStatus.IN_PROGRESS; //concert is taking place
             } else {
-                return ConcertStatus.NOT_STARTED; //concert is later
+                return ConcertStatus.PASSED; //concert is later
             }
         } else {
-            return ConcertStatus.PASSED; //concert happened
+            return ConcertStatus.NOT_STARTED; //concert happened
         }
     }
 
