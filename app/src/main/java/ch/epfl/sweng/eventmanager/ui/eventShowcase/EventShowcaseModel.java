@@ -1,6 +1,9 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.*;
+
+import java.io.Serializable;
+
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
@@ -14,7 +17,7 @@ import javax.inject.Inject;
  *
  * @author Louis Vialar
  */
-public class EventShowcaseModel extends ViewModel {
+public class EventShowcaseModel extends ViewModel implements Serializable {
     private LiveData<Event> event;
 
     private EventRepository eventRepository;
