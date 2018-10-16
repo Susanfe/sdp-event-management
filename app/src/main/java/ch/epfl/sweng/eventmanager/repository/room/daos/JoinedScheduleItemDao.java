@@ -21,6 +21,9 @@ public interface JoinedScheduleItemDao extends GenericEventDAO<JoinedScheduleIte
     @Query("SELECT * FROM joined_schedule_items WHERE schedule_item_id LIKE :scheduleItemId LIMIT 1")
     LiveData<JoinedScheduleItem> findById(UUID scheduleItemId);
 
+    @Query("SELECT * FROM joined_schedule_items WHERE schedule_item_id LIKE :scheduleItemId LIMIT 1")
+    JoinedScheduleItem findByIdImmediate(UUID scheduleItemId);
+
     @Query("SELECT * FROM joined_schedule_items WHERE event_id LIKE :id LIMIT 1")
     LiveData<List<JoinedScheduleItem>> findByEventId(int id);
 
