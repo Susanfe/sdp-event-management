@@ -30,11 +30,11 @@ public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
 
     @Before
     public void setupdb() {
-        this.events = insertEvents(10);
+        this.events = insertItems(10);
         this.eventIds = new ArrayList<>();
         for (JoinedEvent ev : events)
             eventIds.add(ev.getUid());
-        this.repository = new JoinedEventRepository(mJoinedEventDao);
+        this.repository = new JoinedEventRepository(dao);
     }
 
     @Test

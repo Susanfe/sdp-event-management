@@ -1,14 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import android.arch.persistence.room.Room;
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
-import ch.epfl.sweng.eventmanager.repository.room.AppDataBase;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedEventDao;
-import org.junit.After;
-import org.junit.Before;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,32 +9,24 @@ import java.util.List;
 /**
  * @author Louis Vialar
  */
-public abstract class JoinedEventTestUtils extends LiveDataTestUtil {
-    protected JoinedEventDao mJoinedEventDao;
-    protected AppDataBase mDb;
+public abstract class JoinedEventTestUtils extends AbstractTestUtils<JoinedEventDao, JoinedEvent> {
 
-    @Before
-    public void createDb() {
-        Context context = InstrumentationRegistry.getContext();
-        mDb = Room.inMemoryDatabaseBuilder(context, AppDataBase.class).allowMainThreadQueries().build();
-        mJoinedEventDao = mDb.getJoinedEventDao();
-    }
-
-    @After
-    public void closeDb() {
-        mDb.close();
+    @Override
+    JoinedEventDao getDao(){
+        return mDb.getJoinedEventDao();
     }
 
     /**
      * Create a list of joinedEvents with following format JoinedEvent(id, "Event#id)
      *
-     * @param numEvents number of events to create
+     * @param numItems number of events to create
      * @return a list containing all events in numerical order (1 -> numEvents)
      */
-    protected static List<JoinedEvent> createEvents(int numEvents) {
+    @Override
+    protected List<JoinedEvent> createItems(int numItems) {
 
         List<JoinedEvent> events = new ArrayList<>();
-        for (int i = 0; i < numEvents; i++) {
+        for (int i = 0; i < numItems; i++) {
             events.add(new JoinedEvent(i + 1, nameFromId(i + 1)));
         }
 
@@ -52,11 +37,12 @@ public abstract class JoinedEventTestUtils extends LiveDataTestUtil {
         return "Event#" + id;
     }
 
-    protected List<JoinedEvent> insertEvents(int numEvents) {
-        List<JoinedEvent> joinedEvents = createEvents(numEvents);
+    @Override
+    protected List<JoinedEvent> insertItems(int numItems) {
+        List<JoinedEvent> joinedEvents = createItems(numItems);
 
         for (JoinedEvent joinedEvent : joinedEvents)
-            mJoinedEventDao.insert(joinedEvent);
+            dao.insert(joinedEvent);
 
         return joinedEvents;
     }
