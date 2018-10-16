@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.vipulasri.timelineview.LineType;
-import com.github.vipulasri.timelineview.TimelineView;
 
 import org.junit.Test;
 
@@ -17,14 +16,13 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Concert;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class TimeLineAdapterTest {
 
     private List<Concert> l = Collections.EMPTY_LIST;
     private TimeLineAdapter a = new TimeLineAdapter();
-    private Concert c1 = new Concert();
+   // private Concert c1 = new Concert();
 
     @Test
     public void getItemViewType() {
@@ -33,7 +31,7 @@ public class TimeLineAdapterTest {
         int expected = LineType.ONLYONE;
         assertEquals(expected, actual);
 
-        l.add(c1);
+        //l.add(c1);
 
         actual = a.getItemViewType(0);
         expected = LineType.BEGIN;
@@ -50,11 +48,10 @@ public class TimeLineAdapterTest {
 
     @Test
     public void onCreateViewHolder() {
+        MockContext context = new MockContext();
 
         // Mocking every action of the onCreateViewHolder method.
         ViewGroup parent = mock(ViewGroup.class);
-
-        MockContext context = new MockContext();
         when(parent.getContext()).thenReturn(context);
 
         LayoutInflater inflater = mock(LayoutInflater.class);
