@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * This is the model for the concert list. It connects with the repository to pull a list of concerts and communicate them
+ * This is the model for the concert list. It connects with the repository to pull a list of scheduledItems and communicate them
  * to the view (here, the activity).
  *
  * @author Louis Vialar
  */
 public class ScheduleViewModel extends ViewModel {
-    private LiveData<List<ScheduledItem>> concerts;
+    private LiveData<List<ScheduledItem>> scheduledItems;
     private LiveData<List<JoinedScheduleItem>> joinedConcerts;
 
     private ScheduledItemRepository repository;
@@ -35,26 +35,26 @@ public class ScheduleViewModel extends ViewModel {
     }
 
     public void init(int eventId) {
-        if (this.concerts != null) {
+        if (this.scheduledItems != null) {
             return;
         }
 
         this.eventId = eventId;
-        this.concerts = repository.getConcerts(eventId);
+        this.scheduledItems = repository.getConcerts(eventId);
         this.joinedConcerts = joinedScheduleItemRepository.findByEventId(eventId);
     }
 
-    public LiveData<List<ScheduledItem>> getConcerts() {
-        return concerts;
+    public LiveData<List<ScheduledItem>> getScheduledItems() {
+        return scheduledItems;
     }
 
-    public Boolean isConcertJoined(UUID concert) {
+    public Boolean isItemJoined(UUID itemId) {
         // This method doesn't return a live-data because it's not watched by anything
         // we only need to get a value at some point, and LiveDatas don't suit this model
-        List<ScheduledItem> events = getConcerts().getValue();
+        List<ScheduledItem> events = getJoinedScheduleItems().getValue();
 
         for (ScheduledItem i : events)
-            if (i.getId().equals(concert))
+            if (i.getId().equals(itemId))
                 return true;
 
         return false;
@@ -67,8 +67,8 @@ public class ScheduleViewModel extends ViewModel {
         joinedScheduleItemRepository.delete(new JoinedScheduleItem(concert, eventId));
     }
 
-    public LiveData<List<ScheduledItem>> getAddedConcerts() {
-        LiveData<List<ScheduledItem>> allItems = getConcerts();
+    public LiveData<List<ScheduledItem>> getJoinedScheduleItems() {
+        LiveData<List<ScheduledItem>> allItems = getScheduledItems();
 
         return Transformations.switchMap(allItems, items ->
                 Transformations.map(this.joinedConcerts, joinedScheduleItems -> {

@@ -75,7 +75,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
             holder.mTimelineView.setMarker(ContextCompat.getDrawable(context, R.drawable.ic_marker), ContextCompat.getColor(context, R.color.colorPrimary));
         }
 
-        holder.setIsEventJoined(() -> model.isConcertJoined(scheduledItem.getId()))
+        holder.setIsEventJoined(() -> model.isItemJoined(scheduledItem.getId()))
                 .setOnScheduleAdd(() -> model.addToMySchedule(scheduledItem.getId()))
                 .setOnScheduleRemove(() -> model.removeFromMySchedule(scheduledItem.getId()));
     }

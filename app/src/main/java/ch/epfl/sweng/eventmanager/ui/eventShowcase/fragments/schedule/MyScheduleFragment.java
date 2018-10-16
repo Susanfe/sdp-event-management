@@ -8,6 +8,6 @@ import java.util.List;
 public class MyScheduleFragment extends AbstractScheduleFragment {
     @Override
     protected LiveData<List<ScheduledItem>> getScheduledItems() {
-        return this.model.getAddedConcerts();
+        return this.model.getJoinedScheduleItems();
     }
 }
