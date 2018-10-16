@@ -1,50 +1,47 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
+
 /**
  * Represents a place into the event
  *
  * @author Robin Zbinden (274236)
  * @author Stanislas Jouven (260580)
  */
-public class Spot {
+public class Spot implements ClusterItem {
 
     /**
      * The name for the spot
      */
-    private String name;
+    private String title;
     /**
      * The description of the spot
      */
     private SpotType spotType;
     /**
-     * The latitude of the location
+     * The position of the spot
      */
-    private double latitude;
-    /**
-     * The longitude of the location
-     */
-    private double longitude;
+    private LatLng position;
 
-    public Spot(String name, SpotType spotType, double latitude, double longitude) {
-        this.name = name;
+    public Spot(String title, SpotType spotType, double latitude, double longitude) {
+        this.title = title;
         this.spotType = spotType;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.position = new LatLng(latitude, longitude);
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public String getTitle() {
+        return title;
     }
 
-    public SpotType getSpotType() {
-        return spotType;
+    @Override
+    public String getSnippet() {
+        return spotType.getName();
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
+    @Override
+    public LatLng getPosition() {
+        return position;
     }
 }
