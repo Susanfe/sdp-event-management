@@ -82,7 +82,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
         ScheduledItem.ScheduledItemStatus status = scheduledItem.getStatus();
 
         // Sets Marker according to the scheduledItem status
-        if (status == ScheduledItem.ScheduledItemStatus.PASSED) {
+        if (status == ScheduledItem.ScheduledItemStatus.NOT_STARTED) {
             holder.mTimelineView.setMarker(getMarkerDrawable(context, R.drawable.ic_marker_inactive, android.R.color.darker_gray));
         } else if (status == ScheduledItem.ScheduledItemStatus.IN_PROGRESS) {
             holder.mTimelineView.setMarker(getMarkerDrawable(context, R.drawable.ic_marker_active, R.color.colorPrimary));
@@ -116,7 +116,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
             return drawable;
     }
 
-    public void setDataList(List<ScheduledItem> dataList) {
+    void setDataList(List<ScheduledItem> dataList) {
         this.dataList = dataList;
         this.notifyDataSetChanged();
     }
@@ -151,7 +151,7 @@ class TimeLineViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void setOnToggle(Runnable onToggle) {
+    void setOnToggle(Runnable onToggle) {
         this.onToggle = onToggle;
     }
 }
