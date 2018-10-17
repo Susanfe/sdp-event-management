@@ -3,13 +3,11 @@ package ch.epfl.sweng.eventmanager.repository.data;
 import android.content.res.Resources;
 import android.util.Log;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -113,21 +111,17 @@ public class ScheduledItemTest {
      */
     public String setPrecisionToMinutes(Date date) {
         //String regex = "[a-zA-Z]{3,} [a-zA-Z]{3,} [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} GMT[\\+\\-][0-9]{2}:[0-9]{2}[0-9]{4}";
-        String dateS =date.toString();
-        String[] splitted = dateS.split(":");
-        dateS = splitted[0] + ':' +
-                splitted[1] + ' ' +
-                dateS.split(" ")[1] + ':' +
-                splitted[3];
+        String dateS = date.toString();
+        String[] splitted = dateS.split(" ");
+        String[] times = splitted[3].split(":");
+        splitted[3] = times[0] + ":" + times[1];
 
-        /* "Mon Oct 15 22:11:00 GMT+02:00 2018" is first split into
-         * [Mon Oct 15 22] [11] [00 GMT+02] [00 2018]
-         *
-         * And then date is reconstituted as follows
-         * date = [Mon Oct 15 22] : [11]  [GMT+02] : [00 2018]
-         */
+        StringBuilder builder = new StringBuilder();
+        for (String part : splitted)
+            builder.append(part).append(" ");
 
-        return dateS;
+        String ret = builder.toString();
+        return ret.substring(0, ret.length() - 1); // drop last space
     }
 
 
