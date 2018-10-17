@@ -52,7 +52,7 @@ public final class ScheduledItem {
     private String itemLocation;
 
     public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre, @NonNull String description,
-                         double duration, UUID id, String itemType, String itemLocation) {
+                         double duration, @NonNull UUID id, @NonNull String itemType, @NonNull String itemLocation) {
         this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
@@ -104,12 +104,12 @@ public final class ScheduledItem {
 
         return date == that.date
                 && Double.compare(that.duration, duration) == 0
-                && (artist != null ? artist.equals(that.artist) : that.artist == null)
-                && (genre != null ? genre.equals(that.genre) : that.genre == null)
-                && (description != null ? description.equals(that.description) : that.description == null)
-                && (id != null ? id.equals(that.id) : that.id == null)
-                && (itemType != null ? itemType.equals(that.itemType) : that.itemType == null)
-                && (itemLocation != null ? itemLocation.equals(that.itemLocation) : that.itemLocation == null);
+                && artist.equals(that.artist)
+                && genre.equals(that.genre)
+                && description.equals(that.description)
+                && id.equals(that.id)
+                && itemType.equals(that.itemType)
+                && itemLocation.equals(that.itemLocation);
     }
 
     @Override
