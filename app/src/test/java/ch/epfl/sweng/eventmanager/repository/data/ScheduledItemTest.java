@@ -11,8 +11,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
-import ch.epfl.sweng.eventmanager.R;
-
 import static org.junit.Assert.*;
 
 public class ScheduledItemTest {
