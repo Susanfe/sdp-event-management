@@ -51,8 +51,13 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
 
+        onIdle();
+
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
+
+        onIdle();
+
         onView(withId(R.id.help_text))
                 .check(matches(withText(help_text)));
     }
