@@ -13,51 +13,43 @@ import java.util.UUID;
  * the ScheduleFragment.
  */
 public final class ScheduledItem {
+    public static final double STANDARD_DURATION = 1;
     /**
      * Indicates the time of the concert, precision required is minutes.
-     *
+     * <p>
      * This is a long because firebase doesn't understand Date objects.
      */
     private long date;
-
     /**
      * Indicates the artist or band performing.
      */
     private String artist;
-
     /**
      * Indicates the music genre (for the moment, it is a string, could become an enum)
      */
     private String genre;
-
     /**
      * Describes the concert
      */
     private String description;
-
     /**
      * Duration of the concert in hours
      */
     private double duration;
-
     /**
      * An UUID identifying this scheduled item uniquely
      */
     private String id;
-
     /**
      * The type of the item<br>
      * It would make sense to have an enum, but a single string allows the organizer to defines its own types of items
      */
     private String itemType;
-
     /**
      * The place (room, usually) where the event takes place<br>
-     *     // FIXME Depending on how the map works, we might want to add more data here so that the user can click and go to the map.
+     * // FIXME Depending on how the map works, we might want to add more data here so that the user can click and go to the map.
      */
     private String itemLocation;
-
-    public static final double STANDARD_DURATION = 1;
 
     public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre, @NonNull String description,
                          double duration, UUID id, String itemType, String itemLocation) {
@@ -73,7 +65,8 @@ public final class ScheduledItem {
         else this.duration = duration;
     }
 
-    public ScheduledItem() {}
+    public ScheduledItem() {
+    }
 
     public Date getDate() {
         if (date <= 0) {
@@ -109,14 +102,14 @@ public final class ScheduledItem {
 
         ScheduledItem that = (ScheduledItem) o;
 
-        if (date != that.date) return false;
-        if (Double.compare(that.duration, duration) != 0) return false;
-        if (artist != null ? !artist.equals(that.artist) : that.artist != null) return false;
-        if (genre != null ? !genre.equals(that.genre) : that.genre != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (itemType != null ? !itemType.equals(that.itemType) : that.itemType != null) return false;
-        return itemLocation != null ? itemLocation.equals(that.itemLocation) : that.itemLocation == null;
+        return date == that.date
+                && Double.compare(that.duration, duration) == 0
+                && (artist != null ? artist.equals(that.artist) : that.artist == null)
+                && (genre != null ? genre.equals(that.genre) : that.genre == null)
+                && (description != null ? description.equals(that.description) : that.description == null)
+                && (id != null ? id.equals(that.id) : that.id == null)
+                && (itemType != null ? itemType.equals(that.itemType) : that.itemType == null)
+                && (itemLocation != null ? itemLocation.equals(that.itemLocation) : that.itemLocation == null);
     }
 
     @Override
