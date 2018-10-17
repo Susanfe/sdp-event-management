@@ -110,7 +110,6 @@ public class ScheduledItemTest {
      * @return the broader precision string
      */
     public String setPrecisionToMinutes(Date date) {
-        //String regex = "[a-zA-Z]{3,} [a-zA-Z]{3,} [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} GMT[\\+\\-][0-9]{2}:[0-9]{2}[0-9]{4}";
         String dateS = date.toString();
         String[] splitted = dateS.split(" ");
         String[] times = splitted[3].split(":");
