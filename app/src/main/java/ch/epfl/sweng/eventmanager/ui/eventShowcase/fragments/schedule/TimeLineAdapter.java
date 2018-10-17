@@ -27,6 +27,12 @@ import ch.epfl.sweng.eventmanager.R;
 
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
+    /*
+     * Triggers the Line.NORMAL view id to be returned by `TimelineView.getTimeLineViewType/2`.
+     * @see <a href="https://github.com/vipulasri/Timeline-View/blob/v1.0.6/timelineview/src/main/java/com/github/vipulasri/timelineview/TimelineView.java#L269">TimelineView source code</a>
+     */
+    private final int TIMELINEVIEW_LINE_NORMAL_POSITION = -2;
+
     private List<ScheduledItem> dataList;
     private Context context;
     private LayoutInflater mLayoutInflater;
@@ -43,7 +49,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
      */
     @Override
     public int getItemViewType(int position) {
-        if (position < 0) position = -2; // Triggers the Line.NORMAL view id to be returned.
+        if (position < 0) position = TIMELINEVIEW_LINE_NORMAL_POSITION;
         return TimelineView.getTimeLineViewType(position,getItemCount());
     }
 
