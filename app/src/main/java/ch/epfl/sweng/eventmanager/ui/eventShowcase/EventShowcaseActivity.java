@@ -19,6 +19,12 @@ import javax.inject.Inject;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.MyScheduleFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -30,6 +36,7 @@ public class EventShowcaseActivity extends AppCompatActivity
     ViewModelFactory factory;
 
     private EventShowcaseModel model;
+    private ScheduleViewModel scheduleModel;
     private DrawerLayout mDrawerLayout;
 
     @Override
@@ -57,6 +64,10 @@ public class EventShowcaseActivity extends AppCompatActivity
         } else {
             this.model = ViewModelProviders.of(this, factory).get(EventShowcaseModel.class);
             this.model.init(eventID);
+
+            this.scheduleModel = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
+            this.scheduleModel.init(eventID);
+
             changeFragment(new EventMainFragment(), true);
         }
 
@@ -99,6 +110,14 @@ public class EventShowcaseActivity extends AppCompatActivity
 
             case R.id.nav_tickets :
                 changeFragment(new EventMapFragment(), true);
+                break;
+
+            case R.id.nav_schedule :
+                changeFragment(new ScheduleFragment(), true);
+                break;
+
+            case R.id.nav_my_schedule :
+                changeFragment(new MyScheduleFragment(), true);
                 break;
         }
 

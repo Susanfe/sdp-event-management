@@ -5,3 +5,8 @@ checks:
   method-lines:
     config:
       threshold: 35
+
+exclude_patterns:
+  - "app/src/main/java/ch/epfl/sweng/eventmanager/repository/room/daos"
+  - "app/src/androidTest/"
+  - "app/test/"
