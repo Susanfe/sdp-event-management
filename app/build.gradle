@@ -36,6 +36,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    useLibrary 'android.test.mock'
+
 }
 
 dependencies {
@@ -61,6 +63,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.+'
 
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

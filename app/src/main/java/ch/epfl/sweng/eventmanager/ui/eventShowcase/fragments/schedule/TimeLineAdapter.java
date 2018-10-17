@@ -11,30 +11,45 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import com.github.vipulasri.timelineview.TimelineView;
 
 import java.util.List;
+import java.util.Locale;
 
 import ch.epfl.sweng.eventmanager.R;
 
 
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
+    /*
+     * Triggers the Line.NORMAL view id to be returned by `TimelineView.getTimeLineViewType/2`.
+     * @see <a href="https://github.com/vipulasri/Timeline-View/blob/v1.0.6/timelineview/src/main/java/com/github/vipulasri/timelineview/TimelineView.java#L269">TimelineView source code</a>
+     */
+    private final int TIMELINEVIEW_LINE_NORMAL_POSITION = -2;
+
     private List<ScheduledItem> dataList;
     private Context context;
     private LayoutInflater mLayoutInflater;
     private ScheduleViewModel model;
 
-    public TimeLineAdapter(List<ScheduledItem> feedList, ScheduleViewModel model) {
-        dataList = feedList;
+    TimeLineAdapter(ScheduleViewModel model) {
         this.model = model;
     }
 
+    /**
+     * Gets the TimeLine view type for the item at a given position (start, middle, end).
+     * @param position position of the iterated item in the list held of the array adapter.
+     * @return the view type (int) of the TimeLine view to use for this element.
+     */
     @Override
     public int getItemViewType(int position) {
+        if (position < 0) position = TIMELINEVIEW_LINE_NORMAL_POSITION;
         return TimelineView.getTimeLineViewType(position,getItemCount());
     }
 
@@ -80,23 +95,63 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
     @Override
     public int getItemCount() {
-        return (dataList !=null? dataList.size():0);
+        return (dataList != null ? dataList.size() : 0);
     }
 
     private String transformDuration(double duration) {
-        double intPart = Math.abs(duration);
-        double fractionalPart = Math.round((duration - intPart)*60 / 10d)*10d;
-        return intPart+":"+fractionalPart;
+        double intPart = Math.floor(duration);
+        int fractionalPart = (int)((duration - intPart)*60);
+        return (int)intPart+"h"+ String.format(Locale.getDefault(),"%02d", fractionalPart);
     }
+
 
     private static Drawable getMarkerDrawable(Context context, int drawableResId, int colorFilter) {
         Drawable drawable = VectorDrawableCompat.create(context.getResources(), drawableResId, context.getTheme());
-        try {
+            if (drawable == null) {
+                Log.i("ERROR", "setColorFilter method returned null in TimeLineAdapter while " +
+                        "fetching marker drawable");
+                return null;
+            }
             drawable.setColorFilter(ContextCompat.getColor(context, colorFilter), PorterDuff.Mode.SRC_IN);
-        } catch (NullPointerException n) {
-            Log.i("ERROR", "setColorFilter method returned null in TimeLineAdapter while " +
-                    "fetching marker drawable");
-        }
-        return drawable;
+            return drawable;
+    }
+
+    public void setDataList(List<ScheduledItem> dataList) {
+        this.dataList = dataList;
+        this.notifyDataSetChanged();
+    }
+}
+
+class TimeLineViewHolder extends RecyclerView.ViewHolder {
+
+    @BindView(R.id.text_timeline_date)
+    TextView mDate;
+    @BindView(R.id.text_timeline_artist)
+    TextView mArtist;
+    @BindView(R.id.text_timeline_genre)
+    TextView mGenre;
+    @BindView(R.id.text_timeline_description)
+    TextView mDescription;
+    @BindView(R.id.text_timeline_duration)
+    TextView mDuration;
+    @BindView(R.id.time_marker)
+    TimelineView mTimelineView;
+    private Runnable onToggle;
+
+
+    TimeLineViewHolder(View itemView, int viewType) {
+        super(itemView);
+
+        ButterKnife.bind(this, itemView);
+        mTimelineView.initLine(viewType);
+
+        itemView.setOnLongClickListener(v -> {
+            onToggle.run();
+            return true;
+        });
+    }
+
+    public void setOnToggle(Runnable onToggle) {
+        this.onToggle = onToggle;
     }
 }

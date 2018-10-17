@@ -1,6 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import android.support.annotation.NonNull;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -11,64 +13,60 @@ import java.util.UUID;
  * the ScheduleFragment.
  */
 public final class ScheduledItem {
+    public static final double STANDARD_DURATION = 1;
     /**
      * Indicates the time of the concert, precision required is minutes.
-     *
+     * <p>
      * This is a long because firebase doesn't understand Date objects.
      */
     private long date;
-
     /**
      * Indicates the artist or band performing.
      */
     private String artist;
-
     /**
      * Indicates the music genre (for the moment, it is a string, could become an enum)
      */
     private String genre;
-
     /**
      * Describes the concert
      */
     private String description;
-
     /**
      * Duration of the concert in hours
      */
     private double duration;
-
     /**
      * An UUID identifying this scheduled item uniquely
      */
     private String id;
-
     /**
      * The type of the item<br>
      * It would make sense to have an enum, but a single string allows the organizer to defines its own types of items
      */
     private String itemType;
-
     /**
      * The place (room, usually) where the event takes place<br>
-     *     // FIXME Depending on how the map works, we might want to add more data here so that the user can click and go to the map.
+     * // FIXME Depending on how the map works, we might want to add more data here so that the user can click and go to the map.
      */
     private String itemLocation;
 
-    private static final double STANDARD_DURATION = 1;
-
-    public ScheduledItem(Date date, String artist, String genre, String description, double duration, UUID id, String itemType, String itemLocation) {
+    public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre, @NonNull String description,
+                         double duration, @NonNull UUID id, @NonNull String itemType, @NonNull String itemLocation) {
         this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
         this.description = description;
-        this.duration = duration;
         this.id = id.toString();
         this.itemType = itemType;
         this.itemLocation = itemLocation;
+
+        if (duration <= 0) this.duration = STANDARD_DURATION;
+        else this.duration = duration;
     }
 
-    public ScheduledItem() {}
+    public ScheduledItem() {
+    }
 
     public Date getDate() {
         if (date <= 0) {
@@ -98,16 +96,44 @@ public final class ScheduledItem {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof ScheduledItem) {
-            ScheduledItem compared = (ScheduledItem) obj;
-            return compared.date == date && compared.artist.equals(artist) &&
-                    compared.genre.equals(genre) && compared.duration==duration;
-        } else return super.equals(obj);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ScheduledItem that = (ScheduledItem) o;
+
+        return date == that.date
+                && Double.compare(that.duration, duration) == 0
+                && artist.equals(that.artist)
+                && genre.equals(that.genre)
+                && description.equals(that.description)
+                && id.equals(that.id)
+                && itemType.equals(that.itemType)
+                && itemLocation.equals(that.itemLocation);
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = (int) (date ^ (date >>> 32));
+        result = 31 * result + (artist != null ? artist.hashCode() : 0);
+        result = 31 * result + (genre != null ? genre.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        temp = Double.doubleToLongBits(duration);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (itemType != null ? itemType.hashCode() : 0);
+        result = 31 * result + (itemLocation != null ? itemLocation.hashCode() : 0);
+        return result;
     }
 
     public String dateAsString() {
-        return new Date(date).toString();
+        if (date <= 0) {
+            return null;
+        }
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        return f.format(date);
     }
 
     public String getItemType() {
@@ -142,16 +168,16 @@ public final class ScheduledItem {
 
         if (currentDate.after(getDate())) {
             if (currentDate.before(getEndOfConcert())) {
-                return ScheduledItemStatus.IN_PROGRESS; //concert is taking place
+                return ScheduledItemStatus.IN_PROGRESS; // concert is taking place
             } else {
-                return ScheduledItemStatus.NOT_STARTED; //concert is later
+                return ScheduledItemStatus.PASSED; // concert is finished
             }
         } else {
-            return ScheduledItemStatus.PASSED; //concert happened
+            return ScheduledItemStatus.NOT_STARTED; // concert didn't start yet
         }
     }
 
-    public static enum ScheduledItemStatus {
+    public enum ScheduledItemStatus {
         /**
          * The concert already happened
          */
