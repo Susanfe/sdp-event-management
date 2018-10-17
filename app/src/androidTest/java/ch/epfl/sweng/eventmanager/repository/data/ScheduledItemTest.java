@@ -9,21 +9,25 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.UUID;
 
 import ch.epfl.sweng.eventmanager.R;
 
 import static org.junit.Assert.*;
 
-public class ConcertTest {
+public class ScheduledItemTest {
 
     private final Date now = new Date();
     private final String mj = "Michael Jackson";
     private final String pop = "Pop";
     private final String des = "Amazing event as it is the resurrection of the King!";
     private final double dur = 3.5;
+    private final UUID uuid = UUID.randomUUID();
+    private final String type = "Concert";
+    private final String location = "Polyv";
 
-    private Concert c1 = new Concert(now, mj, pop, des, -12);
-    private Concert c2 = new Concert(now, mj, pop, des, dur);
+    private ScheduledItem c1 = new ScheduledItem(now, mj, pop, des, -12, uuid, type, location);
+    private ScheduledItem c2 = new ScheduledItem(now, mj, pop, des, dur, uuid, type, location);
 
     @Test
     public void getDate() {
@@ -47,28 +51,34 @@ public class ConcertTest {
 
     @Test
     public void getDuration() {
-        double STANDARD_DURATION = Concert.STANDARD_DURATION;
-        assertTrue(c1.getDuration() == STANDARD_DURATION);
-        assertTrue(c2.getDuration() == dur);
+        double STANDARD_DURATION = ScheduledItem.STANDARD_DURATION;
+        assertEquals(c1.getDuration(), STANDARD_DURATION, 0.0);
+        assertEquals(c2.getDuration(), dur, 0.0);
     }
 
     @Test
     public void equals() {
-        assertFalse(c1.equals(c2));
+        assertNotEquals(c1, c2);
 
-        Concert copy2 = new Concert(now, mj, pop, des, dur);
-        assertTrue(c2.equals(copy2));
+        ScheduledItem copy2 = new ScheduledItem(now, mj, pop, des, dur, uuid, type, location);
+        assertEquals(c2, copy2);
 
-        Concert fake_name = new Concert(now, "Michael Fackson", pop, des, dur);
-        Concert fake_genre = new Concert(now, mj, "Funky", des, dur);
-        Concert fake_des = new Concert(now, mj, pop, "Wow!", dur);
-        Concert fake_dur = new Concert(now, mj, pop, des, 5);
+        ScheduledItem fakeName = new ScheduledItem(now, "Michael Fackson", pop, des, dur, uuid, type, location);
+        ScheduledItem fakeGenre = new ScheduledItem(now, mj, "Funky", des, dur, uuid, type, location);
+        ScheduledItem fakeDes = new ScheduledItem(now, mj, pop, "Wow!", dur, uuid, type, location);
+        ScheduledItem fakeDur = new ScheduledItem(now, mj, pop, des, 5, uuid, type, location);
+        ScheduledItem fakeUuid = new ScheduledItem(now, mj, pop, des, 5, UUID.randomUUID(), type, location);
+        ScheduledItem fakeType = new ScheduledItem(now, mj, pop, des, 5, uuid, "Something", location);
+        ScheduledItem fakeLocation = new ScheduledItem(now, mj, pop, des, 5, uuid, type, "Somewhere");
 
 
-        assertFalse(c2.equals(fake_name));
-        assertFalse(c2.equals(fake_genre));
-        assertFalse(c2.equals(fake_des));
-        assertFalse(c2.equals(fake_dur));
+        assertNotEquals(c2, fakeName);
+        assertNotEquals(c2, fakeGenre);
+        assertNotEquals(c2, fakeDes);
+        assertNotEquals(c2, fakeDur);
+        assertNotEquals(c2, fakeUuid);
+        assertNotEquals(c2, fakeType);
+        assertNotEquals(c2, fakeLocation);
     }
 
     @Test
@@ -79,7 +89,7 @@ public class ConcertTest {
     }
 
     @Test
-    public void getEndOfConcert() {
+    public void getEndOfScheduledItem() {
          Date end = new Date(now.getYear(), now.getMonth(), now.getDate(), now.getHours()+3, now.getMinutes() +30);
          assertEquals(setPrecisionToMinutes(end), setPrecisionToMinutes(c2.getEndOfConcert()));
     }
@@ -88,14 +98,14 @@ public class ConcertTest {
     public void getStatus() {
         Calendar c = new GregorianCalendar();
         c.set(Calendar.YEAR, 2999);
-        Concert fake1 = new Concert(c.getTime(), mj, pop, des, dur);
+        ScheduledItem fake1 = new ScheduledItem(c.getTime(), mj, pop, des, dur, uuid, type, location);
         c.set(Calendar.YEAR, 1970);
-        Concert fake2 = new Concert(c.getTime(), mj, pop, des, dur);
+        ScheduledItem fake2 = new ScheduledItem(c.getTime(), mj, pop, des, dur, uuid, type, location);
 
         System.out.print(fake1.dateAsString());
-        assertEquals(Concert.ConcertStatus.NOT_STARTED, fake1.getStatus());
-        assertEquals(Concert.ConcertStatus.PASSED, fake2.getStatus());
-        assertEquals(Concert.ConcertStatus.IN_PROGRESS, c2.getStatus());
+        assertEquals(ScheduledItem.ScheduledItemStatus.NOT_STARTED, fake1.getStatus());
+        assertEquals(ScheduledItem.ScheduledItemStatus.PASSED, fake2.getStatus());
+        assertEquals(ScheduledItem.ScheduledItemStatus.IN_PROGRESS, c2.getStatus());
     }
 
     /**

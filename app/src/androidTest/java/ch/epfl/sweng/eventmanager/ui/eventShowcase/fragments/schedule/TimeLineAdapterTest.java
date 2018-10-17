@@ -1,28 +1,26 @@
-package ch.epfl.sweng.eventmanager.ui.schedule;
+package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
 import android.test.mock.MockContext;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import com.github.vipulasri.timelineview.LineType;
-
 import org.junit.Test;
 
 import java.util.Collections;
 import java.util.List;
 
-import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.Concert;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TimeLineAdapterTest {
 
-    private List<Concert> l = Collections.EMPTY_LIST;
-    private TimeLineAdapter a = new TimeLineAdapter();
-   // private Concert c1 = new Concert();
+    private List<ScheduledItem> l = Collections.EMPTY_LIST;
+    private TimeLineAdapter a = new TimeLineAdapter(null);
+    // private ScheduledItem c1 = new ScheduledItem();
 
     @Test
     public void getItemViewType() {
