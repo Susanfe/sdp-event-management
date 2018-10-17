@@ -70,9 +70,11 @@ public abstract class AbstractScheduleFragment extends Fragment {
       * @param view view
       */
     private void showAlertOnEmptyConcerts(View view) {
-         AlertDialog.Builder myAlert = new AlertDialog.Builder(getActivity());
-         myAlert.setMessage(R.string.concerts_empty).create();
-         myAlert.show();
+         AlertDialog.Builder nullConcertsAlert = new AlertDialog.Builder(getActivity());
+         nullConcertsAlert.setMessage(R.string.concerts_empty).create();
+         nullConcertsAlert.setOnDismissListener(dialog -> getActivity().onBackPressed());
+         nullConcertsAlert.show();
+
      }
 
     @Override
