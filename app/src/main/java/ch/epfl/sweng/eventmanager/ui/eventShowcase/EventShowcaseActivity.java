@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import javax.inject.Inject;
 
@@ -143,5 +144,13 @@ public class EventShowcaseActivity extends AppCompatActivity
                             + exception.toString()
             );
         }
+    }
+
+    public void openMap(View view) {
+        model.getEvent().observe(this, ev -> {
+            Intent intent = new Intent(this, MapsActivity.class);
+            intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, ev.getId());
+            this.startActivity(intent);
+        });
     }
 }

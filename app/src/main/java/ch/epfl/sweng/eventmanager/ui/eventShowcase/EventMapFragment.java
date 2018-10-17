@@ -2,18 +2,22 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import java.io.Serializable;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +44,11 @@ public class EventMapFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_event_map, container, false);
+
+        // FIXME: move MapsActivity's content to EventMapFragment
+        Button openMapButton = (Button) view.findViewById(R.id.open_map_button);
+        openMapButton.setText("Open map");
+
         return view;
     }
 
