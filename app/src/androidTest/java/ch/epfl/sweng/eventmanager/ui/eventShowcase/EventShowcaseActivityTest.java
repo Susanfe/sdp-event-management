@@ -49,7 +49,6 @@ public class EventShowcaseActivityTest {
         // Open event picker
         String help_text = getResourceString(R.string.help_text_activity_event_picking);
         onView(withId(R.id.drawer_layout))
-                .check(matches(isClosed(Gravity.LEFT)))
                 .perform(DrawerActions.open());
 
         onView(withId(R.id.nav_view))
