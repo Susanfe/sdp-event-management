@@ -1,14 +1,17 @@
-package ch.epfl.sweng.eventmanager.ui.schedule;
+package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-
-import com.github.vipulasri.timelineview.TimelineView;
-
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import com.github.vipulasri.timelineview.TimelineView;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 
 class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
@@ -24,11 +27,22 @@ class TimeLineViewHolder extends RecyclerView.ViewHolder {
     TextView mDuration;
     @BindView(R.id.time_marker)
     TimelineView mTimelineView;
+    private Runnable onToggle;
+
 
     TimeLineViewHolder(View itemView, int viewType) {
         super(itemView);
 
         ButterKnife.bind(this, itemView);
         mTimelineView.initLine(viewType);
+
+        itemView.setOnLongClickListener(v -> {
+            onToggle.run();
+            return true;
+        });
+    }
+
+    public void setOnToggle(Runnable onToggle) {
+        this.onToggle = onToggle;
     }
 }

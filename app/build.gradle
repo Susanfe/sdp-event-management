@@ -11,6 +11,10 @@ android {
     compileOptions.incremental = false
 
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    defaultConfig {
         applicationId "ch.epfl.sweng.eventmanager"
         minSdkVersion 15
         targetSdkVersion 28

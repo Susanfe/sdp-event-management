@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.room;
+package ch.epfl.sweng.eventmanager.repository.room.daos;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.*;
@@ -11,7 +11,7 @@ import java.util.List;
  * Here are all the SQL queries.
  */
 @Dao
-public interface JoinedEventDao {
+public interface JoinedEventDao extends GenericEventDAO<JoinedEvent, Integer> {
     @Query("SELECT * FROM joined_events")
     LiveData<List<JoinedEvent>> getAll();
 
@@ -25,7 +25,7 @@ public interface JoinedEventDao {
     LiveData<JoinedEvent> findByName(String eventName);
 
     @Query("SELECT * FROM joined_events WHERE event_id LIKE :eventId LIMIT 1")
-    LiveData<JoinedEvent> findById(int eventId);
+    LiveData<JoinedEvent> findById(Integer eventId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(JoinedEvent... joinedEvent);

@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.eventShowcase;
+package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
 
 import android.arch.lifecycle.*;
 
@@ -22,6 +22,7 @@ public class EventShowcaseModel extends ViewModel implements Serializable {
 
     private EventRepository eventRepository;
     private JoinedEventRepository joinedEventRepository;
+
 
     @Inject
     public EventShowcaseModel(EventRepository eventRepository, JoinedEventRepository joinedEventRepository) {
