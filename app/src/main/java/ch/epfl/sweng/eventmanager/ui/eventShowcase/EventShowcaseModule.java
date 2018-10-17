@@ -25,6 +25,8 @@ public abstract class EventShowcaseModule {
     abstract ViewModel provideScheduleViewModel(ScheduleViewModel scheduleViewModel);
 
     @ContributesAndroidInjector
+    abstract MapsActivity contributeMapActivityInjector();
+
+    @ContributesAndroidInjector
     abstract EventShowcaseActivity contributeEventShowcaseActivityInjector();
 }
-

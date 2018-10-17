@@ -2,13 +2,12 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
 
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class holds the basic elements about an organized event.<br>
- *     This class might hold way more data in the future, depending on how the backend will be organized
+ * This class might hold way more data in the future, depending on how the backend will be organized
  *
  * @author Louis Vialar
  */
@@ -33,13 +32,23 @@ public final class Event {
      * An image representing the event, may be null
      */
     private Bitmap image;
+    /**
+     * The location of the event
+     */
+    private EventLocation location;
+    /**
+     * A particular place into the event
+     */
+    private List<Spot> spotList;
 
-    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image) {
+    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image, EventLocation location, List<Spot> spotList) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.organizer = organizer;
         this.image = image;
+        this.location = location;
+        this.spotList = new ArrayList<>(spotList);
     }
 
     public Event() {
@@ -64,4 +73,10 @@ public final class Event {
     public Bitmap getImage() {
         return image;
     }
+
+    public EventLocation getLocation() {
+        return location;
+    }
+
+    public List<Spot> getSpotList() { return spotList; }
 }

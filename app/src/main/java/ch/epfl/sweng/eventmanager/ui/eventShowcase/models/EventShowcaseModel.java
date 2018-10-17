@@ -2,12 +2,11 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
 
 import android.arch.lifecycle.*;
 
-import java.io.Serializable;
-
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 
 import javax.inject.Inject;
 
@@ -17,7 +16,7 @@ import javax.inject.Inject;
  *
  * @author Louis Vialar
  */
-public class EventShowcaseModel extends ViewModel implements Serializable {
+public class EventShowcaseModel extends ViewModel {
     private LiveData<Event> event;
 
     private EventRepository eventRepository;
@@ -40,6 +39,17 @@ public class EventShowcaseModel extends ViewModel implements Serializable {
 
     public LiveData<Event> getEvent() {
         return event;
+    }
+
+    public LiveData<EventLocation> getLocation() {
+        return Transformations.map(getEvent(), ev -> {
+            if (ev == null || ev.getLocation() == null) {
+                // By default, return EPFL
+                return new EventLocation("EPFL", 46.518510, 6.563249);
+            }
+
+            return ev.getLocation();
+        });
     }
 
     public void joinEvent(Event event){
