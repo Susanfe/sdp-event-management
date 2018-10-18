@@ -12,5 +12,4 @@ Hi, we are a team of young engineers with a question : has it ever happened to y
 *Our app* comes in handy at this point, as we finely designed it to assist you during the events you attend. *Our app* has multiple features for that such as providing a map of the event with highlighted spots, a general schedule you can pick from to get reminders for your favorite activities, a way to keep in touch with your friends in the place and many more for you to discover. Finally no fears of missing out as *our app* connects you to a wide range of events you can discover, consult and bookmark within the app. 
 So don't forget, get it to live it! 
 
-*n.b : Please comment and review ! 
-	wherever there is OUR APP written, this must be replaced by * :+1:
+*n.b : Please comment and review ! :+1: wherever there is OUR APP written, this must be replaced by the app name.*
