@@ -4,6 +4,7 @@ import android.arch.lifecycle.*;
 
 import java.io.Serializable;
 
+import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
@@ -19,6 +20,7 @@ import javax.inject.Inject;
  */
 public class EventShowcaseModel extends ViewModel implements Serializable {
     private LiveData<Event> event;
+    private LiveData<Bitmap> eventImage;
 
     private EventRepository eventRepository;
     private JoinedEventRepository joinedEventRepository;
@@ -36,10 +38,15 @@ public class EventShowcaseModel extends ViewModel implements Serializable {
         }
 
         this.event = eventRepository.getEvent(eventId);
+        this.eventImage = Transformations.map(event, Event::getImage);
     }
 
     public LiveData<Event> getEvent() {
         return event;
+    }
+
+    public LiveData<Bitmap> getEventImage(){
+        return eventImage;
     }
 
     public void joinEvent(Event event){
