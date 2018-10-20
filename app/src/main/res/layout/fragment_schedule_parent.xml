@@ -6,32 +6,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?android:attr/actionBarSize"
-        tools:context=".ui.eventShowcase.fragments.schedule.ScheduleParentFragment">
+        tools:context=".ui.eventShowcase.fragments.schedule.ScheduleParentFragment"
+        android:id="@+id/main_content">
 
-<android.support.design.widget.CoordinatorLayout
-        android:id="@+id/main_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <android.support.design.widget.AppBarLayout
+    <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            android:background="@color/colorPrimaryDark">
+            android:layout_height="match_parent">
 
-        <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
+        <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabMode="fixed"
-                app:tabGravity="fill"/>
-    </android.support.design.widget.AppBarLayout>
+                android:theme="@style/AppTheme.AppBarOverlay"
+                android:background="@color/colorPrimaryDark">
 
-    <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
-</android.support.design.widget.CoordinatorLayout>
+            <android.support.design.widget.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabMode="fixed"
+                    app:tabGravity="fill"/>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </android.support.design.widget.CoordinatorLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -2,8 +2,8 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,10 +26,11 @@ public abstract class AbstractScheduleFragment extends Fragment {
     protected ScheduleViewModel model;
     private RecyclerView recyclerView;
     private TimeLineAdapter timeLineAdapter;
+    private AlertDialog nullConcertsAlert;
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_schedule, container, false);
@@ -38,9 +39,9 @@ public abstract class AbstractScheduleFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
-
         timeLineAdapter = new TimeLineAdapter(model);
         recyclerView.setAdapter(timeLineAdapter);
+
 
         return view;
     }
@@ -52,7 +53,7 @@ public abstract class AbstractScheduleFragment extends Fragment {
         Log.i(TAG, "Resume " + model);
 
         if (model == null) {
-            model = ViewModelProviders.of(getActivity()).get(ScheduleViewModel.class);
+            model = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
         }
 
         this.getScheduledItems().observe(this, concerts -> {
@@ -60,28 +61,40 @@ public abstract class AbstractScheduleFragment extends Fragment {
                 Collections.sort(concerts,(c1,c2) -> Objects.requireNonNull(c1.getDate()).compareTo(c2.getDate()));
                 timeLineAdapter.setDataList(concerts);
             } else {
-                showAlertOnEmptyConcerts(recyclerView);
+                nullConcertsAlert.show();
             }
         });
     }
 
+
     /**
       * Show an alert message if there are no registered concerts for this event
-      * @param view view
       */
-    private void showAlertOnEmptyConcerts(View view) {
-         AlertDialog.Builder nullConcertsAlert = new AlertDialog.Builder(getActivity());
-         nullConcertsAlert.setMessage(R.string.concerts_empty).create();
-         nullConcertsAlert.setOnDismissListener(dialog -> getActivity().onBackPressed());
-         nullConcertsAlert.show();
-
+    private void createAlertOnEmptyConcert() {
+        if(nullConcertsAlert == null) {
+            AlertDialog.Builder nullConcertsAlertBuilder = new AlertDialog.Builder(requireActivity());
+            nullConcertsAlertBuilder.setMessage(R.string.concerts_empty).
+                    setPositiveButton(R.string.dialog_ok, (dialog, which) -> dialog.dismiss());
+            nullConcertsAlert = nullConcertsAlertBuilder.create();
+        }
      }
+
+     /* To swap fragment on emptyConcerts
+     private void swapFragment(Fragment fragment) {
+         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+         fragmentTransaction.replace(R.id.main_content, fragment);
+         fragmentTransaction.addToBackStack(null);
+         fragmentTransaction.commit();
+     }
+*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model = ViewModelProviders.of(getActivity()).get(ScheduleViewModel.class);
+        model = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
+        createAlertOnEmptyConcert();
     }
+
 
     protected abstract LiveData<List<ScheduledItem>> getScheduledItems();
 
