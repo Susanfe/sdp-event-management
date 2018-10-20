@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,9 +22,8 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.MyScheduleFragment;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
@@ -52,9 +52,11 @@ public class EventShowcaseActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // Add drawer button to the action bar
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        if(getSupportActionBar() != null) {
+            ActionBar actionbar = getSupportActionBar();
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
 
         // Fetch event from passed ID
         Intent intent = getIntent();
@@ -87,7 +89,7 @@ public class EventShowcaseActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // set item as selected to persist highlight
         menuItem.setChecked(true);
 
@@ -113,12 +115,9 @@ public class EventShowcaseActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_schedule :
-                changeFragment(new ScheduleFragment(), true);
+                changeFragment(new ScheduleParentFragment(), true);
                 break;
 
-            case R.id.nav_my_schedule :
-                changeFragment(new MyScheduleFragment(), true);
-                break;
         }
 
         return true;
