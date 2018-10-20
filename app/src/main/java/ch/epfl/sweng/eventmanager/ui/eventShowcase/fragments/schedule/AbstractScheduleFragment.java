@@ -5,13 +5,15 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
@@ -24,9 +26,11 @@ public abstract class AbstractScheduleFragment extends Fragment {
 
     private static String TAG = "AbstractScheduleFragment";
     protected ScheduleViewModel model;
-    private RecyclerView recyclerView;
     private TimeLineAdapter timeLineAdapter;
-    private AlertDialog nullConcertsAlert;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.concerts_empty_tv)
+    TextView nullConcertsTV;
 
 
     @Override
@@ -35,13 +39,12 @@ public abstract class AbstractScheduleFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_schedule, container, false);
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+        ButterKnife.bind(this,view);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
         timeLineAdapter = new TimeLineAdapter(model);
         recyclerView.setAdapter(timeLineAdapter);
-
 
         return view;
     }
@@ -58,41 +61,22 @@ public abstract class AbstractScheduleFragment extends Fragment {
 
         this.getScheduledItems().observe(this, concerts -> {
             if (concerts != null) {
+                nullConcertsTV.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 Collections.sort(concerts,(c1,c2) -> Objects.requireNonNull(c1.getDate()).compareTo(c2.getDate()));
                 timeLineAdapter.setDataList(concerts);
             } else {
-                nullConcertsAlert.show();
+                nullConcertsTV.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         });
     }
 
 
-    /**
-      * Show an alert message if there are no registered concerts for this event
-      */
-    private void createAlertOnEmptyConcert() {
-        if(nullConcertsAlert == null) {
-            AlertDialog.Builder nullConcertsAlertBuilder = new AlertDialog.Builder(requireActivity());
-            nullConcertsAlertBuilder.setMessage(R.string.concerts_empty).
-                    setPositiveButton(R.string.dialog_ok, (dialog, which) -> dialog.dismiss());
-            nullConcertsAlert = nullConcertsAlertBuilder.create();
-        }
-     }
-
-     /* To swap fragment on emptyConcerts
-     private void swapFragment(Fragment fragment) {
-         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-         fragmentTransaction.replace(R.id.main_content, fragment);
-         fragmentTransaction.addToBackStack(null);
-         fragmentTransaction.commit();
-     }
-*/
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
-        createAlertOnEmptyConcert();
     }
 
 
