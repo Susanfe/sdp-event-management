@@ -145,7 +145,7 @@ public class EventShowcaseActivity extends AppCompatActivity
             );
         }
     }
-
+/*
     public void openMap(View view) {
         model.getEvent().observe(this, ev -> {
             Intent intent = new Intent(this, MapsActivity.class);
@@ -153,4 +153,5 @@ public class EventShowcaseActivity extends AppCompatActivity
             this.startActivity(intent);
         });
     }
+    */
 }
