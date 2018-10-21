@@ -25,8 +25,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.action.ViewActions.*;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -62,7 +61,9 @@ public class MyScheduleTest {
                 .perform(DrawerActions.open());
 
         onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_my_schedule));
+                .perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
+
+        onView(withId(R.id.viewpager)).perform(swipeLeft());
 
         // Delete first element of scheduledItems from MySchedule
         onView(withIndex(withId(R.id.text_timeline_description), 0)).perform(longClick());
