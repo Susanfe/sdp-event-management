@@ -23,11 +23,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 
 /**
@@ -39,7 +44,7 @@ public class EventMapFragment extends Fragment {
     private static final String TAG = "EventMapFragment";
     private EventShowcaseModel model;
     private GoogleMap mMap;
-    MapView mMapView;
+    private ClusterManager<Spot> mClusterManager;
 
     public EventMapFragment() {
         // Required empty public constructor
@@ -74,26 +79,19 @@ public class EventMapFragment extends Fragment {
                 public void onMapReady(GoogleMap googleMap) {
                     mMap = googleMap;
                     if (mMap != null) {
-
+                        float zoomLevel = 19.0f; //This goes up to 21
                         model.getLocation().observe(getActivity(), loc -> {
                             if (loc != null) {
                                 LatLng place = new LatLng(loc.getLatitude(), loc.getLongitude());
                                 mMap.addMarker(new MarkerOptions().position(place).title(loc.getName()));
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 19.0f));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, zoomLevel));
 
-                                //setUpClusterer(setFakeSpot());
+                                setUpClusterer(setFakeSpot());
                                 mMap.getUiSettings().setCompassEnabled(true);
                                 mMap.getUiSettings().setZoomControlsEnabled(true);
                                 mMap.getUiSettings().setMapToolbarEnabled(true);
                             }
                         });
-/*
-                        mMap.getUiSettings().setAllGesturesEnabled(true);
-
-                        LatLng place = new LatLng(46.517799, 6.566737);
-                        mMap.addMarker(new MarkerOptions().position(place).title("EPFL"));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 15.0f));
-*/
                     }
 
                 }
@@ -101,38 +99,38 @@ public class EventMapFragment extends Fragment {
 
         }
 
-
-/*
-        mMapView = (MapView) view.findViewById(R.id.map);
-        mMapView.
-                onCreate(savedInstanceState);
-
-        mMapView.onResume(); // needed to get the map to display immediately
-
-        try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                mMap = googleMap;
-
-                LatLng place = new LatLng(46.517799, 6.566737);
-                mMap.addMarker(new MarkerOptions().position(place).title("EPFL"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 15.0f));
-            }
-        });
-*/
-
-
-        // FIXME: move MapsActivity's content to EventMapFragment
-        //Button openMapButton = (Button) view.findViewById(R.id.open_map_button);
-        //openMapButton.setText("Open map");
-
         return view;
+    }
+
+    private List<Spot> setFakeSpot() {
+        Spot spot1 = new Spot("Grande scène", SpotType.SCENE, 46.517799, 6.566737);
+        Spot spot2 = new Spot("Satellite", SpotType.BAR, 46.520433, 6.567822);
+        Spot spot3 = new Spot("test3", SpotType.NURSERY, 46.523, 6.567822);
+        Spot spot4 = new Spot("test4", SpotType.WC, 46.520433, 6.5679);
+        Spot spot5 = new Spot("test5", SpotType.INFORMATION, 46.520433, 6.55555);
+        List<Spot> spotList= new ArrayList<>();
+        spotList.add(spot1);
+        spotList.add(spot2);
+        spotList.add(spot3);
+        spotList.add(spot4);
+        spotList.add(spot5);
+        return spotList;
+    }
+
+
+    private void setUpClusterer(List<Spot> spotList) {
+
+        mClusterManager = new ClusterManager<Spot>(getActivity(), mMap);
+
+        // Point the map's listeners at the listeners implemented by the cluster
+        // manager.
+        mMap.setOnCameraIdleListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+
+        for(Spot s: spotList){
+            mClusterManager.addItem(s);
+        }
+        mClusterManager.setAnimation(true);
     }
 
     @Override
