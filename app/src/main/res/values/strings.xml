@@ -7,6 +7,7 @@
     <string name="concert_no_description">Sorry ! There is no description for this concert :/</string>
     <string name="concert_no_date">2018–1–1 20:30</string>
     <string name="concerts_empty">Sorry ! There are no registered concerts for this event :/</string>
+    <string name="my_schedule_empty">There is currently no saved concerts for this event</string>
 
     <string name="title_activity_join_event_switch">Join the event</string>
     <string name="title_activity_login">Sign in</string>
@@ -37,5 +38,4 @@
     <string name="timeline_view_removed_from_own_schedule">Event removed from your schedule!</string>
     <string name="my_schedule_nav_item_activity_event_showcase">My Schedule</string>
 
-    <string name="dialog_ok">OK !</string>
 </resources>

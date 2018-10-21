@@ -40,6 +40,7 @@ public abstract class AbstractScheduleFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_schedule, container, false);
 
         ButterKnife.bind(this,view);
+        setNullConcertsTV();
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
@@ -60,7 +61,7 @@ public abstract class AbstractScheduleFragment extends Fragment {
         }
 
         this.getScheduledItems().observe(this, concerts -> {
-            if (concerts != null) {
+            if (concerts != null && concerts.size() > 0) {
                 nullConcertsTV.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 Collections.sort(concerts,(c1,c2) -> Objects.requireNonNull(c1.getDate()).compareTo(c2.getDate()));
@@ -79,6 +80,7 @@ public abstract class AbstractScheduleFragment extends Fragment {
         model = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
     }
 
+    protected abstract void setNullConcertsTV();
 
     protected abstract LiveData<List<ScheduledItem>> getScheduledItems();
 
