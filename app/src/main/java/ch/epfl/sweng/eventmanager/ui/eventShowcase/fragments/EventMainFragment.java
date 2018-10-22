@@ -25,12 +25,9 @@ public class EventMainFragment extends AbstractShowcaseFragment {
 
         model.getEvent().observe(this, ev -> {
             if (ev == null) {
-                Log.e(TAG, "Got null model from parent activity");
+                Log.e(TAG, "Got null event");
                 return;
             }
-
-            // Set window title
-            getActivity().setTitle(ev.getName());
 
             TextView eventDescription = (TextView) view.findViewById(R.id.event_description);
             eventDescription.setText(ev.getDescription());
