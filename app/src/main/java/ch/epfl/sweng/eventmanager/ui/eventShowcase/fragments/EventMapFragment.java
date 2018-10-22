@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.eventShowcase;
+package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
