@@ -11,6 +11,10 @@ android {
     compileOptions.incremental = false
 
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    defaultConfig {
         applicationId "ch.epfl.sweng.eventmanager"
         minSdkVersion 15
         targetSdkVersion 28
@@ -31,6 +35,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    useLibrary 'android.test.mock'
 
 }
 
@@ -57,6 +63,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.+'
 
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

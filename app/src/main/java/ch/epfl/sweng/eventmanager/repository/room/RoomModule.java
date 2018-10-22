@@ -2,8 +2,8 @@ package ch.epfl.sweng.eventmanager.repository.room;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
-import ch.epfl.sweng.eventmanager.repository.room.AppDataBase;
-import ch.epfl.sweng.eventmanager.repository.room.JoinedEventDao;
+import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedEventDao;
+import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
 import dagger.Module;
 import dagger.Provides;
 
@@ -32,6 +32,12 @@ public class RoomModule {
     @Provides
     JoinedEventDao providesProductDao(AppDataBase appDatabase) {
         return appDatabase.getJoinedEventDao();
+    }
+
+    @Singleton
+    @Provides
+    JoinedScheduleItemDao providesMyScheduleDAO(AppDataBase appDatabase) {
+        return appDatabase.getJoinedScheduleItemDao();
     }
 
 }

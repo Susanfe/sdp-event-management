@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,12 +15,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import javax.inject.Inject;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleParentFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -31,6 +35,7 @@ public class EventShowcaseActivity extends AppCompatActivity
     ViewModelFactory factory;
 
     private EventShowcaseModel model;
+    private ScheduleViewModel scheduleModel;
     private DrawerLayout mDrawerLayout;
 
     @Override
@@ -46,9 +51,11 @@ public class EventShowcaseActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // Add drawer button to the action bar
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        if(getSupportActionBar() != null) {
+            ActionBar actionbar = getSupportActionBar();
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
 
         // Fetch event from passed ID
         Intent intent = getIntent();
@@ -58,6 +65,10 @@ public class EventShowcaseActivity extends AppCompatActivity
         } else {
             this.model = ViewModelProviders.of(this, factory).get(EventShowcaseModel.class);
             this.model.init(eventID);
+
+            this.scheduleModel = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
+            this.scheduleModel.init(eventID);
+
             changeFragment(new EventMainFragment(), true);
         }
 
@@ -77,7 +88,7 @@ public class EventShowcaseActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // set item as selected to persist highlight
         menuItem.setChecked(true);
 
@@ -101,6 +112,11 @@ public class EventShowcaseActivity extends AppCompatActivity
             case R.id.nav_tickets :
                 changeFragment(new EventMapFragment(), true);
                 break;
+
+            case R.id.nav_schedule :
+                changeFragment(new ScheduleParentFragment(), true);
+                break;
+
         }
 
         return true;
