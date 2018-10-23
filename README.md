@@ -14,3 +14,5 @@ Finally no fears of missing out as *our app* connects you to a wide range of eve
 So don't forget, get it to live it!
 
 *n.b : Please comment and review !* :+1: *wherever there is OUR APP written, this must be replaced by the app name.*
+
+New PR opened for modification and review.
