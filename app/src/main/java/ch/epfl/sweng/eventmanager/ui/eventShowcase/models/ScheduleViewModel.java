@@ -62,7 +62,7 @@ public class ScheduleViewModel extends ViewModel {
     }
 
     public LiveData<List<ScheduledItem>> getJoinedScheduleItems() {
-        return scheduledItems;
+        return joinedItems;
     }
 
     public void toggleMySchedule(UUID concert, Context context) {
