@@ -38,7 +38,7 @@ public class EventShowcaseModel extends ViewModel implements Serializable {
         }
 
         this.event = eventRepository.getEvent(eventId);
-        this.eventImage = Transformations.map(event, Event::getImage);
+        this.eventImage = Transformations.switchMap(this.event, ev -> eventRepository.getEventImage(ev));
     }
 
     public LiveData<Event> getEvent() {
