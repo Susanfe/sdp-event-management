@@ -44,7 +44,7 @@ public class JoinedEventTest {
         ev.setName("Event 2");
         assertEquals("Event 2", ev.getName());
 
-        ev.setUid(1);
+        ev.setUid(2);
         assertEquals(2, ev.getUid());
     }
 }
