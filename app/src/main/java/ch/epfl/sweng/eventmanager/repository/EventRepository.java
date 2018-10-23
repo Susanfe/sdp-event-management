@@ -31,7 +31,6 @@ public class EventRepository {
         final MutableLiveData<List<Event>> data = new MutableLiveData<>();
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = fdB.getReference("events");
-        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
 
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -42,9 +41,6 @@ public class EventRepository {
                 List<Event> events = dataSnapshot.getValue(typeToken);
                 if (events != null) {
                     events.remove(null); // Somehow the list might contain a null element
-                    for (Event event : events) {
-                        event.setImage(getEventImage(imagesRef, event));
-                    }
                 }
 
                 data.postValue(events);
@@ -86,19 +82,18 @@ public class EventRepository {
         return event.getName().replace(" ", "_") + ".png";
     }
 
-    private Bitmap getEventImage(StorageReference imagesRef, Event event) {
+    public LiveData<Bitmap> getEventImage(Event event) {
+        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
         StorageReference eventLogoReference = imagesRef.child(getImageName(event));
-        final Bitmap[] img = new Bitmap[1];
-        img[0] = null;
-        //    Log.e(TAG, "came by here !");
+        final MutableLiveData<Bitmap> img = new MutableLiveData<>();
 
-        final long FIVE_MEGABYTE = 5 * 1024 * 1024;
-        eventLogoReference.getBytes(FIVE_MEGABYTE).addOnSuccessListener(bytes -> {
+        final long ONE_MEGABYTE = 1024 * 1024;
+        eventLogoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inMutable = true;
             Log.d(TAG, "Image is loaded");
-            img[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
-        }).addOnFailureListener(exception -> Log.e(TAG, "Could not load " + event.getName() + " image"));
-        return img[0];
+            img.setValue(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
+        }).addOnFailureListener(exception -> Log.w(TAG, "Could not load " + event.getName() + " image"));
+        return img;
     }
 }
