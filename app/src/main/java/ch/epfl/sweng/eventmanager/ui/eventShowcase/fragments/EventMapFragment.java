@@ -41,30 +41,19 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
  * Activities that contain this fragment must implement the
  * to handle interaction events.
  */
-public class EventMapFragment extends Fragment {
+public class EventMapFragment extends AbstractShowcaseFragment {
     private static final String TAG = "EventMapFragment";
-    private EventShowcaseModel model;
     private GoogleMap mMap;
     private ClusterManager<Spot> mClusterManager;
 
     public EventMapFragment() {
         // Required empty public constructor
+        super(R.layout.fragment_event_map);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        model = ViewModelProviders.of(getActivity()).get(EventShowcaseModel.class);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_event_map, container, false);
-
-
+    public void onResume() {
+        super.onResume();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapFragment);
@@ -100,7 +89,6 @@ public class EventMapFragment extends Fragment {
 
         }
 
-        return view;
     }
 
     private List<Spot> setFakeSpot() {
@@ -118,7 +106,6 @@ public class EventMapFragment extends Fragment {
         return spotList;
     }
 
-
     private void setUpClusterer(List<Spot> spotList) {
 
         mClusterManager = new ClusterManager<Spot>(getActivity(), mMap);
@@ -132,15 +119,5 @@ public class EventMapFragment extends Fragment {
             mClusterManager.addItem(s);
         }
         mClusterManager.setAnimation(true);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }
