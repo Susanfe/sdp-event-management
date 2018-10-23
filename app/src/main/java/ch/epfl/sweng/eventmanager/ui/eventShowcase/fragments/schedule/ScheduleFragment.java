@@ -13,6 +13,11 @@ public class ScheduleFragment extends AbstractScheduleFragment {
     }
 
     @Override
+    protected void setNullConcertsTV() {
+        super.nullConcertsTV.setText(R.string.concerts_empty);
+    }
+
+    @Override
     protected LiveData<List<ScheduledItem>> getScheduledItems() {
         return this.model.getScheduledItems();
     }

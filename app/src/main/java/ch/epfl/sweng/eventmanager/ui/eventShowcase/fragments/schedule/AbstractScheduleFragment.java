@@ -2,16 +2,18 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
@@ -24,22 +26,25 @@ public abstract class AbstractScheduleFragment extends Fragment {
 
     private static String TAG = "AbstractScheduleFragment";
     protected ScheduleViewModel model;
-    private RecyclerView recyclerView;
     private TimeLineAdapter timeLineAdapter;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.concerts_empty_tv)
+    TextView nullConcertsTV;
 
 
     protected abstract int getLayout();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(getLayout(), container, false);
 
-        recyclerView = view.findViewById(R.id.recyclerView);
+        ButterKnife.bind(this,view);
+        setNullConcertsTV();
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
-
 
         timeLineAdapter = new TimeLineAdapter(model);
         recyclerView.setAdapter(timeLineAdapter);
@@ -54,34 +59,30 @@ public abstract class AbstractScheduleFragment extends Fragment {
         Log.i(TAG, "Resume " + model);
 
         if (model == null) {
-            model = ViewModelProviders.of(getActivity()).get(ScheduleViewModel.class);
+            model = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
         }
 
         this.getScheduledItems().observe(this, concerts -> {
-            if (concerts != null) {
+            if (concerts != null && concerts.size() > 0) {
+                nullConcertsTV.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
                 Collections.sort(concerts,(c1,c2) -> Objects.requireNonNull(c1.getDate()).compareTo(c2.getDate()));
                 timeLineAdapter.setDataList(concerts);
             } else {
-                showAlertOnEmptyConcerts(recyclerView);
+                nullConcertsTV.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         });
     }
 
-    /**
-      * Show an alert message if there are no registered concerts for this event
-      * @param view view
-      */
-    private void showAlertOnEmptyConcerts(View view) {
-         AlertDialog.Builder myAlert = new AlertDialog.Builder(getActivity());
-         myAlert.setMessage(R.string.concerts_empty).create();
-         myAlert.show();
-     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model = ViewModelProviders.of(getActivity()).get(ScheduleViewModel.class);
+        model = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
     }
+
+    protected abstract void setNullConcertsTV();
 
     protected abstract LiveData<List<ScheduledItem>> getScheduledItems();
 

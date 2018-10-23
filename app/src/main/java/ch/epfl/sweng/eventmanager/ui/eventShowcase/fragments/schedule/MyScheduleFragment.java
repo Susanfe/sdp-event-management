@@ -26,6 +26,12 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
     private static String TAG = "MyScheduleFragment";
 
     @Override
+    protected void setNullConcertsTV() {
+        super.nullConcertsTV.setText(R.string.my_schedule_empty);
+    }
+
+
+    @Override
     protected int getLayout() {
         return R.layout.activity_my_schedule;
     }
