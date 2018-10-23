@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 
 public class ScheduledItemTest {
 
+
     private final Date when = new Calendar.Builder()
             .setFields(Calendar.YEAR, 2018,
                     Calendar.MONTH, Calendar.DECEMBER,
@@ -18,6 +19,7 @@ public class ScheduledItemTest {
                     Calendar.HOUR_OF_DAY, 12,
                     Calendar.MINUTE, 0,
                     Calendar.SECOND, 0).build().getTime();
+    private final Date now = new Date();
     private final String mj = "Michael Jackson";
     private final String pop = "Pop";
     private final String des = "Amazing event as it is the resurrection of the King!";
@@ -26,12 +28,13 @@ public class ScheduledItemTest {
     private final String type = "Concert";
     private final String location = "Polyv";
 
-    private ScheduledItem c1 = new ScheduledItem(when, mj, pop, des, -12, uuid, type, location);
-    private ScheduledItem c2 = new ScheduledItem(when, mj, pop, des, dur, uuid, type, location);
+    private ScheduledItem c1 = new ScheduledItem(now, mj, pop, des, -12, uuid, type, location);
+    private ScheduledItem c2 = new ScheduledItem(now, mj, pop, des, dur, uuid, type, location);
+    private ScheduledItem c3 = new ScheduledItem(when, mj, pop, des, dur, uuid, type, location);
 
     @Test
     public void getDate() {
-        assertEquals(c2.getDate(), when);
+        assertEquals(c2.getDate(), now);
     }
 
     @Test
@@ -60,16 +63,17 @@ public class ScheduledItemTest {
     public void equals() {
         assertNotEquals(c1, c2);
 
-        ScheduledItem copy2 = new ScheduledItem(when, mj, pop, des, dur, uuid, type, location);
+
+        ScheduledItem copy2 = new ScheduledItem(now, mj, pop, des, dur, uuid, type, location);
         assertEquals(c2, copy2);
 
-        ScheduledItem fakeName = new ScheduledItem(when, "Michael Fackson", pop, des, dur, uuid, type, location);
-        ScheduledItem fakeGenre = new ScheduledItem(when, mj, "Funky", des, dur, uuid, type, location);
-        ScheduledItem fakeDes = new ScheduledItem(when, mj, pop, "Wow!", dur, uuid, type, location);
-        ScheduledItem fakeDur = new ScheduledItem(when, mj, pop, des, 5, uuid, type, location);
-        ScheduledItem fakeUuid = new ScheduledItem(when, mj, pop, des, 5, UUID.randomUUID(), type, location);
-        ScheduledItem fakeType = new ScheduledItem(when, mj, pop, des, 5, uuid, "Something", location);
-        ScheduledItem fakeLocation = new ScheduledItem(when, mj, pop, des, 5, uuid, type, "Somewhere");
+        ScheduledItem fakeName = new ScheduledItem(now, "Michael Fackson", pop, des, dur, uuid, type, location);
+        ScheduledItem fakeGenre = new ScheduledItem(now, mj, "Funky", des, dur, uuid, type, location);
+        ScheduledItem fakeDes = new ScheduledItem(now, mj, pop, "Wow!", dur, uuid, type, location);
+        ScheduledItem fakeDur = new ScheduledItem(now, mj, pop, des, 5, uuid, type, location);
+        ScheduledItem fakeUuid = new ScheduledItem(now, mj, pop, des, 5, UUID.randomUUID(), type, location);
+        ScheduledItem fakeType = new ScheduledItem(now, mj, pop, des, 5, uuid, "Something", location);
+        ScheduledItem fakeLocation = new ScheduledItem(now, mj, pop, des, 5, uuid, type, "Somewhere");
 
 
         assertNotEquals(c2, fakeName);
@@ -84,13 +88,13 @@ public class ScheduledItemTest {
     @Test
     public void dateAsString() {
         SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
-        String now_s = f.format(when);
+        String now_s = f.format(now);
         assertEquals(now_s, c2.dateAsString());
     }
 
     @Test
     public void getEndOfScheduledItem() {
-         Date end = new Date(when.getYear(), when.getMonth(), when.getDate(), when.getHours()+3, when.getMinutes() +30);
+         Date end = new Date(now.getYear(), now.getMonth(), now.getDate(), now.getHours()+3, now.getMinutes() +30);
          assertEquals(setPrecisionToMinutes(end), setPrecisionToMinutes(c2.getEndOfConcert()));
     }
 
@@ -103,9 +107,9 @@ public class ScheduledItemTest {
         ScheduledItem fake2 = new ScheduledItem(c.getTime(), mj, pop, des, dur, uuid, type, location);
 
         System.out.print(fake1.dateAsString());
-        assertEquals(ScheduledItem.ScheduledItemStatus.NOT_STARTED, fake1.getStatus());
-        assertEquals(ScheduledItem.ScheduledItemStatus.PASSED, fake2.getStatus());
-        assertEquals(ScheduledItem.ScheduledItemStatus.IN_PROGRESS, c2.getStatus());
+        assertEquals("future event should not be started", ScheduledItem.ScheduledItemStatus.NOT_STARTED, fake1.getStatus());
+        assertEquals("past event should be passed", ScheduledItem.ScheduledItemStatus.PASSED, fake2.getStatus());
+        assertEquals("in progress event should be in progress", ScheduledItem.ScheduledItemStatus.IN_PROGRESS, c2.getStatus());
     }
 
     @Test
@@ -113,7 +117,7 @@ public class ScheduledItemTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         PrintStream stream = new PrintStream(outContent);
 
-        c2.printAsIcalendar(stream);
+        c3.printAsIcalendar(stream);
         String expected =
                 "BEGIN:VEVENT\n" +
                         "SUMMARY:" + mj + "\n" +
