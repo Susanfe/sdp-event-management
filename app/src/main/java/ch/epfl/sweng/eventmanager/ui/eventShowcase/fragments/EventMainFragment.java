@@ -1,7 +1,9 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
@@ -34,6 +36,15 @@ public class EventMainFragment extends AbstractShowcaseFragment {
 
             TextView eventDescription = (TextView) view.findViewById(R.id.event_description);
             eventDescription.setText(ev.getDescription());
+            Button contactButton = view.findViewById(R.id.contact_form_go_button);
+            contactButton.setOnClickListener(v -> {
+                if(getFragmentManager() != null) {
+                    FragmentTransaction f = getFragmentManager().beginTransaction();
+                    f.replace(R.id.content_frame, new EventFormFragment());
+                    f.addToBackStack(null);
+                    f.commit();
+                }
+            });
 
             // Binds the 'joined event' switch to the database
             Switch joinEventSwitch = (Switch) view.findViewById(R.id.join_event_switch);
