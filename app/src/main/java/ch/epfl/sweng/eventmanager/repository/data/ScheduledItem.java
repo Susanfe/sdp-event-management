@@ -114,22 +114,6 @@ public final class ScheduledItem {
                 && itemLocation.equals(that.itemLocation);
     }
 
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = (int) (date ^ (date >>> 32));
-        result = 31 * result + (artist != null ? artist.hashCode() : 0);
-        result = 31 * result + (genre != null ? genre.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        temp = Double.doubleToLongBits(duration);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        result = 31 * result + (itemType != null ? itemType.hashCode() : 0);
-        result = 31 * result + (itemLocation != null ? itemLocation.hashCode() : 0);
-        return result;
-    }
-
     public String dateAsString() {
         if (date <= 0) {
             return null;
