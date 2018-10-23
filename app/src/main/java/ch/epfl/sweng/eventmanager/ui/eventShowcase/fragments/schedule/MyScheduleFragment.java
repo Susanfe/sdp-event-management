@@ -17,6 +17,7 @@ import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -57,23 +58,29 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
 
         try {
             outputStream = getContext().openFileOutput(CALENDAR_FILE_NAME, Context.MODE_PRIVATE);
-            PrintStream printer = new PrintStream(outputStream);
 
-            printer.println("BEGIN:VCALENDAR\n" +
-                    "VERSION:2.0\n" +
-                    "PRODID:-//EventManager/MySchedule//Event Schedule//EN");
+            writeCalendar(mySchedule, outputStream);
 
-            for (ScheduledItem item : mySchedule) {
-                item.printAsIcalendar(printer);
-            }
-
-            printer.println("END:VCALENDAR");
-
-            printer.close();
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    protected void writeCalendar(List<ScheduledItem> events, OutputStream stream) {
+        PrintStream printer = new PrintStream(stream);
+
+        printer.println("BEGIN:VCALENDAR\n" +
+                "VERSION:2.0\n" +
+                "PRODID:-//EventManager/MySchedule//Event Schedule//EN");
+
+        for (ScheduledItem item : events) {
+            item.printAsIcalendar(printer);
+        }
+
+        printer.println("END:VCALENDAR");
+
+        printer.close();
     }
 
     private void openCalendar() {
