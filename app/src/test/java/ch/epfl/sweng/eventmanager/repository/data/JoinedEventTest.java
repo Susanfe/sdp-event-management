@@ -47,4 +47,14 @@ public class JoinedEventTest {
         ev.setUid(2);
         assertEquals(2, ev.getUid());
     }
+
+    @Test
+    public void testCopyConstructor() {
+        Event ev = new Event(1, "Event 1", "Descr 1", null, null);
+        JoinedEvent copy = new JoinedEvent(ev);
+
+        assertEquals(1, copy.getUid());
+        assertEquals("Event 1", copy.getName());
+
+    }
 }
