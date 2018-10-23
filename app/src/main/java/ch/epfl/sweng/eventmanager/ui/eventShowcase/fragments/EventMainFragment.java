@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
@@ -31,6 +32,9 @@ public class EventMainFragment extends AbstractShowcaseFragment {
 
             TextView eventDescription = (TextView) view.findViewById(R.id.event_description);
             eventDescription.setText(ev.getDescription());
+
+            ImageView eventLogo = (ImageView) view.findViewById(R.id.event_image);
+            model.getEventImage().observe(this, eventLogo::setImageBitmap);
 
             // Binds the 'joined event' switch to the database
             Switch joinEventSwitch = (Switch) view.findViewById(R.id.join_event_switch);
