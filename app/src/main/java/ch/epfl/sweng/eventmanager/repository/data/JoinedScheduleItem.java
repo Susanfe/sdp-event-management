@@ -54,21 +54,6 @@ public class JoinedScheduleItem {
         if (eventId != that.eventId) return false;
         return uid != null ? uid.equals(that.uid) : that.uid == null;
     }
-
-    @Override
-    public int hashCode() {
-        int result = uid != null ? uid.hashCode() : 0;
-        result = 31 * result + eventId;
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "JoinedScheduleItem{" +
-                "uid=" + uid +
-                ", eventId=" + eventId +
-                '}';
-    }
 }
 
 

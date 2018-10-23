@@ -9,4 +9,4 @@ checks:
 exclude_patterns:
   - "app/src/main/java/ch/epfl/sweng/eventmanager/repository/room/daos"
   - "app/src/androidTest/"
-  - "app/test/"
+  - "app/src/test/"

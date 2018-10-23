@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.epfl.sweng.eventmanager">
-
     <application
         android:name=".EventManagerApplication"
         android:allowBackup="true"
@@ -35,6 +34,17 @@
             android:name=".ui.eventShowcase.EventShowcaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.eventShowcase.fragments.schedule.MyScheduleFragment"/>
+
+        <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="ch.epfl.sweng.eventmanager.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 
 </manifest>
