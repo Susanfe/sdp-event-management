@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/event_image" />
 
     <Switch
-        android:id="@+id/join-event-switch"
+        android:id="@+id/join_event_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

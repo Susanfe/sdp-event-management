@@ -22,7 +22,7 @@ import java.util.UUID;
  */
 public class ScheduleViewModel extends ViewModel {
     private LiveData<List<ScheduledItem>> scheduledItems;
-    private LiveData<List<JoinedScheduleItem>> joinedConcerts;
+    private LiveData<List<ScheduledItem>> joinedItems;
 
     private ScheduledItemRepository repository;
     private JoinedScheduleItemRepository joinedScheduleItemRepository;
@@ -42,7 +42,7 @@ public class ScheduleViewModel extends ViewModel {
 
         this.eventId = eventId;
         this.scheduledItems = repository.getConcerts(eventId);
-        this.joinedConcerts = joinedScheduleItemRepository.findByEventId(eventId);
+        this.joinedItems = buildJoinedScheduledItemsList(joinedScheduleItemRepository.findByEventId(eventId));
     }
 
     public LiveData<List<ScheduledItem>> getScheduledItems() {
@@ -61,15 +61,19 @@ public class ScheduleViewModel extends ViewModel {
         return false;
     }
 
+    public LiveData<List<ScheduledItem>> getJoinedScheduleItems() {
+        return scheduledItems;
+    }
+
     public void toggleMySchedule(UUID concert, Context context) {
         joinedScheduleItemRepository.toggle(new JoinedScheduleItem(concert, eventId), context);
     }
 
-    public LiveData<List<ScheduledItem>> getJoinedScheduleItems() {
+    private LiveData<List<ScheduledItem>> buildJoinedScheduledItemsList(LiveData<List<JoinedScheduleItem>> joinedConcerts) {
         LiveData<List<ScheduledItem>> allItems = getScheduledItems();
 
         return Transformations.switchMap(allItems, items ->
-                Transformations.map(this.joinedConcerts, joinedScheduleItems -> {
+                Transformations.map(joinedConcerts, joinedScheduleItems -> {
                     List<ScheduledItem> joined = new ArrayList<>();
 
                     if (items == null || joinedScheduleItems == null) {
