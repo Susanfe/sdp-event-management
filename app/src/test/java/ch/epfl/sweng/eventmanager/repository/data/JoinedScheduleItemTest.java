@@ -30,5 +30,20 @@ public class JoinedScheduleItemTest {
         assertFalse(it3.equals(it4));
         assertFalse(it3.equals(it5));
         assertFalse(it4.equals(it5));
+
+        assertFalse(it1.equals(null));
+        assertFalse(it1.equals("other"));
+    }
+
+    @Test
+    public void testSetters() {
+        JoinedScheduleItem it = new JoinedScheduleItem(UUID.randomUUID(), 1);
+
+        it.setEventId(2);
+        assertEquals(2, it.getEventId());
+
+        UUID id = UUID.randomUUID();
+        it.setUid(id);
+        assertEquals(id, it.getUid());
     }
 }
