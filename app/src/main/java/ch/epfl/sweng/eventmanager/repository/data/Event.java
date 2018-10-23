@@ -34,6 +34,11 @@ public final class Event {
      */
     private Bitmap image;
 
+    /**
+     * An email to contact the event organizers
+     */
+    private String email;
+
     public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image) {
         this.id = id;
         this.name = name;
@@ -63,5 +68,9 @@ public final class Event {
 
     public Bitmap getImage() {
         return image;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
