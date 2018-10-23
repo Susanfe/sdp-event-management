@@ -64,8 +64,4 @@ public final class Event {
     public Bitmap getImage() {
         return image;
     }
-
-    public void setImage(Bitmap image) {
-        this.image = image;
-    }
 }
