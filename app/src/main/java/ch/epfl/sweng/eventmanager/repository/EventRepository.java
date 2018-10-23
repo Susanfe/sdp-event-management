@@ -2,10 +2,15 @@ package ch.epfl.sweng.eventmanager.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import com.google.firebase.database.*;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -24,7 +29,8 @@ public class EventRepository {
 
     public LiveData<List<Event>> getEvents() {
         final MutableLiveData<List<Event>> data = new MutableLiveData<>();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("events");
+        FirebaseDatabase fdB = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = fdB.getReference("events");
 
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -33,8 +39,9 @@ public class EventRepository {
                 };
 
                 List<Event> events = dataSnapshot.getValue(typeToken);
-                if (events != null)
+                if (events != null) {
                     events.remove(null); // Somehow the list might contain a null element
+                }
 
                 data.postValue(events);
             }
@@ -68,5 +75,25 @@ public class EventRepository {
         });
 
         return ret;
+    }
+
+    private String getImageName(Event event) {
+        Log.d(TAG, event.getName());
+        return event.getName().replace(" ", "_") + ".png";
+    }
+
+    public LiveData<Bitmap> getEventImage(Event event) {
+        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
+        StorageReference eventLogoReference = imagesRef.child(getImageName(event));
+        final MutableLiveData<Bitmap> img = new MutableLiveData<>();
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        eventLogoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inMutable = true;
+            Log.d(TAG, "Image is loaded");
+            img.setValue(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
+        }).addOnFailureListener(exception -> Log.w(TAG, "Could not load " + event.getName() + " image"));
+        return img;
     }
 }
