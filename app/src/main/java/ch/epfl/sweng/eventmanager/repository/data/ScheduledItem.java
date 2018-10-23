@@ -2,6 +2,8 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.support.annotation.NonNull;
 
+import java.io.PrintStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -175,6 +177,23 @@ public final class ScheduledItem {
         } else {
             return ScheduledItemStatus.NOT_STARTED; // concert didn't start yet
         }
+    }
+
+    /**
+     * Print this event as an iCalendar event to the given output stream
+     * @param out the stream to print this event in
+     */
+    public void printAsIcalendar(PrintStream out) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+
+        out.println("BEGIN:VEVENT");
+        out.println("SUMMARY:" + getArtist());
+        out.println("DTSTART;VALUE=DATE-TIME:" + dateFormat.format(getDate()));
+        out.println("DTEND;VALUE=DATE-TIME:" + dateFormat.format(getEndOfConcert()));
+        if (getItemLocation() != null) {
+            out.println("LOCATION:" + getItemLocation());
+        }
+        out.println("END:VEVENT");
     }
 
     public enum ScheduledItemStatus {

@@ -18,18 +18,16 @@ import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MyScheduleFragment extends AbstractScheduleFragment {
-    private static String TAG = "MyScheduleFragment";
+    private static final String TAG = "MyScheduleFragment";
+    private static final String CALENDAR_FILE_NAME = "myschedule.ics";
 
     @Override
     protected void setNullConcertsTV() {
         super.nullConcertsTV.setText(R.string.my_schedule_empty);
     }
-
 
     @Override
     protected int getLayout() {
@@ -43,6 +41,7 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
         Button b = v.findViewById(R.id.addToCalendar);
         b.setOnClickListener(v1 -> {
             this.writeEventsToCalendar(this.getScheduledItems().getValue());
+            this.openCalendar();
         });
 
         return v;
@@ -55,10 +54,9 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
 
     private void writeEventsToCalendar(List<ScheduledItem> mySchedule) {
         FileOutputStream outputStream;
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
 
         try {
-            outputStream = getContext().openFileOutput("myschedule.ical", Context.MODE_PRIVATE);
+            outputStream = getContext().openFileOutput(CALENDAR_FILE_NAME, Context.MODE_PRIVATE);
             PrintStream printer = new PrintStream(outputStream);
 
             printer.println("BEGIN:VCALENDAR\n" +
@@ -66,37 +64,32 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
                     "PRODID:-//EventManager/MySchedule//Event Schedule//EN");
 
             for (ScheduledItem item : mySchedule) {
-                printer.println("BEGIN:VEVENT");
-                printer.println("SUMMARY:" + item.getArtist());
-                printer.println("DTSTART;VALUE=DATE-TIME:" + dateFormat.format(item.getDate()));
-                printer.println("DTEND;VALUE=DATE-TIME:" + dateFormat.format(item.getEndOfConcert()));
-                if (item.getItemLocation() != null) {
-                    printer.println("LOCATION:" + item.getItemLocation());
-                }
-                printer.println("END:VEVENT");
+                item.printAsIcalendar(printer);
             }
+
             printer.println("END:VCALENDAR");
 
             printer.close();
             outputStream.close();
-
-
-            Intent openFile = new Intent(Intent.ACTION_VIEW);
-            Uri uri = FileProvider.getUriForFile(getContext(), "ch.epfl.sweng.eventmanager.fileprovider", new File(getContext().getFilesDir(), "myschedule.ical"));
-            openFile.setDataAndType(uri, "text/calendar");
-
-            // https://developer.android.com/reference/android/support/v4/content/FileProvider#GetUri
-            openFile.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            openFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-
-            try {
-                getContext().startActivity(openFile);
-            } catch (ActivityNotFoundException e) {
-                Log.i(TAG, "Cannot open file.");
-            }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void openCalendar() {
+        Intent openFile = new Intent(Intent.ACTION_VIEW);
+        Uri uri = FileProvider.getUriForFile(getContext(), "ch.epfl.sweng.eventmanager.fileprovider", new File(getContext().getFilesDir(), CALENDAR_FILE_NAME));
+        openFile.setDataAndType(uri, "text/calendar");
+
+        // https://developer.android.com/reference/android/support/v4/content/FileProvider#GetUri
+        openFile.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        openFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+
+        try {
+            getContext().startActivity(openFile);
+        } catch (ActivityNotFoundException e) {
+            Log.i(TAG, "Cannot open file.");
         }
     }
 }
