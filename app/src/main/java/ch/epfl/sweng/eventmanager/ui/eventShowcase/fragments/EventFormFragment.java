@@ -52,7 +52,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
         model.getEvent().observe(this, ev -> {
             email = ev.getEmail();
 
-            send_button.setOnClickListener(v -> {
+            sendButton.setOnClickListener(v -> {
                 String s_name = name.getText().toString();
                 String s_subject = subject.getText().toString();
                 String s_content = content.getText().toString();
