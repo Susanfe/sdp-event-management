@@ -59,6 +59,8 @@ public class EventShowcaseModel extends ViewModel {
             return ev.getLocation();
         });
 
+    }
+
     public LiveData<Bitmap> getEventImage(){
         return eventImage;
 
