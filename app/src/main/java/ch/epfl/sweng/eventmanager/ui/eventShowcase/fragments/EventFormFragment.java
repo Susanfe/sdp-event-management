@@ -23,7 +23,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
     private final int REQUEST_CODE = 1;
 
     @BindView(R.id.contact_form_send_button)
-    Button send_button;
+    Button sendButton;
     @BindView(R.id.contact_form_name)
     EditText name;
     @BindView(R.id.contact_form_subject)
