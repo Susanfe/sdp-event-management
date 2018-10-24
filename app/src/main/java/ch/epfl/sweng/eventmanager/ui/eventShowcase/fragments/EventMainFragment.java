@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,23 +37,18 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             // Set window title
             getActivity().setTitle(ev.getName());
 
-            TextView eventDescription = (TextView) view.findViewById(R.id.event_description);
+            TextView eventDescription = view.findViewById(R.id.event_description);
             eventDescription.setText(ev.getDescription());
             Button contactButton = view.findViewById(R.id.contact_form_go_button);
-            contactButton.setOnClickListener(v -> {
-                if(getFragmentManager() != null) {
-                    FragmentTransaction f = getFragmentManager().beginTransaction();
-                    f.replace(R.id.content_frame, new EventFormFragment());
-                    f.addToBackStack(null);
-                    f.commit();
-                }
-            });
+            contactButton.setOnClickListener(v ->
+                    ((EventShowcaseActivity)getActivity()).changeFragment(
+                            new EventFormFragment(), true));
 
-            ImageView eventLogo = (ImageView) view.findViewById(R.id.event_image);
+            ImageView eventLogo = view.findViewById(R.id.event_image);
             model.getEventImage().observe(this, eventLogo::setImageBitmap);
 
             // Binds the 'joined event' switch to the database
-            Switch joinEventSwitch = (Switch) view.findViewById(R.id.join_event_switch);
+            Switch joinEventSwitch = view.findViewById(R.id.join_event_switch);
             // State of the switch depends on if the user joined the event
             this.model.isJoined(ev).observe(this, joinEventSwitch::setChecked);
             joinEventSwitch.setOnClickListener(v -> {

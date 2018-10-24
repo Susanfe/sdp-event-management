@@ -1,8 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -51,6 +49,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
 
         model.getEvent().observe(this, ev -> {
             email = ev.getEmail();
+            // TODO handle NullPointerException
 
             sendButton.setOnClickListener(v -> {
                 String s_name = name.getText().toString();
@@ -61,6 +60,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
                     Toast.makeText(getActivity(),
                             getActivity().getResources().getString(R.string.contact_form_empty_field),
                             Toast.LENGTH_LONG).show();
+                // TODO handle getResources return nullPointerException
                 else {
                     // Sends an email
                     Intent i = new Intent(Intent.ACTION_SEND);
@@ -71,6 +71,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
                     try {
                         startActivityForResult(Intent.createChooser(i,
                                 getActivity().getResources().getString(R.string.contact_form_choose_mail)), REQUEST_CODE);
+                        // TODO handle getResources return nullPointerException
 
                     } catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(getActivity(),
@@ -85,6 +86,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) getActivity().onBackPressed();
+        // TODO handle NullPointerException
     }
 }
 
