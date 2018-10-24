@@ -1,11 +1,9 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.content.res.Resources;
-import android.util.Log;
-
-import com.google.android.gms.common.util.ArrayUtils;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -13,6 +11,14 @@ import static org.junit.Assert.*;
 
 public class ScheduledItemTest {
 
+
+    private final Date when = new Calendar.Builder()
+            .setFields(Calendar.YEAR, 2018,
+                    Calendar.MONTH, Calendar.DECEMBER,
+                    Calendar.DAY_OF_MONTH, 25,
+                    Calendar.HOUR_OF_DAY, 12,
+                    Calendar.MINUTE, 0,
+                    Calendar.SECOND, 0).build().getTime();
     private final Date now = new Date();
     private final String mj = "Michael Jackson";
     private final String pop = "Pop";
@@ -24,6 +30,7 @@ public class ScheduledItemTest {
 
     private ScheduledItem c1 = new ScheduledItem(now, mj, pop, des, -12, uuid, type, location);
     private ScheduledItem c2 = new ScheduledItem(now, mj, pop, des, dur, uuid, type, location);
+    private ScheduledItem c3 = new ScheduledItem(when, mj, pop, des, dur, uuid, type, location);
 
     @Test
     public void getDate() {
@@ -55,6 +62,7 @@ public class ScheduledItemTest {
     @Test
     public void equals() {
         assertNotEquals(c1, c2);
+
 
         ScheduledItem copy2 = new ScheduledItem(now, mj, pop, des, dur, uuid, type, location);
         assertEquals(c2, copy2);
@@ -99,9 +107,27 @@ public class ScheduledItemTest {
         ScheduledItem fake2 = new ScheduledItem(c.getTime(), mj, pop, des, dur, uuid, type, location);
 
         System.out.print(fake1.dateAsString());
-        assertEquals(ScheduledItem.ScheduledItemStatus.NOT_STARTED, fake1.getStatus());
-        assertEquals(ScheduledItem.ScheduledItemStatus.PASSED, fake2.getStatus());
-        assertEquals(ScheduledItem.ScheduledItemStatus.IN_PROGRESS, c2.getStatus());
+        assertEquals("future event should not be started", ScheduledItem.ScheduledItemStatus.NOT_STARTED, fake1.getStatus());
+        assertEquals("past event should be passed", ScheduledItem.ScheduledItemStatus.PASSED, fake2.getStatus());
+        assertEquals("in progress event should be in progress", ScheduledItem.ScheduledItemStatus.IN_PROGRESS, c2.getStatus());
+    }
+
+    @Test
+    public void testWriteAsIcalendar() {
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        PrintStream stream = new PrintStream(outContent);
+
+        c3.printAsIcalendar(stream);
+        String expected =
+                "BEGIN:VEVENT\n" +
+                        "SUMMARY:" + mj + "\n" +
+                        "DTSTART;VALUE=DATE-TIME:20181225T120000\n" +
+                        "DTEND;VALUE=DATE-TIME:20181225T153000\n" +
+                        "LOCATION:" + location + "\n" +
+                        "END:VEVENT\n";
+
+        assertEquals(expected, outContent.toString());
+
     }
 
     /**

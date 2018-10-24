@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
@@ -45,6 +46,9 @@ public class EventMainFragment extends AbstractShowcaseFragment {
                     f.commit();
                 }
             });
+
+            ImageView eventLogo = (ImageView) view.findViewById(R.id.event_image);
+            model.getEventImage().observe(this, eventLogo::setImageBitmap);
 
             // Binds the 'joined event' switch to the database
             Switch joinEventSwitch = (Switch) view.findViewById(R.id.join_event_switch);

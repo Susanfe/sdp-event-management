@@ -33,11 +33,13 @@ public abstract class AbstractScheduleFragment extends Fragment {
     TextView nullConcertsTV;
 
 
+    protected abstract int getLayout();
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.activity_schedule, container, false);
+        View view = inflater.inflate(getLayout(), container, false);
 
         ButterKnife.bind(this,view);
         setNullConcertsTV();
