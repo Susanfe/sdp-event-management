@@ -61,28 +61,11 @@ public class JoinedEvent {
     }
 
     @Override
-    public String toString() {
-        return "JoinedEvent{" +
-                "uid=" + uid +
-                ", name='" + name + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JoinedEvent that = (JoinedEvent) o;
         return uid == that.uid && name.equals(that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = uid;
-        // Inspired (including magic numbers) by Java's standard hashCode()
-        // method. Please refer on the original method for details.
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
     }
 }
 
