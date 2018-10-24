@@ -76,6 +76,10 @@ public class EventMapFragment extends AbstractShowcaseFragment {
                 }
             });
         }
+
+        TextView textView = (TextView) view.findViewById(R.id.text_test);
+        textView.setText("everything is ready");
+
     }
 
     private void setUpMap() {

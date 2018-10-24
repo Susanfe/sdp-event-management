@@ -8,4 +8,11 @@
     tools:context=".ui.eventShowcase.fragments.EventMapFragment"
     android:id="@+id/mapFragment">
 
+    <TextView
+        android:id="@+id/text_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="130dp"
+        tools:layout_editor_absoluteY="47dp" />
 </android.support.constraint.ConstraintLayout>
