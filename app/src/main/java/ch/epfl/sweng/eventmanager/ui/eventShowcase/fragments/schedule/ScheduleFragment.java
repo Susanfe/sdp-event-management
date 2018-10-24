@@ -8,6 +8,11 @@ import java.util.List;
 
 public class ScheduleFragment extends AbstractScheduleFragment {
     @Override
+    protected int getLayout() {
+        return R.layout.activity_schedule;
+    }
+
+    @Override
     protected void setNullConcertsTV() {
         super.nullConcertsTV.setText(R.string.concerts_empty);
     }

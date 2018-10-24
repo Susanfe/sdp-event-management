@@ -38,5 +38,5 @@
     <string name="timeline_view_added_to_own_schedule">Event added to your schedule!</string>
     <string name="timeline_view_removed_from_own_schedule">Event removed from your schedule!</string>
     <string name="my_schedule_nav_item_activity_event_showcase">My Schedule</string>
-
+    <string name="my_schedule_add_to_calendar">Add to my calendar</string>
 </resources>

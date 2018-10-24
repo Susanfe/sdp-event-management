@@ -2,6 +2,11 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
 
 import android.arch.lifecycle.*;
 
+
+import java.io.Serializable;
+
+import android.graphics.Bitmap;
+
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
@@ -18,6 +23,7 @@ import javax.inject.Inject;
  */
 public class EventShowcaseModel extends ViewModel {
     private LiveData<Event> event;
+    private LiveData<Bitmap> eventImage;
 
     private EventRepository eventRepository;
     private JoinedEventRepository joinedEventRepository;
@@ -35,11 +41,13 @@ public class EventShowcaseModel extends ViewModel {
         }
 
         this.event = eventRepository.getEvent(eventId);
+        this.eventImage = Transformations.switchMap(this.event, ev -> eventRepository.getEventImage(ev));
     }
 
     public LiveData<Event> getEvent() {
         return event;
     }
+
 
     public LiveData<EventLocation> getLocation() {
         return Transformations.map(getEvent(), ev -> {
@@ -50,6 +58,10 @@ public class EventShowcaseModel extends ViewModel {
 
             return ev.getLocation();
         });
+
+    public LiveData<Bitmap> getEventImage(){
+        return eventImage;
+
     }
 
     public void joinEvent(Event event){
