@@ -31,20 +31,24 @@ import java.util.List;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
+ * Display the map and his features
+ *
+ * @author Robin Zbinden (274236)
+ * @author Stanislas Jouven (260580)
  */
 public class EventMapFragment extends AbstractShowcaseFragment {
+
     private static final String TAG = "EventMapFragment";
     private GoogleMap mMap;
     private ClusterManager<Spot> mClusterManager;
+    private static final float ZOOMLEVEL = 19.0f; //This goes up to 21
 
     public EventMapFragment() {
         // Required empty public constructor
@@ -64,32 +68,32 @@ public class EventMapFragment extends AbstractShowcaseFragment {
             fragmentTransaction.replace(R.id.mapFragment, mapFragment).commit();
         }
         if (mapFragment != null) {
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    mMap = googleMap;
-                    if (mMap != null) {
-                        float zoomLevel = 19.0f; //This goes up to 21
-                        model.getLocation().observe(getActivity(), loc -> {
-                            if (loc != null) {
-                                LatLng place = new LatLng(loc.getLatitude(), loc.getLongitude());
-                                mMap.addMarker(new MarkerOptions().position(place).title(loc.getName()));
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, zoomLevel));
-
-                                setUpClusterer(setFakeSpot());
-                                mMap.getUiSettings().setCompassEnabled(true);
-                                mMap.getUiSettings().setZoomControlsEnabled(true);
-                                mMap.getUiSettings().setMapToolbarEnabled(true);
-                            }
-                        });
-                    }
-
+            mapFragment.getMapAsync(googleMap -> {
+                mMap = googleMap;
+                if (mMap != null) {
+                    setUpMap();
+                    setUpClusterer(setFakeSpot());
                 }
             });
-
         }
+    }
+
+    private void setUpMap() {
+        model.getLocation().observe(getActivity(), loc -> {
+            if (loc != null) {
+                LatLng place = new LatLng(loc.getLatitude(), loc.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(place).title(loc.getName()));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, ZOOMLEVEL));
+
+                mMap.getUiSettings().setCompassEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+                mMap.getUiSettings().setMapToolbarEnabled(true);
+            }
+        });
+
 
     }
+
 
     private List<Spot> setFakeSpot() {
         Spot spot1 = new Spot("Grande scène", SpotType.SCENE, 46.517799, 6.566737);
@@ -107,7 +111,6 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     }
 
     private void setUpClusterer(List<Spot> spotList) {
-
         mClusterManager = new ClusterManager<Spot>(getActivity(), mMap);
 
         // Point the map's listeners at the listeners implemented by the cluster
