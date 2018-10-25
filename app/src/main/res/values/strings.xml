@@ -42,7 +42,6 @@
     <string name="contact_form_hint_message">Content of the message</string>
     <string name="contact_form_hint_name">Full name</string>
     <string name="contact_form_send_button_text">Send</string>
-    <string name="contact_form_empty_field">Please fill in every field!</string>
     <string name="contact_form_choose_mail">Send email with</string>
     <string name="contact_form_no_email_clients">There are no email clients installed.</string>
     <string name="contact_form_main_go_button">Contact</string>
