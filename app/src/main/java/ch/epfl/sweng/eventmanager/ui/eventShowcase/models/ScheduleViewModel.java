@@ -49,18 +49,6 @@ public class ScheduleViewModel extends ViewModel {
         return scheduledItems;
     }
 
-    public Boolean isItemJoined(UUID itemId) {
-        // This method doesn't return a live-data because it's not watched by anything
-        // we only need to get a value at some point, and LiveDatas don't suit this model
-        List<ScheduledItem> events = getJoinedScheduleItems().getValue();
-
-        for (ScheduledItem i : events)
-            if (i.getId().equals(itemId))
-                return true;
-
-        return false;
-    }
-
     public LiveData<List<ScheduledItem>> getJoinedScheduleItems() {
         return joinedItems;
     }
