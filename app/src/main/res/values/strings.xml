@@ -46,6 +46,7 @@
     <string name="contact_form_choose_mail">Send email with</string>
     <string name="contact_form_no_email_clients">There are no email clients installed.</string>
     <string name="contact_form_main_go_button">Contact</string>
+    <string name="contact_form_error">Field cannot be empty</string>
 
     <string name="my_schedule_add_to_calendar">Add to my calendar</string>
 

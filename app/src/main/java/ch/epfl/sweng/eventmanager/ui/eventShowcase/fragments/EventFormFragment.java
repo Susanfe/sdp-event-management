@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -51,23 +52,38 @@ public class EventFormFragment extends AbstractShowcaseFragment {
             email = ev.getEmail();
             // TODO handle NullPointerException
 
+            name.setOnEditorActionListener((v, actionId, event) -> {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    subject.requestFocus();
+                    return true;
+                }
+                return false;
+            });
+
+            subject.setOnEditorActionListener((v, actionId, event) -> {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    content.requestFocus();
+                    return true;
+                }
+                return false;
+            });
+
             sendButton.setOnClickListener(v -> {
                 String s_name = name.getText().toString();
                 String s_subject = subject.getText().toString();
                 String s_content = content.getText().toString();
 
-                if (s_name.trim().isEmpty() || s_subject.trim().isEmpty() || s_content.trim().isEmpty())
-                    Toast.makeText(getActivity(),
-                            getActivity().getResources().getString(R.string.contact_form_empty_field),
-                            Toast.LENGTH_LONG).show();
-                // TODO handle getResources return nullPointerException
-                else {
+                if (checkEmptyField(name, s_name) &&
+                        checkEmptyField(subject, s_subject) &&
+                        checkEmptyField(content, s_content)) {
+
                     // Sends an email
                     Intent i = new Intent(Intent.ACTION_SEND);
                     i.setType("message/rfc822"); //email MIME data
                     i.putExtra(Intent.EXTRA_EMAIL  , email);
                     i.putExtra(Intent.EXTRA_SUBJECT, s_name + " : " + s_subject);
                     i.putExtra(Intent.EXTRA_TEXT   , s_content);
+
                     try {
                         startActivityForResult(Intent.createChooser(i,
                                 getActivity().getResources().getString(R.string.contact_form_choose_mail)), REQUEST_CODE);
@@ -87,6 +103,14 @@ public class EventFormFragment extends AbstractShowcaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) getActivity().onBackPressed();
         // TODO handle NullPointerException
+    }
+
+    private boolean checkEmptyField(EditText v, String s_from_v) {
+        if (s_from_v.trim().isEmpty()) {
+            v.setError(getString(R.string.contact_form_empty_field));
+            return false;
+        } else return true;
+
     }
 }
 
