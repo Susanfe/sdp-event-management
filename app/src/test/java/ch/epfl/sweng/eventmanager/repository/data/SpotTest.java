@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager;
+package ch.epfl.sweng.eventmanager.repository.data;
 
 
 import org.junit.Test;
