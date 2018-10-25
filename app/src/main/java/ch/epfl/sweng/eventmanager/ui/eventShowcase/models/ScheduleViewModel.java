@@ -4,8 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
-import ch.epfl.sweng.eventmanager.repository.ScheduledItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
@@ -24,13 +24,13 @@ public class ScheduleViewModel extends ViewModel {
     private LiveData<List<ScheduledItem>> scheduledItems;
     private LiveData<List<ScheduledItem>> joinedItems;
 
-    private ScheduledItemRepository repository;
+    private EventRepository repository;
     private JoinedScheduleItemRepository joinedScheduleItemRepository;
 
     private int eventId;
 
     @Inject
-    public ScheduleViewModel(ScheduledItemRepository repository, JoinedScheduleItemRepository joinedScheduleItemRepository) {
+    public ScheduleViewModel(EventRepository repository, JoinedScheduleItemRepository joinedScheduleItemRepository) {
         this.repository = repository;
         this.joinedScheduleItemRepository = joinedScheduleItemRepository;
     }

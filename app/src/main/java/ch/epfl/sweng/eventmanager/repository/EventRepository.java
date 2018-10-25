@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import com.google.firebase.database.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -95,5 +97,35 @@ public class EventRepository {
             img.setValue(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
         }).addOnFailureListener(exception -> Log.w(TAG, "Could not load " + event.getName() + " image"));
         return img;
+    }
+
+    private <T> LiveData<List<T>> getElems(int eventId, String basePath, GenericTypeIndicator<List<T>> token) {
+        final MutableLiveData<List<T>> data = new MutableLiveData<>();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(basePath)
+                .child("event_" + eventId);
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<T> spots = dataSnapshot.getValue(token);
+                data.postValue(spots);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w(TAG, "Error when getting " + basePath + " for event " + eventId, databaseError.toException());
+            }
+        });
+
+        return data;
+    }
+
+    public LiveData<List<Spot>> getSpots(int eventId) {
+        return this.getElems(eventId, "spots", new GenericTypeIndicator<List<Spot>>() {});
+    }
+
+    public LiveData<List<ScheduledItem>> getConcerts(int eventId) {
+        return this.getElems(eventId, "schedule_items", new GenericTypeIndicator<List<ScheduledItem>>() {});
     }
 }
