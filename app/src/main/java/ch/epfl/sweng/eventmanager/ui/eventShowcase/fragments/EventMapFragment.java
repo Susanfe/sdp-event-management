@@ -1,41 +1,21 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
-
+import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
+import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
-import ch.epfl.sweng.eventmanager.repository.data.Spot;
-import ch.epfl.sweng.eventmanager.repository.data.SpotType;
-import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 
 /**
  * Display the map and his features
@@ -46,9 +26,9 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 public class EventMapFragment extends AbstractShowcaseFragment {
 
     private static final String TAG = "EventMapFragment";
+    private static final float ZOOMLEVEL = 19.0f; //This goes up to 21
     private GoogleMap mMap;
     private ClusterManager<Spot> mClusterManager;
-    private static final float ZOOMLEVEL = 19.0f; //This goes up to 21
 
     public EventMapFragment() {
         // Required empty public constructor
@@ -83,16 +63,18 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     }
 
     private void setUpMap() {
-        model.getLocation().observe(getActivity(), loc -> {
-            if (loc != null) {
-                LatLng place = loc.getPosition().asLatLng();
-                mMap.addMarker(new MarkerOptions().position(place).title(loc.getName()));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, ZOOMLEVEL));
+        model.getEvent().observe(getActivity(), event -> {
+            if (event == null || event.getLocation() == null)
+                return;
 
-                mMap.getUiSettings().setCompassEnabled(true);
-                mMap.getUiSettings().setZoomControlsEnabled(true);
-                mMap.getUiSettings().setMapToolbarEnabled(true);
-            }
+            EventLocation loc = event.getLocation();
+            LatLng place = loc.getPosition().asLatLng();
+            mMap.addMarker(new MarkerOptions().position(place).title(loc.getName()));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, ZOOMLEVEL));
+
+            mMap.getUiSettings().setCompassEnabled(true);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+            mMap.getUiSettings().setMapToolbarEnabled(true);
         });
 
 
@@ -105,7 +87,7 @@ public class EventMapFragment extends AbstractShowcaseFragment {
         Spot spot3 = new Spot("test3", SpotType.NURSERY, 46.523, 6.567822);
         Spot spot4 = new Spot("test4", SpotType.WC, 46.520433, 6.5679);
         Spot spot5 = new Spot("test5", SpotType.INFORMATION, 46.520433, 6.55555);
-        List<Spot> spotList= new ArrayList<>();
+        List<Spot> spotList = new ArrayList<>();
         spotList.add(spot1);
         spotList.add(spot2);
         spotList.add(spot3);
@@ -122,7 +104,7 @@ public class EventMapFragment extends AbstractShowcaseFragment {
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
 
-        for(Spot s: spotList){
+        for (Spot s : spotList) {
             mClusterManager.addItem(s);
         }
         mClusterManager.setAnimation(true);

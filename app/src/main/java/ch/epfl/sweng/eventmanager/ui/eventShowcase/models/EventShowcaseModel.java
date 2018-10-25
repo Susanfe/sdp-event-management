@@ -49,19 +49,6 @@ public class EventShowcaseModel extends ViewModel {
         return event;
     }
 
-
-    public LiveData<EventLocation> getLocation() {
-        return Transformations.map(getEvent(), ev -> {
-            if (ev == null || ev.getLocation() == null) {
-                // By default, return EPFL
-                return new EventLocation("EPFL", Position.EPFL);
-            }
-
-            return ev.getLocation();
-        });
-
-    }
-
     public LiveData<Bitmap> getEventImage(){
         return eventImage;
 
