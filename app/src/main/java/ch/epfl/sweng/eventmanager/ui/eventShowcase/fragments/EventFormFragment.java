@@ -51,21 +51,9 @@ public class EventFormFragment extends AbstractShowcaseFragment {
             email = ev.getEmail();
             // TODO handle NullPointerException
 
-            name.setOnEditorActionListener((v, actionId, event) -> {
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    subject.requestFocus();
-                    return true;
-                }
-                return false;
-            });
+            name.setOnEditorActionListener((v, actionId, event) -> checkIfNext(actionId));
 
-            subject.setOnEditorActionListener((v, actionId, event) -> {
-                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                    content.requestFocus();
-                    return true;
-                }
-                return false;
-            });
+            subject.setOnEditorActionListener((v, actionId, event) -> checkIfNext(actionId));
 
             sendButton.setOnClickListener(v -> {
                 String s_name = name.getText().toString();
@@ -77,11 +65,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
                         checkEmptyField(content, s_content)) {
 
                     // Sends an email
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("message/rfc822"); //email MIME data
-                    i.putExtra(Intent.EXTRA_EMAIL  , email);
-                    i.putExtra(Intent.EXTRA_SUBJECT, s_name + " : " + s_subject);
-                    i.putExtra(Intent.EXTRA_TEXT   , s_content);
+                    Intent i = createEmailIntent(s_name, s_subject, s_content);
 
                     try {
                         startActivityForResult(Intent.createChooser(i,
@@ -112,6 +96,23 @@ public class EventFormFragment extends AbstractShowcaseFragment {
             return false;
         } else return true;
 
+    }
+
+    private boolean checkIfNext(int actionId) {
+        if (actionId == EditorInfo.IME_ACTION_NEXT) {
+            subject.requestFocus();
+            return true;
+        }
+        return false;
+    }
+
+    private Intent createEmailIntent(String s_name, String s_subject, String s_content) {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822"); //email MIME data
+        i.putExtra(Intent.EXTRA_EMAIL  , email);
+        i.putExtra(Intent.EXTRA_SUBJECT, s_name + " : " + s_subject);
+        i.putExtra(Intent.EXTRA_TEXT   , s_content);
+        return i;
     }
 }
 
