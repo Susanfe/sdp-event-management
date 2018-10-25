@@ -3,69 +3,86 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
-import android.util.Log;
+import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ToastMatcher;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 
-import static android.support.test.espresso.Espresso.onIdle;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
+import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.junit.Assert.*;
+import static java.lang.Thread.sleep;
 
+@RunWith(AndroidJUnit4.class)
 public class EventFormFragmentTest {
 
     @Rule
     public final ActivityTestRule<EventShowcaseActivity> mActivityRule =
             new ActivityTestRule<>(EventShowcaseActivity.class);
 
-    @Test
-    public void testGoToForm() {
+
+    @Before
+    public void setUp() {
         Intent intent = new Intent();
         intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 1);
         mActivityRule.launchActivity(intent);
 
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         onView(withId(R.id.contact_form_go_button)).check(matches(isClickable()))
-                .perform(ViewActions.click());
+                .perform(click());
 
-        //assertTrue(getActivity().equals(EventFormFragment.class));
+        try {
+            sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        onView(withId(R.id.contact_form_send_button)).check(matches(isClickable()))
-                .perform(ViewActions.click());
-
-        onView(withText(R.string.contact_form_empty_field)).inRoot(new ToastMatcher())
-                .check(matches(isDisplayed()));
-
-        fillInAndClick(R.id.contact_form_name, "John Snow");
-
-        fillInAndClick(R.id.contact_form_subject, "Knowledge is power");
-
-        fillInAndClick(R.id.contact_form_content, "I know nothing...");
     }
 
-    private void fillInAndClick(int id, String text) {
-        onView(withId(id)).perform(ViewActions.typeText(text));
+    @Test
+    public void testGoToForm() {
+        String errorText = getResourceString(R.string.contact_form_error);
 
-        onView(withId(R.id.contact_form_send_button)).perform(ViewActions.click());
-        onView(withText(R.string.contact_form_empty_field)).inRoot(new ToastMatcher())
-                .check(matches(isDisplayed()));
+        onView(withId(R.id.contact_form_send_button))
+                .check(matches(isClickable()))
+                .perform(click());
+
+        onView(withId(R.id.contact_form_name)).check(matches(hasErrorText(errorText)));
+
+        fillInAndClick(R.id.contact_form_name,R.id.contact_form_subject, "John Snow", errorText);
+
+        fillInAndClick(R.id.contact_form_subject,R.id.contact_form_content, "Knowledge is power", errorText);
+
     }
 
-    public Context getActivity() {
-        Log.i("Test", InstrumentationRegistry.getTargetContext().toString());
-        return InstrumentationRegistry.getTargetContext();
+    private void fillInAndClick(int id, int errorId, String text, String errorText) {
+        onView(withId(id)).perform(typeText(text), closeSoftKeyboard());
+
+        onView(withId(R.id.contact_form_send_button)).perform(click());
+        onView(withId(errorId)).check(matches(hasErrorText(errorText)));
+    }
+
+    // FIXME same method as in LoginActivityTest, we could consider making a TestUtils class although not certain that getTargetContext will work
+    private String getResourceString(int id) {
+        Context targetContext = InstrumentationRegistry.getTargetContext();
+        return targetContext.getResources().getString(id);
     }
 
 }

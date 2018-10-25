@@ -7,6 +7,12 @@ import android.view.WindowManager;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
+/**
+ * Class to be used as follows :
+ *
+ * onView(withText(R.string.toast_text)).inRoot(new ToastMatcher())
+ *                 .check(matches(isDisplayed()));
+ */
 public class ToastMatcher extends TypeSafeMatcher<Root> {
 
     @Override
