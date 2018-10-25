@@ -12,6 +12,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
+import ch.epfl.sweng.eventmanager.repository.data.Position;
 
 import javax.inject.Inject;
 
@@ -53,7 +54,7 @@ public class EventShowcaseModel extends ViewModel {
         return Transformations.map(getEvent(), ev -> {
             if (ev == null || ev.getLocation() == null) {
                 // By default, return EPFL
-                return new EventLocation("EPFL", 46.518510, 6.563249);
+                return new EventLocation("EPFL", Position.EPFL);
             }
 
             return ev.getLocation();

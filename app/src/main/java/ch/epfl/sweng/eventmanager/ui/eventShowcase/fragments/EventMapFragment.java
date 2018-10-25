@@ -85,7 +85,7 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     private void setUpMap() {
         model.getLocation().observe(getActivity(), loc -> {
             if (loc != null) {
-                LatLng place = new LatLng(loc.getLatitude(), loc.getLongitude());
+                LatLng place = loc.getPosition().asLatLng();
                 mMap.addMarker(new MarkerOptions().position(place).title(loc.getName()));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, ZOOMLEVEL));
 

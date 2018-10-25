@@ -22,12 +22,15 @@ public class Spot implements ClusterItem {
     /**
      * The position of the spot
      */
-    private LatLng position;
+    private Position position;
 
     public Spot(String title, SpotType spotType, double latitude, double longitude) {
         this.title = title;
         this.spotType = spotType;
-        this.position = new LatLng(latitude, longitude);
+        this.position = new Position(latitude, longitude);
+    }
+
+    public Spot() {
     }
 
     @Override
@@ -42,6 +45,6 @@ public class Spot implements ClusterItem {
 
     @Override
     public LatLng getPosition() {
-        return position;
+        return position.asLatLng();
     }
 }
