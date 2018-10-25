@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.TextView;
@@ -7,6 +8,8 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.SpotType;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -29,6 +32,8 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     private static final float ZOOMLEVEL = 19.0f; //This goes up to 21
     private GoogleMap mMap;
     private ClusterManager<Spot> mClusterManager;
+    protected SpotsModel spotsModel;
+
 
     public EventMapFragment() {
         // Required empty public constructor
@@ -38,6 +43,10 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        if (spotsModel == null) {
+            spotsModel = ViewModelProviders.of(requireActivity()).get(SpotsModel.class);
+        }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapFragment);
@@ -52,7 +61,7 @@ public class EventMapFragment extends AbstractShowcaseFragment {
                 mMap = googleMap;
                 if (mMap != null) {
                     setUpMap();
-                    setUpClusterer(setFakeSpot());
+                    setUpClusterer();
                 }
             });
         }
@@ -80,33 +89,30 @@ public class EventMapFragment extends AbstractShowcaseFragment {
 
     }
 
-
-    private List<Spot> setFakeSpot() {
-        Spot spot1 = new Spot("Grande scène", SpotType.SCENE, 46.517799, 6.566737);
-        Spot spot2 = new Spot("Satellite", SpotType.BAR, 46.520433, 6.567822);
-        Spot spot3 = new Spot("test3", SpotType.NURSERY, 46.523, 6.567822);
-        Spot spot4 = new Spot("test4", SpotType.WC, 46.520433, 6.5679);
-        Spot spot5 = new Spot("test5", SpotType.INFORMATION, 46.520433, 6.55555);
-        List<Spot> spotList = new ArrayList<>();
-        spotList.add(spot1);
-        spotList.add(spot2);
-        spotList.add(spot3);
-        spotList.add(spot4);
-        spotList.add(spot5);
-        return spotList;
-    }
-
-    private void setUpClusterer(List<Spot> spotList) {
-        mClusterManager = new ClusterManager<Spot>(getActivity(), mMap);
+    private void setUpClusterer() {
+        mClusterManager = new ClusterManager<>(getActivity(), mMap);
 
         // Point the map's listeners at the listeners implemented by the cluster
         // manager.
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
 
-        for (Spot s : spotList) {
-            mClusterManager.addItem(s);
-        }
         mClusterManager.setAnimation(true);
+
+        this.spotsModel.getSpots().observe(getActivity(), spots -> {
+            if (spots == null)
+                return;
+
+            // 1. clear old spots
+            mClusterManager.clearItems();
+
+            // 2. Add new spots
+            for (Spot s : spots) {
+                System.out.println(s);
+                mClusterManager.addItem(s);
+            }
+        });
     }
+
+
 }

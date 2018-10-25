@@ -40,11 +40,15 @@ public class Spot implements ClusterItem {
 
     @Override
     public String getSnippet() {
-        return spotType.getName();
+        return spotType == null ? null : spotType.getName();
     }
 
     @Override
     public LatLng getPosition() {
         return position.asLatLng();
+    }
+
+    public SpotType getSpotType() {
+        return spotType;
     }
 }
