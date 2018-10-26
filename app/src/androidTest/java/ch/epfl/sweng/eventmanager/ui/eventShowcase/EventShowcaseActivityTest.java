@@ -1,11 +1,11 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.onIdle;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onIdle;
 
 import android.content.Context;
 import android.content.Intent;
