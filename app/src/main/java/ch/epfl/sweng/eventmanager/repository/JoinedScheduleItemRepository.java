@@ -26,15 +26,15 @@ public class JoinedScheduleItemRepository extends AbstractEventRepository<Joined
     }
 
     public void insert(JoinedScheduleItem joinedItem){
-        new InsertAsyncTask<>(dao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedItem);
+        new InsertAsyncTask<>(dao).execute(joinedItem);
     }
 
     public void delete(JoinedScheduleItem joinedItem){
-        new DeleteAsyncTask<>(dao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedItem);
+        new DeleteAsyncTask<>(dao).execute(joinedItem);
     }
 
     public void toggle(JoinedScheduleItem joinedScheduleItem, Context context) {
-        new ToggleTask(dao, context).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedScheduleItem);
+        new ToggleTask(dao, context).execute(joinedScheduleItem);
     }
 
     /**

@@ -62,7 +62,6 @@ public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtil
 
         // Should insert
         repository.insert(new JoinedScheduleItem(uuid0, 0));
-        wait(1000L);
 
         // Should be in db after insert
         assertNotNull(getValue(repository.findById(uuid0)));
@@ -82,8 +81,6 @@ public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtil
 
         // Should remove
         repository.delete(new JoinedScheduleItem(uuid1, 1));
-
-        wait(1000L);
 
         // Should not be in db after delete
         assertNull(getValue(repository.findById(uuid1)));

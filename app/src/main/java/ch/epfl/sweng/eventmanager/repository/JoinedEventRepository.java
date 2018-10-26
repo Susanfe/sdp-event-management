@@ -20,10 +20,10 @@ public class JoinedEventRepository extends AbstractEventRepository<JoinedEvent, 
     }
 
     public void insert(JoinedEvent joinedEvent){
-        new InsertAsyncTask<>(dao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR , joinedEvent);
+        new InsertAsyncTask<>(dao).execute(joinedEvent);
     }
 
     public void delete(JoinedEvent joinedEvent){
-        new DeleteAsyncTask<>(dao).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, joinedEvent);
+        new DeleteAsyncTask<>(dao).execute(joinedEvent);
     }
 }
