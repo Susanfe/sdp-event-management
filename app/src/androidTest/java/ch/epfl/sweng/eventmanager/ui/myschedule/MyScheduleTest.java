@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.Gravity;
@@ -23,7 +24,9 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
+import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 
 @RunWith(AndroidJUnit4.class)
 public class MyScheduleTest {
@@ -31,6 +34,9 @@ public class MyScheduleTest {
     public final ActivityTestRule<EventShowcaseActivity> mActivityRule =
             new ActivityTestRule<>(EventShowcaseActivity.class);
 
+    @Rule
+    public IntentsTestRule<EventShowcaseActivity> intentsTestRule =
+            new IntentsTestRule<>(EventShowcaseActivity.class);
 
     public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
         return new TypeSafeMatcher<View>() {
@@ -67,6 +73,9 @@ public class MyScheduleTest {
 
         onView(withId(R.id.viewpager)).check(matches(isCompletelyDisplayed()));
 
+        // Wait for the event to be retrieved
+        SystemClock.sleep(1000);
+
         // Add first AND second element of scheduledItems to MySchedule
         onView(withIndex(withId(R.id.text_timeline_description), 0)).perform(longClick());
         SystemClock.sleep(800);
@@ -81,10 +90,7 @@ public class MyScheduleTest {
 
 
         onView(withId(R.id.addToCalendar)).check(matches(isCompletelyDisplayed())).perform(click());
-        SystemClock.sleep(800);
-
-        //Matcher<Intent> matcher = toPackage(Intent.ACTION_VIEW);
-        //intended(matcher);
+        intended(hasAction(Intent.ACTION_VIEW));
 
 
     }
