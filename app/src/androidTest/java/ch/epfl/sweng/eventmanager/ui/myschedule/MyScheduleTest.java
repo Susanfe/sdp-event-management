@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.Gravity;
@@ -24,19 +23,13 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
-import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 
 @RunWith(AndroidJUnit4.class)
 public class MyScheduleTest {
     @Rule
     public final ActivityTestRule<EventShowcaseActivity> mActivityRule =
             new ActivityTestRule<>(EventShowcaseActivity.class);
-
-    @Rule
-    public IntentsTestRule<EventShowcaseActivity> intentsTestRule =
-            new IntentsTestRule<>(EventShowcaseActivity.class);
 
     public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
         return new TypeSafeMatcher<View>() {
