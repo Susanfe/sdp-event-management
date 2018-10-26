@@ -7,7 +7,6 @@ import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.data.EventLocation;
 import ch.epfl.sweng.eventmanager.data.Spot;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -27,8 +26,6 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     private static final float ZOOMLEVEL = 19.0f; //This goes up to 21
     private GoogleMap mMap;
     private ClusterManager<Spot> mClusterManager;
-    protected SpotsModel spotsModel;
-
 
     public EventMapFragment() {
         // Required empty public constructor
@@ -38,10 +35,6 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        if (spotsModel == null) {
-            spotsModel = ViewModelProviders.of(requireActivity()).get(SpotsModel.class);
-        }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapFragment);
@@ -94,15 +87,15 @@ public class EventMapFragment extends AbstractShowcaseFragment {
 
         mClusterManager.setAnimation(true);
 
-        this.spotsModel.getSpots().observe(getActivity(), spots -> {
-            if (spots == null)
+        model.getEvent().observe(getActivity(), event -> {
+            if (event == null || event.getSpotList() == null)
                 return;
 
             // 1. clear old spots
             mClusterManager.clearItems();
 
             // 2. Add new spots
-            for (Spot s : spots) {
+            for (Spot s : event.getSpotList()) {
                 System.out.println(s);
                 mClusterManager.addItem(s);
             }

@@ -27,14 +27,13 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
 
     private Button addToCalendarButton;
 
-    @Override
-    protected void setEmptyListTextView() {
-        super.emptyListTextView.setText(R.string.my_schedule_empty);
+    public MyScheduleFragment() {
+        super(R.layout.activity_my_schedule);
     }
 
     @Override
-    protected int getLayout() {
-        return R.layout.activity_my_schedule;
+    protected void setEmptyListTextView() {
+        super.emptyListTextView.setText(R.string.my_schedule_empty);
     }
 
     @Override

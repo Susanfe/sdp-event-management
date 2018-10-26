@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.data.Event;
+import ch.epfl.sweng.eventmanager.data.ReducedEvent;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 
 import java.util.List;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
-    private List<Event> mEvents;
+    private List<ReducedEvent> mEvents;
 
     // Provide a reference to the views for each data item
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -31,13 +32,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             // TODO: display animation on click?
             Context context = itemView.getContext();
             Intent intent = new Intent(context, EventShowcaseActivity.class);
-            Event selectedEvent = mEvents.get(getAdapterPosition());
+            ReducedEvent selectedEvent = mEvents.get(getAdapterPosition());
             intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, selectedEvent.getId());
             context.startActivity(intent);
         }
     }
 
-    public EventListAdapter(List<Event> myEvents) {
+    public EventListAdapter(List<ReducedEvent> myEvents) {
         mEvents = myEvents;
     }
 

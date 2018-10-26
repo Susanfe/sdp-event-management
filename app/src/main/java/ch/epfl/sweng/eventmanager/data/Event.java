@@ -37,9 +37,13 @@ public final class Event {
      */
     private EventLocation location;
     /**
-     * A particular place into the event
+     * A list of the different points of interest of an event
      */
     private List<Spot> spotList;
+    /**
+     * A list of all the concerts, activities and stuff happening during the event
+     */
+    private List<ScheduledItem> scheduledItems;
 
     public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image, EventLocation location, List<Spot> spotList) {
         this.id = id;
@@ -79,4 +83,8 @@ public final class Event {
     }
 
     public List<Spot> getSpotList() { return spotList; }
+
+    public List<ScheduledItem> getScheduledItems() {
+        return scheduledItems;
+    }
 }

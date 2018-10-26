@@ -16,7 +16,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.data.ScheduledItem;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import com.github.vipulasri.timelineview.TimelineView;
 
 import java.util.List;
@@ -36,9 +36,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
     private List<ScheduledItem> dataList;
     private Context context;
     private LayoutInflater mLayoutInflater;
-    private ScheduleViewModel model;
+    private EventShowcaseModel model;
 
-    TimeLineAdapter(ScheduleViewModel model) {
+    TimeLineAdapter(EventShowcaseModel model) {
         this.model = model;
     }
 

@@ -16,30 +16,30 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.data.ScheduledItem;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.AbstractShowcaseFragment;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractScheduleFragment extends Fragment {
+public abstract class AbstractScheduleFragment extends AbstractShowcaseFragment {
 
     private static String TAG = "AbstractScheduleFragment";
-    protected ScheduleViewModel model;
     private TimeLineAdapter timeLineAdapter;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.scheduled_items_empty_tv)
     TextView emptyListTextView;
 
-
-    protected abstract int getLayout();
+    public AbstractScheduleFragment(int resource) {
+        super(resource);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(getLayout(), container, false);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
         ButterKnife.bind(this,view);
         setEmptyListTextView();
@@ -58,10 +58,6 @@ public abstract class AbstractScheduleFragment extends Fragment {
 
         Log.i(TAG, "Resume " + model);
 
-        if (model == null) {
-            model = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
-        }
-
         this.getScheduledItems().observe(this, items -> {
             if (items != null && items.size() > 0) {
                 emptyListTextView.setVisibility(View.GONE);
@@ -79,12 +75,6 @@ public abstract class AbstractScheduleFragment extends Fragment {
 
     protected void onItemsUpdate(List<ScheduledItem> items) {
 
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        model = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
     }
 
     protected abstract void setEmptyListTextView();

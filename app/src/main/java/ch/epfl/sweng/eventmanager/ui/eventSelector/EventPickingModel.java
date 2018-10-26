@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.ui.eventSelector;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import ch.epfl.sweng.eventmanager.data.ReducedEvent;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.data.Event;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
@@ -20,7 +21,7 @@ import java.util.Collections;
  * @author Louis Vialar
  */
 public class EventPickingModel extends ViewModel {
-    private LiveData<List<Event>> events;
+    private LiveData<List<ReducedEvent>> events;
 
     private EventRepository eventRepository;
     private JoinedEventRepository joinedEventRepository;
@@ -50,10 +51,10 @@ public class EventPickingModel extends ViewModel {
 
             return Transformations.map(joinedEvents, set -> {
                 // Build a set of all the joined event IDs
-                List<Event> joined = new ArrayList<>();
-                List<Event> notJoined = new ArrayList<>();
+                List<ReducedEvent> joined = new ArrayList<>();
+                List<ReducedEvent> notJoined = new ArrayList<>();
 
-                for (Event ev : events) {
+                for (ReducedEvent ev : events) {
                     if (set.contains(ev.getId())) joined.add(ev);
                     else notJoined.add(ev);
                 }
@@ -64,19 +65,19 @@ public class EventPickingModel extends ViewModel {
     }
 
     public static class EventsPair {
-        private final List<Event> joinedEvents;
-        private final List<Event> otherEvents;
+        private final List<ReducedEvent> joinedEvents;
+        private final List<ReducedEvent> otherEvents;
 
-        public EventsPair(List<Event> joinedEvents, List<Event> otherEvents) {
+        public EventsPair(List<ReducedEvent> joinedEvents, List<ReducedEvent> otherEvents) {
             this.joinedEvents = Collections.unmodifiableList(joinedEvents);
             this.otherEvents = Collections.unmodifiableList(otherEvents);
         }
 
-        public List<Event> getJoinedEvents() {
+        public List<ReducedEvent> getJoinedEvents() {
             return joinedEvents;
         }
 
-        public List<Event> getOtherEvents() {
+        public List<ReducedEvent> getOtherEvents() {
             return otherEvents;
         }
     }

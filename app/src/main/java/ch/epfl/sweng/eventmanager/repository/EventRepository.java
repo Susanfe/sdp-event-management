@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.data.Event;
+import ch.epfl.sweng.eventmanager.data.ReducedEvent;
 import ch.epfl.sweng.eventmanager.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.data.Spot;
 import com.google.firebase.database.*;
@@ -28,28 +29,24 @@ public class EventRepository {
     public EventRepository() {
     }
 
-    public LiveData<List<Event>> getEvents() {
-        final MutableLiveData<List<Event>> data = new MutableLiveData<>();
+    public LiveData<List<ReducedEvent>> getEvents() {
+        final MutableLiveData<List<ReducedEvent>> data = new MutableLiveData<>();
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = fdB.getReference("events");
+        DatabaseReference dbRef = fdB.getReference("eventList");
 
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<Event>> typeToken = new GenericTypeIndicator<List<Event>>() {
+                GenericTypeIndicator<List<ReducedEvent>> typeToken = new GenericTypeIndicator<List<ReducedEvent>>() {
                 };
 
-                List<Event> events = dataSnapshot.getValue(typeToken);
-                if (events != null) {
-                    events.remove(null); // Somehow the list might contain a null element
-                }
-
+                List<ReducedEvent> events = dataSnapshot.getValue(typeToken);
                 data.postValue(events);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "Error when getting events.", databaseError.toException());
+                Log.w(TAG, "Error when getting events list.", databaseError.toException());
             }
         });
 
@@ -60,8 +57,8 @@ public class EventRepository {
         final MutableLiveData<Event> ret = new MutableLiveData<>();
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance()
-                .getReference("events")
-                .child(String.valueOf(eventId));
+                .getReference("event")
+                .child("event_" + eventId);
 
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -96,35 +93,5 @@ public class EventRepository {
             img.setValue(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
         }).addOnFailureListener(exception -> Log.w(TAG, "Could not load " + event.getName() + " image"));
         return img;
-    }
-
-    private <T> LiveData<List<T>> getElems(int eventId, String basePath, GenericTypeIndicator<List<T>> token) {
-        final MutableLiveData<List<T>> data = new MutableLiveData<>();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                .getReference(basePath)
-                .child("event_" + eventId);
-
-        dbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<T> spots = dataSnapshot.getValue(token);
-                data.postValue(spots);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "Error when getting " + basePath + " for event " + eventId, databaseError.toException());
-            }
-        });
-
-        return data;
-    }
-
-    public LiveData<List<Spot>> getSpots(int eventId) {
-        return this.getElems(eventId, "spots", new GenericTypeIndicator<List<Spot>>() {});
-    }
-
-    public LiveData<List<ScheduledItem>> getScheduledItems(int eventId) {
-        return this.getElems(eventId, "schedule_items", new GenericTypeIndicator<List<ScheduledItem>>() {});
     }
 }
