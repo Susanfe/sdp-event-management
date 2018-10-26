@@ -19,11 +19,11 @@ public class JoinedEventRepository extends AbstractEventRepository<JoinedEvent, 
         return dao.findByName(name);
     }
 
-    public void insert(JoinedEvent joinedEvent){
-        new InsertAsyncTask<>(dao).execute(joinedEvent);
+    public AsyncTask insert(JoinedEvent joinedEvent){
+        return new InsertAsyncTask<>(dao).execute(joinedEvent);
     }
 
-    public void delete(JoinedEvent joinedEvent){
-        new DeleteAsyncTask<>(dao).execute(joinedEvent);
+    public AsyncTask delete(JoinedEvent joinedEvent){
+        return new DeleteAsyncTask<>(dao).execute(joinedEvent);
     }
 }
