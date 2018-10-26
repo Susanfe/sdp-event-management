@@ -20,9 +20,9 @@ public class MockConcertRepository {
     public MockConcertRepository() {
         ScheduledItem c1 = new ScheduledItem(new Date(2018, 16, 5), "Michael Jackson", "Pop", "Il est rescussité !", 3, UUID.randomUUID(), "Concert", "Polyv");
         ScheduledItem c2 = new ScheduledItem(new Date(2018, 16, 6), "Daft Punk", "Pop", "Les frenchies en force", 1.75, UUID.randomUUID(), "Concert", "Polyv");
-        ScheduledItem c3 = new ScheduledItem(new Date(2018, 16, 7), "Donna Summer", "Disco", "Disco is love", 1.5, UUID.randomUUID(), "Concert", "Polyv");
-        ScheduledItem c4 = new ScheduledItem(new Date(2018, 16, 11), "Booba", "Rap", "Fuck tout le monde", 2.6, UUID.randomUUID(), "Concert", "Polyv");
-        ScheduledItem c5 = new ScheduledItem(new Date(2018, 16, 10), "Black M", "R&B", "Le retour...", 1, UUID.randomUUID(), "Concert", "Polyv");
+        ScheduledItem c3 = new ScheduledItem(new Date(2018, 16, 7), "Donna Summer", "Disco", "Disco is love", 1.5, UUID.randomUUID(), "Concert", "CO");
+        ScheduledItem c4 = new ScheduledItem(new Date(2018, 16, 11), "Booba", "Rap", "Fuck tout le monde", 2.6, UUID.randomUUID(), "Concert", "CE");
+        ScheduledItem c5 = new ScheduledItem(new Date(2018, 16, 10), "Black M", "R&B", "Le retour...", 1, UUID.randomUUID(), "Concert", "CE");
         concerts.add(c1);
         concerts.add(c2);
         concerts.add(c3);
