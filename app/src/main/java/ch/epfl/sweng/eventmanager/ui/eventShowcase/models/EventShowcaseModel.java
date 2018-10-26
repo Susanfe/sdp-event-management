@@ -3,16 +3,12 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
 import android.arch.lifecycle.*;
 
 
-import java.io.Serializable;
-
 import android.graphics.Bitmap;
 
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.data.Event;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
-import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
-import ch.epfl.sweng.eventmanager.repository.data.Position;
+import ch.epfl.sweng.eventmanager.data.JoinedEvent;
 
 import javax.inject.Inject;
 

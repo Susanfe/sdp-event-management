@@ -1,10 +1,9 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
-import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import ch.epfl.sweng.eventmanager.data.ScheduledItem;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;

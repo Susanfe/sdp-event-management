@@ -1,11 +1,6 @@
 package ch.epfl.sweng.eventmanager.userManagement;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-
-import java.util.Optional;
-
-import ch.epfl.sweng.eventmanager.repository.data.User;
+import ch.epfl.sweng.eventmanager.data.User;
 
 /**
  * Provides a static interface to session management.

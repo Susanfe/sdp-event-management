@@ -2,7 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
 import android.arch.lifecycle.LiveData;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import ch.epfl.sweng.eventmanager.data.ScheduledItem;
 
 import java.util.List;
 

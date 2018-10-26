@@ -4,14 +4,13 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.support.test.runner.AndroidJUnit4;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventTestUtils;
 import ch.epfl.sweng.eventmanager.repository.LiveDataTestUtil;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.data.JoinedEvent;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 

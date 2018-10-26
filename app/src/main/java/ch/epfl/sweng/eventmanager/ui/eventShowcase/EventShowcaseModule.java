@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.ViewModel;
-import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;

@@ -2,7 +2,7 @@ package ch.epfl.sweng.eventmanager.repository;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.support.test.runner.AndroidJUnit4;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.data.JoinedEvent;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 

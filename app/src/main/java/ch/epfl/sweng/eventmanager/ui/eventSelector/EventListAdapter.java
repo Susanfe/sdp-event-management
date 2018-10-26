@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.data.Event;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 
 import java.util.List;

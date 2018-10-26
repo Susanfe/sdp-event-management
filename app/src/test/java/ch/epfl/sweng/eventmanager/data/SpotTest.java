@@ -1,10 +1,7 @@
-package ch.epfl.sweng.eventmanager.repository.data;
+package ch.epfl.sweng.eventmanager.data;
 
 
 import org.junit.Test;
-
-import ch.epfl.sweng.eventmanager.repository.data.Spot;
-import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

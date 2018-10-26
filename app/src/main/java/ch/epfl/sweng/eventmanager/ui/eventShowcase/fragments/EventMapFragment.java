@@ -5,10 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
-import ch.epfl.sweng.eventmanager.repository.data.Spot;
-import ch.epfl.sweng.eventmanager.repository.data.SpotType;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.data.EventLocation;
+import ch.epfl.sweng.eventmanager.data.Spot;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,9 +14,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Display the map and his features

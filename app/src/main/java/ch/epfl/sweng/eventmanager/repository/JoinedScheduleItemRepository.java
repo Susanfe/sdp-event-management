@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
+import ch.epfl.sweng.eventmanager.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
 
 import javax.inject.Inject;

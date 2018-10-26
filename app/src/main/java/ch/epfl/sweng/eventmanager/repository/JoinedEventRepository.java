@@ -2,7 +2,7 @@ package ch.epfl.sweng.eventmanager.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.data.JoinedEvent;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedEventDao;
 
 import javax.inject.Inject;

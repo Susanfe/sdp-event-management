@@ -3,4 +3,4 @@
  *
  * @author Louis Vialar
  */
-package ch.epfl.sweng.eventmanager.repository.data;
+package ch.epfl.sweng.eventmanager.data;

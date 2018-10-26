@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.data.Event;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
 
 import javax.inject.Inject;

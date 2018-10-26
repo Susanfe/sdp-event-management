@@ -1,6 +1,6 @@
 package ch.epfl.sweng.eventmanager.userManagement;
 
-import ch.epfl.sweng.eventmanager.repository.data.User;
+import ch.epfl.sweng.eventmanager.data.User;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

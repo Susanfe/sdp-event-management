@@ -3,8 +3,8 @@ package ch.epfl.sweng.eventmanager.repository.room;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
+import ch.epfl.sweng.eventmanager.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedEventDao;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
 

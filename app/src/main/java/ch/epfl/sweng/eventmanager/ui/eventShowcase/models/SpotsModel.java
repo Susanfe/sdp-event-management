@@ -3,7 +3,7 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
-import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.data.Spot;
 
 import javax.inject.Inject;
 import java.util.List;

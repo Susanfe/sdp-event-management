@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.data;
+package ch.epfl.sweng.eventmanager.data;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;

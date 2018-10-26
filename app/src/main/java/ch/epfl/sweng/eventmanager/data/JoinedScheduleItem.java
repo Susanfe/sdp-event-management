@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.data;
+package ch.epfl.sweng.eventmanager.data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

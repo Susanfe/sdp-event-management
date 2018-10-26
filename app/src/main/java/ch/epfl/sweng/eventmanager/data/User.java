@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.data;
+package ch.epfl.sweng.eventmanager.data;
 
 public final class User {
     private final int id;

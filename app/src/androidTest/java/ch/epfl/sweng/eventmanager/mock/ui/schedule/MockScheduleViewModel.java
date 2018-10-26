@@ -3,7 +3,7 @@ package ch.epfl.sweng.eventmanager.mock.ui.schedule;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.mock.repository.MockConcertRepository;
-import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import ch.epfl.sweng.eventmanager.data.ScheduledItem;
 
 import javax.inject.Inject;
 import java.util.List;

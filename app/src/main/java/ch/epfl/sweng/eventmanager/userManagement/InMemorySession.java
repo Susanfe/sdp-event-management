@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager.userManagement;
 
 import javax.inject.Singleton;
-import ch.epfl.sweng.eventmanager.repository.data.User;
+import ch.epfl.sweng.eventmanager.data.User;
 
 /**
  * This singleton class keeps the state of the current user.

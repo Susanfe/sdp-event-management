@@ -1,6 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
+import ch.epfl.sweng.eventmanager.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.room.Converters;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
 

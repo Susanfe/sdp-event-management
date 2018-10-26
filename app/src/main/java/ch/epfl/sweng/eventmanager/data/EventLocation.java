@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.data;
+package ch.epfl.sweng.eventmanager.data;
 
 /**
  * Represents the place where an event takes place

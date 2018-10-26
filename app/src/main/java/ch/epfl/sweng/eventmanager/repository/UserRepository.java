@@ -1,14 +1,11 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import ch.epfl.sweng.eventmanager.repository.data.User;
+import ch.epfl.sweng.eventmanager.data.User;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Singleton
 public class UserRepository {

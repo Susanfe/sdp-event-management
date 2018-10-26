@@ -6,8 +6,8 @@ import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
-import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import ch.epfl.sweng.eventmanager.data.JoinedScheduleItem;
+import ch.epfl.sweng.eventmanager.data.ScheduledItem;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
