@@ -72,9 +72,14 @@ public abstract class AbstractScheduleFragment extends Fragment {
                 nullConcertsTV.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             }
+
+            onItemsUpdate(concerts);
         });
     }
 
+    protected void onItemsUpdate(List<ScheduledItem> items) {
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
