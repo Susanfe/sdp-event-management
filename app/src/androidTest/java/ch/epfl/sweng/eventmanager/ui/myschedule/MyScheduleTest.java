@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.myschedule;
 
 import android.content.Intent;
 import android.os.SystemClock;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
@@ -19,6 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
 import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -58,6 +60,8 @@ public class MyScheduleTest {
 
         // Delete first element of scheduledItems from MySchedule
         onView(withIndex(withId(R.id.text_timeline_description), 0)).perform(longClick());
+
+        onView(withId(R.id.addToCalendar)).perform(click());
     }
 
     public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
