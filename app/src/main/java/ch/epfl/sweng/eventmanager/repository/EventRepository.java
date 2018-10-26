@@ -125,7 +125,7 @@ public class EventRepository {
         return this.getElems(eventId, "spots", new GenericTypeIndicator<List<Spot>>() {});
     }
 
-    public LiveData<List<ScheduledItem>> getConcerts(int eventId) {
+    public LiveData<List<ScheduledItem>> getScheduledItems(int eventId) {
         return this.getElems(eventId, "schedule_items", new GenericTypeIndicator<List<ScheduledItem>>() {});
     }
 }

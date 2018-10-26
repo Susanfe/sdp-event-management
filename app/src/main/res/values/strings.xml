@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Event Manager</string>
 
-    <string name="concert_no_artist">Unknown artist</string>
-    <string name="concert_no_genre">Unknown genre</string>
-    <string name="concert_no_description">Sorry ! There is no description for this concert :/</string>
-    <string name="concert_no_date">2018–1–1 20:30</string>
-    <string name="concerts_empty">Sorry ! There are no registered concerts for this event :/</string>
-    <string name="my_schedule_empty">There is currently no saved concerts for this event</string>
+    <string name="scheduled_item_no_artist">Unknown artist</string>
+    <string name="scheduled_item_no_genre">Unknown genre</string>
+    <string name="scheduled_item_no_description">Sorry ! There is no description for this activity :/</string>
+    <string name="scheduled_item_no_date">Unknown date</string>
+    <string name="scheduled_items_empty">Sorry ! There are no registered activities for this event :/</string>
+    <string name="my_schedule_empty">There is currently no saved activities for this event</string>
 
     <string name="title_activity_join_event_switch">Join the event</string>
     <string name="title_activity_login">Sign in</string>
