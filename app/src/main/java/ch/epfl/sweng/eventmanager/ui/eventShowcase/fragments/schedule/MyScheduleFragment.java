@@ -25,9 +25,11 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
     private static final String TAG = "MyScheduleFragment";
     private static final String CALENDAR_FILE_NAME = "myschedule.ics";
 
+    private Button addToCalendarButton;
+
     @Override
-    protected void setNullConcertsTV() {
-        super.nullConcertsTV.setText(R.string.my_schedule_empty);
+    protected void setEmptyListTextView() {
+        super.emptyListTextView.setText(R.string.my_schedule_empty);
     }
 
     @Override
@@ -39,13 +41,24 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
 
-        Button b = v.findViewById(R.id.addToCalendar);
-        b.setOnClickListener(v1 -> {
+        this.addToCalendarButton = v.findViewById(R.id.addToCalendar);
+        this.addToCalendarButton.setOnClickListener(v1 -> {
             this.writeEventsToCalendar(this.getScheduledItems().getValue());
             this.openCalendar();
         });
 
         return v;
+    }
+
+    @Override
+    protected void onItemsUpdate(List<ScheduledItem> items) {
+        if (addToCalendarButton == null)
+            return;
+
+        if (items.size() > 0)
+            addToCalendarButton.setVisibility(Button.VISIBLE);
+        else
+            addToCalendarButton.setVisibility(Button.INVISIBLE);
     }
 
     @Override

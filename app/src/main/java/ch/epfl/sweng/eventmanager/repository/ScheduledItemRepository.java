@@ -22,7 +22,7 @@ public class ScheduledItemRepository {
     public ScheduledItemRepository() {
     }
 
-    public LiveData<List<ScheduledItem>> getConcerts(int eventId) {
+    public LiveData<List<ScheduledItem>> getScheduledItems(int eventId) {
         final MutableLiveData<List<ScheduledItem>> data = new MutableLiveData<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance()
                 .getReference("schedule_items")
