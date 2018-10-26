@@ -20,9 +20,9 @@
     </LinearLayout>
 
     <TextView
-            android:text="@string/concerts_empty"
+            android:text="@string/scheduled_items_empty"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/concerts_empty_tv"
+            android:layout_height="wrap_content" android:id="@+id/scheduled_items_empty_tv"
             android:gravity="center"
             app:layout_anchorGravity="center_vertical|center_horizontal"
             app:layout_anchor="@+id/include" android:visibility="gone"/>
