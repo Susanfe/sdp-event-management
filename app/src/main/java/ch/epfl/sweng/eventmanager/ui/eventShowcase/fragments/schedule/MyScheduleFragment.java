@@ -28,8 +28,8 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
     private Button addToCalendarButton;
 
     @Override
-    protected void setNullConcertsTV() {
-        super.nullConcertsTV.setText(R.string.my_schedule_empty);
+    protected void setEmptyListTextView() {
+        super.emptyListTextView.setText(R.string.my_schedule_empty);
     }
 
     @Override

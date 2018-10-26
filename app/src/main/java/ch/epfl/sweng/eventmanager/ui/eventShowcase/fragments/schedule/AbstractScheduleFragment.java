@@ -29,8 +29,8 @@ public abstract class AbstractScheduleFragment extends Fragment {
     private TimeLineAdapter timeLineAdapter;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-    @BindView(R.id.concerts_empty_tv)
-    TextView nullConcertsTV;
+    @BindView(R.id.scheduled_items_empty_tv)
+    TextView emptyListTextView;
 
 
     protected abstract int getLayout();
@@ -42,7 +42,7 @@ public abstract class AbstractScheduleFragment extends Fragment {
         View view = inflater.inflate(getLayout(), container, false);
 
         ButterKnife.bind(this,view);
-        setNullConcertsTV();
+        setEmptyListTextView();
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
@@ -62,18 +62,18 @@ public abstract class AbstractScheduleFragment extends Fragment {
             model = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
         }
 
-        this.getScheduledItems().observe(this, concerts -> {
-            if (concerts != null && concerts.size() > 0) {
-                nullConcertsTV.setVisibility(View.GONE);
+        this.getScheduledItems().observe(this, items -> {
+            if (items != null && items.size() > 0) {
+                emptyListTextView.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                Collections.sort(concerts,(c1,c2) -> Objects.requireNonNull(c1.getDate()).compareTo(c2.getDate()));
-                timeLineAdapter.setDataList(concerts);
+                Collections.sort(items,(c1,c2) -> Objects.requireNonNull(c1.getDate()).compareTo(c2.getDate()));
+                timeLineAdapter.setDataList(items);
             } else {
-                nullConcertsTV.setVisibility(View.VISIBLE);
+                emptyListTextView.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             }
 
-            onItemsUpdate(concerts);
+            onItemsUpdate(items);
         });
     }
 
@@ -87,7 +87,7 @@ public abstract class AbstractScheduleFragment extends Fragment {
         model = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
     }
 
-    protected abstract void setNullConcertsTV();
+    protected abstract void setEmptyListTextView();
 
     protected abstract LiveData<List<ScheduledItem>> getScheduledItems();
 
