@@ -52,6 +52,16 @@ public class ScheduleViewModel extends ViewModel {
         return scheduledItems;
     }
 
+    public LiveData<List<ScheduledItem>> getScheduledItemsForRoom(String room) {
+        return Transformations.map(getScheduleItemsByRoom(), map -> {
+            if (map == null) {
+                return null;
+            } else {
+                return map.get(room);
+            }
+        });
+    }
+
     public LiveData<Map<String, List<ScheduledItem>>> getScheduleItemsByRoom() {
         return scheduleItemsByRoom;
     }
@@ -64,13 +74,15 @@ public class ScheduleViewModel extends ViewModel {
         // This method doesn't return a live-data because it's not watched by anything
         // we only need to get a value at some point, and LiveDatas don't suit this model
         List<ScheduledItem> events = getJoinedScheduleItems().getValue();
-
-        for (ScheduledItem i : events)
-            if (i.getId().equals(itemId))
-                return true;
+        if (events != null) {
+            for (ScheduledItem i : events)
+                if (i.getId().equals(itemId))
+                    return true;
+        }
 
         return false;
     }
+
 
 
     public void toggleMySchedule(UUID concert, Context context) {
@@ -104,7 +116,7 @@ public class ScheduleViewModel extends ViewModel {
      private LiveData<Map<String,List<ScheduledItem>>> buildScheduleItemByRoom() {
         return Transformations.map(getScheduledItems(), concerts -> {
             Map<String,List<ScheduledItem>> scheduleItemsByRoom = new HashMap<>();
-                if(concerts.size() <= 0) {
+                if(concerts == null || concerts.size() <= 0) {
                     return null;
                 } else {
                 for (ScheduledItem scheduledItem : concerts) {
