@@ -59,7 +59,7 @@ public class MyScheduleTest {
         onView(withId(R.id.viewpager)).perform(swipeRight()).check(matches(isCompletelyDisplayed()));
         SystemClock.sleep(800);
 
-      //  onView(withIndex(withId(R.id.text_timeline_description),0)).perform(longClick());
+        // onView(withIndex(withId(R.id.text_timeline_description),0)).perform(longClick());
     }
 
     public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
