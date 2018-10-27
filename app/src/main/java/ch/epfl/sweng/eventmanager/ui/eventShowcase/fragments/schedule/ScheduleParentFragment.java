@@ -69,7 +69,6 @@ public class ScheduleParentFragment extends Fragment {
         scheduleViewModel.getScheduleItemsByRoom().observe(this, map -> {
             if (map != null) {
                 tabLayout.setVisibility(View.VISIBLE);
-                viewPagerAdapter.addFragment(new MyScheduleFragment(), "My Schedule");
                 updateTabs(map.keySet());
                 viewPagerAdapter.notifyDataSetChanged();
             } else {
@@ -86,6 +85,7 @@ public class ScheduleParentFragment extends Fragment {
      */
     private void createViewPager (ViewPager viewPager) {
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+        viewPagerAdapter.addFragment(new MyScheduleFragment(), "My Schedule");
         viewPager.setAdapter(viewPagerAdapter);
     }
 
@@ -98,12 +98,18 @@ public class ScheduleParentFragment extends Fragment {
             return;
         }
             for (String room : rooms) {
-                ScheduleFragment fragment = new ScheduleFragment();
-                fragment.setRoom(room);
-                if (room != null && !room.isEmpty()) {
-                    viewPagerAdapter.addFragment(fragment, room);
-                } else {
-                    viewPagerAdapter.addFragment(fragment, "Schedule");
+                String fragmentName = (room != null && !room.isEmpty()) ? room : "Schedule";
+                if (!viewPagerAdapter.mFragmentTitleList.contains(fragmentName)) {
+                    ScheduleFragment fragment = new ScheduleFragment();
+                    fragment.setRoom(room);
+                    viewPagerAdapter.addFragment(fragment, fragmentName);
+                }
+        }
+
+        for(Fragment fragment : viewPagerAdapter.mFragmentList) {
+            if (fragment instanceof ScheduleFragment && ! rooms.contains(((ScheduleFragment)fragment).getRoom())) {
+                getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                viewPagerAdapter.mFragmentList.remove(fragment);
             }
         }
     }
