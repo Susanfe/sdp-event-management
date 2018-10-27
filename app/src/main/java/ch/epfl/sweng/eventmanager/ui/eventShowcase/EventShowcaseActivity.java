@@ -27,6 +27,7 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.SchedulePa
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -40,6 +41,7 @@ public class EventShowcaseActivity extends AppCompatActivity
     private EventShowcaseModel model;
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
+    private SpotsModel spotsModel;
     private DrawerLayout mDrawerLayout;
 
     @Override
@@ -75,6 +77,9 @@ public class EventShowcaseActivity extends AppCompatActivity
 
             this.newsModel = ViewModelProviders.of(this, factory).get(NewsViewModel.class);
             this.newsModel.init(eventID);
+
+            this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
+            this.spotsModel.init(eventID);
 
             changeFragment(new EventMainFragment(), true);
         }
