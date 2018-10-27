@@ -19,12 +19,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.longClick;
-import static android.support.test.espresso.action.ViewActions.swipeRight;
+import static android.support.test.espresso.action.ViewActions.*;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 @RunWith(AndroidJUnit4.class)
 public class MyScheduleTest {
@@ -47,17 +47,19 @@ public class MyScheduleTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
 
-        onView(withId(R.id.viewpager)).check(matches(isCompletelyDisplayed()));
+        SystemClock.sleep(800);
+
+        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
+        SystemClock.sleep(800);
 
         // Add first element of scheduledItems to MySchedule
-        onView(withIndex(withId(R.id.text_timeline_description), 0)).perform(longClick());
+        onView(withIndex(withId(R.id.text_timeline_description), 1)).perform(longClick());
         SystemClock.sleep(800);
 
         onView(withId(R.id.viewpager)).perform(swipeRight()).check(matches(isCompletelyDisplayed()));
         SystemClock.sleep(800);
 
-        // Delete first element of scheduledItems from MySchedule
-        onView(withIndex(withId(R.id.text_timeline_description), 0)).perform(longClick());
+      //  onView(withIndex(withId(R.id.text_timeline_description),0)).perform(longClick());
     }
 
     public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
