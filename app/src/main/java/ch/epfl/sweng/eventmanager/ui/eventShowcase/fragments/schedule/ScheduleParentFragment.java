@@ -108,7 +108,7 @@ public class ScheduleParentFragment extends Fragment {
 
         for(Fragment fragment : viewPagerAdapter.mFragmentList) {
             if (fragment instanceof ScheduleFragment && ! rooms.contains(((ScheduleFragment)fragment).getRoom())) {
-                getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                 viewPagerAdapter.mFragmentList.remove(fragment);
             }
         }
