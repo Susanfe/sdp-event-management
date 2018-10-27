@@ -91,16 +91,16 @@ public class ScheduleParentFragment extends Fragment {
      * @param rooms Set of rooms
      */
     private void updateTabs(Set<String> rooms) {
-        if (rooms == null) {
+        if (rooms == null || rooms.isEmpty()) {
             return;
         }
-        for (String room : rooms) {
-            ScheduleFragment fragment = new ScheduleFragment();
-            fragment.setRoom(room);
-            if (! room.isEmpty()) {
-                viewPagerAdapter.addFragment(fragment, room);
-            } else {
-                viewPagerAdapter.addFragment(fragment,"Schedule");
+            for (String room : rooms) {
+                ScheduleFragment fragment = new ScheduleFragment();
+                fragment.setRoom(room);
+                if (room != null && !room.isEmpty()) {
+                    viewPagerAdapter.addFragment(fragment, room);
+                } else {
+                    viewPagerAdapter.addFragment(fragment, "Schedule");
             }
         }
     }
