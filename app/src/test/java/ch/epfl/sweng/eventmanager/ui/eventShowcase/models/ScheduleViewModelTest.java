@@ -4,6 +4,7 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule;
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.content.Context;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
 import ch.epfl.sweng.eventmanager.repository.ScheduledItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
@@ -40,19 +41,21 @@ public class ScheduleViewModelTest {
     private ScheduleViewModel scheduleViewModel;
     private ArrayList<ScheduledItem> concerts = new ArrayList<>();
     private ArrayList<JoinedScheduleItem> joinedScheduleItems = new ArrayList<>();
-    private MutableLiveData<List<ScheduledItem>> data = new MutableLiveData<List<ScheduledItem>>();
+    private MutableLiveData<List<ScheduledItem>> data = new MutableLiveData<>();
     private MutableLiveData<List<JoinedScheduleItem>> joinedData = new MutableLiveData<>();
-    private ArrayList<ScheduledItem> polyv = new ArrayList<ScheduledItem>();
+    private ArrayList<ScheduledItem> polyv = new ArrayList<>();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         initMock();
         MockitoAnnotations.initMocks(this);
         Mockito.when(scheduledItemRepository.getConcerts(anyInt())).thenReturn(data);
         Mockito.when(joinedScheduleItemRepository.findByEventId(anyInt())).thenReturn(joinedData);
         scheduleViewModel = new ScheduleViewModel(scheduledItemRepository,joinedScheduleItemRepository);
         scheduleViewModel.init(anyInt());
-
+        Observer obs = mock(Observer.class);
+        scheduleViewModel.getJoinedScheduleItems().observeForever(obs);
+        scheduleViewModel.getScheduleItemsByRoom().observeForever(obs);
     }
 
     @Test
@@ -62,29 +65,25 @@ public class ScheduleViewModelTest {
 
     @Test
     public void getScheduleItemsByRoom() {
+        System.out.println(scheduleViewModel.getScheduleItemsByRoom().getValue());
+        assertEquals(polyv,scheduleViewModel.getScheduleItemsByRoom().getValue().get("Polyv"));
     }
 
     @Test
     public void isItemJoined() {
+        assertTrue(scheduleViewModel.isItemJoined(joinedScheduleItems.get(0).getUid()));
     }
 
     @Test
     public void getJoinedScheduleItems() {
-        Observer obs = mock(Observer.class);
-        scheduleViewModel.getJoinedScheduleItems().observeForever(obs);
         assertEquals(joinedScheduleItems.get(0).getUid(),scheduleViewModel.getJoinedScheduleItems().getValue().get(0).getId());
     }
 
     @Test
     public void toggleMySchedule() {
-    }
-
-    @Test
-    public void buildScheduleItemByRoomTest() {
-        Observer obs = mock(Observer.class);
-        scheduleViewModel.getScheduleItemsByRoom().observeForever(obs);
-        System.out.println(scheduleViewModel.getScheduleItemsByRoom().getValue());
-        assertEquals(polyv,scheduleViewModel.getScheduleItemsByRoom().getValue().get("Polyv"));
+        Context context = Mockito.mock(Context.class);
+        scheduleViewModel.toggleMySchedule(concerts.get(1).getId(),context);
+        assert(scheduleViewModel.getJoinedScheduleItems().getValue().contains(concerts.get(1)));
     }
 
 
