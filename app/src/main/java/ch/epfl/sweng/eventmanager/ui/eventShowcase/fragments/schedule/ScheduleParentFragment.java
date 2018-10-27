@@ -97,7 +97,7 @@ public class ScheduleParentFragment extends Fragment {
         for (String room : rooms) {
             ScheduleFragment fragment = new ScheduleFragment();
             fragment.setRoom(room);
-            if (room.isEmpty()) {
+            if (! room.isEmpty()) {
                 viewPagerAdapter.addFragment(fragment, room);
             } else {
                 viewPagerAdapter.addFragment(fragment,"Schedule");
