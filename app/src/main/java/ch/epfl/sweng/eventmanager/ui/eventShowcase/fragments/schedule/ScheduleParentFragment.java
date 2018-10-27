@@ -34,6 +34,7 @@ public class ScheduleParentFragment extends Fragment {
 
     private ScheduleViewModel scheduleViewModel;
     private ViewPagerAdapter viewPagerAdapter;
+    private static String TAG = "ScheduleParentFragment";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -58,6 +59,8 @@ public class ScheduleParentFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        Log.i(TAG, "Resume " + scheduleViewModel);
 
         if (scheduleViewModel == null) {
             scheduleViewModel = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
