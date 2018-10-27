@@ -1,11 +1,13 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import android.support.annotation.NonNull;
+
 import java.text.SimpleDateFormat;
 
 /**
  * @author Louis Vialar
  */
-public final class News {
+public final class News implements Comparable<News> {
     private String title;
     private long date;
     private String content;
@@ -37,5 +39,10 @@ public final class News {
         }
         SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
         return f.format(date);
+    }
+
+    @Override
+    public int compareTo(@NonNull News o) {
+        return Long.compare(o.date, date);
     }
 }

@@ -38,7 +38,7 @@ public class NewsRepository {
 
                 List<News> news = dataSnapshot.getValue(typeToken);
                 if (news != null) {
-                    Collections.sort(news, (o1, o2) -> Long.compare(o1.getDate(), o2.getDate()));
+                    Collections.sort(news);
                 }
                 data.postValue(news);
             }
