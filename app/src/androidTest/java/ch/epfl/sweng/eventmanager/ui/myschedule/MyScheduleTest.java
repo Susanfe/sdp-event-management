@@ -1,5 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.myschedule;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.espresso.contrib.DrawerActions;
@@ -22,6 +24,10 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.*;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.Intents.intending;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.anyIntent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.core.AllOf.allOf;
 
@@ -71,14 +77,17 @@ public class MyScheduleTest {
 
         // Add first element of scheduledItems to MySchedule
         onView(allOf(isDisplayed(),withIndex(withId(R.id.text_timeline_description),0))).perform(longClick());
+        onView(allOf(isDisplayed(),withIndex(withId(R.id.text_timeline_description),1))).perform(longClick());
 
         onView(withId(R.id.viewpager)).perform(swipeRight()).check(matches(isCompletelyDisplayed()));
 
         SystemClock.sleep(800);
 
-        onView(allOf(isDisplayed(), withId(R.id.text_timeline_description))).perform(longClick());
-
+        onView(allOf(isDisplayed(),withIndex(withId(R.id.text_timeline_description),0))).perform(longClick());
         SystemClock.sleep(800);
+
+        onView(withId(R.id.addToCalendar)).perform(click());
+
     }
 
 }
