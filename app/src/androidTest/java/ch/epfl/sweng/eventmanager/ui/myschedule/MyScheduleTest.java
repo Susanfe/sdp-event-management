@@ -22,9 +22,8 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.*;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
-import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
 public class MyScheduleTest {
@@ -47,19 +46,15 @@ public class MyScheduleTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
 
-        SystemClock.sleep(800);
-
         onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
         SystemClock.sleep(800);
 
         // Add first element of scheduledItems to MySchedule
         onView(withIndex(withId(R.id.text_timeline_description), 1)).perform(longClick());
-        SystemClock.sleep(800);
 
         onView(withId(R.id.viewpager)).perform(swipeRight()).check(matches(isCompletelyDisplayed()));
-        SystemClock.sleep(800);
 
-        // onView(withIndex(withId(R.id.text_timeline_description),0)).perform(longClick());
+        onView(allOf(isDisplayed(), withId(R.id.text_timeline_description))).perform(longClick());
     }
 
     public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
