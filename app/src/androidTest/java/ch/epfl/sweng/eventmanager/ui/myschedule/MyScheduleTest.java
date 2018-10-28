@@ -50,11 +50,15 @@ public class MyScheduleTest {
         SystemClock.sleep(800);
 
         // Add first element of scheduledItems to MySchedule
-        onView(withIndex(withId(R.id.text_timeline_description), 1)).perform(longClick());
+        onView(allOf(isDisplayed(),withIndex(withId(R.id.text_timeline_description), 1))).perform(longClick());
 
         onView(withId(R.id.viewpager)).perform(swipeRight()).check(matches(isCompletelyDisplayed()));
 
+        SystemClock.sleep(800);
+
         onView(allOf(isDisplayed(), withId(R.id.text_timeline_description))).perform(longClick());
+
+        SystemClock.sleep(800);
     }
 
     public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
