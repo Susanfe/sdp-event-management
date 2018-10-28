@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -15,14 +16,22 @@ import android.widget.Toast;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
+import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.maps.android.clustering.ClusterManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -38,6 +47,8 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     private GoogleMap mMap;
     private ClusterManager<Spot> mClusterManager;
     protected SpotsModel spotsModel;
+    Polygon shape;
+    List<Marker> markers = new ArrayList<>();
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -92,7 +103,15 @@ public class EventMapFragment extends AbstractShowcaseFragment {
             mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
             mMap.setOnMyLocationClickListener(onMyLocationClickListener);
 
-
+            //has to be changed -> put in firebase
+            ArrayList<Position> listPosition = new ArrayList<>();
+            listPosition.add(new Position(46.518590,6.561272));
+            listPosition.add(new Position(46.522148,6.563289));
+            listPosition.add(new Position(46.521440,6.571700));
+            listPosition.add(new Position(46.518295,6.571958));
+            listPosition.add(new Position(46.517365,6.566036));
+            Zone zone = new Zone(listPosition);
+            shape = mMap.addPolygon(zone.addPolygon());
         });
     }
 
@@ -152,5 +171,4 @@ public class EventMapFragment extends AbstractShowcaseFragment {
             Toast.makeText(getActivity(), "Current location:\n" + location, Toast.LENGTH_LONG).show();
         }
     };
-
 }
