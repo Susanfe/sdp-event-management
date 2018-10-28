@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
@@ -51,6 +53,7 @@ public class EventShowcaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_showcase);
         mDrawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
 
         // Set toolbar as action bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -81,11 +84,23 @@ public class EventShowcaseActivity extends AppCompatActivity
             this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
             this.spotsModel.init(eventID);
 
+            // Set window title and configure header
+            View headerView = navigationView.getHeaderView(0);
+            TextView drawer_header_text = headerView.findViewById(R.id.drawer_header_text);
+            model.getEvent().observe(this, ev -> {
+                if (ev == null) {
+                    return;
+                }
+
+                drawer_header_text.setText(ev.getName());
+                setTitle(ev.getName());
+            });
+
+            // Set displayed fragment
             changeFragment(new EventMainFragment(), true);
         }
 
         // Handle drawer events
-        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
