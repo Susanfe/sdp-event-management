@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.support.annotation.NonNull;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
@@ -37,7 +38,7 @@ public final class News implements Comparable<News> {
         if (date <= 0) {
             return null;
         }
-        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        DateFormat f = DateFormat.getDateTimeInstance();
         return f.format(date);
     }
 

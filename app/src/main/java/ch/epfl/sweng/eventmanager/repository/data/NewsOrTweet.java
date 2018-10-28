@@ -7,6 +7,7 @@ import com.twitter.sdk.android.core.models.Tweet;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Louis Vialar
@@ -66,5 +67,15 @@ public class NewsOrTweet implements Comparable<NewsOrTweet> {
                 ", tweet=" + tweet +
                 ", time=" + time +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NewsOrTweet)) return false;
+        NewsOrTweet that = (NewsOrTweet) o;
+        return time == that.time &&
+                ((news == null && that.news == null) || (news != null && news.equals(that.news))) &&
+                ((tweet == null && that.tweet == null) || (tweet != null && tweet.equals(that.tweet)));
     }
 }
