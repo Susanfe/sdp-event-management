@@ -95,7 +95,7 @@ public class ScheduledItemTest {
     @Test
     public void getEndOfScheduledItem() {
          Date end = new Date(now.getYear(), now.getMonth(), now.getDate(), now.getHours()+3, now.getMinutes() +30);
-         assertEquals(setPrecisionToMinutes(end), setPrecisionToMinutes(c2.getEndOfConcert()));
+         assertEquals(setPrecisionToMinutes(end), setPrecisionToMinutes(c2.getEnd()));
     }
 
     @Test

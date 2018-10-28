@@ -4,8 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
-import ch.epfl.sweng.eventmanager.repository.ScheduledItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * This is the model for the concert list. It connects with the repository to pull a list of scheduledItems and communicate them
+ * This is the model for the scheduled item list. It connects with the repository to pull a list of scheduledItems and communicate them
  * to the view (here, the activity).
  *
  * @author Louis Vialar
@@ -24,13 +24,13 @@ public class ScheduleViewModel extends ViewModel {
     private LiveData<List<ScheduledItem>> scheduledItems;
     private LiveData<List<ScheduledItem>> joinedItems;
 
-    private ScheduledItemRepository repository;
+    private EventRepository repository;
     private JoinedScheduleItemRepository joinedScheduleItemRepository;
 
     private int eventId;
 
     @Inject
-    public ScheduleViewModel(ScheduledItemRepository repository, JoinedScheduleItemRepository joinedScheduleItemRepository) {
+    public ScheduleViewModel(EventRepository repository, JoinedScheduleItemRepository joinedScheduleItemRepository) {
         this.repository = repository;
         this.joinedScheduleItemRepository = joinedScheduleItemRepository;
     }
@@ -41,7 +41,7 @@ public class ScheduleViewModel extends ViewModel {
         }
 
         this.eventId = eventId;
-        this.scheduledItems = repository.getConcerts(eventId);
+        this.scheduledItems = repository.getScheduledItems(eventId);
         this.joinedItems = buildJoinedScheduledItemsList(joinedScheduleItemRepository.findByEventId(eventId));
     }
 
@@ -49,31 +49,19 @@ public class ScheduleViewModel extends ViewModel {
         return scheduledItems;
     }
 
-    public Boolean isItemJoined(UUID itemId) {
-        // This method doesn't return a live-data because it's not watched by anything
-        // we only need to get a value at some point, and LiveDatas don't suit this model
-        List<ScheduledItem> events = getJoinedScheduleItems().getValue();
-
-        for (ScheduledItem i : events)
-            if (i.getId().equals(itemId))
-                return true;
-
-        return false;
-    }
-
     public LiveData<List<ScheduledItem>> getJoinedScheduleItems() {
         return joinedItems;
     }
 
-    public void toggleMySchedule(UUID concert, Context context) {
-        joinedScheduleItemRepository.toggle(new JoinedScheduleItem(concert, eventId), context);
+    public void toggleMySchedule(UUID scheduledItemId, Context context) {
+        joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), context);
     }
 
-    private LiveData<List<ScheduledItem>> buildJoinedScheduledItemsList(LiveData<List<JoinedScheduleItem>> joinedConcerts) {
+    private LiveData<List<ScheduledItem>> buildJoinedScheduledItemsList(LiveData<List<JoinedScheduleItem>> joinedItems) {
         LiveData<List<ScheduledItem>> allItems = getScheduledItems();
 
         return Transformations.switchMap(allItems, items ->
-                Transformations.map(joinedConcerts, joinedScheduleItems -> {
+                Transformations.map(joinedItems, joinedScheduleItems -> {
                     List<ScheduledItem> joined = new ArrayList<>();
 
                     if (items == null || joinedScheduleItems == null) {
