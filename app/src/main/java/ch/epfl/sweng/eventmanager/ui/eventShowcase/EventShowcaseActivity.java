@@ -75,21 +75,21 @@ public class EventShowcaseActivity extends AppCompatActivity
             this.scheduleModel = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
             this.scheduleModel.init(eventID);
 
+            // Set window title and configure header
+            View headerView = navigationView.getHeaderView(0);
+            TextView drawer_header_text = headerView.findViewById(R.id.drawer_header_text);
+            model.getEvent().observe(this, ev -> {
+                if (ev == null) {
+                    return;
+                }
+
+                drawer_header_text.setText(ev.getName());
+                setTitle(ev.getName());
+            });
+
+            // Set displayed fragment
             changeFragment(new EventMainFragment(), true);
         }
-
-        // Set window title and configure header
-        View headerView = navigationView.getHeaderView(0);
-        TextView drawer_header_text = headerView.findViewById(R.id.drawer_header_text);
-        model.getEvent().observe(this, ev -> {
-            if (ev == null) {
-                return;
-            }
-
-            drawer_header_text.setText(ev.getName());
-            setTitle(ev.getName());
-        });
-
 
         // Handle drawer events
         navigationView.setNavigationItemSelectedListener(this);
