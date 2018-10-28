@@ -19,6 +19,7 @@ import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -73,6 +74,7 @@ public class ScheduleParentFragment extends Fragment {
                 viewPagerAdapter.notifyDataSetChanged();
             } else {
                 tabLayout.setVisibility(View.GONE);
+                destroyUnusedFragments(viewPagerAdapter.mFragmentList,Collections.emptySet(),true);
                 viewPagerAdapter.addFragment(new ScheduleFragment(),"");
                 viewPagerAdapter.notifyDataSetChanged();
             }
@@ -105,9 +107,22 @@ public class ScheduleParentFragment extends Fragment {
                     viewPagerAdapter.addFragment(fragment, fragmentName);
                 }
         }
+        destroyUnusedFragments(viewPagerAdapter.mFragmentList,rooms,false);
+    }
 
+    /**
+     * Destroy all unused fragment in case of removal of Room/Events in DB
+     * @param allFragments list of all registered fragments
+     * @param rooms current known rooms
+     * @param destroyMySchedule true if mySchedule need to be destroyed, false otherwise
+     */
+    private void destroyUnusedFragments(@NonNull List<Fragment> allFragments, @NonNull Set<String> rooms, Boolean destroyMySchedule) {
         for(Fragment fragment : viewPagerAdapter.mFragmentList) {
             if (fragment instanceof ScheduleFragment && ! rooms.contains(((ScheduleFragment)fragment).getRoom())) {
+                requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                viewPagerAdapter.mFragmentList.remove(fragment);
+            }
+            if(destroyMySchedule && fragment instanceof MyScheduleFragment) {
                 requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                 viewPagerAdapter.mFragmentList.remove(fragment);
             }
