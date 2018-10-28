@@ -58,6 +58,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.3'
     implementation 'com.google.firebase:firebase-storage:16.0.3'
     implementation 'android.arch.persistence.room:runtime:1.1.1'
+    // Include all the Twitter APIs
+    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
+    implementation 'com.twitter.sdk.android:tweet-ui:3.1.1'
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.17'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
@@ -89,19 +92,19 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'test
     }
 
     def fileFilter = [
-      '**/R.class',
-      '**/R$*.class',
-      '**/BuildConfig.*',
-      '**/Manifest*.*',
-      '**/*Test*.*',
-      'android/**/*.*',
-      '**/*_MembersInjector.class',
-      '**/Dagger*Component*.class',
-      '**/Dagger*Subcomponent*.class',
-      '**/*Subcomponent$Builder.class',
-      '**/*_*Factory.class',
-      '**/*_Impl*.class',
-      '**/*_*ViewBinding.class'
+            '**/R.class',
+            '**/R$*.class',
+            '**/BuildConfig.*',
+            '**/Manifest*.*',
+            '**/*Test*.*',
+            'android/**/*.*',
+            '**/*_MembersInjector.class',
+            '**/Dagger*Component*.class',
+            '**/Dagger*Subcomponent*.class',
+            '**/*Subcomponent$Builder.class',
+            '**/*_*Factory.class',
+            '**/*_Impl*.class',
+            '**/*_*ViewBinding.class'
     ]
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"

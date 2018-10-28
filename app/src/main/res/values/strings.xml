@@ -3,9 +3,10 @@
 
     <string name="scheduled_item_no_artist">Unknown artist</string>
     <string name="scheduled_item_no_genre">Unknown genre</string>
-    <string name="scheduled_item_no_description">Sorry ! There is no description for this activity :/</string>
+    <string name="scheduled_item_no_description">Sorry! There is no description for this activity :/</string>
     <string name="scheduled_item_no_date">Unknown date</string>
-    <string name="scheduled_items_empty">Sorry ! There are no registered activities for this event :/</string>
+    <string name="scheduled_items_empty">Sorry! There are no registered activities for this event :/</string>
+    <string name="news_empty">The event organizer hasn\'t published any news yet.</string>
     <string name="my_schedule_empty">There is currently no saved activities for this event</string>
 
     <string name="title_activity_join_event_switch">Join the event</string>
@@ -50,4 +51,7 @@
 
     <string name="my_schedule_add_to_calendar">Add to my calendar</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="news_nav_item_activity_event_showcase">News</string>
 </resources>
