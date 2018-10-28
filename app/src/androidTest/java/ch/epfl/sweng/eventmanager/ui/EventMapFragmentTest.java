@@ -10,7 +10,6 @@ import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +37,7 @@ public class EventMapFragmentTest {
 
     @Test
     public void eventMapTest() {
+        //TODO: separate into several methods
         Intent intent = new Intent();
         // Opens Sysmic Event
         intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 2);
@@ -51,16 +51,30 @@ public class EventMapFragmentTest {
                 .perform(NavigationViewActions.navigateTo(R.id.nav_map));
         onView(withId(R.id.text_test)).check(matches(withText("everything is ready")));
 
-        // Clicks on the EPFL marker
+
         UiDevice device = UiDevice.getInstance(getInstrumentation());
-        UiObject marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
+
+        // Clicks on the EPFL marker
         try {
+            UiObject marker = device.findObject(new UiSelector().descriptionContains("EPFL"));
             marker.click();
             int x = marker.getBounds().centerX();
             int y = marker.getBounds().centerY();
             device.click(x, y-DIFFERENCE_TO_SNIPPET);
         } catch (UiObjectNotFoundException e) {
             e.printStackTrace();
+            fail("Fail on finding the marker");
         }
+
+        //TODO: Test the different components of the map
+        /*// Clicks on the zoom in
+        try {
+            UiObject compass = device.findObject(new UiSelector().descriptionContains("ZOOM IN"));
+            compass.click();
+        } catch (UiObjectNotFoundException e) {
+            e.printStackTrace();
+            fail("Fail on finding the zoom in");
+        }*/
+
     }
 }
