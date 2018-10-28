@@ -10,6 +10,8 @@ import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.repository.data.Zone;
+
 import com.google.firebase.database.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -127,5 +129,8 @@ public class EventRepository {
 
     public LiveData<List<ScheduledItem>> getScheduledItems(int eventId) {
         return this.getElems(eventId, "schedule_items", new GenericTypeIndicator<List<ScheduledItem>>() {});
+    }
+    public LiveData<List<Zone>> getZone(int eventId) {
+        return this.getElems(eventId, "zone", new GenericTypeIndicator<List<Zone>>() {});
     }
 }
