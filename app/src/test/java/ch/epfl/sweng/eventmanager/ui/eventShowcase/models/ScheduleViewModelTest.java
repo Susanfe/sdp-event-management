@@ -1,12 +1,11 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
+import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
-import ch.epfl.sweng.eventmanager.repository.ScheduledItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import org.junit.Before;
@@ -34,7 +33,7 @@ public class ScheduleViewModelTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
     @Mock
-    private ScheduledItemRepository scheduledItemRepository;
+    private EventRepository eventRepository;
     @Mock
     private JoinedScheduleItemRepository joinedScheduleItemRepository;
 
@@ -49,9 +48,9 @@ public class ScheduleViewModelTest {
     public void setUp() {
         initMock();
         MockitoAnnotations.initMocks(this);
-        Mockito.when(scheduledItemRepository.getConcerts(anyInt())).thenReturn(data);
+        Mockito.when(eventRepository.getScheduledItems(anyInt())).thenReturn(data);
         Mockito.when(joinedScheduleItemRepository.findByEventId(anyInt())).thenReturn(joinedData);
-        scheduleViewModel = new ScheduleViewModel(scheduledItemRepository,joinedScheduleItemRepository);
+        scheduleViewModel = new ScheduleViewModel(eventRepository,joinedScheduleItemRepository);
         scheduleViewModel.init(anyInt());
         Observer obs = mock(Observer.class);
         scheduleViewModel.getJoinedScheduleItems().observeForever(obs);
