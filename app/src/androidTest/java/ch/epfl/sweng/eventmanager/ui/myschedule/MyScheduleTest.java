@@ -46,11 +46,13 @@ public class MyScheduleTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
 
+        SystemClock.sleep(800);
+
         onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
         SystemClock.sleep(800);
 
         // Add first element of scheduledItems to MySchedule
-        onView(allOf(isDisplayed(),withIndex(withId(R.id.text_timeline_description), 1))).perform(longClick());
+        onView(allOf(isDisplayed(),withIndex(withId(R.id.text_timeline_description),0))).perform(longClick());
 
         onView(withId(R.id.viewpager)).perform(swipeRight()).check(matches(isCompletelyDisplayed()));
 
