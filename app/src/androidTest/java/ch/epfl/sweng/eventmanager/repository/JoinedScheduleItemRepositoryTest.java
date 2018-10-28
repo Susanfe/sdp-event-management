@@ -61,7 +61,7 @@ public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtil
         UUID uuid0 = Converters.fromString(RANDOM_FIXED_UUID_TAG + "0");
 
         // Should insert
-        repository.insert(new JoinedScheduleItem(uuid0, 0));
+        repository.insert(new JoinedScheduleItem(uuid0, 0)).get();
 
         // Should be in db after insert
         assertNotNull(getValue(repository.findById(uuid0)));
@@ -74,13 +74,13 @@ public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtil
         assertTrue(test);
     }
 
-    /*@Test
+    @Test
     public void delete() throws InterruptedException, ExecutionException {
 
         UUID uuid1 = Converters.fromString(RANDOM_FIXED_UUID_TAG + "1");
 
         // Should remove
-        repository.delete(new JoinedScheduleItem(uuid1, 1));
+        repository.delete(new JoinedScheduleItem(uuid1, 1)).get();
 
         // Should not be in db after delete
         assertNull(getValue(repository.findById(uuid1)));
@@ -91,6 +91,6 @@ public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtil
             if (it.getUid() == uuid1)
                 test = true;
         assertFalse(test);
-    }*/
+    }
 
 }

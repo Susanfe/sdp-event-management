@@ -17,8 +17,8 @@ public class ScheduleFragment extends AbstractScheduleFragment {
     }
 
     @Override
-    protected void setNullConcertsTV() {
-        super.nullConcertsTV.setText(R.string.concerts_empty);
+    protected void setEmptyListTextView() {
+        super.emptyListTextView.setText(R.string.scheduled_items_empty);
     }
 
     @Override

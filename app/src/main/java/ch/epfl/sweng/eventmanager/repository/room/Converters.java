@@ -7,8 +7,8 @@ import java.util.UUID;
 /**
  * @author Louis Vialar
  */
-public class Converters {
-
+public final class Converters {
+    private Converters() {}
 
     @TypeConverter
     public static UUID fromString(String value) {

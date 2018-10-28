@@ -2,13 +2,17 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
 
 import android.arch.lifecycle.*;
 
+
 import java.io.Serializable;
 
 import android.graphics.Bitmap;
+
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
+import ch.epfl.sweng.eventmanager.repository.data.Position;
 
 import javax.inject.Inject;
 
@@ -18,7 +22,7 @@ import javax.inject.Inject;
  *
  * @author Louis Vialar
  */
-public class EventShowcaseModel extends ViewModel implements Serializable {
+public class EventShowcaseModel extends ViewModel {
     private LiveData<Event> event;
     private LiveData<Bitmap> eventImage;
 
@@ -47,6 +51,7 @@ public class EventShowcaseModel extends ViewModel implements Serializable {
 
     public LiveData<Bitmap> getEventImage(){
         return eventImage;
+
     }
 
     public void joinEvent(Event event){

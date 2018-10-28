@@ -5,8 +5,8 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.view.animation.Transformation;
+import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
-import ch.epfl.sweng.eventmanager.repository.ScheduledItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
@@ -16,7 +16,7 @@ import java.util.*;
 import static java.util.stream.Collectors.groupingBy;
 
 /**
- * This is the model for the concert list. It connects with the repository to pull a list of scheduledItems and communicate them
+ * This is the model for the scheduled item list. It connects with the repository to pull a list of scheduledItems and communicate them
  * to the view (here, the activity).
  *
  * @author Louis Vialar
@@ -26,13 +26,13 @@ public class ScheduleViewModel extends ViewModel {
     private LiveData<List<ScheduledItem>> joinedItems;
     private LiveData<Map<String,List<ScheduledItem>>> scheduleItemsByRoom;
 
-    private ScheduledItemRepository repository;
+    private EventRepository repository;
     private JoinedScheduleItemRepository joinedScheduleItemRepository;
 
     private int eventId;
 
     @Inject
-    public ScheduleViewModel(ScheduledItemRepository repository, JoinedScheduleItemRepository joinedScheduleItemRepository) {
+    public ScheduleViewModel(EventRepository repository, JoinedScheduleItemRepository joinedScheduleItemRepository) {
         this.repository = repository;
         this.joinedScheduleItemRepository = joinedScheduleItemRepository;
     }
@@ -43,7 +43,7 @@ public class ScheduleViewModel extends ViewModel {
         }
 
         this.eventId = eventId;
-        this.scheduledItems = repository.getConcerts(eventId);
+        this.scheduledItems = repository.getScheduledItems(eventId);
         this.joinedItems = buildJoinedScheduledItemsList(joinedScheduleItemRepository.findByEventId(eventId));
         this.scheduleItemsByRoom = buildScheduleItemByRoom();
     }
@@ -51,6 +51,7 @@ public class ScheduleViewModel extends ViewModel {
     public LiveData<List<ScheduledItem>> getScheduledItems() {
         return scheduledItems;
     }
+
 
     public LiveData<List<ScheduledItem>> getScheduledItemsForRoom(String room) {
         return Transformations.map(getScheduleItemsByRoom(), map -> {
@@ -84,16 +85,19 @@ public class ScheduleViewModel extends ViewModel {
     }
 
 
-
-    public void toggleMySchedule(UUID concert, Context context) {
-        joinedScheduleItemRepository.toggle(new JoinedScheduleItem(concert, eventId), context);
+    public LiveData<List<ScheduledItem>> getJoinedScheduleItems() {
+        return joinedItems;
     }
 
-    private LiveData<List<ScheduledItem>> buildJoinedScheduledItemsList(LiveData<List<JoinedScheduleItem>> joinedConcerts) {
+    public void toggleMySchedule(UUID scheduledItemId, Context context) {
+        joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), context);
+    }
+
+    private LiveData<List<ScheduledItem>> buildJoinedScheduledItemsList(LiveData<List<JoinedScheduleItem>> joinedItems) {
         LiveData<List<ScheduledItem>> allItems = getScheduledItems();
 
         return Transformations.switchMap(allItems, items ->
-                Transformations.map(joinedConcerts, joinedScheduleItems -> {
+                Transformations.map(joinedItems, joinedScheduleItems -> {
                     List<ScheduledItem> joined = new ArrayList<>();
 
                     if (items == null || joinedScheduleItems == null) {

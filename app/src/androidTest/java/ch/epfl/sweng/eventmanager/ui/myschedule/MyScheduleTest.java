@@ -31,8 +31,26 @@ public class MyScheduleTest {
     public final ActivityTestRule<EventShowcaseActivity> mActivityRule =
             new ActivityTestRule<>(EventShowcaseActivity.class);
 
+    public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
+        return new TypeSafeMatcher<View>() {
+            int currentIndex = 0;
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with index: ");
+                description.appendValue(index);
+                matcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                return matcher.matches(view) && currentIndex++ == index;
+            }
+        };
+    }
+
     @Test
-    public void addScheduleItemAndDeleteItTest(){
+    public void addScheduleItemAndDeleteItTest() {
         Intent intent = new Intent();
         // Opens Sysmic Event
         intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 2);
@@ -63,21 +81,15 @@ public class MyScheduleTest {
         SystemClock.sleep(800);
     }
 
-    public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
-        return new TypeSafeMatcher<View>() {
-            int currentIndex = 0;
+        onView(withText("My Schedule")).perform(click());
+        SystemClock.sleep(800);
 
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("with index: ");
-                description.appendValue(index);
-                matcher.describeTo(description);
-            }
 
-            @Override
-            public boolean matchesSafely(View view) {
-                return matcher.matches(view) && currentIndex++ == index;
-            }
-        };
+        onView(withId(R.id.addToCalendar)).check(matches(isCompletelyDisplayed())).perform(click());
+
+        // SystemClock.sleep(500);
+        // intended(hasAction(Intent.ACTION_VIEW));
+
+
     }
 }
