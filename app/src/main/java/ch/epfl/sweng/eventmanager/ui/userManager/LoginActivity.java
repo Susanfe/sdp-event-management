@@ -5,17 +5,26 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.UserRepository;
 import ch.epfl.sweng.eventmanager.repository.data.User;
+import ch.epfl.sweng.eventmanager.userManagement.InMemorySession;
 import ch.epfl.sweng.eventmanager.userManagement.Session;
 import dagger.android.AndroidInjection;
 
@@ -27,10 +36,11 @@ import java.util.Optional;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    @Inject
-    UserRepository repository;
+    private static final String TAG = "LoginActivity";
+
     // Login task.
-    private UserLoginTask mAuthTask = null;
+    private FirebaseAuth mAuth;
+
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
@@ -76,6 +86,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
+        // Initialize UI
         setupFields();
         setupButton();
 
@@ -84,10 +98,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -114,9 +124,27 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            mAuthTask = new UserLoginTask(email, password, this);
-            mAuthTask.execute((Void) null);
+            showProgress(true);
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, getSignInOnCompleteListener(this));
         }
+    }
+
+    private OnCompleteListener<AuthResult> getSignInOnCompleteListener(Context mContext) {
+        return task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAG, "Successful sign in");
+                Intent intent = new Intent(mContext, DisplayAccountActivity.class);
+                startActivity(intent);
+            } else {
+                Log.w(TAG, "Failed sign in", task.getException());
+                // FIXME: match error message against Firebase error
+                mPasswordView.setError(getString(R.string.invalid_credentials_activity_login));
+                mPasswordView.requestFocus();
+            }
+
+            showProgress(false);
+        };
     }
 
     private boolean isEmailValid(String email) {
@@ -128,49 +156,6 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setEnabled(!displayed);
         mProgressBar.setVisibility(displayed ? View.VISIBLE : View.INVISIBLE);
     }
-
-    /**
-     * Represents an asynchronous login task used to authenticate the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-        private final Context mContext;
-
-        UserLoginTask(String email, String password, Context context) {
-            mEmail = email;
-            mPassword = password;
-            mContext = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            showProgress(true);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            User user = repository.getUserByEmail(mEmail);
-            if (user != null) {
-                return Session.login(user, mPassword);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                Intent intent = new Intent(mContext, DisplayAccountActivity.class);
-                startActivity(intent);
-            } else {
-                mPasswordView.setError(getString(R.string.invalid_credentials_activity_login));
-                mPasswordView.requestFocus();
-            }
-        }
-    }
 }
+
+
