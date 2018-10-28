@@ -73,9 +73,11 @@ public class NewsOrTweet implements Comparable<NewsOrTweet> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof NewsOrTweet)) return false;
+
         NewsOrTweet that = (NewsOrTweet) o;
-        return time == that.time &&
-                ((news == null && that.news == null) || (news != null && news.equals(that.news))) &&
-                ((tweet == null && that.tweet == null) || (tweet != null && tweet.equals(that.tweet)));
+
+        if (time != that.time) return false;
+        if (news != null ? !news.equals(that.news) : that.news != null) return false;
+        return tweet != null ? tweet.equals(that.tweet) : that.tweet == null;
     }
 }
