@@ -66,7 +66,7 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
         return this.model.getJoinedScheduleItems();
     }
 
-    private void writeEventsToCalendar(List<ScheduledItem> mySchedule) {
+    void writeEventsToCalendar(List<ScheduledItem> mySchedule) {
         FileOutputStream outputStream;
 
         try {
@@ -80,7 +80,7 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
         }
     }
 
-    protected void writeCalendar(List<ScheduledItem> events, OutputStream stream) {
+    void writeCalendar(List<ScheduledItem> events, OutputStream stream) {
         PrintStream printer = new PrintStream(stream);
 
         printer.println("BEGIN:VCALENDAR\n" +

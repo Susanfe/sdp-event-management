@@ -30,7 +30,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
 
         model.getEvent().observe(this, ev -> {
             if (ev == null) {
-                Log.e(TAG, "Got null model from parent activity");
+                Log.e(TAG, "Got null event");
                 return;
             }
 

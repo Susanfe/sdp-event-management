@@ -4,8 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
-import ch.epfl.sweng.eventmanager.repository.ScheduledItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
@@ -24,13 +24,13 @@ public class ScheduleViewModel extends ViewModel {
     private LiveData<List<ScheduledItem>> scheduledItems;
     private LiveData<List<ScheduledItem>> joinedItems;
 
-    private ScheduledItemRepository repository;
+    private EventRepository repository;
     private JoinedScheduleItemRepository joinedScheduleItemRepository;
 
     private int eventId;
 
     @Inject
-    public ScheduleViewModel(ScheduledItemRepository repository, JoinedScheduleItemRepository joinedScheduleItemRepository) {
+    public ScheduleViewModel(EventRepository repository, JoinedScheduleItemRepository joinedScheduleItemRepository) {
         this.repository = repository;
         this.joinedScheduleItemRepository = joinedScheduleItemRepository;
     }
@@ -47,18 +47,6 @@ public class ScheduleViewModel extends ViewModel {
 
     public LiveData<List<ScheduledItem>> getScheduledItems() {
         return scheduledItems;
-    }
-
-    public Boolean isItemJoined(UUID itemId) {
-        // This method doesn't return a live-data because it's not watched by anything
-        // we only need to get a value at some point, and LiveDatas don't suit this model
-        List<ScheduledItem> events = getJoinedScheduleItems().getValue();
-
-        for (ScheduledItem i : events)
-            if (i.getId().equals(itemId))
-                return true;
-
-        return false;
     }
 
     public LiveData<List<ScheduledItem>> getJoinedScheduleItems() {
