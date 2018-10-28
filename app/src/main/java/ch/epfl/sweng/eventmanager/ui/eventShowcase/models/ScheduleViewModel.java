@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.view.animation.Transformation;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
@@ -12,8 +11,6 @@ import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
 import javax.inject.Inject;
 import java.util.*;
-
-import static java.util.stream.Collectors.groupingBy;
 
 /**
  * This is the model for the scheduled item list. It connects with the repository to pull a list of scheduledItems and communicate them
@@ -84,10 +81,6 @@ public class ScheduleViewModel extends ViewModel {
         return false;
     }
 
-
-    public LiveData<List<ScheduledItem>> getJoinedScheduleItems() {
-        return joinedItems;
-    }
 
     public void toggleMySchedule(UUID scheduledItemId, Context context) {
         joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), context);

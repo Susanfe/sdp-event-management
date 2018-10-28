@@ -81,15 +81,4 @@ public class MyScheduleTest {
         SystemClock.sleep(800);
     }
 
-        onView(withText("My Schedule")).perform(click());
-        SystemClock.sleep(800);
-
-
-        onView(withId(R.id.addToCalendar)).check(matches(isCompletelyDisplayed())).perform(click());
-
-        // SystemClock.sleep(500);
-        // intended(hasAction(Intent.ACTION_VIEW));
-
-
-    }
 }
