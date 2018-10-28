@@ -48,7 +48,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
         super.onResume();
 
         model.getEvent().observe(this, ev -> {
-            email = ev.getEmail();
+            email = ev.getOrganizer().getEmail();
             // TODO handle NullPointerException
 
             name.setOnEditorActionListener((v, actionId, event) -> checkIfNext(actionId));
