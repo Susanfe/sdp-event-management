@@ -1,8 +1,8 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.ViewModel;
-import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
@@ -28,9 +28,15 @@ public abstract class EventShowcaseModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(NewsViewModel.class)
+    abstract ViewModel provideNewsViewModel(NewsViewModel newsViewModel);
+
+    @Binds
+    @IntoMap
     @ViewModelKey(SpotsModel.class)
     abstract ViewModel provideSpotsViewModel(SpotsModel spotsModel);
 
     @ContributesAndroidInjector
     abstract EventShowcaseActivity contributeEventShowcaseActivityInjector();
 }
+

@@ -41,7 +41,12 @@ public final class Event {
      */
     private List<Spot> spotList;
 
-    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image, EventLocation location, List<Spot> spotList) {
+    /**
+     * The twitter account screen name
+     */
+    private String twitterName;
+
+    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image, EventLocation location, List<Spot> spotList, String twitterName) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -49,6 +54,7 @@ public final class Event {
         this.image = image;
         this.location = location;
         this.spotList = new ArrayList<>(spotList);
+        this.twitterName = twitterName;
     }
 
     public Event() {
@@ -79,4 +85,8 @@ public final class Event {
     }
 
     public List<Spot> getSpotList() { return spotList; }
+
+    public String getTwitterName() {
+        return this.twitterName;
+    }
 }
