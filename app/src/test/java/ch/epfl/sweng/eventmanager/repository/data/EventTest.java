@@ -14,8 +14,8 @@ public class EventTest {
     List<Spot> spotList = new ArrayList<>();
     private final EventOrganizer orga1 = new EventOrganizer(1, "Orga1", "Organizer 1", null, null);
     private final EventOrganizer orga2 = new EventOrganizer(2, "Orga2", "Organizer 2", null, null);
-    private final Event ev1 = new Event(1, "Event1", "Event Description 1", orga1, null, null,spotList);
-    private final Event ev2 = new Event(2, "Event2", "Event Description 2", orga2, null, null,spotList);
+    private final Event ev1 = new Event(1, "Event1", "Event Description 1", orga1, null, null,spotList, null);
+    private final Event ev2 = new Event(2, "Event2", "Event Description 2", orga2, null, null,spotList, null);
 
     @Test
     public void getIdTest() {
