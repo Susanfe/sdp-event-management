@@ -36,6 +36,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    testOptions {
+        animationsDisabled = "true"
+    }
     useLibrary 'android.test.mock'
 
 }
