@@ -37,7 +37,7 @@ public class ScheduledItemNotification {
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, scheduledItem.getId().hashCode(), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        long future = SystemClock.elapsedRealtime() + getTimeTo(scheduledItem) - TIME_BEFORE_START;
+        long future = SystemClock.elapsedRealtime() + 10000; //getTimeTo(scheduledItem) - TIME_BEFORE_START;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, future, pendingIntent);
     }
