@@ -80,7 +80,13 @@ public class MyScheduleTest {
         onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click());
         SystemClock.sleep(400);
         onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
-        SystemClock.sleep(800);
+        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
+        SystemClock.sleep(400);
+        onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
+        SystemClock.sleep(400);
+        onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click());
+        SystemClock.sleep(400);
+        onView(allOf(isDisplayed(),withId(R.id.addToCalendar))).perform(click());
     }
 
 }
