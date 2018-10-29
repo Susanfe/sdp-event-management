@@ -93,7 +93,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
         holder.setOnToggle(() -> {
             model.toggleMySchedule(scheduledItem.getId(), context);
-            ScheduledItemNotification.scheduleNotification(context, scheduledItem, 2000);
+            ScheduledItemNotification.scheduleNotification(context, scheduledItem);
         });
     }
 
