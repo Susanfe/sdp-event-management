@@ -11,6 +11,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
@@ -40,6 +41,10 @@ public class LoginActivityTest {
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
+
+        // FIXME: find a sexier way to wait for auth result
+        SystemClock.sleep(2000);
+
         onView(withId(R.id.main_text))
                 .check(matches(withText(containsString(email))));
     }
@@ -59,6 +64,10 @@ public class LoginActivityTest {
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
+
+        // FIXME: find a sexier way to wait for auth result
+        SystemClock.sleep(2000);
+
         onView(withId(R.id.password_field))
                 .check(matches(hasErrorText(invalidCredentialError)));
     }
