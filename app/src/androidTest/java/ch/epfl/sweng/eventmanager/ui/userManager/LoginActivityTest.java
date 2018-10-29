@@ -51,11 +51,11 @@ public class LoginActivityTest {
 
     @Test
     public void testWrongCredentials() {
-        String email = "al.pha@domain.tld";
-        String password = "secret";
-        String invalidCredentialError = getResourceString(
-                R.string.invalid_credentials_activity_login
-        );
+        String email = "lamb.da@domain.tld";
+        String password = "wrong";
+        // FIXME: find a way to get the error message from Firebase
+        String invalidCredentialError = "The password is invalid or the user does not have a password.";
+
 
         onView(withId(R.id.email_field))
                 .perform(typeText(email))
