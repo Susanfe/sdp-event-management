@@ -17,19 +17,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.User;
-import ch.epfl.sweng.eventmanager.userManagement.InMemorySession;
-import ch.epfl.sweng.eventmanager.userManagement.Session;
 import dagger.android.AndroidInjection;
-
-import javax.inject.Inject;
-import java.util.Optional;
 
 /**
  * A login screen that offers login via email/password.
