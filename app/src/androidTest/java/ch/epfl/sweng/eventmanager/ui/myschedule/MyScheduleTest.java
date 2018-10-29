@@ -25,8 +25,6 @@ import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.core.AllOf.allOf;
 
-;
-
 @RunWith(AndroidJUnit4.class)
 public class MyScheduleTest {
     @Rule
@@ -52,11 +50,11 @@ public class MyScheduleTest {
     }
 
     @Test
-    public void addScheduleItemAndDeleteItTest() throws InterruptedException {
+    public void addScheduleItemAndDeleteItTest() {
         Intent intent = new Intent();
         // Opens Sysmic Event
         intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 2);
-        //wait for FB to load
+        //wait for firebase to load
         mActivityRule.launchActivity(intent);
         SystemClock.sleep(800);
 
@@ -71,19 +69,19 @@ public class MyScheduleTest {
         SystemClock.sleep(800);
 
         onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
-        SystemClock.sleep(800);
-
-        // Add first and second elements of scheduledItems to MySchedule
-        onView(allOf(isDisplayed(),withIndex(withId(R.id.text_timeline_description),0))).perform(longClick());
-        onView(allOf(isDisplayed(),withIndex(withId(R.id.text_timeline_description),1))).perform(longClick());
-
+        SystemClock.sleep(200);
+        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
+        SystemClock.sleep(200);
+        onView(allOf(isDisplayed(), withId(R.id.text_timeline_description))).perform(longClick());
+        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
+        SystemClock.sleep(200);
+        onView(allOf(isDisplayed(), withId(R.id.text_timeline_description))).perform(longClick());
         onView(withId(R.id.viewpager)).perform(swipeRight()).check(matches(isCompletelyDisplayed()));
-
+        SystemClock.sleep(200);
+        onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click());
+        SystemClock.sleep(400);
+        onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
         SystemClock.sleep(800);
-
-        onView(allOf(isDisplayed(),withIndex(withId(R.id.text_timeline_description),0))).perform(longClick());
-        SystemClock.sleep(800);
-
         onView(withId(R.id.addToCalendar)).perform(click());
 
 

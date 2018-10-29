@@ -21,11 +21,9 @@ import java.util.*;
 public class ScheduleViewModel extends ViewModel {
     private LiveData<List<ScheduledItem>> scheduledItems;
     private LiveData<List<ScheduledItem>> joinedItems;
-    private LiveData<Map<String,List<ScheduledItem>>> scheduleItemsByRoom;
-
+    private LiveData<Map<String, List<ScheduledItem>>> scheduleItemsByRoom;
     private EventRepository repository;
     private JoinedScheduleItemRepository joinedScheduleItemRepository;
-
     private int eventId;
 
     @Inject
@@ -48,7 +46,6 @@ public class ScheduleViewModel extends ViewModel {
     public LiveData<List<ScheduledItem>> getScheduledItems() {
         return scheduledItems;
     }
-
 
     public LiveData<List<ScheduledItem>> getScheduledItemsForRoom(String room) {
         return Transformations.map(getScheduleItemsByRoom(), map -> {
@@ -73,9 +70,11 @@ public class ScheduleViewModel extends ViewModel {
         // we only need to get a value at some point, and LiveDatas don't suit this model
         List<ScheduledItem> events = getJoinedScheduleItems().getValue();
         if (events != null) {
-            for (ScheduledItem i : events)
-                if (i.getId().equals(itemId))
+            for (ScheduledItem i : events) {
+                if (i.getId().equals(itemId)) {
                     return true;
+                }
+            }
         }
 
         return false;
@@ -110,18 +109,18 @@ public class ScheduleViewModel extends ViewModel {
         );
     }
 
-     private LiveData<Map<String,List<ScheduledItem>>> buildScheduleItemByRoom() {
+    private LiveData<Map<String, List<ScheduledItem>>> buildScheduleItemByRoom() {
         return Transformations.map(getScheduledItems(), concerts -> {
-            Map<String,List<ScheduledItem>> scheduleItemsByRoom = new HashMap<>();
-                if(concerts == null || concerts.size() <= 0) {
-                    return null;
-                } else {
+            Map<String, List<ScheduledItem>> scheduleItemsByRoom = new HashMap<>();
+            if (concerts == null || concerts.size() <= 0) {
+                return null;
+            } else {
                 for (ScheduledItem scheduledItem : concerts) {
-                    if (! scheduleItemsByRoom.containsKey(scheduledItem.getItemLocation())) {
+                    if (!scheduleItemsByRoom.containsKey(scheduledItem.getItemLocation())) {
                         List<ScheduledItem> concertList = new ArrayList<>();
                         concertList.add(scheduledItem);
-                        scheduleItemsByRoom.put(scheduledItem.getItemLocation(),concertList);
-                     } else {
+                        scheduleItemsByRoom.put(scheduledItem.getItemLocation(), concertList);
+                    } else {
                         scheduleItemsByRoom.get(scheduledItem.getItemLocation()).add(scheduledItem);
                     }
                 }
@@ -129,6 +128,4 @@ public class ScheduleViewModel extends ViewModel {
             return scheduleItemsByRoom;
         });
     }
-
-
 }

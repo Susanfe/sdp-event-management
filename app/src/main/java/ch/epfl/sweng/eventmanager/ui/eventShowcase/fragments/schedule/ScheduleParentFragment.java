@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 
 import java.util.ArrayList;
@@ -42,8 +41,8 @@ public class ScheduleParentFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         //Create view and bindings
-        View view = inflater.inflate(R.layout.fragment_schedule_parent,container, false);
-        ButterKnife.bind(this,view);
+        View view = inflater.inflate(R.layout.fragment_schedule_parent, container, false);
+        ButterKnife.bind(this, view);
 
         //Setup the ViewPager
         createViewPager(viewPager);
@@ -61,11 +60,11 @@ public class ScheduleParentFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Log.i(TAG, "Resume " + scheduleViewModel);
-
         if (scheduleViewModel == null) {
             scheduleViewModel = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
         }
+
+        Log.i(TAG, "Resumed model from memory : " + scheduleViewModel);
 
         scheduleViewModel.getScheduleItemsByRoom().observe(this, map -> {
             if (map != null) {
@@ -74,8 +73,8 @@ public class ScheduleParentFragment extends Fragment {
                 viewPagerAdapter.notifyDataSetChanged();
             } else {
                 tabLayout.setVisibility(View.GONE);
-                destroyUnusedFragments(viewPagerAdapter.mFragmentList,Collections.emptySet(),true);
-                viewPagerAdapter.addFragment(new ScheduleFragment(),"");
+                destroyUnusedFragments(viewPagerAdapter.mFragmentList, Collections.emptySet(), true);
+                viewPagerAdapter.addFragment(new ScheduleFragment(), "");
                 viewPagerAdapter.notifyDataSetChanged();
             }
         });
@@ -83,9 +82,10 @@ public class ScheduleParentFragment extends Fragment {
 
     /**
      * Take care of setting up the viewPager Adapter and binding it to the viewPager
+     *
      * @param viewPager viewpager
      */
-    private void createViewPager (ViewPager viewPager) {
+    private void createViewPager(ViewPager viewPager) {
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragment(new MyScheduleFragment(), "My Schedule");
         viewPager.setAdapter(viewPagerAdapter);
@@ -93,36 +93,38 @@ public class ScheduleParentFragment extends Fragment {
 
     /**
      * Update viewPager tabs according to rooms
+     *
      * @param rooms Set of rooms
      */
     private void updateTabs(Set<String> rooms) {
         if (rooms == null || rooms.isEmpty()) {
             return;
         }
-            for (String room : rooms) {
-                String fragmentName = (room != null && !room.isEmpty()) ? room : "Schedule";
-                if (!viewPagerAdapter.mFragmentTitleList.contains(fragmentName)) {
-                    ScheduleFragment fragment = new ScheduleFragment();
-                    fragment.setRoom(room);
-                    viewPagerAdapter.addFragment(fragment, fragmentName);
-                }
+        for (String room : rooms) {
+            String fragmentName = (room != null && !room.isEmpty()) ? room : "Schedule";
+            if (!viewPagerAdapter.mFragmentTitleList.contains(fragmentName)) {
+                ScheduleFragment fragment = new ScheduleFragment();
+                fragment.setRoom(room);
+                viewPagerAdapter.addFragment(fragment, fragmentName);
+            }
         }
-        destroyUnusedFragments(viewPagerAdapter.mFragmentList,rooms,false);
+        destroyUnusedFragments(viewPagerAdapter.mFragmentList, rooms, false);
     }
 
     /**
      * Destroy all unused fragment in case of removal of Room/Events in DB
-     * @param allFragments list of all registered fragments
-     * @param rooms current known rooms
+     *
+     * @param allFragments      list of all registered fragments
+     * @param rooms             current known rooms
      * @param destroyMySchedule true if mySchedule need to be destroyed, false otherwise
      */
     private void destroyUnusedFragments(@NonNull List<Fragment> allFragments, @NonNull Set<String> rooms, Boolean destroyMySchedule) {
-        for(Fragment fragment : viewPagerAdapter.mFragmentList) {
-            if (fragment instanceof ScheduleFragment && ! rooms.contains(((ScheduleFragment)fragment).getRoom())) {
+        for (Fragment fragment : viewPagerAdapter.mFragmentList) {
+            if (fragment instanceof ScheduleFragment && !rooms.contains(((ScheduleFragment) fragment).getRoom())) {
                 requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                 viewPagerAdapter.mFragmentList.remove(fragment);
             }
-            if(destroyMySchedule && fragment instanceof MyScheduleFragment) {
+            if (destroyMySchedule && fragment instanceof MyScheduleFragment) {
                 requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                 viewPagerAdapter.mFragmentList.remove(fragment);
             }
@@ -158,7 +160,7 @@ public class ScheduleParentFragment extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return  mFragmentTitleList.get(position);
+            return mFragmentTitleList.get(position);
         }
     }
 }
