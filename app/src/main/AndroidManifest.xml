@@ -37,6 +37,7 @@
                     android:resource="@xml/file_paths" />
         </provider>
 
+        <receiver android:name=".notifications.NotificationPublisher"/>
     </application>
 
 </manifest>
