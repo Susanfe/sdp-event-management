@@ -8,12 +8,13 @@ import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 
 import java.util.Date;
 
 public class ScheduledItemNotification {
     private static final String CHANNEL_ID = "notify_001";
+    private static final String CHANNEL_NAME = "Channel human readable title";
 
     public static void scheduleNotification(Context context, ScheduledItem scheduledItem) {
 
@@ -26,11 +27,20 @@ public class ScheduledItemNotification {
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, scheduledItem.getId().hashCode());
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, scheduledItem.getId().hashCode(), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        long futureInMillis = SystemClock.elapsedRealtime() + getTimeMillisTo(scheduledItem);
+        long futureInMillis = SystemClock.elapsedRealtime() + 10000;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+    }
+
+    public static void unscheduleNotification(Context context, ScheduledItem scheduledItem) {
+        Intent intent = new Intent(context, NotificationPublisher.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), scheduledItem.getId().hashCode(), intent, 0);
+        AlarmManager am = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        am.cancel(pendingIntent);
+        // Cancel the `PendingIntent` after you've canceled the alarm
+        pendingIntent.cancel();
     }
 
     private static long getTimeMillisTo(ScheduledItem scheduledItem) {
@@ -42,15 +52,15 @@ public class ScheduledItemNotification {
     }
 
     private static Notification getNotification(Context context, ScheduledItem scheduledItem) {
-        // Set up on tap action
-        Intent intent = new Intent(context, EventShowcaseActivity.class);
+        // Set up on tap action TODO display my_schedule fragment when tap on notification
+        Intent intent = new Intent(context, EventPickingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         // Create a notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentTitle(scheduledItem.getArtist() + " concert will start soon")
-                .setContentText(scheduledItem.getArtist() + " concert will start in 10mn")
+                .setContentText(scheduledItem.getDescription())
                 .setSmallIcon(R.drawable.ic_marker_active)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
@@ -65,7 +75,7 @@ public class ScheduledItemNotification {
         // Setup Notification Channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                    "Channel human readable title",
+                    CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
