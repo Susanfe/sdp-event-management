@@ -8,9 +8,6 @@ import javax.inject.Singleton;
 import ch.epfl.sweng.eventmanager.repository.data.FirebaseBackedUser;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 
-/**
- * This singleton class keeps the state of the current user.
- */
 @Singleton
 public class InMemoryFirebaseSession implements InMemorySession{
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
