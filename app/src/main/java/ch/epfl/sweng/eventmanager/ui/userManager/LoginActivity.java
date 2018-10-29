@@ -129,9 +129,13 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext, DisplayAccountActivity.class);
                 startActivity(intent);
             } else {
-                Log.w(TAG, "Failed sign in", task.getException());
-                // FIXME: match error message against Firebase error
-                mPasswordView.setError(getString(R.string.invalid_credentials_activity_login));
+                Exception error = task.getException();
+                Log.w(TAG, "Sign in failed", task.getException());
+                if (error != null) {
+                    mPasswordView.setError(error.getMessage());
+                } else {
+                    mPasswordView.setError(getString(R.string.generic_signin_failure_activity_login));
+                }
                 mPasswordView.requestFocus();
             }
 
