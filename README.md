@@ -8,10 +8,16 @@
 
 ## Pitch for SDP Event Management :tada:
 
-Hi, we just have one question : Have your ever felt like a complete newcomer to an event you attended ? Never get that feeling again with *our app*. *Our app* features a wide range of options starting with a nice map highlighting all the relevant spots, a newsfeed to stay updated, a schedule for every activity in the event, and even **your** schedule to not miss anything. *Our app* also helps you keeping int touch with your friends in the place and offers an Organizer side to manage all these features within the app.
+Hi, we just have one question : Have your ever felt like a complete newcomer to an event you attended ? Never get that feeling again with *our app*. It features a real-time
+broadcast feed from the organizers, interactive map and customizable schedule. In large events, we allow you to stay connected with your friends using geolocalization. *Our app* also offers an Organizer side to manage all these features within the app.
+Finally no fears of missing out as *our app* connects you to a wide range of events you can discover, consult and bookmark within the app.
+With *our app* the event will become **your** event.
+
+or 
+
+We're working on a mobile application to support event management, helpful for both visitors and organizers. It features a real-time
+broadcast feed from the organizers, interactive map and customizable schedule. In large events, we allow you to stay connected with your friends using geolocalization. *Our app* also offers an Organizer side to manage all these features within the app.
 Finally no fears of missing out as *our app* connects you to a wide range of events you can discover, consult and bookmark within the app.
 With *our app* the event will become **your** event.
 
 *n.b : Please comment and review !* :+1: *wherever there is OUR APP written, this must be replaced by the app name.*
-
-New PR opened for modification and review.
