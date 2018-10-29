@@ -68,10 +68,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
         ScheduledItem scheduledItem = dataList.get(position);
 
-        String artistText = scheduledItem.getArtist() == null ? context.getString(R.string.concert_no_artist) : scheduledItem.getArtist();
-        String dateText = scheduledItem.dateAsString() == null ? context.getString(R.string.concert_no_date) : scheduledItem.dateAsString();
-        String genreText = scheduledItem.getGenre() == null ? context.getString(R.string.concert_no_genre) : scheduledItem.getGenre();
-        String descriptionText = scheduledItem.getDescription() == null ? context.getString(R.string.concert_no_genre) : scheduledItem.getDescription();
+        String artistText = scheduledItem.getArtist() == null ? context.getString(R.string.scheduled_item_no_artist) : scheduledItem.getArtist();
+        String dateText = scheduledItem.dateAsString() == null ? context.getString(R.string.scheduled_item_no_date) : scheduledItem.dateAsString();
+        String genreText = scheduledItem.getGenre() == null ? context.getString(R.string.scheduled_item_no_genre) : scheduledItem.getGenre();
+        String descriptionText = scheduledItem.getDescription() == null ? context.getString(R.string.scheduled_item_no_description) : scheduledItem.getDescription();
         String durationText = transformDuration(scheduledItem.getDuration());
 
         holder.mArtist.setText(artistText);

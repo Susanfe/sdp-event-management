@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
@@ -22,9 +24,12 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.NewsFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -37,7 +42,39 @@ public class EventShowcaseActivity extends AppCompatActivity
 
     private EventShowcaseModel model;
     private ScheduleViewModel scheduleModel;
+    private NewsViewModel newsModel;
+    private SpotsModel spotsModel;
     private DrawerLayout mDrawerLayout;
+    private NavigationView navigationView;
+
+    private void initModels(int eventID) {
+        this.model = ViewModelProviders.of(this, factory).get(EventShowcaseModel.class);
+        this.model.init(eventID);
+
+        this.scheduleModel = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
+        this.scheduleModel.init(eventID);
+
+        this.newsModel = ViewModelProviders.of(this, factory).get(NewsViewModel.class);
+        this.newsModel.init(eventID);
+
+        this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
+        this.spotsModel.init(eventID);
+    }
+
+    private void setupHeader() {
+        // Set window title and configure header
+        View headerView = navigationView.getHeaderView(0);
+        TextView drawer_header_text = headerView.findViewById(R.id.drawer_header_text);
+        model.getEvent().observe(this, ev -> {
+            if (ev == null) {
+                return;
+            }
+
+            drawer_header_text.setText(ev.getName());
+            setTitle(ev.getName());
+        });
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +83,7 @@ public class EventShowcaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_showcase);
         mDrawerLayout = findViewById(R.id.drawer_layout);
+        this.navigationView = findViewById(R.id.nav_view);
 
         // Set toolbar as action bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -64,17 +102,15 @@ public class EventShowcaseActivity extends AppCompatActivity
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
-            this.model = ViewModelProviders.of(this, factory).get(EventShowcaseModel.class);
-            this.model.init(eventID);
+            this.initModels(eventID);
 
-            this.scheduleModel = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
-            this.scheduleModel.init(eventID);
+            this.setupHeader();
 
+            // Set displayed fragment
             changeFragment(new EventMainFragment(), true);
         }
 
         // Handle drawer events
-        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -112,6 +148,10 @@ public class EventShowcaseActivity extends AppCompatActivity
 
             case R.id.nav_tickets :
                 changeFragment(new EventMapFragment(), true);
+                break;
+
+            case R.id.nav_news :
+                changeFragment(new NewsFragment(), true);
                 break;
 
             case R.id.nav_schedule :
