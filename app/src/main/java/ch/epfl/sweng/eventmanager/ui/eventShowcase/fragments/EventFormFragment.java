@@ -18,6 +18,11 @@ import ch.epfl.sweng.eventmanager.R;
 
 public class EventFormFragment extends AbstractShowcaseFragment {
 
+    /**
+     * Holds the MIME data to specify what data is sent alongside ACTION_SEND tag
+     */
+    private static final String MIME_DATA = "message/rfc822";
+
     String email;
 
     @BindView(R.id.contact_form_send_button)
@@ -108,8 +113,8 @@ public class EventFormFragment extends AbstractShowcaseFragment {
 
     private Intent createEmailIntent(String s_name, String s_subject, String s_content) {
         Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("message/rfc822"); //email MIME data
-        i.putExtra(Intent.EXTRA_EMAIL  , email);
+        i.setType(MIME_DATA); //email MIME data
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[] {email});
         i.putExtra(Intent.EXTRA_SUBJECT, s_name + " : " + s_subject);
         i.putExtra(Intent.EXTRA_TEXT   , s_content);
         return i;
