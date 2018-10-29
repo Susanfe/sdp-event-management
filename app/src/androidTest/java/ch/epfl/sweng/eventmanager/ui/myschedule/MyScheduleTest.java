@@ -1,7 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.myschedule;
 
-import android.app.Activity;
-import android.app.Instrumentation;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.espresso.contrib.DrawerActions;
@@ -24,12 +22,10 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.*;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
-import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.Intents.intending;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.anyIntent;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.core.AllOf.allOf;
+
+;
 
 @RunWith(AndroidJUnit4.class)
 public class MyScheduleTest {
@@ -56,11 +52,13 @@ public class MyScheduleTest {
     }
 
     @Test
-    public void addScheduleItemAndDeleteItTest() {
+    public void addScheduleItemAndDeleteItTest() throws InterruptedException {
         Intent intent = new Intent();
         // Opens Sysmic Event
         intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 2);
+        //wait for FB to load
         mActivityRule.launchActivity(intent);
+        SystemClock.sleep(800);
 
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.LEFT)))
@@ -75,7 +73,7 @@ public class MyScheduleTest {
         onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
         SystemClock.sleep(800);
 
-        // Add first element of scheduledItems to MySchedule
+        // Add first and second elements of scheduledItems to MySchedule
         onView(allOf(isDisplayed(),withIndex(withId(R.id.text_timeline_description),0))).perform(longClick());
         onView(allOf(isDisplayed(),withIndex(withId(R.id.text_timeline_description),1))).perform(longClick());
 
@@ -87,6 +85,7 @@ public class MyScheduleTest {
         SystemClock.sleep(800);
 
         onView(withId(R.id.addToCalendar)).perform(click());
+
 
     }
 
