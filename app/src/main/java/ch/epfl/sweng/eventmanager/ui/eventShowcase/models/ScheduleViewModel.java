@@ -8,6 +8,7 @@ import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import com.twitter.sdk.android.core.Callback;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -53,8 +54,13 @@ public class ScheduleViewModel extends ViewModel {
         return joinedItems;
     }
 
-    public void toggleMySchedule(UUID scheduledItemId, Context context) {
-        joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), context);
+    public void toggleMySchedule(UUID scheduledItemId) {
+        toggleMySchedule(scheduledItemId, null);
+    }
+
+    public void toggleMySchedule(UUID scheduledItemId,
+                                 JoinedScheduleItemRepository.ToggleCallback wasAdded) {
+        joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), wasAdded);
     }
 
     private LiveData<List<ScheduledItem>> buildJoinedScheduledItemsList(LiveData<List<JoinedScheduleItem>> joinedItems) {
