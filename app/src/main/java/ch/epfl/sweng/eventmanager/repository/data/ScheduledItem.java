@@ -17,7 +17,7 @@ import java.util.UUID;
 public final class ScheduledItem {
     public static final double STANDARD_DURATION = 1;
     /**
-     * Indicates the time of the concert, precision required is minutes.
+     * Indicates the time of the item, precision required is minutes.
      * <p>
      * This is a long because firebase doesn't understand Date objects.
      */
@@ -31,11 +31,11 @@ public final class ScheduledItem {
      */
     private String genre;
     /**
-     * Describes the concert
+     * Describes the item
      */
     private String description;
     /**
-     * Duration of the concert in hours
+     * Duration of the item in hours
      */
     private double duration;
     /**
@@ -130,7 +130,7 @@ public final class ScheduledItem {
         return itemLocation;
     }
 
-    public Date getEndOfConcert() {
+    public Date getEnd() {
         if (getDate() == null) {
             return null;
         }
@@ -153,7 +153,7 @@ public final class ScheduledItem {
         Date currentDate = new Date();
 
         if (currentDate.after(getDate())) {
-            if (currentDate.before(getEndOfConcert())) {
+            if (currentDate.before(getEnd())) {
                 return ScheduledItemStatus.IN_PROGRESS; // concert is taking place
             } else {
                 return ScheduledItemStatus.PASSED; // concert is finished
@@ -173,7 +173,7 @@ public final class ScheduledItem {
         out.println("BEGIN:VEVENT");
         out.println("SUMMARY:" + getArtist());
         out.println("DTSTART;VALUE=DATE-TIME:" + dateFormat.format(getDate()));
-        out.println("DTEND;VALUE=DATE-TIME:" + dateFormat.format(getEndOfConcert()));
+        out.println("DTEND;VALUE=DATE-TIME:" + dateFormat.format(getEnd()));
         if (getItemLocation() != null) {
             out.println("LOCATION:" + getItemLocation());
         }
@@ -182,15 +182,15 @@ public final class ScheduledItem {
 
     public enum ScheduledItemStatus {
         /**
-         * The concert already happened
+         * The item already happened
          */
         PASSED,
         /**
-         * The concert is in progress
+         * The item is in progress
          */
         IN_PROGRESS,
         /**
-         * The concert will happen in the future
+         * The item will happen in the future
          */
         NOT_STARTED
     }
