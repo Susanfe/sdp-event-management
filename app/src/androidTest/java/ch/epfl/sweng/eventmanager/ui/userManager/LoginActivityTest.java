@@ -43,7 +43,7 @@ public class LoginActivityTest {
         onView(withId(R.id.login_button)).perform(click());
 
         // FIXME: find a sexier way to wait for auth result
-        SystemClock.sleep(2000);
+        SystemClock.sleep(4000);
 
         onView(withId(R.id.main_text))
                 .check(matches(withText(containsString(email))));
@@ -66,7 +66,7 @@ public class LoginActivityTest {
         onView(withId(R.id.login_button)).perform(click());
 
         // FIXME: find a sexier way to wait for auth result
-        SystemClock.sleep(2000);
+        SystemClock.sleep(4000);
 
         onView(withId(R.id.password_field))
                 .check(matches(hasErrorText(invalidCredentialError)));
