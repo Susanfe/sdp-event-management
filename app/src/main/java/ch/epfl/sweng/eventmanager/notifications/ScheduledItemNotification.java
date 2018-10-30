@@ -33,8 +33,8 @@ public class ScheduledItemNotification {
         Notification notification = getNotification(context, scheduledItem);
 
         Intent notificationIntent = new Intent(context, NotificationPublisher.class);
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, scheduledItem.getId().hashCode());
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        notificationIntent.putExtra(NotificationPublisher.getNotificationId(), scheduledItem.getId().hashCode());
+        notificationIntent.putExtra(NotificationPublisher.getNOTIFICATION(), notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, scheduledItem.getId().hashCode(), notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         long future = SystemClock.elapsedRealtime() + getTimeTo(scheduledItem) - TIME_BEFORE_START;
