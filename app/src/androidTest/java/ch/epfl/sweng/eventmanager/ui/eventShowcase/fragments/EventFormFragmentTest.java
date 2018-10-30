@@ -70,6 +70,10 @@ public class EventFormFragmentTest {
 
         fillInAndClick(R.id.contact_form_subject,R.id.contact_form_content, "Knowledge is power", errorText);
 
+        onView(withId(R.id.contact_form_content)).perform(typeText("I know nothing..."), closeSoftKeyboard());
+
+        onView(withId(R.id.contact_form_send_button)).perform(click());
+
     }
 
     private void fillInAndClick(int id, int errorId, String text, String errorText) {
