@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.Gravity;
@@ -55,5 +56,26 @@ public class ScheduleParentFragmentTest {
 
         onView(withText("My Schedule")).perform(click()).check(matches(isCompletelyDisplayed()));
     }
+
+    @Test
+    public void testEmptyViewPager() {
+        Intent intent = new Intent();
+        //open app on Japan Impact where there are no registerd concerts
+        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 1);
+        mActivityRule.launchActivity(intent);
+        onView(withId(R.id.drawer_layout))
+                .check(matches(isClosed(Gravity.LEFT)))
+                .perform(DrawerActions.open());
+
+        // Display Schedule Events
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
+
+        //check that tabs for navigation are hided
+        onView(withId(R.id.tabs)).check(matches(withEffectiveVisibility(Visibility.GONE)));
+
+
+    }
+
 }
 
