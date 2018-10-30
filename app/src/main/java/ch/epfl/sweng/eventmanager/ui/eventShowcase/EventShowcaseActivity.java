@@ -171,7 +171,7 @@ public class EventShowcaseActivity extends AppCompatActivity
      * @param frag            the new fragment to display
      * @param saveInBackstack if we want the fragment to be in backstack
      */
-    private void changeFragment(Fragment frag, boolean saveInBackstack) {
+    public void changeFragment(Fragment frag, boolean saveInBackstack) {
         String backStateName = ((Object) frag).getClass().getName();
 
         try {
@@ -193,7 +193,7 @@ public class EventShowcaseActivity extends AppCompatActivity
 
                 transaction.commit();
             } else {
-                // custom effect if fragment is already instanciated
+                // TODO custom effect if fragment is already instanciated
             }
         } catch (IllegalStateException exception) {
             Log.w(TAG,

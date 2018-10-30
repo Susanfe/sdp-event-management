@@ -46,6 +46,8 @@ public final class Event {
      */
     private String twitterName;
 
+    // TODO define if an event can have only empty and null atributes
+
     public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image, EventLocation location, List<Spot> spotList, String twitterName) {
         this.id = id;
         this.name = name;
@@ -89,4 +91,6 @@ public final class Event {
     public String getTwitterName() {
         return this.twitterName;
     }
+
+    // TODO put setters ??
 }
