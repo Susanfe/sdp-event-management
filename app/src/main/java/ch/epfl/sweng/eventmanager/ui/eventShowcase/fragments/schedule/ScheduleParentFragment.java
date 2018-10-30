@@ -92,7 +92,9 @@ public class ScheduleParentFragment extends Fragment {
     }
 
     /**
-     * Update viewPager tabs according to rooms
+     * Update viewPager tabs according to rooms (locations) in which there are events registered. Will remove tab
+     * corresponding to the room if there is no more event happening in that room and will create new tab for the room
+     * if events are added in a new room which was not previously created.
      *
      * @param rooms Set of rooms
      */

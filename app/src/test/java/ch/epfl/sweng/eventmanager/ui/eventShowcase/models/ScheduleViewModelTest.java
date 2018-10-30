@@ -61,6 +61,13 @@ public class ScheduleViewModelTest {
     }
 
     @Test
+    public void initOnEmptyScheduledItems() {
+        ScheduleViewModel scheduleViewModel = new ScheduleViewModel(eventRepository,joinedScheduleItemRepository);
+        scheduleViewModel.init(2);
+        assertEquals(data,scheduleViewModel.getScheduledItems());
+    }
+
+    @Test
     public void getScheduledItems() {
         assertEquals(data.getValue(), scheduleViewModel.getScheduledItems().getValue());
     }
