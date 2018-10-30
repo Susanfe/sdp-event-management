@@ -9,8 +9,8 @@ import android.util.Log;
 
 public class NotificationPublisher extends BroadcastReceiver {
 
-    public static String NOTIFICATION_ID = "notification-id";
-    public static String NOTIFICATION = "notification";
+    private static String NOTIFICATION_ID = "notification-id";
+    private static String NOTIFICATION = "notification";
 
     @Override
     public void onReceive(Context context, Intent intent) {
