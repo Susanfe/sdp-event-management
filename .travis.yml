@@ -8,6 +8,8 @@ android:
     - android-28
     # The SDK version used by the system image
     - android-22
+    # Misc
+    - extra-google-google_play_services
     # The system image, to run an emulator during the tests
     - sys-img-armeabi-v7a-android-22
 before_script:
