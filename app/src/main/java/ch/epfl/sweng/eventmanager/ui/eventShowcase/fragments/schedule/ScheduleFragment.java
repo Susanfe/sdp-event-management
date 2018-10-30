@@ -23,7 +23,7 @@ public class ScheduleFragment extends AbstractScheduleFragment {
 
     @Override
     protected LiveData<List<ScheduledItem>> getScheduledItems() {
-        return this.model.getScheduledItemsForRoom(room);
+        return this.model.getScheduleItemsForRoom(room);
     }
 
     public void setRoom(String room) {

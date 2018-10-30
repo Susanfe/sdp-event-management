@@ -47,7 +47,7 @@ public class ScheduleViewModel extends ViewModel {
         return scheduledItems;
     }
 
-    public LiveData<List<ScheduledItem>> getScheduledItemsForRoom(String room) {
+    public LiveData<List<ScheduledItem>> getScheduleItemsForRoom(String room) {
         return Transformations.map(getScheduleItemsByRoom(), map -> {
             if (map == null) {
                 return null;
