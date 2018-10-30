@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -68,6 +69,15 @@ public class ScheduleViewModelTest {
     }
 
     @Test
+    public void initOnNonEmptyScheduleItem() {
+        ScheduleViewModel scheduleViewModel = new ScheduleViewModel(eventRepository,joinedScheduleItemRepository);
+        scheduleViewModel.init(2);
+        scheduleViewModel.init(2);
+        assertEquals(data,scheduleViewModel.getScheduledItems());
+    }
+
+
+    @Test
     public void getScheduledItems() {
         assertEquals(data.getValue(), scheduleViewModel.getScheduledItems().getValue());
     }
@@ -79,8 +89,13 @@ public class ScheduleViewModelTest {
     }
 
     @Test
-    public void isItemJoined() {
+    public void isItemJoinedOnJoinedItem() {
         assertTrue(scheduleViewModel.isItemJoined(joinedScheduleItems.get(0).getUid()));
+    }
+
+    @Test
+    public void isItemJoinedOnNotJoinedItem() {
+        assertFalse(scheduleViewModel.isItemJoined(mockConcertRepository.getConcerts(2).getValue().get(1).getId()));
     }
 
     @Test
@@ -89,12 +104,29 @@ public class ScheduleViewModelTest {
     }
 
     @Test
+    public void  buildJoinedScheduledItemsListOnNull() {
+        ScheduleViewModel scheduleViewModel = new ScheduleViewModel(null,null);
+        assertEquals(null,scheduleViewModel.getJoinedScheduleItems());
+    }
+
+    @Test
+    public void getScheduleItemForRoomOnNull() {
+        ScheduleViewModel scheduleViewModel = new ScheduleViewModel(null,null);
+        assertEquals(null,scheduleViewModel.getScheduleItemsByRoom());
+    }
+
+    @Test
+    public void buildScheduleItemByRoomOnNull() {
+        ScheduleViewModel scheduleViewModel = new ScheduleViewModel(null,null);
+        assertEquals(null,scheduleViewModel.getScheduleItemsByRoom());
+    }
+
+    @Test
     public void toggleMySchedule() {
         Context context = Mockito.mock(Context.class);
         scheduleViewModel.toggleMySchedule(data.getValue().get(2).getId(), context);
         assert (scheduleViewModel.getJoinedScheduleItems().getValue().contains(data.getValue().get(2)));
     }
-
 
     private void initMock() {
         data = mockConcertRepository.getConcerts(2);
