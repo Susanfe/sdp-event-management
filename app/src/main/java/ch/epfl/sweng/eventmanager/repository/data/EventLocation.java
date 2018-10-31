@@ -31,4 +31,12 @@ public class EventLocation {
     public Position getPosition() {
         return position;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof EventLocation) {
+            EventLocation other = (EventLocation) obj;
+            return other.getName().equals(getName()) && other.getPosition().equals(getPosition());
+        } else return false;
+    }
 }
