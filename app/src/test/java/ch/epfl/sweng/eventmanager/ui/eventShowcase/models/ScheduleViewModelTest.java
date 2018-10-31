@@ -89,16 +89,6 @@ public class ScheduleViewModelTest {
     }
 
     @Test
-    public void isItemJoinedOnJoinedItem() {
-        assertTrue(scheduleViewModel.isItemJoined(joinedScheduleItems.get(0).getUid()));
-    }
-
-    @Test
-    public void isItemJoinedOnNotJoinedItem() {
-        assertFalse(scheduleViewModel.isItemJoined(mockConcertRepository.getConcerts(2).getValue().get(1).getId()));
-    }
-
-    @Test
     public void getJoinedScheduleItems() {
         assertEquals(joinedScheduleItems.get(0).getUid(), scheduleViewModel.getJoinedScheduleItems().getValue().get(0).getId());
     }
@@ -124,7 +114,7 @@ public class ScheduleViewModelTest {
     @Test
     public void toggleMySchedule() {
         Context context = Mockito.mock(Context.class);
-        scheduleViewModel.toggleMySchedule(data.getValue().get(2).getId(), context);
+        scheduleViewModel.toggleMySchedule(data.getValue().get(2).getId(), null);
         assert (scheduleViewModel.getJoinedScheduleItems().getValue().contains(data.getValue().get(2)));
     }
 

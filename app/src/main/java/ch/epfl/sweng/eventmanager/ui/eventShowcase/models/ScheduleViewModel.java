@@ -8,6 +8,7 @@ import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import com.twitter.sdk.android.core.Callback;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -65,24 +66,13 @@ public class ScheduleViewModel extends ViewModel {
         return joinedItems;
     }
 
-    public Boolean isItemJoined(UUID itemId) {
-        // This method doesn't return a live-data because it's not watched by anything
-        // we only need to get a value at some point, and LiveDatas don't suit this model
-        List<ScheduledItem> events = getJoinedScheduleItems().getValue();
-        if (events != null) {
-            for (ScheduledItem i : events) {
-                if (i.getId().equals(itemId)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+    public void toggleMySchedule(UUID scheduledItemId) {
+        toggleMySchedule(scheduledItemId, null);
     }
 
-
-    public void toggleMySchedule(UUID scheduledItemId, Context context) {
-        joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), context);
+    public void toggleMySchedule(UUID scheduledItemId,
+                                 JoinedScheduleItemRepository.ToggleCallback wasAdded) {
+        joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), wasAdded);
     }
 
     private LiveData<List<ScheduledItem>> buildJoinedScheduledItemsList(LiveData<List<JoinedScheduleItem>> joinedItems) {

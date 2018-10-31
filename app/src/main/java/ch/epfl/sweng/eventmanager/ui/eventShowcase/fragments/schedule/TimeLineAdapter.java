@@ -13,8 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ch.epfl.sweng.eventmanager.notifications.ScheduledItemNotification;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import com.github.vipulasri.timelineview.TimelineView;
@@ -92,7 +95,18 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
             holder.mTimelineView.setMarker(ContextCompat.getDrawable(context, R.drawable.ic_marker), ContextCompat.getColor(context, R.color.colorPrimary));
         }
 
-        holder.setOnToggle(() -> model.toggleMySchedule(scheduledItem.getId(), context));
+        holder.setOnToggle(() -> {
+            model.toggleMySchedule(scheduledItem.getId(), wasAdded -> {
+
+                if (wasAdded) {
+                    Toast.makeText(context, R.string.timeline_view_added_to_own_schedule, Toast.LENGTH_SHORT).show();
+                    ScheduledItemNotification.scheduleNotification(context, scheduledItem);
+                } else {
+                    Toast.makeText(context, R.string.timeline_view_removed_from_own_schedule, Toast.LENGTH_SHORT).show();
+                    ScheduledItemNotification.unscheduleNotification(context, scheduledItem);
+                }
+            });
+        });
     }
 
     @Override
