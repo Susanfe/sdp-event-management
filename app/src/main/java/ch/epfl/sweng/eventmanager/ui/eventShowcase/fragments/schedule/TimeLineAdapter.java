@@ -72,12 +72,14 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
         String genreText = scheduledItem.getGenre() == null ? context.getString(R.string.scheduled_item_no_genre) : scheduledItem.getGenre();
         String descriptionText = scheduledItem.getDescription() == null ? context.getString(R.string.scheduled_item_no_description) : scheduledItem.getDescription();
         String durationText = transformDuration(scheduledItem.getDuration());
+        String room = scheduledItem.getItemLocation() == null ? "" : scheduledItem.getItemLocation();
 
         holder.mArtist.setText(artistText);
         holder.mDate.setText(dateText);
         holder.mGenre.setText(genreText);
         holder.mDescription.setText(descriptionText);
         holder.mDuration.setText(durationText);
+        holder.mItemRoom.setText(room);
 
         ScheduledItem.ScheduledItemStatus status = scheduledItem.getStatus();
 
@@ -134,6 +136,8 @@ class TimeLineViewHolder extends RecyclerView.ViewHolder {
     TextView mDescription;
     @BindView(R.id.text_timeline_duration)
     TextView mDuration;
+    @BindView(R.id.text_item_room)
+    TextView mItemRoom;
     @BindView(R.id.time_marker)
     TimelineView mTimelineView;
     private Runnable onToggle;
