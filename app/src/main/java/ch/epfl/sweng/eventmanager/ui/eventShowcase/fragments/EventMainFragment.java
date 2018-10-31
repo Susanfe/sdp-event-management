@@ -1,11 +1,15 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,14 +34,21 @@ public class EventMainFragment extends AbstractShowcaseFragment {
                 return;
             }
 
-            TextView eventDescription = (TextView) view.findViewById(R.id.event_description);
-            eventDescription.setText(ev.getDescription());
+            // Set window title
+            getActivity().setTitle(ev.getName());
 
-            ImageView eventLogo = (ImageView) view.findViewById(R.id.event_image);
+            TextView eventDescription = view.findViewById(R.id.event_description);
+            eventDescription.setText(ev.getDescription());
+            Button contactButton = view.findViewById(R.id.contact_form_go_button);
+            contactButton.setOnClickListener(v ->
+                    ((EventShowcaseActivity)getActivity()).changeFragment(
+                            new EventFormFragment(), true));
+
+            ImageView eventLogo = view.findViewById(R.id.event_image);
             model.getEventImage().observe(this, eventLogo::setImageBitmap);
 
             // Binds the 'joined event' switch to the database
-            Switch joinEventSwitch = (Switch) view.findViewById(R.id.join_event_switch);
+            Switch joinEventSwitch = view.findViewById(R.id.join_event_switch);
             // State of the switch depends on if the user joined the event
             this.model.isJoined(ev).observe(this, joinEventSwitch::setChecked);
             joinEventSwitch.setOnClickListener(v -> {

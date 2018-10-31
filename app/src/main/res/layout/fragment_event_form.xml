@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_margin="10dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/contact_form_name"
+            android:hint="@string/contact_form_hint_name"
+            android:layout_weight="10"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/contact_form_subject"
+            android:hint="@string/contact_form_hint_subject"
+            android:layout_weight="10"
+            android:inputType="text"/>
+
+        <EditText
+            android:id="@+id/contact_form_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="top"
+            android:hint="@string/contact_form_hint_message"
+            android:inputType="textMultiLine"
+            android:layout_weight="70"/>
+
+        <Button
+            android:id="@+id/contact_form_send_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/contact_form_send_button_text"
+            android:layout_weight="10"/>
+
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
