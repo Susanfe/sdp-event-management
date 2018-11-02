@@ -10,10 +10,13 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class NotificationScheduler {
     static final String CHANNEL_ID = "notify_001";
     private static final String CHANNEL_NAME = "Scheduled Notifications";
+    private static final AtomicReference<Boolean> isNotificationChannelSet = new AtomicReference<>(false);
     private static final Integer TEN_MINUTES = 600000; //10 mn in millis
 
     /**
@@ -24,7 +27,6 @@ public class NotificationScheduler {
      * @param scheduledItem Scheduled Item
      */
     public static void scheduleNotification(@NonNull Context context, ScheduledItem scheduledItem) {
-
         setupNotificationChannel(context);
 
         // get Notification based on scheduled item
@@ -56,6 +58,9 @@ public class NotificationScheduler {
     }
 
     public static void scheduleNotification(@NonNull Context context, Event event) {
+    }
+
+    public static void unscheduleNotification(@NonNull Context context, Event event){
 
     }
 
@@ -79,14 +84,18 @@ public class NotificationScheduler {
     }
 
     private static void setupNotificationChannel(@NonNull Context context) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Setup Notification Channel
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
+        if (!isNotificationChannelSet.get()) {
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            // Setup Notification Channel
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                        CHANNEL_NAME,
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(channel);
+            }
+            isNotificationChannelSet.set(true);
         }
     }
 }
