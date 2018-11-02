@@ -2,7 +2,9 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +26,11 @@ public final class Event {
      * A short description of the event
      */
     private String description;
+    /**
+     * Indicates the time of the item, precision required is minutes.
+     * This is a long because firebase doesn't understand Date objects.
+     */
+    private long date;
     /**
      * The entity organizing this event
      */
@@ -70,6 +77,13 @@ public final class Event {
         return name;
     }
 
+    public Date getDate() {
+        if (date <= 0) {
+            return null;
+        }
+        return new Date(date);
+    }
+
     public String getDescription() {
         return description;
     }
@@ -90,6 +104,14 @@ public final class Event {
 
     public String getTwitterName() {
         return this.twitterName;
+    }
+
+    public String dateAsString() {
+        if (date <= 0) {
+            return null;
+        }
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        return f.format(date);
     }
 
     // TODO put setters ??
