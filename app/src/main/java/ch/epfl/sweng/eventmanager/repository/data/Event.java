@@ -55,9 +55,10 @@ public final class Event {
 
     // TODO define if an event can have only empty and null atributes
 
-    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image, EventLocation location, List<Spot> spotList, String twitterName) {
+    public Event(int id, String name, String description, Date date, EventOrganizer organizer, Bitmap image, EventLocation location, List<Spot> spotList, String twitterName) {
         this.id = id;
         this.name = name;
+        this.date = date.getTime();
         this.description = description;
         this.organizer = organizer;
         this.image = image;
