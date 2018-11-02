@@ -27,10 +27,15 @@ public final class Event {
      */
     private String description;
     /**
-     * Indicates the time of the item, precision required is minutes.
+     * Indicates the start time of the even, precision required is minutes.
      * This is a long because firebase doesn't understand Date objects.
      */
-    private long date;
+    private long beginDate;
+    /**
+     * Indicates the end time of the even, precision required is minutes.
+     * This is a long because firebase doesn't understand Date objects.
+     */
+    private long endDate;
     /**
      * The entity organizing this event
      */
@@ -55,10 +60,14 @@ public final class Event {
 
     // TODO define if an event can have only empty and null atributes
 
-    public Event(int id, String name, String description, Date date, EventOrganizer organizer, Bitmap image, EventLocation location, List<Spot> spotList, String twitterName) {
+    public Event(int id, String name, String description, Date beginDate, Date endDate, EventOrganizer organizer, Bitmap image, EventLocation location, List<Spot> spotList, String twitterName) {
+        if (beginDate.getTime() > endDate.getTime())
+            throw new IllegalArgumentException("The time at the start of the event should be later than the time at the end");
+
         this.id = id;
         this.name = name;
-        this.date = date.getTime();
+        this.beginDate = beginDate.getTime();
+        this.endDate = endDate.getTime();
         this.description = description;
         this.organizer = organizer;
         this.image = image;
@@ -78,11 +87,18 @@ public final class Event {
         return name;
     }
 
-    public Date getDate() {
-        if (date <= 0) {
+    public Date getBeginDate() {
+        if (beginDate <= 0) {
             return null;
         }
-        return new Date(date);
+        return new Date(beginDate);
+    }
+
+    public Date getEndDate() {
+        if (endDate <= 0) {
+            return null;
+        }
+        return new Date(endDate);
     }
 
     public String getDescription() {
@@ -107,12 +123,20 @@ public final class Event {
         return this.twitterName;
     }
 
-    public String dateAsString() {
-        if (date <= 0) {
+    public String beginDateAsString() {
+        if (beginDate <= 0) {
             return null;
         }
         SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
-        return f.format(date);
+        return f.format(beginDate);
+    }
+
+    public String endDateAsString(){
+        if (endDate <= 0) {
+            return null;
+        }
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        return f.format(endDate);
     }
 
     // TODO put setters ??
