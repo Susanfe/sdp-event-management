@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
@@ -40,12 +42,18 @@ public class EventShowcaseActivity extends AppCompatActivity
     @Inject
     ViewModelFactory factory;
 
+    @BindView(R.id.drawer_layout)
+    private DrawerLayout mDrawerLayout;
+    @BindView(R.id.nav_view)
+    private NavigationView navigationView;
+    @BindView(R.id.toolbar)
+    private Toolbar toolbar;
+
     private EventShowcaseModel model;
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView;
+
 
     private void initModels(int eventID) {
         this.model = ViewModelProviders.of(this, factory).get(EventShowcaseModel.class);
@@ -82,11 +90,9 @@ public class EventShowcaseActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_showcase);
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        this.navigationView = findViewById(R.id.nav_view);
+        ButterKnife.bind(this);
 
         // Set toolbar as action bar
-        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Add drawer button to the action bar
@@ -103,7 +109,6 @@ public class EventShowcaseActivity extends AppCompatActivity
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
             this.initModels(eventID);
-
             this.setupHeader();
 
             // Set displayed fragment
@@ -227,10 +232,16 @@ public class EventShowcaseActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * @return currentFragment
+     */
     private Fragment getCurrentFragment() {
         return getSupportFragmentManager().findFragmentById(R.id.content_frame);
     }
 
+    /**
+     * Handles back button
+     */
     @Override
     public void onBackPressed() {
         Fragment fragment = getCurrentFragment();
