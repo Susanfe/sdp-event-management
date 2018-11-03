@@ -139,23 +139,23 @@ public class EventShowcaseActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_main :
-                changeFragment(new EventMainFragment(), true);
+                changeFragment(new EventMainFragment(), false);
                 break;
 
             case R.id.nav_map :
-                changeFragment(new EventMapFragment(), true);
+                changeFragment(new EventMapFragment(), false);
                 break;
 
             case R.id.nav_tickets :
-                changeFragment(new EventMapFragment(), true);
+                changeFragment(new EventMapFragment(), false);
                 break;
 
             case R.id.nav_news :
-                changeFragment(new NewsFragment(), true);
+                changeFragment(new NewsFragment(), false);
                 break;
 
             case R.id.nav_schedule :
-                changeFragment(new ScheduleParentFragment(), true);
+                changeFragment(new ScheduleParentFragment(), false);
                 break;
 
         }
@@ -200,6 +200,17 @@ public class EventShowcaseActivity extends AppCompatActivity
                     "Unable to commit fragment, could be activity as been killed in background. "
                             + exception.toString()
             );
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count > 0) {
+            getSupportFragmentManager().popBackStack();
+            changeFragment(new EventMainFragment(),false);
+        } else {
+            super.onBackPressed();
         }
     }
 }
