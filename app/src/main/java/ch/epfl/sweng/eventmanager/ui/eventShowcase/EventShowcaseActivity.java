@@ -43,11 +43,11 @@ public class EventShowcaseActivity extends AppCompatActivity
     ViewModelFactory factory;
 
     @BindView(R.id.drawer_layout)
-    private DrawerLayout mDrawerLayout;
+    DrawerLayout mDrawerLayout;
     @BindView(R.id.nav_view)
-    private NavigationView navigationView;
+    NavigationView navigationView;
     @BindView(R.id.toolbar)
-    private Toolbar toolbar;
+    Toolbar toolbar;
 
     private EventShowcaseModel model;
     private ScheduleViewModel scheduleModel;
