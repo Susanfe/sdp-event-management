@@ -11,6 +11,9 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 
+/**
+ * Provides tools to create a {@link Notification} from a ScheduledItem and Event
+ */
 public class NotificationBuilder {
 
     /**
