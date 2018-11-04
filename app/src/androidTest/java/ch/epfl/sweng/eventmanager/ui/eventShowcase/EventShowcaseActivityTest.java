@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
@@ -44,18 +45,28 @@ public class EventShowcaseActivityTest {
 
         onIdle();
 
-
-        // Open event picker
-        String help_text = getResourceString(R.string.help_text_activity_event_picking);
+        //test back navigation
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
+        pressBack();
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open());
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_map));
+        pressBack();
+        pressBack();
+    }
 
-        onIdle();
+    @Test
+    public void openEventPicker() {
+        Intent intent = new Intent();
+        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 1);
+        mActivityRule.launchActivity(intent);
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open());
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
 
-        onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
-
-        onIdle();
+        String help_text = getResourceString(R.string.help_text_activity_event_picking);
 
         onView(withId(R.id.help_text))
                 .check(matches(withText(help_text)));
@@ -92,4 +103,5 @@ public class EventShowcaseActivityTest {
         onView(withText("Japan Impact")).perform(click());
 
     }
+
 }
