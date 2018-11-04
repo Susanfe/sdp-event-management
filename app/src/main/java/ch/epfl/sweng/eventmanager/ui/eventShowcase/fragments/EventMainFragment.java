@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 
@@ -52,8 +53,14 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             // State of the switch depends on if the user joined the event
             this.model.isJoined(ev).observe(this, joinEventSwitch::setChecked);
             joinEventSwitch.setOnClickListener(v -> {
-                if (joinEventSwitch.isChecked()) this.model.joinEvent(ev);
-                else this.model.unjoinEvent(ev);
+                if (joinEventSwitch.isChecked()) {
+                    this.model.joinEvent(ev);
+                    NotificationScheduler.scheduleNotification(getContext(), ev);
+                }
+                else {
+                    this.model.unjoinEvent(ev);
+                    NotificationScheduler.unscheduleNotification(getContext(), ev);
+                }
             });
         });
     }
