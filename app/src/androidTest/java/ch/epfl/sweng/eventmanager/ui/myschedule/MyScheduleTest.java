@@ -89,6 +89,7 @@ public class MyScheduleTest {
         onView(allOf(isDisplayed(),withId(R.id.addToCalendar))).perform(click());
         SystemClock.sleep(400);
         pressBack();
+        pressBack();
     }
 
 }
