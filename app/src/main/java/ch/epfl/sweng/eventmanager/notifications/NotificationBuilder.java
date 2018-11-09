@@ -28,7 +28,7 @@ public class NotificationBuilder {
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
-    static Notification getNotification(@NonNull Context context, ScheduledItem scheduledItem) {
+    static Notification getNotificationFromScheduleItem(@NonNull Context context, ScheduledItem scheduledItem) {
         // Set up on tap action TODO display my_schedule fragment when tap on notification
         PendingIntent pendingIntent = toEventPickingActivity(context);
 
@@ -44,7 +44,7 @@ public class NotificationBuilder {
         return builder.build();
     }
 
-    static Notification getNotification(@NonNull Context context, Event event){
+    static Notification getNotificationFromEvent(@NonNull Context context, Event event){
         // Set up on tap action
         PendingIntent pendingIntent = toEventPickingActivity(context);
 
@@ -58,5 +58,10 @@ public class NotificationBuilder {
                 .setContentIntent(pendingIntent);
 
         return builder.build();
+    }
+
+    static Notification getNotificationFromNewScheduledItem(@NonNull Context context){
+        //TODO implement this
+        return null;
     }
 }

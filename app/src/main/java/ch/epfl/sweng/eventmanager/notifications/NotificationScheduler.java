@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -30,7 +32,7 @@ public class NotificationScheduler {
         setupNotificationChannel(context);
 
         // get Notification based on scheduled item
-        Notification notification = NotificationBuilder.getNotification(context, scheduledItem);
+        Notification notification = NotificationBuilder.getNotificationFromScheduleItem(context, scheduledItem);
 
         scheduleNotification(context, scheduledItem.getId().hashCode(), scheduledItem.getDate(), notification, TEN_MINUTES);
     }
@@ -38,7 +40,7 @@ public class NotificationScheduler {
     /**
      * Create a new Notification based on given {@link Event}. The notification is broadcast
      * to {@link NotificationPublisher} and is displayed ONE_DAY before the event starts.
-     * Reference Date is begin date of the event
+     * Reference Date is {@link #getTimeTo(Date)} with begin date of the event
      *
      * @param context not null
      * @param event   planned event
@@ -47,7 +49,7 @@ public class NotificationScheduler {
         setupNotificationChannel(context);
 
         // get Notification based on scheduled item
-        Notification notification = NotificationBuilder.getNotification(context, event);
+        Notification notification = NotificationBuilder.getNotificationFromEvent(context, event);
 
         scheduleNotification(context, event.getId(), event.getBeginDate(), notification, ONE_DAY);
     }
@@ -59,7 +61,11 @@ public class NotificationScheduler {
         notificationIntent.putExtra(NotificationPublisher.getNOTIFICATION(), notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, itemId, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        long future = SystemClock.elapsedRealtime() + getTimeTo(date) - delay;
+        long timeTo = getTimeTo(date);
+        if (timeTo == Long.MAX_VALUE) //Special case where the event is past therefore, no notifications are sent
+            return;
+
+        long future = SystemClock.elapsedRealtime() + timeTo - delay;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, future, pendingIntent);
     }
@@ -105,10 +111,12 @@ public class NotificationScheduler {
     private static long getTimeTo(Date date) {
         if (date == null)
             throw new NullPointerException();
+
         long timeUntil = date.getTime() - System.currentTimeMillis();
+        Log.d("NOTIFICATION_PUBLISHER", String.format("date time = %s and current time = %s", date.getTime(), System.currentTimeMillis()));
 
         if (timeUntil < 0) // Event is past
-            throw new IllegalStateException();
+            return Long.MAX_VALUE;
         else return timeUntil;
     }
 
