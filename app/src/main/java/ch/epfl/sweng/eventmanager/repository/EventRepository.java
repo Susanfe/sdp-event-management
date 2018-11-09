@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import com.google.firebase.database.*;
@@ -16,6 +17,7 @@ import com.google.firebase.storage.StorageReference;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,13 +39,10 @@ public class EventRepository {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<Event>> typeToken = new GenericTypeIndicator<List<Event>>() {
-                };
+                List<Event> events = new ArrayList<>();
 
-                List<Event> events = dataSnapshot.getValue(typeToken);
-                if (events != null) {
-                    events.remove(null); // Somehow the list might contain a null element
-                }
+                for (DataSnapshot child : dataSnapshot.getChildren())
+                    events.add(child.getValue(Event.class));
 
                 data.postValue(events);
             }
@@ -99,7 +98,7 @@ public class EventRepository {
         return img;
     }
 
-    private <T> LiveData<List<T>> getElems(int eventId, String basePath, GenericTypeIndicator<List<T>> token) {
+    private <T> LiveData<List<T>> getElems(int eventId, String basePath, Class<T> classOfT) {
         final MutableLiveData<List<T>> data = new MutableLiveData<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance()
                 .getReference(basePath)
@@ -108,7 +107,11 @@ public class EventRepository {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<T> spots = dataSnapshot.getValue(token);
+                List<T> spots = new ArrayList<>();
+
+                for (DataSnapshot child : dataSnapshot.getChildren())
+                    spots.add(child.getValue(classOfT));
+
                 data.postValue(spots);
             }
 
@@ -122,10 +125,10 @@ public class EventRepository {
     }
 
     public LiveData<List<Spot>> getSpots(int eventId) {
-        return this.getElems(eventId, "spots", new GenericTypeIndicator<List<Spot>>() {});
+        return this.getElems(eventId, "spots", Spot.class);
     }
 
     public LiveData<List<ScheduledItem>> getScheduledItems(int eventId) {
-        return this.getElems(eventId, "schedule_items", new GenericTypeIndicator<List<ScheduledItem>>() {});
+        return this.getElems(eventId, "schedule_items", ScheduledItem.class);
     }
 }

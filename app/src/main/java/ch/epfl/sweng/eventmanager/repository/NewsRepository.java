@@ -9,6 +9,7 @@ import com.google.firebase.database.*;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,13 +34,11 @@ public class NewsRepository {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<News>> typeToken = new GenericTypeIndicator<List<News>>() {
-                };
+                List<News> news = new ArrayList<>();
 
-                List<News> news = dataSnapshot.getValue(typeToken);
-                if (news != null) {
-                    Collections.sort(news);
-                }
+                for (DataSnapshot child : dataSnapshot.getChildren())
+                    news.add(child.getValue(News.class));
+
                 data.postValue(news);
             }
 
