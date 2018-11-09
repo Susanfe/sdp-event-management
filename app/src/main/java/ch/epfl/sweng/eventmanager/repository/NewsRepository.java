@@ -5,12 +5,15 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.data.News;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author Louis Vialar
@@ -23,6 +26,15 @@ public class NewsRepository {
     public NewsRepository() {
     }
 
+    public Task<Void> publishNews(int eventId, News news) {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference("news")
+                .child("event_" + eventId)
+                .push(); // Create a new key in the list
+
+        return dbRef.setValue(news);
+    }
+
     public LiveData<List<News>> getNews(int eventId) {
         final MutableLiveData<List<News>> data = new MutableLiveData<>();
 
@@ -33,13 +45,11 @@ public class NewsRepository {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<News>> typeToken = new GenericTypeIndicator<List<News>>() {
-                };
+                List<News> news = new ArrayList<>();
 
-                List<News> news = dataSnapshot.getValue(typeToken);
-                if (news != null) {
-                    Collections.sort(news);
-                }
+                for (DataSnapshot child : dataSnapshot.getChildren())
+                    news.add(child.getValue(News.class));
+
                 data.postValue(news);
             }
 

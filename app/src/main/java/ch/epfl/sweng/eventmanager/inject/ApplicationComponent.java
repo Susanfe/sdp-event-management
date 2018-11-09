@@ -6,6 +6,7 @@ import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 import javax.inject.Singleton;
 
@@ -15,6 +16,7 @@ import javax.inject.Singleton;
  */
 @Component(modules = {
         AndroidInjectionModule.class,
+        AndroidSupportInjectionModule.class,
         ActivityBuilder.class,
         ApplicationModule.class,
         RoomModule.class})
