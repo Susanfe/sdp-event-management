@@ -16,6 +16,19 @@ import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
  */
 public class NotificationBuilder {
 
+    static Notification getNotificationFromScheduleItem(@NonNull Context context, ScheduledItem scheduledItem) {
+        return getNotificationFromItem(context, scheduledItem.getArtist() + " concert will start soon", scheduledItem.getDescription());
+    }
+
+    static Notification getNotificationFromEvent(@NonNull Context context, Event event){
+        return getNotificationFromItem(context, event.getName() + " will start tomorrow", event.getDescription());
+    }
+
+    static Notification getNotificationFromNewScheduledItem(@NonNull Context context){
+        //TODO implement this
+        return null;
+    }
+
     /**
      * Provides a {@link PendingIntent} to EventPickingActivity.class when you tap on a notification
      *
@@ -28,40 +41,19 @@ public class NotificationBuilder {
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
-    static Notification getNotificationFromScheduleItem(@NonNull Context context, ScheduledItem scheduledItem) {
-        // Set up on tap action TODO display my_schedule fragment when tap on notification
+    private static Notification getNotificationFromItem(@NonNull Context context, String title, String description){
+        // Set up on tap action TODO send to event my_schedule fragment
         PendingIntent pendingIntent = toEventPickingActivity(context);
 
         // Create a notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationScheduler.CHANNEL_ID)
-                .setContentTitle(scheduledItem.getArtist() + " concert will start soon")
-                .setContentText(scheduledItem.getDescription())
-                .setSmallIcon(R.drawable.ic_marker_active) // TODO define a small icon for notifications
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
-
-        return builder.build();
-    }
-
-    static Notification getNotificationFromEvent(@NonNull Context context, Event event){
-        // Set up on tap action
-        PendingIntent pendingIntent = toEventPickingActivity(context);
-
-        // Create a notification
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationScheduler.CHANNEL_ID)
-                .setContentTitle(event.getName() + " will start tomorrow")
-                .setContentText(event.getDescription())
+                .setContentTitle(title)
+                .setContentText(description)
                 .setSmallIcon(R.drawable.ic_marker_active)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
 
         return builder.build();
-    }
-
-    static Notification getNotificationFromNewScheduledItem(@NonNull Context context){
-        //TODO implement this
-        return null;
     }
 }
