@@ -53,4 +53,8 @@ public final class Session {
     public static User getCurrentUser() {
        return session.getUser();
     }
+
+    public static boolean hasPermission(User.Permission permission) {
+        return isLoggedIn() && getCurrentUser().hasPermission(permission);
+    }
 }
