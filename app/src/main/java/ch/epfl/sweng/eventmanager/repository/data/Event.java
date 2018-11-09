@@ -58,6 +58,8 @@ public final class Event {
      */
     private String twitterName;
 
+    private EventTicketingConfiguration ticketingConfiguration;
+
     // TODO define if an event can have only empty and null atributes
 
     public Event(int id, String name, String description, Date beginDate, Date endDate, EventOrganizer organizer, Bitmap image, EventLocation location, List<Spot> spotList, String twitterName) {
@@ -137,6 +139,10 @@ public final class Event {
         }
         SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
         return f.format(endDate);
+    }
+
+    public EventTicketingConfiguration getTicketingConfiguration() {
+        return ticketingConfiguration;
     }
 
     // TODO put setters ??

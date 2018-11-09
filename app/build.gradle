@@ -61,6 +61,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.3'
     implementation 'com.google.firebase:firebase-storage:16.0.3'
     implementation 'android.arch.persistence.room:runtime:1.1.1'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.squareup.moshi:moshi:1.7.0'
+    implementation 'com.auth0:java-jwt:3.3.0'
+    
     // Include all the Twitter APIs
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
     implementation 'com.twitter.sdk.android:tweet-ui:3.1.1'
