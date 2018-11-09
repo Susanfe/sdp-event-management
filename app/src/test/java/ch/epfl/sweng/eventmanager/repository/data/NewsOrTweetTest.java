@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 /**
  * @author Louis Vialar
@@ -68,5 +67,11 @@ public class NewsOrTweetTest {
             assertEquals("inequality at item " + i, list.get(i), test.get(i));
         }
 
+    }
+
+    @Test
+    public void mergeNullLists() {
+        List<NewsOrTweet> test = NewsOrTweet.mergeLists(null, null);
+        assertTrue(test.isEmpty());
     }
 }
