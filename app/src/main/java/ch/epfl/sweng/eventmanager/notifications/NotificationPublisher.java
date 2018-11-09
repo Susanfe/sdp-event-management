@@ -22,11 +22,11 @@ public class NotificationPublisher extends BroadcastReceiver {
         notificationManager.notify(id, notification);
     }
 
-    public static String getNotificationId() {
+    static String getNotificationId() {
         return NOTIFICATION_ID;
     }
 
-    public static String getNOTIFICATION() {
+    static String getNOTIFICATION() {
         return NOTIFICATION;
     }
 }

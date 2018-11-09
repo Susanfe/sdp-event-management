@@ -14,7 +14,7 @@ import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 /**
  * Provides tools to create a {@link Notification} from a ScheduledItem and Event
  */
-public class NotificationBuilder {
+class NotificationBuilder {
 
     static Notification getNotificationFromScheduleItem(@NonNull Context context, ScheduledItem scheduledItem) {
         return getNotificationFromItem(context, scheduledItem.getArtist() + " concert will start soon", scheduledItem.getDescription());
