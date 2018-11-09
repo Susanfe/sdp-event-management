@@ -22,7 +22,7 @@ public class NotificationScheduler {
     private static final Integer ONE_DAY = 86_400_000; // 24h in millis
 
     /**
-     * Create a new Notification based on given {@link ScheduledItem}. The notification is broadcast
+     * Schedule a new Notification based on given {@link ScheduledItem}. The notification is broadcast
      * to {@link NotificationPublisher} and is displayed TEN_MINUTES before the item starts.
      *
      * @param context       not null
@@ -34,11 +34,11 @@ public class NotificationScheduler {
         // get Notification based on scheduled item
         Notification notification = NotificationBuilder.getNotificationFromScheduleItem(context, scheduledItem);
 
-        scheduleNotification(context, scheduledItem.getId().hashCode(), scheduledItem.getDate(), notification, TEN_MINUTES);
+        scheduleNotification(context, scheduledItem.getId().hashCode(), notification, getTimeTo(scheduledItem.getDate()) - TEN_MINUTES);
     }
 
     /**
-     * Create a new Notification based on given {@link Event}. The notification is broadcast
+     * Schedule a new Notification based on given {@link Event}. The notification is broadcast
      * to {@link NotificationPublisher} and is displayed ONE_DAY before the event starts.
      * Reference Date is {@link #getTimeTo(Date)} with begin date of the event
      *
@@ -51,21 +51,25 @@ public class NotificationScheduler {
         // get Notification based on scheduled item
         Notification notification = NotificationBuilder.getNotificationFromEvent(context, event);
 
-        scheduleNotification(context, event.getId(), event.getBeginDate(), notification, ONE_DAY);
+        scheduleNotification(context, event.getId(), notification, getTimeTo(event.getBeginDate()) - ONE_DAY);
     }
 
-    private static void scheduleNotification(@NonNull Context context, int itemId, Date date, Notification notification, int delay) {
+    /**
+     * Schedule {@param notification} to be displayed in {@param delay} milliseconds from current time based on {@link System#currentTimeMillis()}.
+     * @param context non null
+     * @param itemId unique id to notification
+     */
+    private static void scheduleNotification(@NonNull Context context, int itemId, Notification notification, long delay) {
 
         Intent notificationIntent = new Intent(context, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.getNotificationId(), itemId);
         notificationIntent.putExtra(NotificationPublisher.getNOTIFICATION(), notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, itemId, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        long timeTo = getTimeTo(date);
-        if (timeTo == Long.MAX_VALUE) //Special case where the event is past therefore, no notifications are sent
+        if (delay < 0) //Special case where the event is past therefore, no notifications are sent
             return;
 
-        long future = SystemClock.elapsedRealtime() + timeTo - delay;
+        long future = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, future, pendingIntent);
     }
