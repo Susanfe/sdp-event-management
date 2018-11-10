@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
@@ -26,22 +28,19 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
     private static final String TAG = "ConfigurationPicker";
 
     private ScrollView mPickerView;
-    private ProgressBar mProgressBar;
-    private TextView mProgressText;
-    private View mLoadingView;
     private RecyclerView mRecycler;
+    private TextView mTitle;
     private ConfigurationAdapter adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticketing_configuration_picker);
 
-        this.mPickerView = findViewById(R.id.configuration_list);
-        this.mLoadingView = findViewById(R.id.loading_progress);
         this.mRecycler = findViewById(R.id.recylcer);
-        this.mProgressBar = findViewById(R.id.loading_progress_bar);
-        this.mProgressText = findViewById(R.id.loading_text_view);
+        this.mTitle = findViewById(R.id.pick_config);
+        this.swipeRefreshLayout = findViewById(R.id.swipe_refresher);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecycler.setLayoutManager(layoutManager);
@@ -55,38 +54,46 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
 
         this.adapter = new ConfigurationAdapter(this);
         this.mRecycler.setAdapter(adapter);
+
+        // Setup refresh handler
+        this.swipeRefreshLayout.setOnRefreshListener(this::fetchData);
+    }
+
+    private void fetchData() {
+        try {
+            this.service.getConfigurations(new TicketingService.ApiCallback<List<ScanConfiguration>>() {
+                @Override
+                public void onSuccess(List<ScanConfiguration> data) {
+                    adapter.setConfigurations(data);
+                    swipeRefreshLayout.setRefreshing(false);
+                    mTitle.setText(getResources().getString(R.string.pick_configuration));
+
+                }
+
+                @Override
+                public void onFailure(List<ApiResult.ApiError> errors) {
+                    // TODO: parse errors
+
+                    swipeRefreshLayout.setRefreshing(false);
+                    mTitle.setText(getResources().getString(R.string.loading_failed, errors.get(0).getKey()));
+                }
+            });
+        } catch (NotAuthenticatedException e) {
+            Toast.makeText(TicketingConfigurationPickerActivity.this, R.string.ticketing_requires_login, Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+
+            startActivity(switchActivity(TicketingLoginActivity.class));
+            finish();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        // Reset progress bar state
-        this.mPickerView.setVisibility(View.GONE); // Hide picker
-        this.mProgressBar.setVisibility(View.VISIBLE);
-        this.mProgressText.setVisibility(View.VISIBLE);
-        this.mLoadingView.setVisibility(View.VISIBLE);
-        this.mProgressText.setText(R.string.loading_text);
+        swipeRefreshLayout.setRefreshing(true);
 
-        this.service.getConfigurations(new TicketingService.ApiCallback<List<ScanConfiguration>>() {
-            @Override
-            public void onSuccess(List<ScanConfiguration> data) {
-                adapter.setConfigurations(data);
-
-                mPickerView.setVisibility(View.VISIBLE);
-                mLoadingView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(List<ApiResult.ApiError> errors) {
-                mProgressBar.setVisibility(View.GONE); // Hide loading spinner
-
-                // TODO: add retry button
-                // TODO: parse errors
-
-                mProgressText.setText(getResources().getString(R.string.loading_failed, errors.get(0).getKey()));
-            }
-        });
+        this.fetchData();
     }
 
     private static class ConfigurationAdapter extends RecyclerView.Adapter<ConfigurationViewHolder> {

@@ -96,7 +96,7 @@ public class TicketingService {
 
     }
 
-    public void getConfigurations(ApiCallback<List<ScanConfiguration>> callback) {
+    public void getConfigurations(ApiCallback<List<ScanConfiguration>> callback) throws NotAuthenticatedException {
         if (!hasMultipleConfigurations()) {
             throw new UnsupportedOperationException("this event doesn't support multiple scan configurations");
         }
@@ -107,21 +107,20 @@ public class TicketingService {
                 new JavaObjectRequest<>(Request.Method.GET, configuration.getConfigurationsUrl(),
                         callback::onSuccess, f -> ApiCallback.failure(callback, f), tt.getType());
 
-        if (requiresLogin()) {
-            if (!isLoggedIn())
-                // TODO: replace with error message
-                throw new UnsupportedOperationException("login required");
-            request.setAuthToken(token);
-        }
+        setToken(request);
 
         queue.add(request);
     }
 
-    public void scan(String barcode, ApiCallback<ScanResult> callback) {
-        scan(-1, barcode, callback);
+    private void setToken(JavaObjectRequest request) throws NotAuthenticatedException {
+        if (requiresLogin()) {
+            if (!isLoggedIn())
+                throw new NotAuthenticatedException();
+            request.setAuthToken(token);
+        }
     }
 
-    public void scan(int configId, String barcode, ApiCallback<ScanResult> callback) {
+    public void scan(int configId, String barcode, ApiCallback<ScanResult> callback) throws NotAuthenticatedException {
         if (configId != -1 && !hasMultipleConfigurations()) {
             throw new UnsupportedOperationException("this event doesn't support multiple scan configurations");
         } else if (configId == -1 && hasMultipleConfigurations()) {
@@ -136,13 +135,7 @@ public class TicketingService {
             request = JavaObjectRequest.withBody(Request.Method.POST, scanUrl, new JSONObject().put("barcode", barcode),
                     callback::onSuccess, f -> ApiCallback.failure(callback, f), ScanResult.class);
 
-            if (requiresLogin()) {
-                if (!isLoggedIn())
-                    ApiCallback.failure(callback, "requires login"); // TODO: proper error message
-                else
-                    request.setAuthToken(token);
-            }
-
+            setToken(request);
             queue.add(request);
         } catch (JSONException e) {
             e.printStackTrace();

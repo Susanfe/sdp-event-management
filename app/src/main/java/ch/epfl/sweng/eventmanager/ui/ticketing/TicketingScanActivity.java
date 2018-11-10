@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
@@ -57,74 +58,85 @@ public final class TicketingScanActivity extends TicketingActivity {
             lastText = result.getText();
             barcodeView.setStatusText(result.getText());
 
-            service.scan(configId, lastText, new TicketingService.ApiCallback<ScanResult>() {
-                @Override
-                public void onSuccess(ScanResult data) {
-                    beepManager.playBeepSoundAndVibrate();
-                    TextView view = findViewById(R.id.barcodePreview);
+            try {
+                service.scan(configId, lastText, new TicketingService.ApiCallback<ScanResult>() {
+                    @Override
+                    public void onSuccess(ScanResult data) {
+                        beepManager.playBeepSoundAndVibrate();
+                        TextView view = findViewById(R.id.barcodePreview);
 
-                    StringBuilder html = new StringBuilder();
-                    if (data.isSuccess()) {
-                        html.append("<b style='color: green;'>")
-                                .append(getResources().getString(R.string.ticketing_scan_success))
-                                .append("</b>");
+                        StringBuilder html = new StringBuilder();
+                        if (data.isSuccess()) {
+                            html.append("<b style='color: green;'>")
+                                    .append(getResources().getString(R.string.ticketing_scan_success))
+                                    .append("</b>");
 
 
-                        if (data.getUser() != null) {
-                            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_user)).append("</i>")
-                                    .append(" ").append(data.getUser().getFirstname())
-                                    .append(" ").append(data.getUser().getLastname())
-                                    .append(" (").append(data.getUser().getEmail()).append(")");
-                        }
-
-                        if (data.getProduct() != null) {
-                            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>")
-                                    .append(" ").append(data.getProduct().getName())
-                                    .append(" (<i>").append(data.getProduct().getDescription())
-                                    .append("</i>)");
-                        } else if (data.getProducts() != null) {
-                            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>");
-                            html.append("<ul>");
-
-                            for (Map.Entry<ScanResult.Product, Integer> p : data.getProducts().entrySet()) {
-                                html.append("<li>").append(p.getValue())
-                                        .append(" * ").append(p.getKey().getName())
-                                        .append(": ").append(p.getKey().getDescription())
-                                        .append("</li>");
+                            if (data.getUser() != null) {
+                                html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_user)).append("</i>")
+                                        .append(" ").append(data.getUser().getFirstname())
+                                        .append(" ").append(data.getUser().getLastname())
+                                        .append(" (").append(data.getUser().getEmail()).append(")");
                             }
 
-                            html.append("</ul>");
-                        }
-                    } else {
-                        html.append("<b style='color: red;'>")
-                                .append(getResources().getString(R.string.ticketing_scan_failure))
-                                .append("</b><br>");
+                            if (data.getProduct() != null) {
+                                html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>")
+                                        .append(" ").append(data.getProduct().getName())
+                                        .append(" (<i>").append(data.getProduct().getDescription())
+                                        .append("</i>)");
+                            } else if (data.getProducts() != null) {
+                                html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>");
+                                html.append("<ul>");
 
-                        if (data.getErrors().size() == 1 && data.getErrors().get(0).getMessages().size() == 1) {
-                            html.append(data.getErrors().get(0).getMessages().get(0));
-                        } else {
-                            html.append("<ul>");
-                            for (ApiResult.ApiError err : data.getErrors()) {
-                                for (String msg : err.getMessages()) {
-                                    html.append("<li>").append(msg).append("</li>");
+                                for (Map.Entry<ScanResult.Product, Integer> p : data.getProducts().entrySet()) {
+                                    html.append("<li>").append(p.getValue())
+                                            .append(" * ").append(p.getKey().getName())
+                                            .append(": ").append(p.getKey().getDescription())
+                                            .append("</li>");
                                 }
+
+                                html.append("</ul>");
                             }
-                            html.append("</ul>");
+                        } else {
+                            html.append("<b style='color: red;'>")
+                                    .append(getResources().getString(R.string.ticketing_scan_failure))
+                                    .append("</b><br>");
+
+                            if (data.getErrors().size() == 1 && data.getErrors().get(0).getMessages().size() == 1) {
+                                html.append(data.getErrors().get(0).getMessages().get(0));
+                            } else {
+                                html.append("<ul>");
+                                for (ApiResult.ApiError err : data.getErrors()) {
+                                    for (String msg : err.getMessages()) {
+                                        html.append("<li>").append(msg).append("</li>");
+                                    }
+                                }
+                                html.append("</ul>");
+                            }
                         }
+
+                        view.setText(Html.fromHtml(html.toString()));
+
+
+                        barcodeView.resume();
                     }
 
-                    view.setText(Html.fromHtml(html.toString()));
-                }
+                    @Override
+                    public void onFailure(List<ApiResult.ApiError> errors) {
+                        // TODO: proper error handling
+                        Toast.makeText(TicketingScanActivity.this, errors.get(0).getKey(), Toast.LENGTH_LONG).show();
 
-                @Override
-                public void onFailure(List<ApiResult.ApiError> errors) {
-                    // TODO: proper error handling
-                    Toast.makeText(TicketingScanActivity.this, errors.get(0).getKey(), Toast.LENGTH_LONG).show();
-                }
-            });
+                        barcodeView.resume();
+                    }
+                });
+            } catch (NotAuthenticatedException e) {
+                Toast.makeText(TicketingScanActivity.this, R.string.ticketing_requires_login, Toast.LENGTH_LONG).show();
+                e.printStackTrace();
 
+                startActivity(switchActivity(TicketingLoginActivity.class));
+                finish();
+            }
 
-            barcodeView.resume();
         }
 
         @Override

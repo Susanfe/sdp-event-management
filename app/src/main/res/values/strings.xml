@@ -66,4 +66,5 @@
     <string name="ticketing_scan_failure">Invalid ticket :(</string>
     <string name="ticketing_scan_user">Buyer:</string>
     <string name="ticketing_scan_bought_product">Ticket details:</string>
+    <string name="ticketing_requires_login">You have to be logged in to do that.</string>
 </resources>
