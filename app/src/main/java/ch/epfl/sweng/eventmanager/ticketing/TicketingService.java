@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
@@ -17,28 +18,45 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.*;
 
 /**
  * @author Louis Vialar
  */
 public class TicketingService {
-    private static final Map<EventTicketingConfiguration, TicketingService> services = new HashMap<>();
+    private static final String PREFERENCE_KEY = "saved_login_tokens";
+    private static final Map<Integer, TicketingService> services = new HashMap<>();
 
     private final EventTicketingConfiguration configuration;
     private final RequestQueue queue;
+    private final SharedPreferences preferences;
+    private final int eventId;
     private String token;
 
-    private TicketingService(EventTicketingConfiguration configuration, Context context) {
+    private TicketingService(EventTicketingConfiguration configuration, int eventId, Context context) {
         this.configuration = configuration;
         this.queue = Volley.newRequestQueue(context.getApplicationContext());
+        this.preferences = context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE);
+        this.eventId = eventId;
+
+        readTokenFromPreferences();
     }
 
-    public static TicketingService getService(EventTicketingConfiguration configuration, Context context) {
-        if (!services.containsKey(configuration))
-            services.put(configuration, new TicketingService(configuration, context));
-        return services.get(configuration);
+    private void readTokenFromPreferences() {
+        // Retrieve token if it exists
+        if (preferences.contains(String.valueOf(eventId))) {
+            this.token = preferences.getString(String.valueOf(eventId), null);
+        }
+    }
+
+    private void writeTokenToPreferences() {
+        preferences.edit().putString(String.valueOf(eventId), token).apply();
+    }
+
+    public static TicketingService getService(int eventId, EventTicketingConfiguration configuration, Context context) {
+        if (!services.containsKey(eventId))
+            services.put(eventId, new TicketingService(configuration, eventId, context));
+        return services.get(eventId);
     }
 
     public boolean requiresLogin() {
@@ -63,6 +81,7 @@ public class TicketingService {
                     success -> {
                         if (success.isSuccess()) {
                             this.token = success.getToken();
+                            this.writeTokenToPreferences();
                             callback.onSuccess(null);
                         } else {
                             callback.onFailure(success.getErrors());
@@ -82,7 +101,8 @@ public class TicketingService {
             throw new UnsupportedOperationException("this event doesn't support multiple scan configurations");
         }
 
-        TypeToken<List<ScanConfiguration>> tt = new TypeToken<List<ScanConfiguration>>() {};
+        TypeToken<List<ScanConfiguration>> tt = new TypeToken<List<ScanConfiguration>>() {
+        };
         JavaObjectRequest<List<ScanConfiguration>> request =
                 new JavaObjectRequest<>(Request.Method.GET, configuration.getConfigurationsUrl(),
                         callback::onSuccess, f -> ApiCallback.failure(callback, f), tt.getType());

@@ -29,7 +29,7 @@ public abstract class TicketingActivity extends AppCompatActivity {
             throw new UnsupportedOperationException("this event doesn't support ticketing");
         }
 
-        TicketingService service = TicketingService.getService(event.getTicketingConfiguration(), context);
+        TicketingService service = TicketingService.getService(event.getId(), event.getTicketingConfiguration(), context);
 
         Intent openIntent = new Intent(context, getNextActivityForState(service));
         openIntent.putExtra(SELECTED_EVENT_ID, event.getId());
@@ -76,7 +76,7 @@ public abstract class TicketingActivity extends AppCompatActivity {
         } else if (configuration == null) {
             Log.e(TAG, "Got no configuration for event " + eventId);
         } else {
-            this.service = TicketingService.getService(this.configuration, this);
+            this.service = TicketingService.getService(this.eventId, this.configuration, this);
         }
     }
 }
