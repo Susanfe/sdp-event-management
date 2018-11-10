@@ -1,5 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
@@ -30,6 +34,7 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -67,6 +72,20 @@ public class EventShowcaseActivity extends AppCompatActivity
 
         this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
         this.spotsModel.init(eventID);
+    }
+
+    private void setupMenu() {
+        LiveData<EventTicketingConfiguration> data = Transformations.map(model.getEvent(), Event::getTicketingConfiguration);
+        data.observe(this, d -> {
+            MenuItem item = navigationView.getMenu().findItem(R.id.nav_scan);
+            if (d != null) {
+                Log.i(TAG, "Got a ticketing configuration, setting button visible");
+                item.setVisible(true);
+            } else {
+                Log.i(TAG, "Got no ticketing configuration, setting button invisible");
+                item.setVisible(false);
+            }
+        });
     }
 
     private void setupHeader() {
@@ -110,6 +129,7 @@ public class EventShowcaseActivity extends AppCompatActivity
         } else {
             this.initModels(eventID);
             this.setupHeader();
+            this.setupMenu();
 
             // Set displayed fragment
             changeFragment(new EventMainFragment(), true);
@@ -164,6 +184,10 @@ public class EventShowcaseActivity extends AppCompatActivity
 
             case R.id.nav_schedule:
                 changeFragment(new ScheduleParentFragment(), true);
+                break;
+
+            case R.id.nav_scan:
+                startActivity(TicketingActivity.start(model.getEvent().getValue(), this));
                 break;
 
         }

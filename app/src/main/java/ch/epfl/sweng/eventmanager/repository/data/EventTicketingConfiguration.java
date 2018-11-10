@@ -1,9 +1,12 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * @author Louis Vialar
  */
-public class EventTicketingConfiguration {
+public class EventTicketingConfiguration implements Parcelable {
     /**
      * The URL of the endpoint used to login.<br>
      * If null, the API will be used without authentication.
@@ -26,6 +29,23 @@ public class EventTicketingConfiguration {
     public EventTicketingConfiguration() {
     }
 
+
+    public static final Creator<EventTicketingConfiguration> CREATOR = new Creator<EventTicketingConfiguration>() {
+        @Override
+        public EventTicketingConfiguration createFromParcel(Parcel in) {
+            EventTicketingConfiguration configuration = new EventTicketingConfiguration();
+            configuration.loginUrl = in.readString();
+            configuration.configurationsUrl = in.readString();
+            configuration.scanUrl = in.readString();
+            return configuration;
+        }
+
+        @Override
+        public EventTicketingConfiguration[] newArray(int size) {
+            return new EventTicketingConfiguration[size];
+        }
+    };
+
     public String getLoginUrl() {
         return loginUrl;
     }
@@ -36,5 +56,39 @@ public class EventTicketingConfiguration {
 
     public String getScanUrl() {
         return scanUrl;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(loginUrl);
+        dest.writeString(configurationsUrl);
+        dest.writeString(scanUrl);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EventTicketingConfiguration)) return false;
+
+        EventTicketingConfiguration that = (EventTicketingConfiguration) o;
+
+        if (loginUrl != null ? !loginUrl.equals(that.loginUrl) : that.loginUrl != null) return false;
+        if (configurationsUrl != null ? !configurationsUrl.equals(that.configurationsUrl) : that.configurationsUrl != null)
+            return false;
+        return scanUrl != null ? scanUrl.equals(that.scanUrl) : that.scanUrl == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = loginUrl != null ? loginUrl.hashCode() : 0;
+        result = 31 * result + (configurationsUrl != null ? configurationsUrl.hashCode() : 0);
+        result = 31 * result + (scanUrl != null ? scanUrl.hashCode() : 0);
+        return result;
     }
 }

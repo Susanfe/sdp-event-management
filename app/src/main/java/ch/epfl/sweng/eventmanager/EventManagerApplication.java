@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager;
 
 import android.app.Activity;
 import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 import ch.epfl.sweng.eventmanager.inject.DaggerApplicationComponent;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import com.twitter.sdk.android.core.Twitter;
@@ -13,7 +14,7 @@ import javax.inject.Inject;
 /**
  * @author Louis Vialar
  */
-public class EventManagerApplication extends Application implements HasActivityInjector {
+public class EventManagerApplication extends MultiDexApplication implements HasActivityInjector {
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
 
