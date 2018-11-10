@@ -56,4 +56,19 @@ public class ScanResult extends ApiResult {
             return email;
         }
     }
+
+    @Nullable
+    public Product getProduct() {
+        return product;
+    }
+
+    @Nullable
+    public Map<Product, Integer> getProducts() {
+        return products;
+    }
+
+    @Nullable
+    public Client getUser() {
+        return user;
+    }
 }

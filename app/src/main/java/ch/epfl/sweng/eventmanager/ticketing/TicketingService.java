@@ -13,7 +13,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.auth0.android.jwt.DecodeException;
 import com.auth0.android.jwt.JWT;
-import com.squareup.moshi.Types;
+import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,25 +49,32 @@ public class TicketingService {
         return configuration.getConfigurationsUrl() != null;
     }
 
-    public void login(String email, String password, ApiCallback<Void> callback) throws JSONException {
+    public void login(String email, String password, ApiCallback<Void> callback) {
         if (!requiresLogin()) {
             callback.onSuccess(null);
             return;
         }
 
-        JavaObjectRequest<LoginResponse> request =
-                JavaObjectRequest.withBody(Request.Method.POST, configuration.getLoginUrl(),
-                        new JSONObject().put("email", email).put("password", password),
-                        success -> {
-                            if (success.isSuccess()) {
-                                this.token = success.getToken();
-                                callback.onSuccess(null);
-                            } else {
-                                callback.onFailure(success.getErrors());
-                            }
-                        }, f -> ApiCallback.failure(callback, f), LoginResponse.class);
+        JavaObjectRequest<LoginResponse> request;
 
-        queue.add(request);
+        try {
+            request = JavaObjectRequest.withBody(Request.Method.POST, configuration.getLoginUrl(),
+                    new JSONObject().put("email", email).put("password", password),
+                    success -> {
+                        if (success.isSuccess()) {
+                            this.token = success.getToken();
+                            callback.onSuccess(null);
+                        } else {
+                            callback.onFailure(success.getErrors());
+                        }
+                    }, f -> ApiCallback.failure(callback, f), LoginResponse.class);
+
+            queue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            ApiCallback.failure(callback, e.getMessage());
+        }
+
     }
 
     public void getConfigurations(ApiCallback<List<ScanConfiguration>> callback) {
@@ -75,10 +82,10 @@ public class TicketingService {
             throw new UnsupportedOperationException("this event doesn't support multiple scan configurations");
         }
 
-        Type type = Types.newParameterizedType(List.class, ScanConfiguration.class);
+        TypeToken<List<ScanConfiguration>> tt = new TypeToken<List<ScanConfiguration>>() {};
         JavaObjectRequest<List<ScanConfiguration>> request =
                 new JavaObjectRequest<>(Request.Method.GET, configuration.getConfigurationsUrl(),
-                        callback::onSuccess, f -> ApiCallback.failure(callback, f), type);
+                        callback::onSuccess, f -> ApiCallback.failure(callback, f), tt.getType());
 
         if (requiresLogin()) {
             if (!isLoggedIn())
@@ -90,11 +97,11 @@ public class TicketingService {
         queue.add(request);
     }
 
-    public void scan(String barcode, ApiCallback<ScanResult> callback) throws JSONException {
+    public void scan(String barcode, ApiCallback<ScanResult> callback) {
         scan(-1, barcode, callback);
     }
 
-    public void scan(int configId, String barcode, ApiCallback<ScanResult> callback) throws JSONException {
+    public void scan(int configId, String barcode, ApiCallback<ScanResult> callback) {
         if (configId != -1 && !hasMultipleConfigurations()) {
             throw new UnsupportedOperationException("this event doesn't support multiple scan configurations");
         } else if (configId == -1 && hasMultipleConfigurations()) {
@@ -104,18 +111,23 @@ public class TicketingService {
         String scanUrl = configuration.getScanUrl();
         scanUrl = scanUrl.replaceAll(":configId", configId + "");
 
-        JavaObjectRequest<ScanResult> request =
-                JavaObjectRequest.withBody(Request.Method.POST, scanUrl, new JSONObject().put("barcode", barcode),
-                        callback::onSuccess, f -> ApiCallback.failure(callback, f), ScanResult.class);
+        JavaObjectRequest<ScanResult> request;
+        try {
+            request = JavaObjectRequest.withBody(Request.Method.POST, scanUrl, new JSONObject().put("barcode", barcode),
+                    callback::onSuccess, f -> ApiCallback.failure(callback, f), ScanResult.class);
 
-        if (requiresLogin()) {
-            if (!isLoggedIn())
-                // TODO: replace with error message
-                throw new UnsupportedOperationException("login required");
-            request.setAuthToken(token);
+            if (requiresLogin()) {
+                if (!isLoggedIn())
+                    ApiCallback.failure(callback, "requires login"); // TODO: proper error message
+                else
+                    request.setAuthToken(token);
+            }
+
+            queue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            ApiCallback.failure(callback, e.getMessage());
         }
-
-        queue.add(request);
     }
 
     public boolean isLoggedIn() {

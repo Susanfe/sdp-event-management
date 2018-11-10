@@ -1,5 +1,7 @@
 package ch.epfl.sweng.eventmanager.ticketing.data;
 
+import com.google.gson.JsonObject;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -13,7 +15,7 @@ public class ApiResult {
     public static class ApiError {
         private String key;
         private List<String> messages;
-        private List<String> args;
+        private List<JsonObject> args;
 
         public ApiError(String message) {
             this.messages = Collections.singletonList(message);
@@ -30,7 +32,7 @@ public class ApiResult {
             return messages;
         }
 
-        public List<String> getArgs() {
+        public List<JsonObject> getArgs() {
             return args;
         }
     }

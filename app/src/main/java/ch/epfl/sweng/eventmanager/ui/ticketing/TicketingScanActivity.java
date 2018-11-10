@@ -1,15 +1,20 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
+import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
+import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.BeepManager;
@@ -19,8 +24,8 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Source: https://github.com/journeyapps/zxing-android-embedded/blob/master/sample/src/main/java/example/zxing/ContinuousCaptureActivity.java
@@ -32,6 +37,8 @@ public final class TicketingScanActivity extends TicketingActivity {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
 
     public static final String SELECTED_CONFIG_ID = "ch.epfl.sweng.SELECTED_CONFIG_ID";
+
+    private int configId = -1;
 
     private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
@@ -46,15 +53,78 @@ public final class TicketingScanActivity extends TicketingActivity {
             }
 
             // TODO: handle codes correctly
-
+            barcodeView.pause();
             lastText = result.getText();
             barcodeView.setStatusText(result.getText());
 
-            beepManager.playBeepSoundAndVibrate();
+            service.scan(configId, lastText, new TicketingService.ApiCallback<ScanResult>() {
+                @Override
+                public void onSuccess(ScanResult data) {
+                    beepManager.playBeepSoundAndVibrate();
+                    TextView view = findViewById(R.id.barcodePreview);
 
-            //Added preview of scanned barcode
-            ImageView imageView = (ImageView) findViewById(R.id.barcodePreview);
-            imageView.setImageBitmap(result.getBitmapWithResultPoints(Color.YELLOW));
+                    StringBuilder html = new StringBuilder();
+                    if (data.isSuccess()) {
+                        html.append("<b style='color: green;'>")
+                                .append(getResources().getString(R.string.ticketing_scan_success))
+                                .append("</b>");
+
+
+                        if (data.getUser() != null) {
+                            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_user)).append("</i>")
+                                    .append(" ").append(data.getUser().getFirstname())
+                                    .append(" ").append(data.getUser().getLastname())
+                                    .append(" (").append(data.getUser().getEmail()).append(")");
+                        }
+
+                        if (data.getProduct() != null) {
+                            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>")
+                                    .append(" ").append(data.getProduct().getName())
+                                    .append(" (<i>").append(data.getProduct().getDescription())
+                                    .append("</i>)");
+                        } else if (data.getProducts() != null) {
+                            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>");
+                            html.append("<ul>");
+
+                            for (Map.Entry<ScanResult.Product, Integer> p : data.getProducts().entrySet()) {
+                                html.append("<li>").append(p.getValue())
+                                        .append(" * ").append(p.getKey().getName())
+                                        .append(": ").append(p.getKey().getDescription())
+                                        .append("</li>");
+                            }
+
+                            html.append("</ul>");
+                        }
+                    } else {
+                        html.append("<b style='color: red;'>")
+                                .append(getResources().getString(R.string.ticketing_scan_failure))
+                                .append("</b><br>");
+
+                        if (data.getErrors().size() == 1 && data.getErrors().get(0).getMessages().size() == 1) {
+                            html.append(data.getErrors().get(0).getMessages().get(0));
+                        } else {
+                            html.append("<ul>");
+                            for (ApiResult.ApiError err : data.getErrors()) {
+                                for (String msg : err.getMessages()) {
+                                    html.append("<li>").append(msg).append("</li>");
+                                }
+                            }
+                            html.append("</ul>");
+                        }
+                    }
+
+                    view.setText(Html.fromHtml(html.toString()));
+                }
+
+                @Override
+                public void onFailure(List<ApiResult.ApiError> errors) {
+                    // TODO: proper error handling
+                    Toast.makeText(TicketingScanActivity.this, errors.get(0).getKey(), Toast.LENGTH_LONG).show();
+                }
+            });
+
+
+            barcodeView.resume();
         }
 
         @Override
@@ -67,6 +137,9 @@ public final class TicketingScanActivity extends TicketingActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_ticketing_scan);
+
+        Intent intent = getIntent();
+        this.configId = intent.getIntExtra(SELECTED_CONFIG_ID, -1);
 
         startScan();
 
@@ -117,21 +190,14 @@ public final class TicketingScanActivity extends TicketingActivity {
         barcodeView.pause();
     }
 
-    public void pause(View view) {
-        barcodeView.pause();
-    }
-
-    public void resume(View view) {
-        barcodeView.resume();
-    }
-
-    public void triggerScan(View view) {
-        barcodeView.decodeSingle(callback);
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
+    public void goBack(View view) {
+        barcodeView.pause();
+
+        startActivity(this.backToShowcase());
+    }
 }

@@ -15,7 +15,6 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import dagger.android.AndroidInjection;
-import org.json.JSONException;
 
 import java.util.List;
 
@@ -105,30 +104,22 @@ public final class TicketingLoginActivity extends TicketingActivity {
             // perform the user login attempt.
             showProgress(true);
 
-            try {
-                service.login(email, password, new TicketingService.ApiCallback<Void>() {
-                    @Override
-                    public void onSuccess(Void data) {
-                        Intent openIntent = switchActivity(getNextActivityForState(service));
-                        startActivity(openIntent);
+            service.login(email, password, new TicketingService.ApiCallback<Void>() {
+                @Override
+                public void onSuccess(Void data) {
+                    Intent openIntent = switchActivity(getNextActivityForState(service));
+                    startActivity(openIntent);
 
-                        finish();
-                    }
+                    finish();
+                }
 
-                    @Override
-                    public void onFailure(List<ApiResult.ApiError> errors) {
-                        // TODO: parse login errors
-                        Toast.makeText(TicketingLoginActivity.this, "Erreur de connexion", Toast.LENGTH_LONG).show();
-                        showProgress(false);
-                    }
-                });
-            } catch (JSONException e) {
-                // TODO: parse login errors
-                // TODO: extract resource
-                Toast.makeText(this, "Erreur de connexion : " + e.getMessage(), Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-                showProgress(false);
-            }
+                @Override
+                public void onFailure(List<ApiResult.ApiError> errors) {
+                    // TODO: parse login errors
+                    Toast.makeText(TicketingLoginActivity.this, "Erreur de connexion", Toast.LENGTH_LONG).show();
+                    showProgress(false);
+                }
+            });
         } else if (service == null) {
             Toast.makeText(this, R.string.ticketing_missing_service, Toast.LENGTH_LONG).show();
         }

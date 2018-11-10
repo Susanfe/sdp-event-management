@@ -62,4 +62,8 @@
     <string name="loading_failed">Loading failed : %1$s</string>
     <string name="ticketing_missing_service">Internal error (missing API service)</string>
     <string name="scan_nav_item_activity_event_showcase">Scan Tickets</string>
+    <string name="ticketing_scan_success">Valid ticket!</string>
+    <string name="ticketing_scan_failure">Invalid ticket :(</string>
+    <string name="ticketing_scan_user">Buyer:</string>
+    <string name="ticketing_scan_bought_product">Ticket details:</string>
 </resources>
