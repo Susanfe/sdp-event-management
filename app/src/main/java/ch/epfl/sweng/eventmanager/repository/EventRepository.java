@@ -32,28 +32,10 @@ public class EventRepository {
     }
 
     public LiveData<List<Event>> getEvents() {
-        final MutableLiveData<List<Event>> data = new MutableLiveData<>();
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = fdB.getReference("events");
 
-        dbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Event> events = new ArrayList<>();
-
-                for (DataSnapshot child : dataSnapshot.getChildren())
-                    events.add(child.getValue(Event.class));
-
-                data.postValue(events);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "Error when getting events.", databaseError.toException());
-            }
-        });
-
-        return data;
+        return FirebaseHelper.getList(dbRef, Event.class);
     }
 
     public LiveData<Event> getEvent(int eventId) {
@@ -99,29 +81,11 @@ public class EventRepository {
     }
 
     private <T> LiveData<List<T>> getElems(int eventId, String basePath, Class<T> classOfT) {
-        final MutableLiveData<List<T>> data = new MutableLiveData<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance()
                 .getReference(basePath)
                 .child("event_" + eventId);
 
-        dbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<T> spots = new ArrayList<>();
-
-                for (DataSnapshot child : dataSnapshot.getChildren())
-                    spots.add(child.getValue(classOfT));
-
-                data.postValue(spots);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "Error when getting " + basePath + " for event " + eventId, databaseError.toException());
-            }
-        });
-
-        return data;
+        return FirebaseHelper.getList(dbRef, classOfT);
     }
 
     public LiveData<List<Spot>> getSpots(int eventId) {

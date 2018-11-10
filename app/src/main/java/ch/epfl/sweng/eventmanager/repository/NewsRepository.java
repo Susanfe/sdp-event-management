@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import com.google.firebase.database.*;
 
@@ -25,29 +26,10 @@ public class NewsRepository {
     }
 
     public LiveData<List<News>> getNews(int eventId) {
-        final MutableLiveData<List<News>> data = new MutableLiveData<>();
-
         DatabaseReference dbRef = FirebaseDatabase.getInstance()
                 .getReference("news")
                 .child("event_" + eventId);
 
-        dbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<News> news = new ArrayList<>();
-
-                for (DataSnapshot child : dataSnapshot.getChildren())
-                    news.add(child.getValue(News.class));
-
-                data.postValue(news);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w(TAG, "Error when getting news for event " + eventId, databaseError.toException());
-            }
-        });
-
-        return data;
+        return FirebaseHelper.getList(dbRef, News.class);
     }
 }
