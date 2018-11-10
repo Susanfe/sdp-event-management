@@ -14,6 +14,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * A class providing an interface to Notification handling.
+ * <p>
+ * For now, two possible notifications can be scheduled :
+ * - 10mn before a scheduled item starts
+ * - A day before an event start
+ */
 public class NotificationScheduler {
     static final String CHANNEL_ID = "notify_001";
     private static final String CHANNEL_NAME = "Scheduled Notifications";
@@ -29,8 +36,6 @@ public class NotificationScheduler {
      * @param scheduledItem Scheduled Item
      */
     public static void scheduleNotification(@NonNull Context context, ScheduledItem scheduledItem) {
-        setupNotificationChannel(context);
-
         // get Notification based on scheduled item
         Notification notification = NotificationBuilder.getNotificationFromScheduleItem(context, scheduledItem);
 
@@ -46,8 +51,6 @@ public class NotificationScheduler {
      * @param event   planned event
      */
     public static void scheduleNotification(@NonNull Context context, Event event) {
-        setupNotificationChannel(context);
-
         // get Notification based on scheduled item
         Notification notification = NotificationBuilder.getNotificationFromEvent(context, event);
 
@@ -55,11 +58,13 @@ public class NotificationScheduler {
     }
 
     /**
-     * Schedule {@param notification} to be displayed in {@param delay} milliseconds from current time based on {@link System#currentTimeMillis()}.
+     * Schedule {@param notification} to be displayed in {@param delay} milliseconds.
+     *
      * @param context non null
-     * @param itemId unique id to notification
+     * @param itemId  unique id to notification
      */
     private static void scheduleNotification(@NonNull Context context, int itemId, Notification notification, long delay) {
+        setupNotificationChannel(context);
 
         Intent notificationIntent = new Intent(context, NotificationPublisher.class);
         notificationIntent.putExtra(NotificationPublisher.getNotificationId(), itemId);
