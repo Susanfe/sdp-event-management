@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -43,89 +44,103 @@ public final class TicketingScanActivity extends TicketingActivity {
 
     private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
-    private String lastText;
+
+    private void appendSuccessData(ScanResult data, StringBuilder html) {
+        if (data.getUser() != null) {
+            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_user)).append("</i>")
+                    .append(" ").append(data.getUser().getFirstname())
+                    .append(" ").append(data.getUser().getLastname())
+                    .append(" (").append(data.getUser().getEmail()).append(")");
+        }
+
+        if (data.getProduct() != null) {
+            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>")
+                    .append(" ").append(data.getProduct().getName())
+                    .append(" (<i>").append(data.getProduct().getDescription())
+                    .append("</i>)");
+        } else if (data.getProducts() != null) {
+            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>");
+            html.append("<ul>");
+
+            for (Map.Entry<ScanResult.Product, Integer> p : data.getProducts().entrySet()) {
+                html.append("<li>").append(p.getValue())
+                        .append(" * ").append(p.getKey().getName())
+                        .append(": ").append(p.getKey().getDescription())
+                        .append("</li>");
+            }
+
+            html.append("</ul>");
+        }
+    }
+
+    private Spanned buildHtml(ScanResult data) {
+        if (data.isSuccess()) {
+            StringBuilder html = new StringBuilder();
+
+            html.append("<b color='green'>")
+                    .append(getResources().getString(R.string.ticketing_scan_success))
+                    .append("</b>");
+
+
+            appendSuccessData(data, html);
+
+            return Html.fromHtml(html.toString());
+        } else {
+            return buildHtmlForError(data.getErrors());
+        }
+    }
+
+    private Spanned buildHtmlForError(List<ApiResult.ApiError> errors) {
+        StringBuilder html = new StringBuilder();
+
+        html.append("<b color='red'>")
+                .append(getResources().getString(R.string.ticketing_scan_failure))
+                .append("</b><br>");
+
+        if (errors.size() == 1 && errors.get(0).getMessages().size() == 1) {
+            html.append(errors.get(0).getMessages().get(0));                        // TODO: proper error handling
+        } else {
+            html.append("<ul>");
+            for (ApiResult.ApiError err : errors) {
+                for (String msg : err.getMessages()) {                        // TODO: proper error handling
+                    html.append("<li>").append(msg).append("</li>");
+                }
+            }
+            html.append("</ul>");
+        }
+
+        return Html.fromHtml(html.toString());
+    }
 
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
-            if (result.getText() == null || result.getText().equals(lastText)) {
-                // Prevent duplicate scans
-                return;
-            }
-
-            // TODO: handle codes correctly
             barcodeView.pause();
-            lastText = result.getText();
             barcodeView.setStatusText(result.getText());
+            TextView view = findViewById(R.id.barcodePreview);
+            view.setText(R.string.loading_text);
 
             try {
-                service.scan(configId, lastText, new TicketingService.ApiCallback<ScanResult>() {
+                service.scan(configId, result.getText(), new TicketingService.ApiCallback<ScanResult>() {
                     @Override
                     public void onSuccess(ScanResult data) {
                         beepManager.playBeepSoundAndVibrate();
-                        TextView view = findViewById(R.id.barcodePreview);
 
-                        StringBuilder html = new StringBuilder();
-                        if (data.isSuccess()) {
-                            html.append("<b style='color: green;'>")
-                                    .append(getResources().getString(R.string.ticketing_scan_success))
-                                    .append("</b>");
+                        view.setText(buildHtml(data));
 
-
-                            if (data.getUser() != null) {
-                                html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_user)).append("</i>")
-                                        .append(" ").append(data.getUser().getFirstname())
-                                        .append(" ").append(data.getUser().getLastname())
-                                        .append(" (").append(data.getUser().getEmail()).append(")");
-                            }
-
-                            if (data.getProduct() != null) {
-                                html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>")
-                                        .append(" ").append(data.getProduct().getName())
-                                        .append(" (<i>").append(data.getProduct().getDescription())
-                                        .append("</i>)");
-                            } else if (data.getProducts() != null) {
-                                html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>");
-                                html.append("<ul>");
-
-                                for (Map.Entry<ScanResult.Product, Integer> p : data.getProducts().entrySet()) {
-                                    html.append("<li>").append(p.getValue())
-                                            .append(" * ").append(p.getKey().getName())
-                                            .append(": ").append(p.getKey().getDescription())
-                                            .append("</li>");
-                                }
-
-                                html.append("</ul>");
-                            }
-                        } else {
-                            html.append("<b style='color: red;'>")
-                                    .append(getResources().getString(R.string.ticketing_scan_failure))
-                                    .append("</b><br>");
-
-                            if (data.getErrors().size() == 1 && data.getErrors().get(0).getMessages().size() == 1) {
-                                html.append(data.getErrors().get(0).getMessages().get(0));
-                            } else {
-                                html.append("<ul>");
-                                for (ApiResult.ApiError err : data.getErrors()) {
-                                    for (String msg : err.getMessages()) {
-                                        html.append("<li>").append(msg).append("</li>");
-                                    }
-                                }
-                                html.append("</ul>");
-                            }
-                        }
-
-                        view.setText(Html.fromHtml(html.toString()));
-
-
+                        barcodeView.setStatusText("");
+                        Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_success, Toast.LENGTH_SHORT).show();
                         barcodeView.resume();
                     }
 
                     @Override
                     public void onFailure(List<ApiResult.ApiError> errors) {
-                        // TODO: proper error handling
-                        Toast.makeText(TicketingScanActivity.this, errors.get(0).getKey(), Toast.LENGTH_LONG).show();
+                        beepManager.playBeepSoundAndVibrate();
 
+                        view.setText(buildHtmlForError(errors));
+
+                        barcodeView.setStatusText("");
+                        Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_failure, Toast.LENGTH_SHORT).show();
                         barcodeView.resume();
                     }
                 });
