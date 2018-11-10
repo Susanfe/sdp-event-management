@@ -10,6 +10,9 @@ public final class FirebaseBackedUser implements User {
     }
 
     @Override
+    public String getUid() { return firebaseUser.getUid(); }
+
+    @Override
     public String getDisplayName() {
         return firebaseUser.getDisplayName();
     }

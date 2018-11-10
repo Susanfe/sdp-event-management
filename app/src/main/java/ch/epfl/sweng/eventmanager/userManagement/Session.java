@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.userManagement;
 
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 
 public final class Session {
@@ -19,5 +20,13 @@ public final class Session {
 
     public static void logout() {
         session.logout();
+    }
+
+    public static boolean isStaffOf(Event ev) {
+       getCurrentUser().getUid();
+
+       // TODO: check whether the current user is a staff member of ev
+
+       return false;
     }
 }

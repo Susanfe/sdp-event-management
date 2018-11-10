@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import javax.inject.Inject;
 
@@ -26,6 +27,7 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.SchedulePa
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.userManagement.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -48,6 +50,7 @@ public class EventShowcaseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_showcase);
         mDrawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = mDrawerLayout.findViewById(R.id.nav_view);
 
         // Set toolbar as action bar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -75,11 +78,23 @@ public class EventShowcaseActivity extends AppCompatActivity
             this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
             this.spotsModel.init(eventID);
 
+            // Only display admin button if the user is at least staff
+            model.getEvent().observe(this, ev -> {
+                        if (ev == null) {
+                            Log.e(TAG, "Got null model from parent activity");
+                            return;
+                        }
+
+                        if (Session.isLoggedIn() && Session.isStaffOf(ev)) {
+                            MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
+                            adminMenuItem.setVisible(true);
+                        }
+                    });
+
             changeFragment(new EventMainFragment(), true);
         }
 
         // Handle drawer events
-        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
