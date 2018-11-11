@@ -262,6 +262,11 @@ public class EventShowcaseActivity extends AppCompatActivity
 
 
     }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        toolbar.setTitle(title);
+    }
 }
 
 
