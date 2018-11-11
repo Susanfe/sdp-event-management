@@ -19,4 +19,6 @@ public final class FirebaseBackedUser implements User {
         return firebaseUser.getEmail();
     }
 
+    @Override
+    public String getUid() { return firebaseUser.getUid(); }
 }

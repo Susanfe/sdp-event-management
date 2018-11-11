@@ -9,6 +9,13 @@ import ch.epfl.sweng.eventmanager.repository.data.User;
 public final class Session {
     private static InMemorySession session = new InMemoryFirebaseSession();
 
+    /**
+     * Used in tests to bypass Firebase Auth which is broken in our CI.
+     */
+    public static void enforceDummySessions(Boolean yesIKnowWhatIAmDoing) {
+        if (yesIKnowWhatIAmDoing) session = new DummyInMemorySession();
+    }
+
     public static User getCurrentUser() {
        return session.getCurrentUser();
     }

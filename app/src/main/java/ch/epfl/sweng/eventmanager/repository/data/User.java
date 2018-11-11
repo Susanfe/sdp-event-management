@@ -10,4 +10,9 @@ public interface User {
      * @return a string representation of the user's email
      */
     public String getEmail();
+
+    /**
+     * @return a string representation of the user's unique ID
+     */
+    public String getUid();
 }
