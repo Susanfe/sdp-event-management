@@ -27,7 +27,7 @@
                 android:layout_height="100dp"
                 android:layout_alignParentTop="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/event"
+                android:src="@drawable/event_default_cover"
                 android:contentDescription="@string/event_thumbnail"/>
 
         <TextView
