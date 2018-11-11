@@ -85,7 +85,7 @@ public class EventPickingActivity extends AppCompatActivity {
 
         // Help text
         // Both invisible by default
-        joinedHelpText.setVisibility(View.INVISIBLE);
+        joinedHelpText.setVisibility(View.GONE);
         helpText.setTypeface(helpText.getTypeface(), Typeface.BOLD);
         helpText.setText(R.string.help_text_activity_event_picking);
 
@@ -93,8 +93,7 @@ public class EventPickingActivity extends AppCompatActivity {
         eventList.setHasFixedSize(true);
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
-
-        notJoinedHelpText.setVisibility(View.INVISIBLE);
+        notJoinedHelpText.setVisibility(View.GONE);
 
         // Event lists
 

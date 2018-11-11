@@ -24,6 +24,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         // each data item is just a string in this case
         @BindView(R.id.event_name)
         TextView eventNameTextView;
+        @BindView(R.id.event_summary)
+        TextView eventSummary;
         @BindView(R.id.event_thumbnail)
         ImageView eventThumbnail;
 
@@ -62,6 +64,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.eventNameTextView.setText(mEvents.get(position).getName());
+        holder.eventSummary.setText(mEvents.get(position).getDescription());
         holder.eventThumbnail.setImageBitmap(mEvents.get(position).getImage());
     }
 
