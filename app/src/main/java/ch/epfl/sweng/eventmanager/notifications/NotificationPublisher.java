@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationManagerCompat;
 
+/**
+ * Receives notification and broadcast them to the user
+ */
 public class NotificationPublisher extends BroadcastReceiver {
 
     private static String NOTIFICATION_ID = "notification-id";
@@ -14,7 +17,7 @@ public class NotificationPublisher extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        NotificationManagerCompat notificationManager =  NotificationManagerCompat.from(context);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
         Notification notification = intent.getParcelableExtra(NOTIFICATION);
         int id = intent.getIntExtra(NOTIFICATION_ID, 0);
