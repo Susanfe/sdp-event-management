@@ -34,27 +34,33 @@
             android:gravity="start"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/text_timeline_date"
-                    android:textSize="12sp"
-                    tools:text="2018-1-1 12:00"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="start"
+                        android:id="@+id/text_timeline_date"
+                        android:textSize="12sp"
+                        tools:text="2018-1-1 12:00"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/text_timeline_duration"
-                    tools:text="1h30"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/text_timeline_duration"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        tools:text="1h30"/>
 
-            </RelativeLayout>
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:id="@+id/text_item_room"
+                          android:layout_weight="1"
+                          android:gravity="end"
+                          tools:text="Polyvalente"/>
+            </LinearLayout>
 
 
             <TextView
