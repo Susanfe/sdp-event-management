@@ -16,7 +16,7 @@
     tools:context=".ui.eventSelector.EventPickingActivity"
     android:orientation="vertical">
 
-            <TextView
+    <TextView
                     android:id="@+id/help_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -52,25 +52,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
             </android.support.v7.widget.RecyclerView>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="15">
-
-        <Button
-            android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:onClick="openLoginOrAccountActivity"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_centerInParent="true"/>
-
-    </RelativeLayout>
-
 
 </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

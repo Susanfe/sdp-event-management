@@ -25,9 +25,9 @@
     <string name="email_field">Email address</string>
     <string name="password_field">Password</string>
 
-    <string name="login_button">Sign in »</string>
+    <string name="login_button">Sign in</string>
     <string name="logout_button">Log out</string>
-    <string name="account_button">My account »</string>
+    <string name="account_button">My account</string>
     <string name="back_button">Back</string>
 
     <string name="main_nav_item_activity_event_showcase">Description</string>

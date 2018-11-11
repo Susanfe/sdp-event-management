@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -96,17 +98,9 @@ public class EventPickingActivity extends AppCompatActivity {
         setupRecyclerView(eventList);
         setupRecyclerView(joinedEvents);
         setupObservers();
-
-        // Login button
-        Button loginButton = findViewById(R.id.login_button);
-        if (Session.isLoggedIn()) {
-            loginButton.setText(R.string.account_button);
-        } else {
-            loginButton.setText(R.string.login_button);
-        }
     }
 
-    public void openLoginOrAccountActivity(View view) {
+    private void openLoginOrAccountActivity() {
         Class nextActivity;
         if (Session.isLoggedIn()) {
             nextActivity = DisplayAccountActivity.class;
@@ -115,5 +109,26 @@ public class EventPickingActivity extends AppCompatActivity {
         }
         Intent intent = new Intent(this, nextActivity);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_event_picking,menu);
+        if (Session.isLoggedIn()) {
+            menu.findItem(R.id.login_button).setTitle(R.string.account_button);
+        } else {
+            menu.findItem(R.id.login_button).setTitle(R.string.login_button);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.login_button : openLoginOrAccountActivity();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
