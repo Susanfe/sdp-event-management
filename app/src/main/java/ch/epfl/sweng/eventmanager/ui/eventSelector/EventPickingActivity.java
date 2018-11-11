@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.userManager.LoginActivity;
@@ -30,20 +32,20 @@ public class EventPickingActivity extends AppCompatActivity {
     @Inject
     ViewModelFactory factory;
 
-    private TextView joinedHelpText;
-    private TextView notJoinedHelpText;
-    private RecyclerView joinedEvents;
-    private RecyclerView notJoinedEvents;
+    @BindView(R.id.joined_help_text)
+    TextView joinedHelpText;
+    @BindView(R.id.not_joined_help_text)
+    TextView notJoinedHelpText;
+    @BindView(R.id.help_text)
+    TextView helpText;
+    @BindView(R.id.joined_events_list)
+    RecyclerView joinedEvents;
+    @BindView(R.id.not_joined_event_list)
+    RecyclerView eventList;
 
     private void setupRecyclerView(RecyclerView view) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         view.setLayoutManager(layoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                view.getContext(),
-                layoutManager.getOrientation()
-        );
-        view.addItemDecoration(dividerItemDecoration);
-
         // Set an empty list adapter
         view.setAdapter(new EventListAdapter(Collections.emptyList()));
     }
@@ -56,15 +58,20 @@ public class EventPickingActivity extends AppCompatActivity {
                 return;
             }
 
-            notJoinedEvents.setAdapter(new EventListAdapter(list.getOtherEvents()));
+            eventList.setAdapter(new EventListAdapter(list.getOtherEvents()));
             joinedEvents.setAdapter(new EventListAdapter(list.getJoinedEvents()));
 
             if (!list.getJoinedEvents().isEmpty()) {
-                joinedHelpText.setVisibility(View.VISIBLE);
-                notJoinedHelpText.setVisibility(View.VISIBLE);
+                if(list.getOtherEvents().isEmpty()) {
+                    joinedHelpText.setVisibility(View.VISIBLE);
+                    notJoinedHelpText.setVisibility(View.GONE);
+                } else {
+                    joinedHelpText.setVisibility(View.VISIBLE);
+                    notJoinedHelpText.setVisibility(View.VISIBLE);
+                }
             } else {
-                joinedHelpText.setVisibility(View.INVISIBLE);
-                notJoinedHelpText.setVisibility(View.INVISIBLE);
+                joinedHelpText.setVisibility(View.GONE);
+                notJoinedHelpText.setVisibility(View.GONE);
             }
         });
     }
@@ -72,38 +79,26 @@ public class EventPickingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_picking);
+        ButterKnife.bind(this);
 
         // Help text
         // Both invisible by default
-        joinedHelpText = (TextView) findViewById(R.id.joined_help_text);
         joinedHelpText.setVisibility(View.INVISIBLE);
-
-        TextView helpText = (TextView) findViewById(R.id.help_text);
         helpText.setTypeface(helpText.getTypeface(), Typeface.BOLD);
         helpText.setText(R.string.help_text_activity_event_picking);
 
         // Event list
-        RecyclerView eventList = (RecyclerView) findViewById(R.id.event_list);
         eventList.setHasFixedSize(true);
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
-        DividerItemDecoration eventListDividerItemDecoration = new DividerItemDecoration(
-                eventList.getContext(),
-                eventListLayoutManager.getOrientation()
-        );
-        eventList.addItemDecoration(eventListDividerItemDecoration);
 
-        notJoinedHelpText = (TextView) findViewById(R.id.not_joined_help_text);
         notJoinedHelpText.setVisibility(View.INVISIBLE);
 
         // Event lists
-        notJoinedEvents = (RecyclerView) findViewById(R.id.event_list);
-        joinedEvents = (RecyclerView) findViewById(R.id.joined_events_list);
 
-        setupRecyclerView(notJoinedEvents);
+        setupRecyclerView(eventList);
         setupRecyclerView(joinedEvents);
 
         setupObservers();

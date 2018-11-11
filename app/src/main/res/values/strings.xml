@@ -54,4 +54,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="news_nav_item_activity_event_showcase">News</string>
+
+    <!-- Accessibility text -->
+    <string name="event_thumbnail">Event thumbnail</string>
+
 </resources>
