@@ -55,7 +55,6 @@ public class EventPickingActivity extends AppCompatActivity {
             if (list == null) {
                 return;
             }
-
             eventList.setAdapter(new EventListAdapter(list.getOtherEvents()));
             joinedEvents.setAdapter(new EventListAdapter(list.getJoinedEvents()));
 
@@ -76,6 +75,7 @@ public class EventPickingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_picking);

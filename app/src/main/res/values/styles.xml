@@ -13,6 +13,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Launcher theme. Sets the main window background to the splash_screen drawable -->
+    <style name="AppTheme.Launcher">
+
+    <item name="android:windowBackground">@drawable/splash_screen</item>
+        <!-- Modify the colorPrimaryDark color to match the windowBackground color-->
+       <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
