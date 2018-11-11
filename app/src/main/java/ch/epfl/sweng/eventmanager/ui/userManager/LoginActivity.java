@@ -21,6 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.userManagement.Session;
 import dagger.android.AndroidInjection;
 
 /**
@@ -29,9 +30,6 @@ import dagger.android.AndroidInjection;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
-
-    // Login task.
-    private FirebaseAuth mAuth;
 
     // UI references.
     private EditText mEmailView;
@@ -78,9 +76,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-
         // Initialize UI
         setupFields();
         setupButton();
@@ -117,8 +112,7 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, getSignInOnCompleteListener(this));
+            Session.login(email, password, this, getSignInOnCompleteListener(this));
         }
     }
 

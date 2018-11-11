@@ -1,5 +1,9 @@
 package ch.epfl.sweng.eventmanager.userManagement;
 
+import android.app.Activity;
+import android.content.Context;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -13,7 +17,9 @@ public class InMemoryFirebaseSession implements InMemorySession{
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
-    public void login() {
+    public void login(String email, String password, Activity context, OnCompleteListener callback) {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(context, callback);
     }
 
     @Override

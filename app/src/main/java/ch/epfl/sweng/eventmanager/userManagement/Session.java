@@ -1,5 +1,9 @@
 package ch.epfl.sweng.eventmanager.userManagement;
 
+import android.app.Activity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+
 import ch.epfl.sweng.eventmanager.repository.data.User;
 
 public final class Session {
@@ -13,8 +17,8 @@ public final class Session {
        return session.isLoggedIn();
     }
 
-    public static void login() {
-        session.login();
+    public static void login(String email, String password, Activity context, OnCompleteListener callback) {
+        session.login(email, password, context, callback);
     }
 
     public static void logout() {
