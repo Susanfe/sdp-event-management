@@ -64,6 +64,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.google.firebase:firebase-database:16.0.3'
     implementation 'com.google.firebase:firebase-storage:16.0.3'
+    implementation 'com.google.firebase:firebase-auth:16.0.4'
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     // Include all the Twitter APIs
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
