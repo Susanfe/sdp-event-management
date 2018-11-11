@@ -1,7 +1,6 @@
-package ch.epfl.sweng.eventmanager.userManagement;
+package ch.epfl.sweng.eventmanager.users;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import javax.inject.Singleton;
 

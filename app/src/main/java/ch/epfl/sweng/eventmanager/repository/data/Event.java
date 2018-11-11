@@ -2,13 +2,9 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
 
-import com.google.android.gms.common.util.Strings;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import ch.epfl.sweng.eventmanager.userManagement.Role;
 
 /**
  * This class holds the basic elements about an organized event.<br>

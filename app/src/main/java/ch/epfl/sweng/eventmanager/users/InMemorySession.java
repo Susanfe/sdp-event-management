@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.userManagement;
+package ch.epfl.sweng.eventmanager.users;
 
 import ch.epfl.sweng.eventmanager.repository.data.User;
 

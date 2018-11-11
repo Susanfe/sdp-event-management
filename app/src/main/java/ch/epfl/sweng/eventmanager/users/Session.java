@@ -1,10 +1,7 @@
-package ch.epfl.sweng.eventmanager.userManagement;
-
-import android.util.Log;
+package ch.epfl.sweng.eventmanager.users;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.User;
@@ -28,14 +25,18 @@ public final class Session {
         session.logout();
     }
 
+    /**
+     * Check whether the current session is allowed to access an event given a clearance level.
+     * @param role requested clearance
+     * @param ev event to be accessed
+     * @return true is the user is cleared, false otherwise
+     */
     public static boolean isClearedFor(Role role, Event ev) {
-
-        if (ev == null) return false;
-        Map<String, List<String>> uidMap = ev.getUsers();
-        if (uidMap == null) return false;
+        if (ev == null || ev.getUsers() == null) return false;
+        Map<String, List<String>> roleToUidMap = ev.getUsers();
 
         String currentUid = getCurrentUser().getUid();
-        String convertedRole = role.toString().toLowerCase();
-        return (uidMap.containsKey(convertedRole) && uidMap.get(convertedRole).contains(currentUid));
+        String rawRole = role.toString().toLowerCase();
+        return (roleToUidMap.containsKey(rawRole) && roleToUidMap.get(rawRole).contains(currentUid));
     }
 }
