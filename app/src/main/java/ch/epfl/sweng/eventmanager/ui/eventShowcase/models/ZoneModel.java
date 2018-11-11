@@ -25,13 +25,14 @@ public class ZoneModel extends ViewModel {
         this.repository = repository;
     }
 
+
     public void init(int eventId) {
         if (this.zone != null) {
             return;
         }
 
         this.eventId = eventId;
-        this.zone = repository.getZone(eventId);
+        this.zone = repository.getZones(eventId);
     }
 
     public LiveData<List<Zone>> getZone() {

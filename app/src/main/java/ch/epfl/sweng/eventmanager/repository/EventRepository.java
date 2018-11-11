@@ -89,7 +89,6 @@ public class EventRepository {
 
         return FirebaseHelper.getList(dbRef, classOfT);
     }
-
     public LiveData<List<Spot>> getSpots(int eventId) {
         return this.getElems(eventId, "spots", Spot.class);
     }
@@ -97,7 +96,8 @@ public class EventRepository {
     public LiveData<List<ScheduledItem>> getScheduledItems(int eventId) {
         return this.getElems(eventId, "schedule_items", ScheduledItem.class);
     }
-    public LiveData<List<Zone>> getZone(int eventId) {
-        return this.getElems(eventId, "zone", new GenericTypeIndicator<List<Zone>>() {});
+
+    public LiveData<List<Zone>> getZones(int eventId) {
+        return this.getElems(eventId, "zones", Zone.class);
     }
 }

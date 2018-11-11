@@ -30,6 +30,7 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -53,6 +54,7 @@ public class EventShowcaseActivity extends AppCompatActivity
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
+    private ZoneModel zonesModel;
 
 
     private void initModels(int eventID) {
@@ -67,6 +69,9 @@ public class EventShowcaseActivity extends AppCompatActivity
 
         this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
         this.spotsModel.init(eventID);
+
+        this.zonesModel = ViewModelProviders.of(this, factory).get(ZoneModel.class);
+        this.zonesModel.init(eventID);
     }
 
     private void setupHeader() {

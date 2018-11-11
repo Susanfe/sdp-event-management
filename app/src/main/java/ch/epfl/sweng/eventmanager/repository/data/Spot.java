@@ -30,8 +30,7 @@ public class Spot implements ClusterItem {
         this.position = new Position(latitude, longitude);
     }
 
-    public Spot() {
-    }
+    public Spot() {}
 
     @Override
     public String getTitle() {
