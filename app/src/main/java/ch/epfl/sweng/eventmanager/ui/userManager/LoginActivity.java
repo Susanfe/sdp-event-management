@@ -2,35 +2,31 @@ package ch.epfl.sweng.eventmanager.ui.userManager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
+
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.UserRepository;
-import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.userManagement.Session;
 import dagger.android.AndroidInjection;
-
-import javax.inject.Inject;
-import java.util.Optional;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
 
-    @Inject
-    UserRepository repository;
-    // Login task.
-    private UserLoginTask mAuthTask = null;
+    private static final String TAG = "LoginActivity";
+
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
@@ -38,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
 
     private void setupFields() {
-        mEmailView = (EditText) findViewById(R.id.email_field);
+        mEmailView = findViewById(R.id.email_field);
         mEmailView.setHint(R.string.email_field);
 
         // When the next button is clicked on the keyboard, move to the next field
@@ -50,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         });
 
-        mPasswordView = (EditText) findViewById(R.id.password_field);
+        mPasswordView = findViewById(R.id.password_field);
         mPasswordView.setHint(R.string.password_field);
 
         // When the done button is clicked on the keyboard, try to login
@@ -64,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupButton() {
-        mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoginButton = findViewById(R.id.login_button);
         mLoginButton.setText(R.string.login_button);
         mLoginButton.setOnClickListener(view -> attemptLogin());
     }
@@ -76,18 +72,18 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Initialize UI
         setupFields();
         setupButton();
 
         mProgressBar = findViewById(R.id.sign_in_progress_bar);
         mProgressBar.setVisibility(View.INVISIBLE);
+
+        Toolbar toolbar = findViewById(R.id.login_toolbar);
+        setSupportActionBar(toolbar);
     }
 
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -114,9 +110,30 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            mAuthTask = new UserLoginTask(email, password, this);
-            mAuthTask.execute((Void) null);
+            showProgress(true);
+            Session.login(email, password, this, getSignInOnCompleteListener(this));
         }
+    }
+
+    private OnCompleteListener<AuthResult> getSignInOnCompleteListener(Context mContext) {
+        return task -> {
+            if (task.isSuccessful()) {
+                Log.d(TAG, "Successful sign in");
+                Intent intent = new Intent(mContext, DisplayAccountActivity.class);
+                startActivity(intent);
+            } else {
+                Exception error = task.getException();
+                Log.w(TAG, "Sign in failed", task.getException());
+                if (error != null) {
+                    mPasswordView.setError(error.getMessage());
+                } else {
+                    mPasswordView.setError(getString(R.string.generic_signin_failure_activity_login));
+                }
+                mPasswordView.requestFocus();
+            }
+
+            showProgress(false);
+        };
     }
 
     private boolean isEmailValid(String email) {
@@ -128,49 +145,6 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setEnabled(!displayed);
         mProgressBar.setVisibility(displayed ? View.VISIBLE : View.INVISIBLE);
     }
-
-    /**
-     * Represents an asynchronous login task used to authenticate the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-        private final Context mContext;
-
-        UserLoginTask(String email, String password, Context context) {
-            mEmail = email;
-            mPassword = password;
-            mContext = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            showProgress(true);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            User user = repository.getUserByEmail(mEmail);
-            if (user != null) {
-                return Session.login(user, mPassword);
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                Intent intent = new Intent(mContext, DisplayAccountActivity.class);
-                startActivity(intent);
-            } else {
-                mPasswordView.setError(getString(R.string.invalid_credentials_activity_login));
-                mPasswordView.requestFocus();
-            }
-        }
-    }
 }
+
+

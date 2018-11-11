@@ -17,7 +17,7 @@
 
     <string name="invalid_email_activity_login">Invalid email address</string>
     <string name="empty_password_activity_login">The password cannot be empty</string>
-    <string name="invalid_credentials_activity_login">Incorrect email/password combination</string>
+    <string name="generic_signin_failure_activity_login">Could not login</string>
     <string name="help_text_activity_event_picking">Please select an event to continue.</string>
     <string name="joined_help_text_activity_event_picking">Events you joined:</string>
     <string name="not_joined_help_text_activity_event_picking">Other events:</string>
@@ -54,4 +54,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="news_nav_item_activity_event_showcase">News</string>
+
+    <string name="contentDescription_main_fragment_image">Image representing the event</string>
+
+    <string name="main_fragment_error_no_description">Could not load event description.</string>
 </resources>
