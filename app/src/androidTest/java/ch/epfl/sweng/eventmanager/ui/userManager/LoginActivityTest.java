@@ -37,7 +37,7 @@ public class LoginActivityTest {
 
     @Before
     public void disableFirebaseAuth() {
-        Session.enforceDummySessions(true);
+        Session.enforceDummySessions();
     }
 
     @Rule
@@ -74,6 +74,12 @@ public class LoginActivityTest {
 
         onView(withId(R.id.main_text))
                 .check(matches(withText(containsString(email))));
+
+        onView(withId(R.id.logout_button))
+                .perform(click());
+
+        onView(withId(R.id.login_button))
+                .check(matches(withText(containsString(getResourceString(R.string.login_button)))));
     }
 
     @Test

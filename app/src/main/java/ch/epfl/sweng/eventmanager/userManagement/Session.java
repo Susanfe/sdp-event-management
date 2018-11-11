@@ -12,8 +12,8 @@ public final class Session {
     /**
      * Used in tests to bypass Firebase Auth which is broken in our CI.
      */
-    public static void enforceDummySessions(Boolean yesIKnowWhatIAmDoing) {
-        if (yesIKnowWhatIAmDoing) session = new DummyInMemorySession();
+    public static void enforceDummySessions() {
+        session = new DummyInMemorySession();
     }
 
     public static User getCurrentUser() {
