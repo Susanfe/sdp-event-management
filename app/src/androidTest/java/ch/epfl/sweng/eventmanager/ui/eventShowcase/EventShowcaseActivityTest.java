@@ -21,7 +21,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 @RunWith(AndroidJUnit4.class)
 public class EventShowcaseActivityTest {
     @Rule

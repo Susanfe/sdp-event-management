@@ -11,10 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 
-import static android.os.SystemClock.sleep;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
