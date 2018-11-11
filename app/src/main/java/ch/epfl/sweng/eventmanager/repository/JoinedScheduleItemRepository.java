@@ -7,7 +7,6 @@ import android.widget.Toast;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
-import com.twitter.sdk.android.core.Callback;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

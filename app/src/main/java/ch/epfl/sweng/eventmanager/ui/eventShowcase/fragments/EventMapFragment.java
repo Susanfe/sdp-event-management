@@ -20,6 +20,8 @@ import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ZoneModel;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -47,7 +49,8 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     private GoogleMap mMap;
     private ClusterManager<Spot> mClusterManager;
     protected SpotsModel spotsModel;
-    Polygon shape;
+    protected ZoneModel zonesModel;
+    //Polygon shape;
     List<Marker> markers = new ArrayList<>();
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -65,6 +68,10 @@ public class EventMapFragment extends AbstractShowcaseFragment {
             spotsModel = ViewModelProviders.of(requireActivity()).get(SpotsModel.class);
         }
 
+        if(zonesModel == null) {
+            zonesModel = ViewModelProviders.of(requireActivity()).get(ZoneModel.class);
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapFragment);
         if (mapFragment == null) {
@@ -79,6 +86,7 @@ public class EventMapFragment extends AbstractShowcaseFragment {
                 if (mMap != null) {
                     setUpMap();
                     setUpClusterer();
+                    setUpOverlay();
                 }
             });
 
@@ -102,16 +110,17 @@ public class EventMapFragment extends AbstractShowcaseFragment {
             enableMyLocationIfPermitted();
             mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
             mMap.setOnMyLocationClickListener(onMyLocationClickListener);
+        });
+    }
 
-            //has to be changed -> put in firebase
-            ArrayList<Position> listPosition = new ArrayList<>();
-            listPosition.add(new Position(46.518590,6.561272));
-            listPosition.add(new Position(46.522148,6.563289));
-            listPosition.add(new Position(46.521440,6.571700));
-            listPosition.add(new Position(46.518295,6.571958));
-            listPosition.add(new Position(46.517365,6.566036));
-            Zone zone = new Zone(listPosition);
-            shape = mMap.addPolygon(zone.addPolygon());
+    private void setUpOverlay() {
+        this.zonesModel.getZone().observe(getActivity(), zones -> {
+            if(zones == null) {
+                return;
+            }
+            for(Zone z: zones) {
+                mMap.addPolygon(z.addPolygon());
+            }
         });
     }
 
