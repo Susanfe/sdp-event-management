@@ -6,13 +6,11 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -23,15 +21,12 @@ import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class EventPickingActivity extends AppCompatActivity {
-    private EventPickingModel model;
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
     @Inject
     ViewModelFactory factory;
-
     @BindView(R.id.joined_help_text)
     TextView joinedHelpText;
     @BindView(R.id.not_joined_help_text)
@@ -42,6 +37,7 @@ public class EventPickingActivity extends AppCompatActivity {
     RecyclerView joinedEvents;
     @BindView(R.id.not_joined_event_list)
     RecyclerView eventList;
+    private EventPickingModel model;
 
     private void setupRecyclerView(RecyclerView view) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -62,7 +58,7 @@ public class EventPickingActivity extends AppCompatActivity {
             joinedEvents.setAdapter(new EventListAdapter(list.getJoinedEvents()));
 
             if (!list.getJoinedEvents().isEmpty()) {
-                if(list.getOtherEvents().isEmpty()) {
+                if (list.getOtherEvents().isEmpty()) {
                     joinedHelpText.setVisibility(View.VISIBLE);
                     notJoinedHelpText.setVisibility(View.GONE);
                 } else {
@@ -99,11 +95,10 @@ public class EventPickingActivity extends AppCompatActivity {
 
         setupRecyclerView(eventList);
         setupRecyclerView(joinedEvents);
-
         setupObservers();
 
         // Login button
-        Button loginButton = (Button) findViewById(R.id.login_button);
+        Button loginButton = findViewById(R.id.login_button);
         if (Session.isLoggedIn()) {
             loginButton.setText(R.string.account_button);
         } else {
@@ -112,13 +107,13 @@ public class EventPickingActivity extends AppCompatActivity {
     }
 
     public void openLoginOrAccountActivity(View view) {
-       Class nextActivity;
-       if (Session.isLoggedIn()) {
-           nextActivity = DisplayAccountActivity.class;
-       } else {
-           nextActivity = LoginActivity.class;
-       }
-       Intent intent = new Intent(this, nextActivity);
-       startActivity(intent);
+        Class nextActivity;
+        if (Session.isLoggedIn()) {
+            nextActivity = DisplayAccountActivity.class;
+        } else {
+            nextActivity = LoginActivity.class;
+        }
+        Intent intent = new Intent(this, nextActivity);
+        startActivity(intent);
     }
 }
