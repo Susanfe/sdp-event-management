@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
-import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+
+import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 
 /**
  * Create a splash screen while loading main components.
