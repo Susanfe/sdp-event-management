@@ -23,7 +23,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="?android:attr/colorFocusedHighlight" />
+        app:srcCompat="@color/colorSecondaryLight"
+        android:contentDescription="@string/contentDescription_main_fragment_image"/>
 
     <TextView
         android:id="@+id/event_description"
@@ -34,7 +35,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="Could not load event description."
+        android:text="@string/main_fragment_error_no_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,5 +70,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/event_description"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        style="@style/Button_global"/>
 </android.support.constraint.ConstraintLayout>
