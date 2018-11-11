@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,35 +12,77 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-
-import javax.inject.Inject;
-
+import android.view.View;
+import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventTicketFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.NewsFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
+import javax.inject.Inject;
+
 public class EventShowcaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "EventShowcaseActivity";
 
     @Inject
     ViewModelFactory factory;
 
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     private EventShowcaseModel model;
     private ScheduleViewModel scheduleModel;
+    private NewsViewModel newsModel;
     private SpotsModel spotsModel;
-    private DrawerLayout mDrawerLayout;
+
+
+    private void initModels(int eventID) {
+        this.model = ViewModelProviders.of(this, factory).get(EventShowcaseModel.class);
+        this.model.init(eventID);
+
+        this.scheduleModel = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
+        this.scheduleModel.init(eventID);
+
+        this.newsModel = ViewModelProviders.of(this, factory).get(NewsViewModel.class);
+        this.newsModel.init(eventID);
+
+        this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
+        this.spotsModel.init(eventID);
+    }
+
+    private void setupHeader() {
+        // Set window title and configure header
+        View headerView = navigationView.getHeaderView(0);
+        TextView drawer_header_text = headerView.findViewById(R.id.drawer_header_text);
+        model.getEvent().observe(this, ev -> {
+            if (ev == null) {
+                return;
+            }
+
+            drawer_header_text.setText(ev.getName());
+            setTitle(ev.getName());
+        });
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +90,13 @@ public class EventShowcaseActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_showcase);
-        mDrawerLayout = findViewById(R.id.drawer_layout);
+        ButterKnife.bind(this);
 
         // Set toolbar as action bar
-        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Add drawer button to the action bar
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             ActionBar actionbar = getSupportActionBar();
             actionbar.setDisplayHomeAsUpEnabled(true);
             actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
@@ -66,21 +108,18 @@ public class EventShowcaseActivity extends AppCompatActivity
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
-            this.model = ViewModelProviders.of(this, factory).get(EventShowcaseModel.class);
-            this.model.init(eventID);
+            this.initModels(eventID);
+            this.setupHeader();
 
-            this.scheduleModel = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
-            this.scheduleModel.init(eventID);
-
-            this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
-            this.spotsModel.init(eventID);
-
+            // Set displayed fragment
             changeFragment(new EventMainFragment(), true);
         }
 
         // Handle drawer events
-        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Handle highlighting in drawer menu according to currently displayed fragment
+        setHighlightedItemInNavigationDrawer();
     }
 
     @Override
@@ -101,31 +140,56 @@ public class EventShowcaseActivity extends AppCompatActivity
         // close drawer when item is tapped
         mDrawerLayout.closeDrawers();
 
-        switch(menuItem.getItemId()) {
-            case R.id.nav_pick_event :
+        switch (menuItem.getItemId()) {
+            case R.id.nav_pick_event:
                 Intent intent = new Intent(this, EventPickingActivity.class);
                 startActivity(intent);
                 break;
 
-            case R.id.nav_main :
+            case R.id.nav_main:
                 changeFragment(new EventMainFragment(), true);
                 break;
 
-            case R.id.nav_map :
+            case R.id.nav_map:
                 changeFragment(new EventMapFragment(), true);
                 break;
 
-            case R.id.nav_tickets :
+            case R.id.nav_tickets:
                 changeFragment(new EventMapFragment(), true);
                 break;
 
-            case R.id.nav_schedule :
+            case R.id.nav_news:
+                changeFragment(new NewsFragment(), true);
+                break;
+
+            case R.id.nav_schedule:
                 changeFragment(new ScheduleParentFragment(), true);
                 break;
 
         }
 
         return true;
+    }
+
+    /**
+     * Sets the highlighted item in the drawer according to the fragment which is displayed to the user
+     */
+    private void setHighlightedItemInNavigationDrawer() {
+        this.getSupportFragmentManager().addOnBackStackChangedListener(
+                () -> {
+                    Fragment current = getCurrentFragment();
+                    if (current instanceof EventMainFragment)
+                        navigationView.setCheckedItem(R.id.nav_main);
+                    if (current instanceof NewsFragment)
+                        navigationView.setCheckedItem(R.id.nav_news);
+                    if (current instanceof EventMapFragment)
+                        navigationView.setCheckedItem(R.id.nav_map);
+                    if (current instanceof ScheduleParentFragment)
+                        navigationView.setCheckedItem(R.id.nav_schedule);
+                    if (current instanceof EventTicketFragment)
+                        navigationView.setCheckedItem(R.id.nav_tickets);
+                }
+        );
     }
 
     /**
@@ -136,7 +200,7 @@ public class EventShowcaseActivity extends AppCompatActivity
      * @param frag            the new fragment to display
      * @param saveInBackstack if we want the fragment to be in backstack
      */
-    private void changeFragment(Fragment frag, boolean saveInBackstack) {
+    public void changeFragment(Fragment frag, boolean saveInBackstack) {
         String backStateName = ((Object) frag).getClass().getName();
 
         try {
@@ -158,7 +222,7 @@ public class EventShowcaseActivity extends AppCompatActivity
 
                 transaction.commit();
             } else {
-                // custom effect if fragment is already instanciated
+                // TODO custom effect if fragment is already instanciated
             }
         } catch (IllegalStateException exception) {
             Log.w(TAG,
@@ -167,4 +231,37 @@ public class EventShowcaseActivity extends AppCompatActivity
             );
         }
     }
+
+    /**
+     * @return currentFragment
+     */
+    private Fragment getCurrentFragment() {
+        return getSupportFragmentManager().findFragmentById(R.id.content_frame);
+    }
+
+    /**
+     * Handles back button
+     */
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getCurrentFragment();
+        if (fragment instanceof EventTicketFragment || fragment instanceof EventMapFragment || fragment instanceof ScheduleParentFragment || fragment instanceof NewsFragment) {
+            changeFragment(new EventMainFragment(), true);
+        } else {
+            int fragments = getSupportFragmentManager().getBackStackEntryCount();
+            if (fragments == 1) {
+                finish();
+            } else {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                    getSupportFragmentManager().popBackStack();
+                } else {
+                    super.onBackPressed();
+                }
+            }
+        }
+
+
+    }
 }
+
+

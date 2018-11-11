@@ -3,9 +3,10 @@
 
     <string name="scheduled_item_no_artist">Unknown artist</string>
     <string name="scheduled_item_no_genre">Unknown genre</string>
-    <string name="scheduled_item_no_description">Sorry ! There is no description for this activity :/</string>
+    <string name="scheduled_item_no_description">Sorry! There is no description for this activity :/</string>
     <string name="scheduled_item_no_date">Unknown date</string>
-    <string name="scheduled_items_empty">Sorry ! There are no registered activities for this event :/</string>
+    <string name="scheduled_items_empty">Sorry! There are no registered activities for this event :/</string>
+    <string name="news_empty">The event organizer hasn\'t published any news yet.</string>
     <string name="my_schedule_empty">There is currently no saved activities for this event</string>
 
     <string name="title_activity_join_event_switch">Join the event</string>
@@ -29,7 +30,7 @@
     <string name="account_button">My account »</string>
     <string name="back_button">Back</string>
 
-    <string name="main_nav_item_activity_event_showcase">Main</string>
+    <string name="main_nav_item_activity_event_showcase">Description</string>
     <string name="map_nav_item_activity_event_showcase">Map</string>
     <string name="schedule_nav_item_activity_event_showcase">Schedule</string>
     <string name="ticket_nav_item_activity_event_showcase">Tickets</string>
@@ -38,5 +39,19 @@
     <string name="timeline_view_added_to_own_schedule">Event added to your schedule!</string>
     <string name="timeline_view_removed_from_own_schedule">Event removed from your schedule!</string>
     <string name="my_schedule_nav_item_activity_event_showcase">My Schedule</string>
+
+    <string name="contact_form_hint_subject">Subject</string>
+    <string name="contact_form_hint_message">Content of the message</string>
+    <string name="contact_form_hint_name">Full name</string>
+    <string name="contact_form_send_button_text">Send</string>
+    <string name="contact_form_choose_mail">Send email with</string>
+    <string name="contact_form_no_email_clients">There are no email clients installed.</string>
+    <string name="contact_form_main_go_button">Contact</string>
+    <string name="contact_form_error">Field cannot be empty</string>
+
     <string name="my_schedule_add_to_calendar">Add to my calendar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="news_nav_item_activity_event_showcase">News</string>
 </resources>

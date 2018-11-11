@@ -3,8 +3,8 @@ package ch.epfl.sweng.eventmanager.repository.data;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -53,7 +53,7 @@ public class JoinedEventTest {
     @Test
     public void testCopyConstructor() {
         List<Spot> spotList = new ArrayList<>();
-        Event ev = new Event(1, "Event 1", "Descr 1", null, null, null,spotList);
+        Event ev = new Event(1, "Event 1", "Descr 1", new Date(0), new Date(0), null, null, null,spotList, null);
         JoinedEvent copy = new JoinedEvent(ev);
 
         assertEquals(1, copy.getUid());
