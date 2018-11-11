@@ -2,8 +2,13 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
 
+import com.google.android.gms.common.util.Strings;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import ch.epfl.sweng.eventmanager.userManagement.Role;
 
 /**
  * This class holds the basic elements about an organized event.<br>
@@ -41,10 +46,13 @@ public final class Event {
      */
     private List<Spot> spotList;
 
-    private List<String> userUids;
+    /**
+     * A map from roles to a list of user UIDs.
+     */
+    private Map<String, List<String>> users;
 
     public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image,
-                 EventLocation location, List<Spot> spotList, List<String> users) {
+                 EventLocation location, List<Spot> spotList,  Map<String, List<String>> users) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -52,7 +60,7 @@ public final class Event {
         this.image = image;
         this.location = location;
         this.spotList = new ArrayList<>(spotList);
-        this.userUids = users;
+        this.users = users;
     }
 
     public Event() {
@@ -84,5 +92,5 @@ public final class Event {
 
     public List<Spot> getSpotList() { return spotList; }
 
-    public List<String> getUserUidList() { return userUids; }
+    public Map<String, List<String>> getUsers() { return users; }
 }

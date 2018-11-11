@@ -1,5 +1,11 @@
 package ch.epfl.sweng.eventmanager.userManagement;
 
+import android.util.Log;
+
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 
@@ -22,11 +28,14 @@ public final class Session {
         session.logout();
     }
 
-    public static boolean isStaffOf(Event ev) {
-       getCurrentUser().getUid();
+    public static boolean isClearedFor(Role role, Event ev) {
 
-       // TODO: check whether the current user is a staff member of ev
+        if (ev == null) return false;
+        Map<String, List<String>> uidMap = ev.getUsers();
+        if (uidMap == null) return false;
 
-       return false;
+        String currentUid = getCurrentUser().getUid();
+        String convertedRole = role.toString().toLowerCase();
+        return (uidMap.containsKey(convertedRole) && uidMap.get(convertedRole).contains(currentUid));
     }
 }

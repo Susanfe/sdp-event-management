@@ -27,6 +27,7 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.SchedulePa
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.userManagement.Role;
 import ch.epfl.sweng.eventmanager.userManagement.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
@@ -85,7 +86,7 @@ public class EventShowcaseActivity extends AppCompatActivity
                             return;
                         }
 
-                        if (Session.isLoggedIn() && Session.isStaffOf(ev)) {
+                        if (Session.isLoggedIn() && Session.isClearedFor(Role.ADMIN, ev)) {
                             MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
                             adminMenuItem.setVisible(true);
                         }
