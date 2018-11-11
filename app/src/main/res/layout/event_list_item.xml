@@ -22,7 +22,7 @@
                 android:layout_height="match_parent">
 
         <ImageView
-                android:id="@+id/thumbnail"
+                android:id="@+id/event_thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_alignParentTop="true"
@@ -34,7 +34,7 @@
                 android:id="@+id/event_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/thumbnail"
+                android:layout_below="@+id/event_thumbnail"
                 android:maxLines="3"
                 android:padding="8dp"
                 android:text="Event name"
