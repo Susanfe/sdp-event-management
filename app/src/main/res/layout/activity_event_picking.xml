@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.eventSelector.EventPickingActivity"
     android:orientation="vertical">
+    
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Toolbar"
+        android:id="@+id/event_picking_toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -66,7 +72,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            style="@style/Button_global"/>
 
     </RelativeLayout>
 
