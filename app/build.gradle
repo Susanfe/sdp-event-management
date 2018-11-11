@@ -14,6 +14,10 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     defaultConfig {
         applicationId "ch.epfl.sweng.eventmanager"
         minSdkVersion 15

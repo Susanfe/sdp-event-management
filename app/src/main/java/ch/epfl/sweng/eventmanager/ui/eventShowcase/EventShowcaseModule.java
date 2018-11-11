@@ -5,6 +5,7 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
 import dagger.Binds;
 import dagger.Module;
@@ -35,6 +36,11 @@ public abstract class EventShowcaseModule {
     @IntoMap
     @ViewModelKey(SpotsModel.class)
     abstract ViewModel provideSpotsViewModel(SpotsModel spotsModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ZoneModel.class)
+    abstract ViewModel provideZonesViewModel(ZoneModel zonesModel);
 
     @ContributesAndroidInjector
     abstract EventShowcaseActivity contributeEventShowcaseActivityInjector();
