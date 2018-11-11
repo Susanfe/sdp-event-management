@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import javax.inject.Inject;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.eventAdministration.EventAdministrationActivity;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
@@ -42,6 +43,7 @@ public class EventShowcaseActivity extends AppCompatActivity
     private ScheduleViewModel scheduleModel;
     private SpotsModel spotsModel;
     private DrawerLayout mDrawerLayout;
+    private int eventID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class EventShowcaseActivity extends AppCompatActivity
 
         // Fetch event from passed ID
         Intent intent = getIntent();
-        int eventID = intent.getIntExtra(EventPickingActivity.SELECTED_EVENT_ID, -1);
+        eventID = intent.getIntExtra(EventPickingActivity.SELECTED_EVENT_ID, -1);
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
@@ -118,8 +120,14 @@ public class EventShowcaseActivity extends AppCompatActivity
 
         switch(menuItem.getItemId()) {
             case R.id.nav_pick_event :
-                Intent intent = new Intent(this, EventPickingActivity.class);
-                startActivity(intent);
+                Intent pickingIntent = new Intent(this, EventPickingActivity.class);
+                startActivity(pickingIntent);
+                break;
+
+            case R.id.nav_admin :
+                Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
+                adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
+                startActivity(adminIntent);
                 break;
 
             case R.id.nav_main :
@@ -137,7 +145,6 @@ public class EventShowcaseActivity extends AppCompatActivity
             case R.id.nav_schedule :
                 changeFragment(new ScheduleParentFragment(), true);
                 break;
-
         }
 
         return true;
