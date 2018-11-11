@@ -55,8 +55,14 @@ public class NewsOrTweet implements Comparable<NewsOrTweet> {
 
     public static List<NewsOrTweet> mergeLists(List<News> news, List<Tweet> tweets) {
         List<NewsOrTweet> target = new ArrayList<>();
-        for (News n : news) target.add(new NewsOrTweet(n));
-        for (Tweet t : tweets) target.add(new NewsOrTweet(t));
+        if (news != null)
+            for (News n : news)
+                target.add(new NewsOrTweet(n));
+
+        if (tweets != null)
+            for (Tweet t : tweets)
+                target.add(new NewsOrTweet(t));
+
         return target;
     }
 
