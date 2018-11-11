@@ -8,11 +8,10 @@ import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import com.twitter.sdk.android.core.Callback;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * This is the model for the scheduled item list. It connects with the repository to pull a list of scheduledItems and communicate them
@@ -23,10 +22,9 @@ import java.util.UUID;
 public class ScheduleViewModel extends ViewModel {
     private LiveData<List<ScheduledItem>> scheduledItems;
     private LiveData<List<ScheduledItem>> joinedItems;
-
+    private LiveData<Map<String, List<ScheduledItem>>> scheduleItemsByRoom;
     private EventRepository repository;
     private JoinedScheduleItemRepository joinedScheduleItemRepository;
-
     private int eventId;
 
     @Inject
@@ -43,18 +41,38 @@ public class ScheduleViewModel extends ViewModel {
         this.eventId = eventId;
         this.scheduledItems = repository.getScheduledItems(eventId);
         this.joinedItems = buildJoinedScheduledItemsList(joinedScheduleItemRepository.findByEventId(eventId));
+        this.scheduleItemsByRoom = buildScheduleItemByRoom();
     }
 
     public LiveData<List<ScheduledItem>> getScheduledItems() {
         return scheduledItems;
     }
 
+    public LiveData<List<ScheduledItem>> getScheduleItemsForRoom(String room) {
+        return Transformations.map(getScheduleItemsByRoom(), map -> {
+            if (map == null) {
+                return null;
+            } else {
+                return map.get(room);
+            }
+        });
+    }
+
+    public LiveData<Map<String, List<ScheduledItem>>> getScheduleItemsByRoom() {
+        return scheduleItemsByRoom;
+    }
+
     public LiveData<List<ScheduledItem>> getJoinedScheduleItems() {
         return joinedItems;
     }
 
-    public void toggleMySchedule(UUID scheduledItemId, Context context) {
-        joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), context);
+    public void toggleMySchedule(UUID scheduledItemId) {
+        toggleMySchedule(scheduledItemId, null);
+    }
+
+    public void toggleMySchedule(UUID scheduledItemId,
+                                 JoinedScheduleItemRepository.ToggleCallback wasAdded) {
+        joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), wasAdded);
     }
 
     private LiveData<List<ScheduledItem>> buildJoinedScheduledItemsList(LiveData<List<JoinedScheduleItem>> joinedItems) {
@@ -81,5 +99,23 @@ public class ScheduleViewModel extends ViewModel {
         );
     }
 
-
+    private LiveData<Map<String, List<ScheduledItem>>> buildScheduleItemByRoom() {
+        return Transformations.map(getScheduledItems(), concerts -> {
+            Map<String, List<ScheduledItem>> scheduleItemsByRoom = new HashMap<>();
+            if (concerts == null || concerts.size() <= 0) {
+                return null;
+            } else {
+                for (ScheduledItem scheduledItem : concerts) {
+                    if (!scheduleItemsByRoom.containsKey(scheduledItem.getItemLocation())) {
+                        List<ScheduledItem> concertList = new ArrayList<>();
+                        concertList.add(scheduledItem);
+                        scheduleItemsByRoom.put(scheduledItem.getItemLocation(), concertList);
+                    } else {
+                        scheduleItemsByRoom.get(scheduledItem.getItemLocation()).add(scheduledItem);
+                    }
+                }
+            }
+            return scheduleItemsByRoom;
+        });
+    }
 }
