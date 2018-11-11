@@ -66,4 +66,9 @@ public class SpotTest {
         assertTrue(spot1.getPosition().latitude == 46.520433 && spot1.getPosition().longitude == 6.567822);
     }
 
+    @Test
+    public void getSpotTypeWork() {
+        assertEquals(spot1.getSpotType(), SpotType.BAR);
+    }
+
 }
