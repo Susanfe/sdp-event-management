@@ -5,13 +5,12 @@ import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.*;
 import ch.epfl.sweng.eventmanager.test.ObservableMap;
+import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
+import ch.epfl.sweng.eventmanager.users.Role;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Louis Vialar
@@ -66,12 +65,15 @@ public class MockEventsRepository implements EventRepository {
                 "  \"title\" : \"test5\"\n" +
                 "} ]\n";
 
+        Map<String, List<String>> usersMap = new HashMap<>();
+        usersMap.put("admin", Collections.singletonList(DummyInMemorySession.DUMMY_UID));
+
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), "JapanImpact"));
+                orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact"));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), "JapanImpact"));
+                orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapanImpact"));
 
         List<ScheduledItem> items;
         String jsonSchedule = "[ {\n" +

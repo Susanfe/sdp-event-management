@@ -29,7 +29,7 @@ public class DummyInMemorySession implements InMemorySession{
     @Override
     public void login(String email, String password, Activity context, OnCompleteListener callback) {
         if (email.equals(DUMMY_EMAIL) && password.equals(DUMMY_PASSWORD)) {
-            user = new DummyUser(DUMMY_UID,DUMMY_DISPLAYNAME, DUMMY_EMAIL, new HashSet<>());
+            user = new DummyUser(DUMMY_UID,DUMMY_DISPLAYNAME, DUMMY_EMAIL);
 
             // Switch to DisplayAccountActivity if successfully authenticated
             if (context != null) {

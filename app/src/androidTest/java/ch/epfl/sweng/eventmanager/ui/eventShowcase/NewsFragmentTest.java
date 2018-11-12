@@ -7,21 +7,17 @@ import android.support.test.espresso.contrib.NavigationViewActions;
 import android.view.Gravity;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ToastMatcher;
-import ch.epfl.sweng.eventmanager.repository.data.DummyUser;
-import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.TestApplication;
 import ch.epfl.sweng.eventmanager.test.repository.MockNewsRepository;
-import ch.epfl.sweng.eventmanager.test.userManagement.TestInMemorySession;
-import ch.epfl.sweng.eventmanager.userManagement.Session;
+import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
+import ch.epfl.sweng.eventmanager.users.Session;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.HashSet;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -44,10 +40,10 @@ public class NewsFragmentTest {
 
     @Before
     public void setup() {
-        TestInMemorySession.enable();
-        TestInMemorySession.instance.setCurrentUser(new DummyUser("1", "admin", "admin", new HashSet<>(Arrays.asList(User.Permission.values()))));
-
         TestApplication.component.inject(this);
+
+        Session.enforceDummySessions();
+        Session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD, null, null);
 
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.LEFT)))
@@ -56,7 +52,6 @@ public class NewsFragmentTest {
         // Switch displayed fragment
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_news));
-
     }
 
     private void createNews() {
