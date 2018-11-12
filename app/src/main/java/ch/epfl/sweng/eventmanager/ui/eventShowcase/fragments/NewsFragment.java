@@ -30,6 +30,7 @@ import com.twitter.sdk.android.tweetui.CompactTweetView;
 import com.twitter.sdk.android.tweetui.TimelineResult;
 import com.twitter.sdk.android.tweetui.UserTimeline;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -152,6 +153,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
             this.news = news;
 
             Collections.sort(this.news);
+
 
             this.notifyDataSetChanged();
         }
