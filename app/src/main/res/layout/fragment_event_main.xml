@@ -17,7 +17,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:contentDescription="@string/contentDescription_main_fragment_image"
+        android:contentDescription="@string/main_fragment_image_contentDescription"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -40,6 +40,35 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/event_image" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?attr/buttonBarStyle"
+        app:layout_constraintBottom_toBottomOf="@id/event_description">
+
+        <Button
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:text="Button1"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            style="?attr/buttonBarButtonStyle"
+            android:text="button2"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            style="?attr/buttonBarButtonStyle"
+            android:text="Button3"/>
+
+    </LinearLayout>
 
     <Switch
         android:id="@+id/join_event_switch"
