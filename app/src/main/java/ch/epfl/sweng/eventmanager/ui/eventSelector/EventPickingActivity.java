@@ -20,6 +20,7 @@ import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.userManager.LoginActivity;
 import ch.epfl.sweng.eventmanager.userManagement.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
+import com.google.android.gms.common.data.DataBufferObserver;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
@@ -49,8 +50,6 @@ public class EventPickingActivity extends AppCompatActivity {
     }
 
     private void setupObservers() {
-        this.model = ViewModelProviders.of(this, factory).get(EventPickingModel.class);
-        this.model.init();
         this.model.getEventsPair().observe(this, list -> {
             if (list == null) {
                 return;
@@ -58,15 +57,24 @@ public class EventPickingActivity extends AppCompatActivity {
             eventList.setAdapter(new EventListAdapter(list.getOtherEvents()));
             joinedEvents.setAdapter(new EventListAdapter(list.getJoinedEvents()));
 
+            //once data is loaded
+            helpText.setVisibility(View.VISIBLE);
+
             if (!list.getJoinedEvents().isEmpty()) {
                 if (list.getOtherEvents().isEmpty()) {
+                    joinedEvents.setVisibility(View.VISIBLE);
+                    eventList.setVisibility(View.GONE);
                     joinedHelpText.setVisibility(View.VISIBLE);
                     notJoinedHelpText.setVisibility(View.GONE);
                 } else {
+                    joinedEvents.setVisibility(View.VISIBLE);
+                    eventList.setVisibility(View.VISIBLE);
                     joinedHelpText.setVisibility(View.VISIBLE);
                     notJoinedHelpText.setVisibility(View.VISIBLE);
                 }
             } else {
+                joinedEvents.setVisibility(View.GONE);
+                eventList.setVisibility(View.VISIBLE);
                 joinedHelpText.setVisibility(View.GONE);
                 notJoinedHelpText.setVisibility(View.GONE);
             }
@@ -75,17 +83,22 @@ public class EventPickingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
+        setContentView(R.layout.activity_event_picking);
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event_picking);
+        this.model = ViewModelProviders.of(this, factory).get(EventPickingModel.class);
+        this.model.init();
         ButterKnife.bind(this);
+        setupObservers();
+
+
 
         // Help text
         // Both invisible by default
         joinedHelpText.setVisibility(View.GONE);
         helpText.setTypeface(helpText.getTypeface(), Typeface.BOLD);
         helpText.setText(R.string.help_text_activity_event_picking);
+        helpText.setVisibility(View.GONE);
 
         // Event list
         eventList.setHasFixedSize(true);
@@ -96,8 +109,9 @@ public class EventPickingActivity extends AppCompatActivity {
         // Event lists
 
         setupRecyclerView(eventList);
+        eventList.setVisibility(View.GONE);
         setupRecyclerView(joinedEvents);
-        setupObservers();
+        eventList.setVisibility(View.GONE);
     }
 
     private void openLoginOrAccountActivity() {
