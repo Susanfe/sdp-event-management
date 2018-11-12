@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.support.v4.app.Fragment;
 import ch.epfl.sweng.eventmanager.inject.DaggerApplicationComponent;
+import ch.epfl.sweng.eventmanager.repository.RepositoriesModule;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import com.twitter.sdk.android.core.Twitter;
 import dagger.android.AndroidInjector;
@@ -22,15 +23,21 @@ public class EventManagerApplication extends Application implements HasActivityI
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    public void initDaggerComponent() {
         DaggerApplicationComponent
                 .builder()
                 .application(this)
                 .room(new RoomModule(this))
+                .repositories(new RepositoriesModule())
                 .build()
                 .inject(this);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        initDaggerComponent();
 
         Twitter.initialize(this);
     }

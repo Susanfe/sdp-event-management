@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.inject;
 
 import android.app.Application;
 import ch.epfl.sweng.eventmanager.EventManagerApplication;
+import ch.epfl.sweng.eventmanager.repository.RepositoriesModule;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import dagger.BindsInstance;
 import dagger.Component;
@@ -19,6 +20,7 @@ import javax.inject.Singleton;
         AndroidSupportInjectionModule.class,
         ActivityBuilder.class,
         ApplicationModule.class,
+        RepositoriesModule.class,
         RoomModule.class})
 @Singleton
 public interface ApplicationComponent {
@@ -30,6 +32,8 @@ public interface ApplicationComponent {
         Builder application(Application application);
 
         Builder room(RoomModule roomModule);
+
+        Builder repositories(RepositoriesModule module);
 
         ApplicationComponent build();
     }
