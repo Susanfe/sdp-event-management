@@ -16,6 +16,8 @@ import android.widget.ProgressBar;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 
+import java.text.Normalizer;
+
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.users.Session;
 import dagger.android.AndroidInjection;
@@ -31,32 +33,19 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEmailView;
     private EditText mPasswordView;
     private Button mLoginButton;
+    private Button mSignUpButton;
     private ProgressBar mProgressBar;
 
     private void setupFields() {
         mEmailView = findViewById(R.id.email_field);
         mEmailView.setHint(R.string.email_field);
-
-        // When the next button is clicked on the keyboard, move to the next field
-        mEmailView.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                mPasswordView.requestFocus();
-                return true;
-            }
-            return false;
-        });
+        mEmailView.setOnEditorActionListener(FormHelper.nextButtonHandler(mEmailView));
 
         mPasswordView = findViewById(R.id.password_field);
         mPasswordView.setHint(R.string.password_field);
 
         // When the done button is clicked on the keyboard, try to login
-        mPasswordView.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                attemptLogin();
-                return true;
-            }
-            return false;
-        });
+        mPasswordView.setOnEditorActionListener(FormHelper.nextButtonHandler(mPasswordView));
     }
 
     private void setupButtons() {
@@ -64,9 +53,9 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setText(R.string.login_button);
         mLoginButton.setOnClickListener(view -> attemptLogin());
 
-        Button mSignupButton = findViewById(R.id.signup_button);
-        mSignupButton.setText(R.string.signup_button);
-        mSignupButton.setOnClickListener(view -> openSignUpForm(view));
+        mSignUpButton = findViewById(R.id.signup_button);
+        mSignUpButton.setText(R.string.signup_button);
+        mSignUpButton.setOnClickListener(view -> openSignUpForm());
     }
 
     @Override
@@ -87,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-    private void openSignUpForm(View view) {
+    private void openSignUpForm() {
         Intent intent = new Intent(this, SignUpActivity.class);
         startActivity(intent);
     }

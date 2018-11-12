@@ -12,6 +12,7 @@
 
     <string name="title_activity_join_event_switch">Join the event</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_signup">Sign un</string>
     <string name="title_activity_account_display">My account</string>
     <string name="title_activity_event_picking">EventPickingActivity</string>
     <string name="title_activity_maps">Map</string>
@@ -25,6 +26,7 @@
 
     <string name="email_field">Email address</string>
     <string name="password_field">Password</string>
+    <string name="password_confirmation_field">Password confirmation</string>
 
     <string name="login_button">Sign in »</string>
     <string name="signup_button">Sign up »</string>
