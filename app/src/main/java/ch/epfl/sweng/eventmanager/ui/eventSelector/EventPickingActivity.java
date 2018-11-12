@@ -93,8 +93,6 @@ public class EventPickingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setupObservers();
 
-
-
         // Help text
         // Both invisible by default
         joinedHelpText.setVisibility(View.GONE);
