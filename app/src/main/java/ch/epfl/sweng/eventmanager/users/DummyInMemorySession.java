@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.userManagement;
+package ch.epfl.sweng.eventmanager.users;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,10 +16,13 @@ import java.util.HashSet;
  */
 @Singleton
 public class DummyInMemorySession implements InMemorySession{
-    private final String DUMMY_EMAIL = "lamb.da@domain.tld";
-    private final String DUMMY_PASSWORD = "secret";
-    private final String DUMMY_UID = "u0YmYQasWpNaNYZt4iXngV0aTxF3";
-    private final String DUMMY_DISPLAYNAME = "Lamb Da";
+    /**
+     * Public in order to be used from the tests.
+     */
+    public static final String DUMMY_EMAIL = "lamb.da@domain.tld";
+    public static final String DUMMY_PASSWORD = "secret";
+    public static final String DUMMY_UID = "u0YmYQasWpNaNYZt4iXngV0aTxF3";
+    public static final String DUMMY_DISPLAYNAME = "Lamb Da";
 
     private DummyUser user;
 
@@ -29,8 +32,10 @@ public class DummyInMemorySession implements InMemorySession{
             user = new DummyUser(DUMMY_UID,DUMMY_DISPLAYNAME, DUMMY_EMAIL, new HashSet<>());
 
             // Switch to DisplayAccountActivity if successfully authenticated
-            Intent intent = new Intent(context, DisplayAccountActivity.class);
-            context.startActivity(intent);
+            if (context != null) {
+                Intent intent = new Intent(context, DisplayAccountActivity.class);
+                context.startActivity(intent);
+            }
         }
     }
 
