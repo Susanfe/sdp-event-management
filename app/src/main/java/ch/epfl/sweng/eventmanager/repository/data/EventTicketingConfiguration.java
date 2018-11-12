@@ -29,6 +29,11 @@ public class EventTicketingConfiguration implements Parcelable {
     public EventTicketingConfiguration() {
     }
 
+    public EventTicketingConfiguration(String loginUrl, String configurationsUrl, String scanUrl) {
+        this.loginUrl = loginUrl;
+        this.configurationsUrl = configurationsUrl;
+        this.scanUrl = scanUrl;
+    }
 
     public static final Creator<EventTicketingConfiguration> CREATOR = new Creator<EventTicketingConfiguration>() {
         @Override

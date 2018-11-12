@@ -12,6 +12,18 @@ public class ApiResult {
     private boolean success;
     private List<ApiError> errors;
 
+    public ApiResult(boolean success) {
+        this.success = success;
+    }
+
+    public ApiResult(List<ApiError> errors) {
+        this.success = !errors.isEmpty();
+        this.errors = errors;
+    }
+
+    public ApiResult() {
+    }
+
     public static class ApiError {
         private String key;
         private List<String> messages;
@@ -19,6 +31,12 @@ public class ApiResult {
 
         public ApiError(String message) {
             this.messages = Collections.singletonList(message);
+        }
+
+        public ApiError(String key, List<String> messages, List<JsonObject> args) {
+            this.key = key;
+            this.messages = messages;
+            this.args = args;
         }
 
         public ApiError() {

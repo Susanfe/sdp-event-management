@@ -52,6 +52,9 @@ public class JavaObjectRequest<RepType> extends JsonRequest<RepType> {
 
     public static ApiResult parseVolleyError(VolleyError error) {
         try {
+            if (error == null || error.networkResponse == null || error.networkResponse.data == null)
+                return null;
+
             String jsonString = new String(error.networkResponse.data, HttpHeaderParser.parseCharset(error.networkResponse.headers, PROTOCOL_CHARSET));
 
             return gson.fromJson(jsonString, ApiResult.class);

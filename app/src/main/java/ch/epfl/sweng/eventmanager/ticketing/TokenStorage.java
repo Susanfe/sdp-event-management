@@ -22,14 +22,14 @@ public class TokenStorage {
         readTokenFromPreferences();
     }
 
-    private void readTokenFromPreferences() {
+    protected void readTokenFromPreferences() {
         // Retrieve token if it exists
         if (preferences.contains(String.valueOf(eventId))) {
             this.token = preferences.getString(String.valueOf(eventId), null);
         }
     }
 
-    private void writeTokenToPreferences() {
+    protected void writeTokenToPreferences() {
         preferences.edit().putString(String.valueOf(eventId), token).apply();
     }
 
