@@ -2,10 +2,12 @@ package ch.epfl.sweng.eventmanager.inject;
 
 import android.app.Application;
 import ch.epfl.sweng.eventmanager.EventManagerApplication;
+import ch.epfl.sweng.eventmanager.repository.RepositoriesModule;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
+import dagger.android.support.AndroidSupportInjectionModule;
 
 import javax.inject.Singleton;
 
@@ -15,8 +17,10 @@ import javax.inject.Singleton;
  */
 @Component(modules = {
         AndroidInjectionModule.class,
+        AndroidSupportInjectionModule.class,
         ActivityBuilder.class,
         ApplicationModule.class,
+        RepositoriesModule.class,
         RoomModule.class})
 @Singleton
 public interface ApplicationComponent {

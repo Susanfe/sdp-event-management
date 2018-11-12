@@ -8,6 +8,7 @@
     <string name="scheduled_items_empty">Sorry! There are no registered activities for this event :/</string>
     <string name="news_empty">The event organizer hasn\'t published any news yet.</string>
     <string name="my_schedule_empty">There is currently no saved activities for this event</string>
+    <string name="send_news_failed">Cannot publish news. Try again later!</string>
 
     <string name="title_activity_join_event_switch">Join the event</string>
     <string name="title_activity_login">Sign in</string>
@@ -55,6 +56,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="news_nav_item_activity_event_showcase">News</string>
+    <string name="send_news_title">Create a news</string>
+    <string name="send_news_title_field">Title</string>
+    <string name="send_news_content">News content...</string>
+    <string name="send_news_send_button">Send</string>
+    <string name="news_create">Create a news</string>
 
     <!-- Accessibility text -->
     <string name="event_thumbnail">Event thumbnail</string>
