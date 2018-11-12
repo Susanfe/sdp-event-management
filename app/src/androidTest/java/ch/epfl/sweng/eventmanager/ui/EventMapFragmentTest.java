@@ -5,16 +5,15 @@ import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-
+import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
-
-import static android.os.SystemClock.sleep;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -27,12 +26,13 @@ public class EventMapFragmentTest {
     public final ActivityTestRule<EventShowcaseActivity> mActivityRule =
             new ActivityTestRule<>(EventShowcaseActivity.class);
 
-    @Test
-    public void eventMapTest() {
+    @Before
+    public void setup() {
         Intent intent = new Intent();
         // Opens Sysmic Event
         intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 2);
         mActivityRule.launchActivity(intent);
+
 
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
@@ -40,6 +40,15 @@ public class EventMapFragmentTest {
         // Display Schedule Events
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_map));
+    }
+
+    @Test
+    public void eventMapTest() {
         onView(withId(R.id.text_test)).check(matches(withText("everything is ready")));
+    }
+
+    @After
+    public void finish() {
+        mActivityRule.finishActivity();
     }
 }
