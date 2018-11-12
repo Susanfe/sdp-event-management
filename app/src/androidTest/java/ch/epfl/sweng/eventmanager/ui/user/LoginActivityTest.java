@@ -22,15 +22,23 @@ import android.util.Log;
 
 import junit.framework.AssertionFailedError;
 
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.users.Session;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityTest {
-    int MAX_RETRY_COUNT = 20;
+    int MAX_RETRY_COUNT = 10;
+
+    @Before
+    public void disableFirebaseAuth() {
+        Session.enforceDummySessions();
+    }
 
     @Rule
     public final ActivityTestRule<LoginActivity> mActivityRule =
@@ -66,9 +74,16 @@ public class LoginActivityTest {
 
         onView(withId(R.id.main_text))
                 .check(matches(withText(containsString(email))));
+
+        onView(withId(R.id.logout_button))
+                .perform(click());
+
+        onView(withId(R.id.login_button))
+                .check(matches(withText(containsString(getResourceString(R.string.login_button)))));
     }
 
     @Test
+    @Ignore("Not handled by the dummy authentication")
     public void testWrongCredentials() {
         String email = "lamb.da@domain.tld";
         String password = "wrong";

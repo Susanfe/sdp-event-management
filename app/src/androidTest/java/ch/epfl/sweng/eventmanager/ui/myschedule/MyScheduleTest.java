@@ -19,11 +19,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.action.ViewActions.*;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
 public class MyScheduleTest {
@@ -54,7 +54,9 @@ public class MyScheduleTest {
         Intent intent = new Intent();
         // Opens Sysmic Event
         intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 2);
+        //wait for firebase to load
         mActivityRule.launchActivity(intent);
+        SystemClock.sleep(800);
 
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.LEFT)))
@@ -64,29 +66,27 @@ public class MyScheduleTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
 
-        onView(withId(R.id.viewpager)).check(matches(isCompletelyDisplayed()));
-
-        // Wait for the event to be retrieved
-        SystemClock.sleep(1000);
-
-        // Add first AND second element of scheduledItems to MySchedule
-        onView(withIndex(withId(R.id.text_timeline_description), 0)).perform(longClick());
-        SystemClock.sleep(800);
-        onView(withIndex(withId(R.id.text_timeline_description), 1)).perform(longClick());
-        SystemClock.sleep(800);
-        // Delete first element of scheduledItems from MySchedule
-        onView(withIndex(withId(R.id.text_timeline_description), 0)).perform(longClick());
         SystemClock.sleep(800);
 
-        onView(withText("My Schedule")).perform(click());
-        SystemClock.sleep(800);
-
-
-        onView(withId(R.id.addToCalendar)).check(matches(isCompletelyDisplayed())).perform(click());
-
-        // SystemClock.sleep(500);
-        // intended(hasAction(Intent.ACTION_VIEW));
-
-
+        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
+        SystemClock.sleep(200);
+        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
+        SystemClock.sleep(200);
+        onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
+        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
+        SystemClock.sleep(200);
+        onView(withId(R.id.viewpager)).perform(swipeRight()).check(matches(isCompletelyDisplayed()));
+        SystemClock.sleep(200);
+        onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click());
+        SystemClock.sleep(400);
+        onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
+        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
+        SystemClock.sleep(400);
+        onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
+        SystemClock.sleep(400);
+        onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click());
+        SystemClock.sleep(400);
+        onView(allOf(isDisplayed(),withId(R.id.addToCalendar))).perform(click());
     }
+
 }

@@ -1,10 +1,10 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
 import android.arch.lifecycle.ViewModel;
-
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
 import dagger.Binds;
 import dagger.Module;
@@ -25,6 +25,11 @@ public abstract class EventInteractionModule {
     @IntoMap
     @ViewModelKey(ScheduleViewModel.class)
     abstract ViewModel provideScheduleViewModel(ScheduleViewModel scheduleViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NewsViewModel.class)
+    abstract ViewModel provideNewsViewModel(NewsViewModel newsViewModel);
 
     @Binds
     @IntoMap

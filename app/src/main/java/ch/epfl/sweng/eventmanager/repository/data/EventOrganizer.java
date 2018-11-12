@@ -25,12 +25,17 @@ public final class EventOrganizer {
      * The logo of this organizer, might be null
      */
     private Bitmap logo;
+    /**
+     * An email to contact the event organizers
+     */
+    private String email;
 
-    public EventOrganizer(int id, String name, String description, Bitmap logo) {
+    public EventOrganizer(int id, String name, String description, Bitmap logo, String email) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.logo = logo;
+        this.email = email;
     }
 
     public EventOrganizer() {
@@ -50,5 +55,9 @@ public final class EventOrganizer {
 
     public Bitmap getLogo() {
         return logo;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

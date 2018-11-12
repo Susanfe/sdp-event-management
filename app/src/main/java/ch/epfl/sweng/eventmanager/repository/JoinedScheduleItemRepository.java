@@ -7,6 +7,7 @@ import android.widget.Toast;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
+import com.twitter.sdk.android.core.Callback;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Singleton
 public class JoinedScheduleItemRepository extends AbstractEventRepository<JoinedScheduleItem, JoinedScheduleItemDao, UUID> {
     @Inject
-    public JoinedScheduleItemRepository(JoinedScheduleItemDao joinedScheduleItemDao){
+    public JoinedScheduleItemRepository(JoinedScheduleItemDao joinedScheduleItemDao) {
         super(joinedScheduleItemDao);
     }
 
@@ -25,30 +26,35 @@ public class JoinedScheduleItemRepository extends AbstractEventRepository<Joined
         return dao.findByEventId(id);
     }
 
-    public AsyncTask insert(JoinedScheduleItem joinedItem){
+    public AsyncTask insert(JoinedScheduleItem joinedItem) {
         return new InsertAsyncTask<>(dao).execute(joinedItem);
     }
 
-    public AsyncTask delete(JoinedScheduleItem joinedItem){
+    public AsyncTask delete(JoinedScheduleItem joinedItem) {
         return new DeleteAsyncTask<>(dao).execute(joinedItem);
     }
 
-    public AsyncTask toggle(JoinedScheduleItem joinedScheduleItem, Context context) {
-        return new ToggleTask(dao, context).execute(joinedScheduleItem);
+    public AsyncTask toggle(JoinedScheduleItem joinedScheduleItem) {
+        return toggle(joinedScheduleItem, null);
+    }
+
+    public AsyncTask toggle(JoinedScheduleItem joinedScheduleItem, ToggleCallback wasAdded) {
+        return new ToggleTask(dao, wasAdded).execute(joinedScheduleItem);
     }
 
     /**
      * Defines toggling a JoinedScheduleItem from the database with an asynchronous task
+     *
      * @see android.os.AsyncTask
      */
     protected static class ToggleTask extends AsyncTask<JoinedScheduleItem, Void, Boolean> {
 
         private JoinedScheduleItemDao mAsyncTaskDao;
-        private final AtomicReference<Context> context = new AtomicReference<>();
+        private final ToggleCallback callback;
 
-        ToggleTask(JoinedScheduleItemDao dao, Context context) {
+        ToggleTask(JoinedScheduleItemDao dao, ToggleCallback callback) {
             mAsyncTaskDao = dao;
-            this.context.set(context);
+            this.callback = callback;
         }
 
         @Override
@@ -58,6 +64,7 @@ public class JoinedScheduleItemRepository extends AbstractEventRepository<Joined
 
         /**
          * Adds or remove an item from the joined items, depending on whether or not it was joined before
+         *
          * @param item the item to add or remove
          * @return true if it was inserted, false if it was removed
          */
@@ -76,11 +83,20 @@ public class JoinedScheduleItemRepository extends AbstractEventRepository<Joined
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            if (aBoolean) {
-                Toast.makeText(context.get(), R.string.timeline_view_added_to_own_schedule, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(context.get(), R.string.timeline_view_removed_from_own_schedule, Toast.LENGTH_SHORT).show();
+            // TODO: we might need to synchronize on UI thread ici (dunno how to do it but probably easy)
+
+            if (this.callback != null) {
+                this.callback.onToggle(aBoolean);
             }
         }
+    }
+
+    public interface ToggleCallback {
+        /**
+         * Called when an item is successfully toggled from the mySchedule
+         *
+         * @param wasAdded true if the item was added, false if it was removed
+         */
+        void onToggle(boolean wasAdded);
     }
 }

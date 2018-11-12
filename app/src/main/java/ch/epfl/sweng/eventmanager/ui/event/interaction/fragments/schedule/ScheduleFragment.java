@@ -7,6 +7,10 @@ import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import java.util.List;
 
 public class ScheduleFragment extends AbstractScheduleFragment {
+
+
+    private  String room;
+
     @Override
     protected int getLayout() {
         return R.layout.activity_schedule;
@@ -19,7 +23,13 @@ public class ScheduleFragment extends AbstractScheduleFragment {
 
     @Override
     protected LiveData<List<ScheduledItem>> getScheduledItems() {
-        return this.model.getScheduledItems();
+        return this.model.getScheduleItemsForRoom(room);
     }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
+    public String getRoom() { return room; }
 }
 

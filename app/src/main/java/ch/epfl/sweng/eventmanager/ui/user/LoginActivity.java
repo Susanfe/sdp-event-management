@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -14,9 +15,9 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.users.Session;
 import dagger.android.AndroidInjection;
 
 /**
@@ -26,9 +27,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
 
-    // Login task.
-    private FirebaseAuth mAuth;
-
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
@@ -36,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
 
     private void setupFields() {
-        mEmailView = (EditText) findViewById(R.id.email_field);
+        mEmailView = findViewById(R.id.email_field);
         mEmailView.setHint(R.string.email_field);
 
         // When the next button is clicked on the keyboard, move to the next field
@@ -48,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         });
 
-        mPasswordView = (EditText) findViewById(R.id.password_field);
+        mPasswordView = findViewById(R.id.password_field);
         mPasswordView.setHint(R.string.password_field);
 
         // When the done button is clicked on the keyboard, try to login
@@ -62,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupButton() {
-        mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoginButton = findViewById(R.id.login_button);
         mLoginButton.setText(R.string.login_button);
         mLoginButton.setOnClickListener(view -> attemptLogin());
     }
@@ -74,15 +72,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-
         // Initialize UI
         setupFields();
         setupButton();
 
         mProgressBar = findViewById(R.id.sign_in_progress_bar);
         mProgressBar.setVisibility(View.INVISIBLE);
+
+        Toolbar toolbar = findViewById(R.id.login_toolbar);
+        setSupportActionBar(toolbar);
     }
 
     private void attemptLogin() {
@@ -113,8 +111,7 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, getSignInOnCompleteListener(this));
+            Session.login(email, password, this, getSignInOnCompleteListener(this));
         }
     }
 

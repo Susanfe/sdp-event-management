@@ -2,7 +2,9 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,16 @@ public final class Event {
      */
     private String description;
     /**
+     * Indicates the start time of the even, precision required is minutes.
+     * This is a long because firebase doesn't understand Date objects.
+     */
+    private long beginDate;
+    /**
+     * Indicates the end time of the even, precision required is minutes.
+     * This is a long because firebase doesn't understand Date objects.
+     */
+    private long endDate;
+    /**
      * The entity organizing this event
      */
     private EventOrganizer organizer;
@@ -47,16 +59,30 @@ public final class Event {
      */
     private Map<String, List<String>> users;
 
-    public Event(int id, String name, String description, EventOrganizer organizer, Bitmap image,
-                 EventLocation location, List<Spot> spotList,  Map<String, List<String>> users) {
+    /**
+     * The twitter account screen name
+     */
+    private String twitterName;
+
+    // TODO define if an event can have only empty and null atributes
+    public Event(int id, String name, String description, Date beginDate, Date endDate,
+                 EventOrganizer organizer, Bitmap image, EventLocation location,
+                 List<Spot> spotList, Map<String, List<String>> users, String twitterName) {
+
+        if (beginDate.getTime() > endDate.getTime())
+            throw new IllegalArgumentException("The time at the start of the event should be later than the time at the end");
+
         this.id = id;
         this.name = name;
+        this.beginDate = beginDate.getTime();
+        this.endDate = endDate.getTime();
         this.description = description;
         this.organizer = organizer;
         this.image = image;
         this.location = location;
         this.spotList = new ArrayList<>(spotList);
         this.users = users;
+        this.twitterName = twitterName;
     }
 
     public Event() {
@@ -68,6 +94,20 @@ public final class Event {
 
     public String getName() {
         return name;
+    }
+
+    public Date getBeginDate() {
+        if (beginDate <= 0) {
+            return null;
+        }
+        return new Date(beginDate);
+    }
+
+    public Date getEndDate() {
+        if (endDate <= 0) {
+            return null;
+        }
+        return new Date(endDate);
     }
 
     public String getDescription() {
@@ -89,4 +129,26 @@ public final class Event {
     public List<Spot> getSpotList() { return spotList; }
 
     public Map<String, List<String>> getUsers() { return users; }
+
+    public String getTwitterName() {
+        return this.twitterName;
+    }
+
+    public String beginDateAsString() {
+        if (beginDate <= 0) {
+            return null;
+        }
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        return f.format(beginDate);
+    }
+
+    public String endDateAsString(){
+        if (endDate <= 0) {
+            return null;
+        }
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        return f.format(endDate);
+    }
+
+    // TODO put setters ??
 }
