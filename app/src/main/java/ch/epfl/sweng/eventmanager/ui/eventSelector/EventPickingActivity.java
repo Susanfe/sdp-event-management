@@ -160,4 +160,10 @@ public class EventPickingActivity extends AppCompatActivity {
         }
         return super.onPrepareOptionsMenu(menu);
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 }
