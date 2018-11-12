@@ -57,10 +57,7 @@ public class FirebaseEventRepository implements EventRepository {
             }
         });
 
-        return Transformations.switchMap(ret, event -> Transformations.map(getEventImage(event), image -> {
-            event.setImage(image);
-            return event;
-        }));
+        return ret;
     }
 
     private String getImageName(Event event) {
