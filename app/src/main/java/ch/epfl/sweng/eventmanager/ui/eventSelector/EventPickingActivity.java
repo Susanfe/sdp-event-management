@@ -2,10 +2,12 @@ package ch.epfl.sweng.eventmanager.ui.eventSelector;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,7 +43,6 @@ public class EventPickingActivity extends AppCompatActivity {
     RecyclerView joinedEvents;
     @BindView(R.id.not_joined_event_list)
     RecyclerView eventList;
-    private Menu menu;
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
 
@@ -131,7 +132,6 @@ public class EventPickingActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_event_picking, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -171,7 +171,12 @@ public class EventPickingActivity extends AppCompatActivity {
             return;
         }
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, R.string.double_back_press_to_exit, Toast.LENGTH_SHORT).show();
+        Toast toast = Toast.makeText(this, R.string.double_back_press_to_exit, Toast.LENGTH_SHORT);
+        ((TextView) (toast.getView().findViewById(android.R.id.message))).setTextColor(ContextCompat.getColor(this,
+                R.color.colorSecondary));
+        toast.getView().getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary),
+                PorterDuff.Mode.SRC_IN);
+        toast.show();
 
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
