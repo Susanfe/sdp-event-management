@@ -79,11 +79,6 @@ public class LoginActivityTest {
 
         onView(withId(R.id.logout_button))
                 .perform(click());
-
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-
-        onView(withText("Sign in"))
-                .perform(click());
     }
 
     @Test
