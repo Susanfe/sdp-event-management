@@ -14,7 +14,9 @@
     </style>
 
     <!-- Launcher theme. Sets the main window background to the splash_screen drawable -->
-    <style name="AppTheme.Launcher" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.Launcher" parent="AppTheme.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/colorPrimaryDark</item>
     </style>
 
