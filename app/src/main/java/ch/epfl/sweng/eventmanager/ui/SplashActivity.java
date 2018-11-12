@@ -17,5 +17,7 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent = new Intent(this, EventPickingActivity.class);
         startActivity(intent);
         finish();
+
+        //TODO Cache events & images for eventPicking
     }
 }
