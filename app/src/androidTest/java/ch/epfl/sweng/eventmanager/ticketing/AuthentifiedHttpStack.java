@@ -34,10 +34,10 @@ public class AuthentifiedHttpStack extends TicketingHttpStack {
     }
 
     private void checkAuthorization(String authToken) throws TicketingApiException {
-        if (authToken == null)
+        if (authToken == null || !sessions.containsKey(authToken))
             throw new TicketingApiException(new ApiResult(Collections.singletonList(new ApiResult.ApiError(ErrorCodes.AUTH_MISSING.getCode()))), 401);
 
-        if (!sessions.containsKey(authToken) || !sessions.get(authToken).authorized)
+        if (!sessions.get(authToken).authorized)
             throw new TicketingApiException(new ApiResult(Collections.singletonList(new ApiResult.ApiError(ErrorCodes.PERMS_MISSING.getCode()))), 403);
 
     }

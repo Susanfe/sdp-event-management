@@ -25,6 +25,8 @@ import java.util.Map;
  * @author Louis Vialar
  */
 public abstract class TicketingHttpStack extends BaseHttpStack {
+    private static final String TAG = TicketingHttpStack.class.getSimpleName();
+
     public abstract LoginResponse generateLoginResponse(String userName, String password) throws TicketingApiException;
 
     public abstract ScanResult generateScanResult(String barcode, @Nullable Integer configId, @Nullable String authToken) throws TicketingApiException;
@@ -35,15 +37,22 @@ public abstract class TicketingHttpStack extends BaseHttpStack {
     public final HttpResponse executeRequest(Request<?> request, Map<String, String> additionalHeaders) throws IOException, AuthFailureError {
         String url = request.getUrl();
 
-        String jsonString = new String(request.getBody(), HttpHeaderParser.parseCharset(request.getHeaders()));
+        String jsonString;
         JSONObject object;
         try {
-            object = new JSONObject(jsonString);
+            if (request.getBody() != null) {
+                jsonString = new String(request.getBody(), HttpHeaderParser.parseCharset(request.getHeaders()));
+                object = new JSONObject(jsonString);
+            } else {
+                object = new JSONObject();
+            }
 
             String out = "";
             Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
             String authToken = null;
-            if (additionalHeaders.containsKey("authorization")) {
+            if (request.getHeaders().containsKey("authorization")) {
+                authToken = request.getHeaders().get("authorization").substring("Bearer ".length());
+            } else if (additionalHeaders.containsKey("authorization")) {
                 authToken = additionalHeaders.get("authorization").substring("Bearer ".length());
             }
 
@@ -59,12 +68,16 @@ public abstract class TicketingHttpStack extends BaseHttpStack {
             } else if (url.startsWith(TicketingHelper.SCAN_CONFIG_URL)) {
                 int scanConfigId = Integer.parseInt(url.substring(TicketingHelper.SCAN_CONFIG_URL.length()));
 
+                Log.i(TAG, "Found config id " + scanConfigId + " in url " + url);
+
                 out = gson.toJson(generateScanResult(object.getString("barcode"), scanConfigId, authToken));
             } else {
+                Log.w(TAG, "Found invalid url " + url);
+
                 return new HttpResponse(404, Collections.emptyList());
             }
 
-            Log.i("TicketingHelper", "Replying with " + out);
+            Log.i(TAG, "Replying with " + out);
 
             byte[] arr = out.getBytes();
             InputStream in = new ByteArrayInputStream(arr);

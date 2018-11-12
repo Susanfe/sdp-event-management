@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
  */
 public class MultiTicketingServiceTest {
     private EventTicketingConfiguration configuration = new EventTicketingConfiguration(
-            null, null, TicketingHelper.SCAN_URL
+            null, TicketingHelper.CONFIGS_URL, TicketingHelper.SCAN_CONFIG_URL + ":configId"
     );
 
     private TicketingService service;
@@ -29,6 +29,12 @@ public class MultiTicketingServiceTest {
     public static final ScanResult.Product PRODUCT = new ScanResult.Product("FP", "Descr");
     public static final ScanResult.Client CLIENT = new ScanResult.Client("Dupont", "Jean", "jean.dupont@france.fr");
     public static final List<ScanConfiguration> CONFIGS = new ArrayList<>();
+
+    static {
+        for (int i = 1; i <= 3; ++i) {
+            CONFIGS.add(new ScanConfiguration(i, "Config" + i));
+        }
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -47,14 +53,10 @@ public class MultiTicketingServiceTest {
         CONFIG_3.putAll(CONFIG_2);
 
         stack = new MultiHttpStack(
-                new MultiHttpStack.ScanConfigurationStack("Config1", CONFIG_1),
-                new MultiHttpStack.ScanConfigurationStack("Config2", CONFIG_2),
-                new MultiHttpStack.ScanConfigurationStack("Config3", CONFIG_3)
+                new MultiHttpStack.ScanConfigurationStack(CONFIG_1, CONFIGS.get(0)),
+                new MultiHttpStack.ScanConfigurationStack(CONFIG_2, CONFIGS.get(1)),
+                new MultiHttpStack.ScanConfigurationStack(CONFIG_3, CONFIGS.get(2))
         );
-
-        for (int i = 1; i <= 3; ++i) {
-            CONFIGS.add(new ScanConfiguration(i, "Config" + i));
-        }
 
         service = TicketingHelper.getService(configuration, stack);
     }
@@ -83,13 +85,11 @@ public class MultiTicketingServiceTest {
 
         testScan("123456789", 1, TestingCallback.expectErrors(errors -> {
             ApiResult.ApiError err = errors.get(0);
-            assertEquals("", err.getKey());
             assertEquals(ErrorCodes.PRODUCT_NOT_ALLOWED.getCode(), err.getMessages().get(0));
         }));
 
         testScan("ABCDEFGHI", 3, TestingCallback.expectErrors(errors -> {
             ApiResult.ApiError err = errors.get(0);
-            assertEquals("", err.getKey());
             assertEquals(ErrorCodes.ALREADY_SCANNED.getCode(), err.getMessages().get(0));
         }));
     }

@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -76,7 +77,17 @@ public class AuthentifiedTicketingServiceTest {
 
     @Test(expected = NotAuthenticatedException.class)
     public void scanLoggedOut() throws Exception {
-        service.scan(-1, "anything", null);
+        service.scan(-1, "anything", new TicketingService.ApiCallback<ScanResult>() {
+            @Override
+            public void onSuccess(ScanResult data) {
+
+            }
+
+            @Override
+            public void onFailure(List<ApiResult.ApiError> errors) {
+
+            }
+        });
     }
 
     @Test
@@ -88,7 +99,6 @@ public class AuthentifiedTicketingServiceTest {
 
         testScan("ABCDEFGHI", TestingCallback.expectErrors(errors -> {
             ApiResult.ApiError err = errors.get(0);
-            assertEquals("", err.getKey());
             assertEquals(ErrorCodes.PERMS_MISSING.getCode(), err.getMessages().get(0));
         }));
 
