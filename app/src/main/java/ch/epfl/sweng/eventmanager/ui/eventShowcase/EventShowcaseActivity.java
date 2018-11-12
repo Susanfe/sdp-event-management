@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
+import ch.epfl.sweng.eventmanager.ui.eventAdministration.EventAdministrationActivity;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
@@ -35,6 +36,8 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
+import ch.epfl.sweng.eventmanager.users.Role;
+import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -110,6 +113,8 @@ public class EventShowcaseActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_showcase);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = mDrawerLayout.findViewById(R.id.nav_view);
         ButterKnife.bind(this);
 
         // Set toolbar as action bar
@@ -124,7 +129,7 @@ public class EventShowcaseActivity extends AppCompatActivity
 
         // Fetch event from passed ID
         Intent intent = getIntent();
-        int eventID = intent.getIntExtra(EventPickingActivity.SELECTED_EVENT_ID, -1);
+        eventID = intent.getIntExtra(EventPickingActivity.SELECTED_EVENT_ID, -1);
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
@@ -132,6 +137,19 @@ public class EventShowcaseActivity extends AppCompatActivity
             this.initModels();
             this.setupHeader();
             this.setupMenu();
+
+            // Only display admin button if the user is at least staff
+            model.getEvent().observe(this, ev -> {
+                        if (ev == null) {
+                            Log.e(TAG, "Got null model from parent activity");
+                            return;
+                        }
+
+                        if (Session.isLoggedIn() && Session.isClearedFor(Role.ADMIN, ev)) {
+                            MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
+                            adminMenuItem.setVisible(true);
+                        }
+                    });
 
             // Set displayed fragment
             changeFragment(new EventMainFragment(), true);
@@ -162,11 +180,16 @@ public class EventShowcaseActivity extends AppCompatActivity
         // close drawer when item is tapped
         mDrawerLayout.closeDrawers();
 
-        switch (menuItem.getItemId()) {
-            case R.id.nav_pick_event:
-                Intent intent = new Intent(this, EventPickingActivity.class);
-                startActivity(intent);
+        switch(menuItem.getItemId()) {
+            case R.id.nav_pick_event :
+                Intent pickingIntent = new Intent(this, EventPickingActivity.class);
+                startActivity(pickingIntent);
                 break;
+
+            case R.id.nav_admin :
+                Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
+                adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
+                startActivity(adminIntent);
 
             case R.id.nav_main:
                 changeFragment(new EventMainFragment(), true);
@@ -298,5 +321,3 @@ public class EventShowcaseActivity extends AppCompatActivity
         return eventID;
     }
 }
-
-

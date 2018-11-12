@@ -11,6 +11,10 @@ import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 public class EventTestRule<T extends Activity> extends ActivityTestRule<T> {
     private final int eventId;
 
+    public EventTestRule(Class<T> activityClass) {
+        this(activityClass, 1);
+    }
+
     public EventTestRule(Class<T> activityClass, int eventId) {
         super(activityClass);
 

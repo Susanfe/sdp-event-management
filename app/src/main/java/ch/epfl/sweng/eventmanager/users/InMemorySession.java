@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.userManagement;
+package ch.epfl.sweng.eventmanager.users;
 
 import android.app.Activity;
 

@@ -13,5 +13,6 @@ checks:
       threshold: 8
 exclude_patterns:
   - "app/src/main/java/ch/epfl/sweng/eventmanager/repository/room/daos"
+  - "app/src/main/java/ch/epfl/sweng/eventmanager/repository/impl"
   - "app/src/androidTest/"
   - "app/src/test/"

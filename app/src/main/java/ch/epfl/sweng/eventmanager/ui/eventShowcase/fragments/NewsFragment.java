@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +17,13 @@ import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
-import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
-import ch.epfl.sweng.eventmanager.userManagement.Session;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
+import ch.epfl.sweng.eventmanager.users.Role;
+import ch.epfl.sweng.eventmanager.users.Session;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.tweetui.CompactTweetView;
-import com.twitter.sdk.android.tweetui.TimelineResult;
-import com.twitter.sdk.android.tweetui.UserTimeline;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -77,11 +70,14 @@ public class NewsFragment extends AbstractShowcaseFragment {
             model = ViewModelProviders.of(requireActivity()).get(NewsViewModel.class);
         }
 
-        if (Session.hasPermission(User.Permission.PUBLISH_NEWS)) {
-            newsCreateButton.setVisibility(View.VISIBLE);
-        } else {
-            newsCreateButton.setVisibility(View.GONE);
-        }
+        super.model.getEvent().observe(this, ev -> {
+            if (Session.isClearedFor(Role.ADMIN, ev)) {
+                newsCreateButton.setVisibility(View.VISIBLE);
+            } else {
+                newsCreateButton.setVisibility(View.GONE);
+            }
+        });
+
 
         LiveData<String> twitterName = Transformations.map(super.model.getEvent(), event -> event.getTwitterName());
 

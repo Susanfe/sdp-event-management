@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class holds the basic elements about an organized event.<br>
@@ -54,6 +55,11 @@ public final class Event {
     private List<Spot> spotList;
 
     /**
+     * A map from roles to a list of user UIDs.
+     */
+    private Map<String, List<String>> users;
+
+    /**
      * The twitter account screen name
      */
     private String twitterName;
@@ -61,8 +67,10 @@ public final class Event {
     private EventTicketingConfiguration ticketingConfiguration;
 
     // TODO define if an event can have only empty and null atributes
+    public Event(int id, String name, String description, Date beginDate, Date endDate,
+                 EventOrganizer organizer, Bitmap image, EventLocation location,
+                 List<Spot> spotList, Map<String, List<String>> users, String twitterName) {
 
-    public Event(int id, String name, String description, Date beginDate, Date endDate, EventOrganizer organizer, Bitmap image, EventLocation location, List<Spot> spotList, String twitterName) {
         if (beginDate.getTime() > endDate.getTime())
             throw new IllegalArgumentException("The time at the start of the event should be later than the time at the end");
 
@@ -75,6 +83,7 @@ public final class Event {
         this.image = image;
         this.location = location;
         this.spotList = new ArrayList<>(spotList);
+        this.users = users;
         this.twitterName = twitterName;
     }
 
@@ -120,6 +129,8 @@ public final class Event {
     }
 
     public List<Spot> getSpotList() { return spotList; }
+
+    public Map<String, List<String>> getUsers() { return users; }
 
     public String getTwitterName() {
         return this.twitterName;
