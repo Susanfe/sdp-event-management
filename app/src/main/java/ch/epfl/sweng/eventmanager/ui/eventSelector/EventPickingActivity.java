@@ -130,13 +130,6 @@ public class EventPickingActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_event_picking,menu);
-        if (Session.isLoggedIn()) {
-            menu.findItem(R.id.login_button).setTitle(R.string.account_button);
-            menu.findItem(R.id.logout_button).setVisible(true);
-        } else {
-            menu.findItem(R.id.login_button).setTitle(R.string.login_button);
-            menu.findItem(R.id.logout_button).setVisible(false);
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -150,12 +143,21 @@ public class EventPickingActivity extends AppCompatActivity {
 
             case R.id.logout_button :
                 Session.logout();
-                menu.close();
-                invalidateOptionsMenu();
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (Session.isLoggedIn()) {
+            menu.findItem(R.id.login_button).setTitle(R.string.account_button);
+            menu.findItem(R.id.logout_button).setVisible(true);
+        } else {
+            menu.findItem(R.id.login_button).setTitle(R.string.login_button);
+            menu.findItem(R.id.logout_button).setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 }
