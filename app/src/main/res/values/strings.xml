@@ -27,6 +27,7 @@
     <string name="password_field">Password</string>
 
     <string name="login_button">Sign in »</string>
+    <string name="signup_button">Sign up »</string>
     <string name="logout_button">Log out</string>
     <string name="account_button">My account »</string>
     <string name="back_button">Back</string>

@@ -59,10 +59,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void setupButton() {
+    private void setupButtons() {
         mLoginButton = findViewById(R.id.login_button);
         mLoginButton.setText(R.string.login_button);
         mLoginButton.setOnClickListener(view -> attemptLogin());
+
+        Button mSignupButton = findViewById(R.id.signup_button);
+        mSignupButton.setText(R.string.signup_button);
+        mSignupButton.setOnClickListener(view -> openSignUpForm(view));
     }
 
     @Override
@@ -74,13 +78,18 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize UI
         setupFields();
-        setupButton();
+        setupButtons();
 
         mProgressBar = findViewById(R.id.sign_in_progress_bar);
         mProgressBar.setVisibility(View.INVISIBLE);
 
         Toolbar toolbar = findViewById(R.id.login_toolbar);
         setSupportActionBar(toolbar);
+    }
+
+    private void openSignUpForm(View view) {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
     }
 
     private void attemptLogin() {
