@@ -11,20 +11,20 @@
         android:id="@+id/event_image"
         android:layout_width="0dp"
         android:layout_height="91dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/contentDescription_main_fragment_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@color/colorSecondaryLight"
-        android:contentDescription="@string/contentDescription_main_fragment_image"/>
+        app:srcCompat="@android:color/white" />
 
     <TextView
         android:id="@+id/event_description"
