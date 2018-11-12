@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository;
 
+import ch.epfl.sweng.eventmanager.repository.impl.FirebaseNewsRepository;
 import dagger.Binds;
 import dagger.Module;
 

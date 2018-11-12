@@ -114,7 +114,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'test
             '**/*Subcomponent$Builder.class',
             '**/*_*Factory.class',
             '**/*_Impl*.class',
-            '**/*_*ViewBinding.class'
+            '**/*_*ViewBinding.class',
+            '**/repository/impl/*.class'
     ]
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/classes/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"
