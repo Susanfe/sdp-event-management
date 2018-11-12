@@ -16,6 +16,12 @@
     tools:context=".ui.eventSelector.EventPickingActivity"
     android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Toolbar"
+        android:id="@+id/event_picking_toolbar"/>
+
     <TextView
                     android:id="@+id/help_text"
                     android:layout_width="match_parent"
@@ -42,6 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/not_joined_help_text"
                     android:textStyle="italic" android:gravity="center_horizontal"/>
+
             <android.support.v7.widget.RecyclerView
                     android:id="@+id/not_joined_event_list"
                     android:layout_width="match_parent"
