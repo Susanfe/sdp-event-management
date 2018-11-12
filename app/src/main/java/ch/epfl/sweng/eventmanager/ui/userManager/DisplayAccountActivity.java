@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.userManagement.Session;
+import ch.epfl.sweng.eventmanager.users.Session;
 
 public class DisplayAccountActivity extends AppCompatActivity {
 
