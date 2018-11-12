@@ -80,7 +80,7 @@ public class LoginActivityTest {
         onView(withId(R.id.logout_button))
                 .perform(click());
 
-        openContextualActionModeOverflowMenu();
+        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
 
         onView(withText("Sign in"))
                 .perform(click());
