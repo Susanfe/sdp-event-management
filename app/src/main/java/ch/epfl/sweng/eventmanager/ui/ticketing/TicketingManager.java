@@ -5,7 +5,6 @@ import android.content.Intent;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingServiceManager;
-import ch.epfl.sweng.eventmanager.ticketing.impl.TicketingServiceImpl;
 
 import javax.inject.Inject;
 

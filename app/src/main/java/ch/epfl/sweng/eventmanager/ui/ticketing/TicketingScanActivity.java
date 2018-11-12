@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
-import ch.epfl.sweng.eventmanager.ticketing.impl.TicketingServiceImpl;
+import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
 import com.google.zxing.BarcodeFormat;
@@ -35,15 +35,59 @@ import java.util.Map;
  * @author Louis Vialar
  */
 public final class TicketingScanActivity extends TicketingActivity {
+    public static final String SELECTED_CONFIG_ID = "ch.epfl.sweng.SELECTED_CONFIG_ID";
     private static final String TAG = "TicketingScanActivity";
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
-
-    public static final String SELECTED_CONFIG_ID = "ch.epfl.sweng.SELECTED_CONFIG_ID";
-
     private int configId = -1;
 
     private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult result) {
+            barcodeView.pause();
+            barcodeView.setStatusText(result.getText());
+            TextView view = findViewById(R.id.barcodePreview);
+            view.setText(R.string.loading_text);
+
+            try {
+                service.scan(configId, result.getText(), new TicketingService.ApiCallback<ScanResult>() {
+                    @Override
+                    public void onSuccess(ScanResult data) {
+                        beepManager.playBeepSoundAndVibrate();
+
+                        view.setText(buildHtml(data));
+
+                        barcodeView.setStatusText("");
+                        Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_success, Toast.LENGTH_SHORT).show();
+                        barcodeView.resume();
+                    }
+
+                    @Override
+                    public void onFailure(List<ApiResult.ApiError> errors) {
+                        beepManager.playBeepSoundAndVibrate();
+
+                        view.setText(buildHtmlForError(errors));
+
+                        barcodeView.setStatusText("");
+                        Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_failure, Toast.LENGTH_SHORT).show();
+                        barcodeView.resume();
+                    }
+                });
+            } catch (NotAuthenticatedException e) {
+                Toast.makeText(TicketingScanActivity.this, R.string.ticketing_requires_login, Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+
+                startActivity(switchActivity(TicketingLoginActivity.class));
+                finish();
+            }
+
+        }
+
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+        }
+    };
 
     private void appendSuccessData(ScanResult data, StringBuilder html) {
         if (data.getUser() != null) {
@@ -111,53 +155,6 @@ public final class TicketingScanActivity extends TicketingActivity {
 
         return Html.fromHtml(html.toString());
     }
-
-    private BarcodeCallback callback = new BarcodeCallback() {
-        @Override
-        public void barcodeResult(BarcodeResult result) {
-            barcodeView.pause();
-            barcodeView.setStatusText(result.getText());
-            TextView view = findViewById(R.id.barcodePreview);
-            view.setText(R.string.loading_text);
-
-            try {
-                service.scan(configId, result.getText(), new TicketingServiceImpl.ApiCallback<ScanResult>() {
-                    @Override
-                    public void onSuccess(ScanResult data) {
-                        beepManager.playBeepSoundAndVibrate();
-
-                        view.setText(buildHtml(data));
-
-                        barcodeView.setStatusText("");
-                        Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_success, Toast.LENGTH_SHORT).show();
-                        barcodeView.resume();
-                    }
-
-                    @Override
-                    public void onFailure(List<ApiResult.ApiError> errors) {
-                        beepManager.playBeepSoundAndVibrate();
-
-                        view.setText(buildHtmlForError(errors));
-
-                        barcodeView.setStatusText("");
-                        Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_failure, Toast.LENGTH_SHORT).show();
-                        barcodeView.resume();
-                    }
-                });
-            } catch (NotAuthenticatedException e) {
-                Toast.makeText(TicketingScanActivity.this, R.string.ticketing_requires_login, Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-
-                startActivity(switchActivity(TicketingLoginActivity.class));
-                finish();
-            }
-
-        }
-
-        @Override
-        public void possibleResultPoints(List<ResultPoint> resultPoints) {
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

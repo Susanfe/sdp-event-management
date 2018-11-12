@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ticketing.impl.TicketingServiceImpl;
+import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import dagger.android.AndroidInjection;
 
@@ -74,11 +74,6 @@ public final class TicketingLoginActivity extends TicketingActivity {
         return false;
     }
 
-    public static interface Validator {
-        // Replaces Function<String,Boolean> that is not available at this API level
-        boolean apply(String value);
-    }
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -104,7 +99,7 @@ public final class TicketingLoginActivity extends TicketingActivity {
             // perform the user login attempt.
             showProgress(true);
 
-            service.login(email, password, new TicketingServiceImpl.ApiCallback<Void>() {
+            service.login(email, password, new TicketingService.ApiCallback<Void>() {
                 @Override
                 public void onSuccess(Void data) {
                     Intent openIntent = switchActivity(getNextActivityForState(service));
@@ -159,6 +154,11 @@ public final class TicketingLoginActivity extends TicketingActivity {
                 mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             }
         });
+    }
+
+    public static interface Validator {
+        // Replaces Function<String,Boolean> that is not available at this API level
+        boolean apply(String value);
     }
 
 }
