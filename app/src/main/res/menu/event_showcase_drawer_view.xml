@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_main"
-            android:title="@string/main_nav_item_activity_event_showcase" />
+                android:id="@+id/nav_main"
+                android:title="@string/main_nav_item_activity_event_showcase"/>
         <item
-            android:id="@+id/nav_map"
-            android:title="@string/map_nav_item_activity_event_showcase" />
+                android:id="@+id/nav_news"
+                android:title="@string/news_nav_item_activity_event_showcase"/>
         <item
-            android:id="@+id/nav_schedule"
-            android:title="@string/schedule_nav_item_activity_event_showcase" />
+                android:id="@+id/nav_map"
+                android:title="@string/map_nav_item_activity_event_showcase"/>
         <item
-            android:id="@+id/nav_tickets"
-            android:title="@string/ticket_nav_item_activity_event_showcase" />
+                android:id="@+id/nav_schedule"
+                android:title="@string/schedule_nav_item_activity_event_showcase"/>
         <item
             android:id="@+id/nav_admin"
             android:title="@string/admin_nav_item_activity_event_showcase"
             android:visible="false" />
         <item
+            android:id="@+id/nav_tickets"
+            android:title="@string/ticket_nav_item_activity_event_showcase"/>
+        <item
             android:id="@+id/nav_pick_event"
-            android:title="@string/pick_event_nav_item_activity_event_showcase" />
+            android:title="@string/pick_event_nav_item_activity_event_showcase"/>
     </group>
 </menu>

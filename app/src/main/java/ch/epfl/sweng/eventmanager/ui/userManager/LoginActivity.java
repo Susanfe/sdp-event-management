@@ -2,11 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.userManager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,9 +14,9 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.users.Session;
 import dagger.android.AndroidInjection;
 
 /**
@@ -29,9 +25,6 @@ import dagger.android.AndroidInjection;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
-
-    // Login task.
-    private FirebaseAuth mAuth;
 
     // UI references.
     private EditText mEmailView;
@@ -78,9 +71,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-
         // Initialize UI
         setupFields();
         setupButton();
@@ -117,8 +107,7 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, getSignInOnCompleteListener(this));
+            Session.login(email, password, this, getSignInOnCompleteListener(this));
         }
     }
 

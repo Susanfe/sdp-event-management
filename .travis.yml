@@ -20,6 +20,8 @@ before_script:
   - adb shell settings put global window_animation_scale 0.0
   - adb shell settings put global transition_animation_scale 0.0
   - adb shell settings put global animator_duration_scale 0.0
+  # Set twitter key
+  - sed -i 's/${CONSUMER_SECRET}/$TWITTER_CONSUMMER_SECRET/' app/src/main/res/values/twitter.xml
     # Set up Code Climate test reporter
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter

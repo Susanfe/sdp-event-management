@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import ch.epfl.sweng.eventmanager.inject.DaggerApplicationComponent;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
+import com.twitter.sdk.android.core.Twitter;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 
@@ -26,8 +27,7 @@ public class EventManagerApplication extends Application implements HasActivityI
                 .build()
                 .inject(this);
 
-        System.out.println(this.activityDispatchingAndroidInjector);
-
+        Twitter.initialize(this);
     }
 
     @Override

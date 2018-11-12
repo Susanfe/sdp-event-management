@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
  * @author Louis Vialar
  */
 public class Position {
-    public static final Position EPFL = new Position(46.518510, 6.563249);;
+    public static final Position EPFL = new Position(46.518510, 6.563249);
 
     /**
      * The latitude of the position
@@ -40,5 +40,13 @@ public class Position {
      */
     public LatLng asLatLng() {
         return new LatLng(latitude, longitude);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Position) {
+            Position other = (Position) obj;
+            return other.getLongitude() == getLongitude() && other.getLatitude() == getLatitude();
+        } else return false;
     }
 }

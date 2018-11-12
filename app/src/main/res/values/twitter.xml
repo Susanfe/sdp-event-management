@@ -1,0 +1,4 @@
+<resources>
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">6rVEVukDmWSP0vjYVbP3JWHrH</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">${CONSUMER_SECRET}</string>
+</resources>

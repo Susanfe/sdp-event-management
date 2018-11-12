@@ -21,5 +21,4 @@ public final class FirebaseBackedUser implements User {
     public String getEmail() {
         return firebaseUser.getEmail();
     }
-
 }
