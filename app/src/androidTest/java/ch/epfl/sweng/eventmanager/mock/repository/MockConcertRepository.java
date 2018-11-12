@@ -15,6 +15,7 @@ public class MockConcertRepository {
     private static final String TAG = "ConcertRepository";
     private List<ScheduledItem> concerts = new ArrayList<>();
 
+    @Inject
     public MockConcertRepository() {
         ScheduledItem c1 = new ScheduledItem(new Date(2018, 16, 5), "Michael Jackson", "Pop", "Il est rescussité !", 3, UUID.randomUUID(), "Concert", "Polyv");
         ScheduledItem c2 = new ScheduledItem(new Date(2018, 16, 6), "Daft Punk", "Pop", "Les frenchies en force", 1.75, UUID.randomUUID(), "Concert", "Polyv");

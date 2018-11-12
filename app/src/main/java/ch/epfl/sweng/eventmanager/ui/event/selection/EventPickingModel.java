@@ -4,14 +4,14 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 
 import javax.inject.Inject;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * This is the model for the event list. It connects with the repository to pull a list of events and communicate them
@@ -20,7 +20,7 @@ import java.util.Collections;
  * @author Louis Vialar
  */
 public class EventPickingModel extends ViewModel {
-    private LiveData<List<Event>> events;
+    private LiveData<? extends Collection<Event>> events;
 
     private EventRepository eventRepository;
     private JoinedEventRepository joinedEventRepository;

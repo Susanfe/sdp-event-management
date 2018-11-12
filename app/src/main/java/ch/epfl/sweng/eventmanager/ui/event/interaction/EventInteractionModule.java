@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.SendNewsFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
 import dagger.Binds;
@@ -38,6 +39,9 @@ public abstract class EventInteractionModule {
 
     @ContributesAndroidInjector
     abstract EventShowcaseActivity contributeEventShowcaseActivityInjector();
+
+    @ContributesAndroidInjector
+    abstract SendNewsFragment contributeSendNewsFragmentInjector();
 
     @ContributesAndroidInjector
     abstract EventAdministrationActivity contributeEventAdminsitrationActivityInjector();

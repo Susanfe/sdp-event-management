@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 
 /**
@@ -42,5 +43,9 @@ public abstract class AbstractShowcaseFragment extends Fragment {
         if (model == null) {
             model = ViewModelProviders.of(getActivity()).get(EventInteractionModel.class);
         }
+    }
+
+    public EventShowcaseActivity getParentActivity() {
+        return (EventShowcaseActivity) getActivity();
     }
 }
