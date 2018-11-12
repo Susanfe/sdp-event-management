@@ -9,6 +9,8 @@ import ch.epfl.sweng.eventmanager.repository.data.DummyUser;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
 
+import java.util.HashSet;
+
 /**
  * Dummy InMemorySession class, only used in tests.
  */
