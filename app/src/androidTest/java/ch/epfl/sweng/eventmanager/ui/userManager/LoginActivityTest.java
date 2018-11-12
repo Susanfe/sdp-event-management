@@ -1,6 +1,8 @@
 package ch.epfl.sweng.eventmanager.ui.userManager;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -78,8 +80,10 @@ public class LoginActivityTest {
         onView(withId(R.id.logout_button))
                 .perform(click());
 
-        onView(withId(R.id.login_button))
-                .check(matches(withText(containsString(getResourceString(R.string.login_button)))));
+        openContextualActionModeOverflowMenu();
+
+        onView(withText("Sign in"))
+                .perform(click());
     }
 
     @Test
