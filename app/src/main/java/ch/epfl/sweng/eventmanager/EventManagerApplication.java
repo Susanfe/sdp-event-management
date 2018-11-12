@@ -28,7 +28,6 @@ public class EventManagerApplication extends Application implements HasActivityI
                 .builder()
                 .application(this)
                 .room(new RoomModule(this))
-                .repositories(new RepositoriesModule())
                 .build()
                 .inject(this);
     }

@@ -14,6 +14,7 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.TimelineResult;
 import com.twitter.sdk.android.tweetui.UserTimeline;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
 public class FirebaseNewsRepository implements NewsRepository {
     private static final String TAG = "FirebaseNewsRepository";
 
+    @Inject
     public FirebaseNewsRepository() {
     }
 

@@ -33,8 +33,6 @@ public interface ApplicationComponent {
 
         Builder room(RoomModule roomModule);
 
-        Builder repositories(RepositoriesModule module);
-
         ApplicationComponent build();
     }
 }

@@ -18,10 +18,15 @@ public class ObservableList<T> extends MutableLiveData<List<T>> {
     }
 
     public void notifyChanged() {
-        this.setValue(underlyingList);
+        this.postValue(underlyingList);
     }
 
     public List<T> getUnderlyingList() {
         return underlyingList;
+    }
+
+    public void clear() {
+        this.underlyingList.clear();
+        this.notifyChanged();
     }
 }

@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.mock.repository;
+package ch.epfl.sweng.eventmanager.test.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
@@ -9,13 +9,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.twitter.sdk.android.core.models.Tweet;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Louis Vialar
  */
 public class MockNewsRepository implements NewsRepository {
     private Map<Integer, ObservableList<News>> news = new HashMap<>();
+    private boolean nextWillFail = false;
 
     private ObservableList<News> getOrCreateNews(int eventId) {
         if (!news.containsKey(eventId)) {
@@ -29,6 +33,11 @@ public class MockNewsRepository implements NewsRepository {
 
     @Override
     public Task<Void> publishNews(int eventId, News news) {
+        if (nextWillFail) {
+            nextWillFail = false;
+            return Tasks.forException(new Exception());
+        }
+
         getOrCreateNews(eventId).add(news);
 
         System.err.println("Created news " + news + " in event " + eventId);
@@ -44,5 +53,15 @@ public class MockNewsRepository implements NewsRepository {
     @Override
     public LiveData<List<Tweet>> getTweets(String screenName) {
         return new MutableLiveData<>();
+    }
+
+    public void setNextInsertToFail() {
+        nextWillFail = true;
+    }
+
+    public void clearNews() {
+        for (ObservableList<News> news : this.news.values()) {
+            news.clear();
+        }
     }
 }

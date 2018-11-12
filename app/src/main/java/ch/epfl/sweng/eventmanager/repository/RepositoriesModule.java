@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository;
 
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 
 import javax.inject.Singleton;
 
@@ -9,9 +9,9 @@ import javax.inject.Singleton;
  * @author Louis Vialar
  */
 @Module
-public class RepositoriesModule {
-    @Provides @Singleton
-    public NewsRepository providesNewsRepository() {
-        return new FirebaseNewsRepository();
-    }
+public abstract class RepositoriesModule {
+    @Binds
+    @Singleton
+    abstract NewsRepository providesNewsRepository(FirebaseNewsRepository repository);
+
 }
