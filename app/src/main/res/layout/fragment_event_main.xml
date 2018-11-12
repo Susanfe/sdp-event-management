@@ -45,25 +45,28 @@
         android:id="@+id/main_fragment_button_bar">
 
         <Button
+            android:id="@+id/main_fragment_news"
+            style="@style/Button_barButton_left"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="33"
-            android:text="@string/main_fragment_button_news"
-            style="@style/Button_barButton_left"/>
+            android:text="@string/main_fragment_button_news" />
 
         <Button
+            android:id="@+id/main_fragment_schedule"
+            style="@style/Button_barButton_middle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="33"
-            android:text="@string/main_fragment_button_schedule"
-            style="@style/Button_barButton_middle"/>
+            android:text="@string/main_fragment_button_schedule" />
 
         <Button
+            android:id="@+id/main_fragment_map"
+            style="@style/Button_barButton_right"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="33"
-            android:text="@string/main_fragment_button_map"
-            style="@style/Button_barButton_right"/>
+            android:text="@string/main_fragment_button_map" />
 
     </LinearLayout>
 
@@ -91,10 +94,9 @@
             style="@style/Button_global"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:layout_centerInParent="true"
-            android:text="@string/contact_form_main_go_button"
-            />
+            android:layout_margin="8dp"
+            android:text="@string/contact_form_main_go_button" />
 
     </RelativeLayout>
 

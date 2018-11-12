@@ -1,15 +1,25 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleParentFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +28,15 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
  */
 public class EventMainFragment extends AbstractShowcaseFragment {
     private static final String TAG = "EventMainFragment";
+
+    @BindView(R.id.contact_form_go_button)
+    Button contactButton;
+    @BindView(R.id.main_fragment_news)
+    Button news;
+    @BindView(R.id.main_fragment_schedule)
+    Button schedule;
+    @BindView(R.id.main_fragment_map)
+    Button map;
 
     public EventMainFragment() {
         // Required empty public constructor
@@ -39,10 +58,6 @@ public class EventMainFragment extends AbstractShowcaseFragment {
 
             TextView eventDescription = view.findViewById(R.id.event_description);
             eventDescription.setText(ev.getDescription());
-            Button contactButton = view.findViewById(R.id.contact_form_go_button);
-            contactButton.setOnClickListener(v ->
-                    ((EventShowcaseActivity)getActivity()).changeFragment(
-                            new EventFormFragment(), true));
 
             ImageView eventLogo = view.findViewById(R.id.event_image);
             model.getEventImage().observe(this, eventLogo::setImageBitmap);
@@ -56,5 +71,29 @@ public class EventMainFragment extends AbstractShowcaseFragment {
                 else this.model.unjoinEvent(ev);
             });
         });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        ButterKnife.bind(this, view);
+
+        // FIXME Handle NullPointerExceptions from the ChangeFragment
+        contactButton.setOnClickListener(v ->
+                ((EventShowcaseActivity)getActivity()).changeFragment(
+                        new EventFormFragment(), true));
+
+        news.setOnClickListener(v -> ((EventShowcaseActivity)getActivity()).changeFragment(
+                new NewsFragment(), true));
+
+        map.setOnClickListener(v -> ((EventShowcaseActivity)getActivity()).changeFragment(
+                new EventMapFragment(), true));
+
+        schedule.setOnClickListener(v -> ((EventShowcaseActivity)getActivity()).changeFragment(
+                new ScheduleParentFragment(), true));
+
+        return view;
+
     }
 }
