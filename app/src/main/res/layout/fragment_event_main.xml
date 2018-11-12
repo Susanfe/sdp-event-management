@@ -57,6 +57,7 @@
 
     <Button
         android:id="@+id/contact_form_go_button"
+        style="@style/Button_global"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -70,6 +71,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/event_description"
-        app:layout_constraintVertical_bias="0.0"
-        style="@style/Button_global"/>
+        app:layout_constraintVertical_bias="0.645" />
 </android.support.constraint.ConstraintLayout>
