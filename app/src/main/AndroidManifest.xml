@@ -27,11 +27,9 @@
                 android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -43,9 +41,8 @@
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_maps_key"/>
-
+      
         <activity android:name=".ui.eventSelector.EventPickingActivity"/>
-
         <activity
                 android:name=".ui.userManager.LoginActivity"
                 android:label="@string/title_activity_login"/>
@@ -57,15 +54,16 @@
                 android:theme="@style/AppTheme.NoActionBar"/>
 
         <provider
-                android:name="android.support.v4.content.FileProvider"
-                android:authorities="ch.epfl.sweng.eventmanager.fileprovider"
-                android:exported="false"
-                android:grantUriPermissions="true">
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="ch.epfl.sweng.eventmanager.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
-                    android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/file_paths"/>
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
         </provider>
 
+        <activity android:name=".ui.eventAdministration.EventAdministrationActivity"></activity>
         <receiver android:name=".notifications.NotificationPublisher"/>
 
     </application>
