@@ -19,11 +19,10 @@ import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.userManager.LoginActivity;
-import ch.epfl.sweng.eventmanager.userManagement.Session;
+import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.common.data.DataBufferObserver;
 import dagger.android.AndroidInjection;
-
 import javax.inject.Inject;
 import java.util.Collections;
 
