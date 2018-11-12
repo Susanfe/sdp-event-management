@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
-    tools:context=".ui.eventShowcase.fragments.EventMainFragment">
+    tools:context=".ui.eventShowcase.fragments.EventMainFragment"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/event_image"
-        android:layout_width="0dp"
-        android:layout_height="91dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="35"
+        android:layout_margin="8dp"
         android:contentDescription="@string/main_fragment_image_contentDescription"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,76 +26,76 @@
     <TextView
         android:id="@+id/event_description"
         android:layout_width="367dp"
-        android:layout_height="247dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_height="0dp"
+        android:layout_weight="35"
+        android:layout_margin="8dp"
         android:text="@string/main_fragment_error_no_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/event_image" />
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="?attr/buttonBarStyle"
-        app:layout_constraintBottom_toBottomOf="@id/event_description">
-
-        <Button
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="33"
-            android:text="Button1"/>
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        android:id="@+id/main_fragment_button_bar">
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="33"
-            style="?attr/buttonBarButtonStyle"
-            android:text="button2"/>
+            android:text="@string/main_fragment_button_news"
+            style="@style/Button_barButton_left"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="33"
-            style="?attr/buttonBarButtonStyle"
-            android:text="Button3"/>
+            android:text="@string/main_fragment_button_schedule"
+            style="@style/Button_barButton_middle"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:text="@string/main_fragment_button_map"
+            style="@style/Button_barButton_right"/>
 
     </LinearLayout>
 
-    <Switch
-        android:id="@+id/join_event_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/title_activity_join_event_switch"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_description"
-        app:layout_constraintVertical_bias="0.929" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="20"
+        android:id="@+id/main_fragment_relative">
 
-    <Button
-        android:id="@+id/contact_form_go_button"
-        style="@style/Button_global"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/contact_form_main_go_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_description"
-        app:layout_constraintVertical_bias="0.645" />
-</android.support.constraint.ConstraintLayout>
+        <Switch
+            android:id="@+id/join_event_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="8dp"
+            android:text="@string/title_activity_join_event_switch"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.929"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:id="@+id/contact_form_go_button"
+            style="@style/Button_global"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_centerInParent="true"
+            android:text="@string/contact_form_main_go_button"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

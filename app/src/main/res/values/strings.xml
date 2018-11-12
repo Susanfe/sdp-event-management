@@ -68,4 +68,7 @@
 
     <string name="main_fragment_image_contentDescription">Image representing the event</string>
     <string name="main_fragment_error_no_description">Could not load event description.</string>
+    <string name="main_fragment_button_news">News</string>
+    <string name="main_fragment_button_map">Map</string>
+    <string name="main_fragment_button_schedule">Schedule</string>
 </resources>
