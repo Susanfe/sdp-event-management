@@ -9,7 +9,10 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.Gravity;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,15 +29,16 @@ import static androidx.test.espresso.Espresso.onIdle;
 @RunWith(AndroidJUnit4.class)
 public class EventShowcaseActivityTest {
     @Rule
-    public final ActivityTestRule<EventShowcaseActivity> mActivityRule =
-            new ActivityTestRule<>(EventShowcaseActivity.class);
+    public final EventTestRule<EventShowcaseActivity> mActivityRule =
+            new EventTestRule<>(EventShowcaseActivity.class);
+
+    @After
+    public void remove() {
+        mActivityRule.finishActivity();
+    }
 
     @Test
     public void testNavigation() {
-        Intent intent = new Intent();
-        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 1);
-        mActivityRule.launchActivity(intent);
-
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.LEFT)))
                 .perform(DrawerActions.open());
@@ -54,14 +58,10 @@ public class EventShowcaseActivityTest {
                 .perform(DrawerActions.open());
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_map));
         pressBack();
-        pressBack();
     }
 
     @Test
     public void openEventPicker() {
-        Intent intent = new Intent();
-        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 1);
-        mActivityRule.launchActivity(intent);
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
@@ -80,9 +80,14 @@ public class EventShowcaseActivityTest {
 
     @Test
     public void testEventPicking() {
-        Intent intent = new Intent();
-        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 1);
-        mActivityRule.launchActivity(intent);
+        onView(withId(R.id.drawer_layout))
+                .check(matches(isClosed(Gravity.LEFT)))
+                .perform(DrawerActions.open());
+
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
+
+        onView(withText("Event without items")).perform(click());
 
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.LEFT)))
@@ -91,16 +96,7 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
 
-        onView(withText("Sysmic")).perform(click());
-
-        onView(withId(R.id.drawer_layout))
-                .check(matches(isClosed(Gravity.LEFT)))
-                .perform(DrawerActions.open());
-
-        onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
-
-        onView(withText("Japan Impact")).perform(click());
+        onView(withText("Event with scheduled items")).perform(click());
 
     }
 

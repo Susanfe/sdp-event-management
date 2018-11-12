@@ -6,29 +6,43 @@
         tools:context=".ui.eventShowcase.fragments.NewsFragment"
         android:layout_marginTop="?android:attr/actionBarSize">
 
-
-    <RelativeLayout android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/news_relative_layout">
-
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:clipToPadding="false"
-                tools:listitem="@layout/item_news"/>
-
-    </RelativeLayout>
-
-    <TextView
-            android:text="@string/news_empty"
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/news_empty_tv"
-            android:gravity="center"
-            app:layout_anchorGravity="center_vertical|center_horizontal"
-            app:layout_anchor="@+id/news_relative_layout" android:visibility="gone"/>
+            android:layout_height="wrap_content">
 
+        <Button
+                android:text="@string/news_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/news_create_button"
+                android:gravity="center"
+                app:layout_anchorGravity="center_horizontal"
+                app:layout_anchor="@+id/news_relative_layout" android:visibility="gone"/>
+
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/news_relative_layout">
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:clipToPadding="false"
+                    tools:listitem="@layout/item_news"/>
+
+        </RelativeLayout>
+
+        <TextView
+                android:text="@string/news_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/news_empty_tv"
+                android:gravity="center"
+                app:layout_anchorGravity="center_vertical|center_horizontal"
+                app:layout_anchor="@+id/news_relative_layout" android:visibility="gone"/>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

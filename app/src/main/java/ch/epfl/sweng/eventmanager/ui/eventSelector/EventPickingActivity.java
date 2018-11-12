@@ -6,130 +6,165 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.userManager.LoginActivity;
-import ch.epfl.sweng.eventmanager.userManagement.Session;
+import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
+import com.google.android.gms.common.data.DataBufferObserver;
 import dagger.android.AndroidInjection;
-
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.Collections;
 
 public class EventPickingActivity extends AppCompatActivity {
-    private EventPickingModel model;
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
     @Inject
     ViewModelFactory factory;
-
-    private TextView joinedHelpText;
-    private TextView notJoinedHelpText;
-    private RecyclerView joinedEvents;
-    private RecyclerView notJoinedEvents;
+    @BindView(R.id.joined_help_text)
+    TextView joinedHelpText;
+    @BindView(R.id.not_joined_help_text)
+    TextView notJoinedHelpText;
+    @BindView(R.id.help_text)
+    TextView helpText;
+    @BindView(R.id.joined_events_list)
+    RecyclerView joinedEvents;
+    @BindView(R.id.not_joined_event_list)
+    RecyclerView eventList;
+    private Menu menu;
+    private EventPickingModel model;
 
     private void setupRecyclerView(RecyclerView view) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         view.setLayoutManager(layoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                view.getContext(),
-                layoutManager.getOrientation()
-        );
-        view.addItemDecoration(dividerItemDecoration);
-
         // Set an empty list adapter
         view.setAdapter(new EventListAdapter(Collections.emptyList()));
     }
 
     private void setupObservers() {
-        this.model = ViewModelProviders.of(this, factory).get(EventPickingModel.class);
-        this.model.init();
         this.model.getEventsPair().observe(this, list -> {
             if (list == null) {
                 return;
             }
-
-            notJoinedEvents.setAdapter(new EventListAdapter(list.getOtherEvents()));
+            eventList.setAdapter(new EventListAdapter(list.getOtherEvents()));
             joinedEvents.setAdapter(new EventListAdapter(list.getJoinedEvents()));
 
+            //once data is loaded
+            helpText.setVisibility(View.VISIBLE);
+
             if (!list.getJoinedEvents().isEmpty()) {
-                joinedHelpText.setVisibility(View.VISIBLE);
-                notJoinedHelpText.setVisibility(View.VISIBLE);
+                if (list.getOtherEvents().isEmpty()) {
+                    joinedEvents.setVisibility(View.VISIBLE);
+                    eventList.setVisibility(View.GONE);
+                    joinedHelpText.setVisibility(View.VISIBLE);
+                    notJoinedHelpText.setVisibility(View.GONE);
+                } else {
+                    joinedEvents.setVisibility(View.VISIBLE);
+                    eventList.setVisibility(View.VISIBLE);
+                    joinedHelpText.setVisibility(View.VISIBLE);
+                    notJoinedHelpText.setVisibility(View.VISIBLE);
+                }
             } else {
-                joinedHelpText.setVisibility(View.INVISIBLE);
-                notJoinedHelpText.setVisibility(View.INVISIBLE);
+                joinedEvents.setVisibility(View.GONE);
+                eventList.setVisibility(View.VISIBLE);
+                joinedHelpText.setVisibility(View.GONE);
+                notJoinedHelpText.setVisibility(View.GONE);
             }
         });
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
-
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_picking);
+        AndroidInjection.inject(this);
+        super.onCreate(savedInstanceState);
+        this.model = ViewModelProviders.of(this, factory).get(EventPickingModel.class);
+        this.model.init();
+        ButterKnife.bind(this);
+        Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
+        setSupportActionBar(toolbar);
+        setupObservers();
+
 
         // Help text
         // Both invisible by default
-        joinedHelpText = findViewById(R.id.joined_help_text);
-        joinedHelpText.setVisibility(View.INVISIBLE);
-
-        TextView helpText = findViewById(R.id.help_text);
+        joinedHelpText.setVisibility(View.GONE);
         helpText.setTypeface(helpText.getTypeface(), Typeface.BOLD);
         helpText.setText(R.string.help_text_activity_event_picking);
+        helpText.setVisibility(View.GONE);
 
         // Event list
-        RecyclerView eventList = findViewById(R.id.event_list);
         eventList.setHasFixedSize(true);
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
-        DividerItemDecoration eventListDividerItemDecoration = new DividerItemDecoration(
-                eventList.getContext(),
-                eventListLayoutManager.getOrientation()
-        );
-        eventList.addItemDecoration(eventListDividerItemDecoration);
-
-        notJoinedHelpText = findViewById(R.id.not_joined_help_text);
-        notJoinedHelpText.setVisibility(View.INVISIBLE);
+        notJoinedHelpText.setVisibility(View.GONE);
 
         // Event lists
-        notJoinedEvents = eventList;
-        joinedEvents = findViewById(R.id.joined_events_list);
 
-        setupRecyclerView(notJoinedEvents);
+        setupRecyclerView(eventList);
+        eventList.setVisibility(View.GONE);
         setupRecyclerView(joinedEvents);
-
-        setupObservers();
-
-        // Login button
-        Button loginButton = findViewById(R.id.login_button);
-        if (Session.isLoggedIn()) {
-            loginButton.setText(R.string.account_button);
-        } else {
-            loginButton.setText(R.string.login_button);
-        }
-
-        // Toolbar setup
-        Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
-        setSupportActionBar(toolbar);
+        eventList.setVisibility(View.GONE);
     }
 
-    public void openLoginOrAccountActivity(View view) {
-       Class nextActivity;
-       if (Session.isLoggedIn()) {
-           nextActivity = DisplayAccountActivity.class;
-       } else {
-           nextActivity = LoginActivity.class;
-       }
-       Intent intent = new Intent(this, nextActivity);
-       startActivity(intent);
+    private void openLoginOrAccountActivity() {
+        Class nextActivity;
+        if (Session.isLoggedIn()) {
+            nextActivity = DisplayAccountActivity.class;
+        } else {
+            nextActivity = LoginActivity.class;
+        }
+        Intent intent = new Intent(this, nextActivity);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.menu_event_picking,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.login_button :
+                openLoginOrAccountActivity();
+                break;
+
+            case R.id.logout_button :
+                Session.logout();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (Session.isLoggedIn()) {
+            menu.findItem(R.id.login_button).setTitle(R.string.account_button);
+            menu.findItem(R.id.logout_button).setVisible(true);
+        } else {
+            menu.findItem(R.id.login_button).setTitle(R.string.login_button);
+            menu.findItem(R.id.logout_button).setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 }

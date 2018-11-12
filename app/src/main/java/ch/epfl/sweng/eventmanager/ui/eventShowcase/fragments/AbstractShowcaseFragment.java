@@ -3,11 +3,10 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 
 /**
@@ -43,5 +42,9 @@ public abstract class AbstractShowcaseFragment extends Fragment {
         if (model == null) {
             model = ViewModelProviders.of(getActivity()).get(EventShowcaseModel.class);
         }
+    }
+
+    public EventShowcaseActivity getParentActivity() {
+        return (EventShowcaseActivity) getActivity();
     }
 }
