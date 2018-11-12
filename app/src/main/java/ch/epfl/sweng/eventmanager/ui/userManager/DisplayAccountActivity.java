@@ -10,17 +10,24 @@ import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
+import dagger.android.AndroidInjection;
+
+import javax.inject.Inject;
 
 public class DisplayAccountActivity extends AppCompatActivity {
+    @Inject
+    Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_account);
 
         // We assume the user is logged in when the activity is opened.
         TextView helpText = (TextView) findViewById(R.id.main_text);
-        helpText.setText("Logged as: " + Session.getCurrentUser().getEmail());
+        helpText.setText("Logged as: " + session.getCurrentUser().getEmail());
 
 
         Button logoutButton = (Button) findViewById(R.id.logout_button);
@@ -35,7 +42,7 @@ public class DisplayAccountActivity extends AppCompatActivity {
     }
 
     public void logoutThenRedirectToEventSelector(View view) {
-        Session.logout();
+        session.logout();
         openEventSelector(view);
     }
 }

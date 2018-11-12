@@ -1,16 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.userManager;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.containsString;
-
 import android.content.Context;
 import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
@@ -19,30 +8,25 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
-
+import ch.epfl.sweng.eventmanager.R;
 import junit.framework.AssertionFailedError;
-
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.users.Session;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.*;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static org.hamcrest.CoreMatchers.containsString;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityTest {
-    int MAX_RETRY_COUNT = 10;
-
-    @Before
-    public void disableFirebaseAuth() {
-        Session.enforceDummySessions();
-    }
-
     @Rule
     public final ActivityTestRule<LoginActivity> mActivityRule =
             new ActivityTestRule<>(LoginActivity.class);
+    int MAX_RETRY_COUNT = 10;
 
     @Test
     public void testSuccessfulLogin() {
@@ -66,7 +50,7 @@ public class LoginActivityTest {
                 break;
             } catch (AssertionFailedError e) {
                 Log.w("testSuccessfulLogin", "Waiting for authentication...");
-            } catch(NoMatchingViewException e) {
+            } catch (NoMatchingViewException e) {
                 // If the view does not exist, we switched to another activity!
                 break;
             }
@@ -107,7 +91,7 @@ public class LoginActivityTest {
                 break;
             } catch (AssertionFailedError e) {
                 Log.w("testSuccessfulLogin", "Waiting for authentication...");
-            } catch(NoMatchingViewException e) {
+            } catch (NoMatchingViewException e) {
                 // If the view does not exist, we switched to another activity!
                 break;
             }

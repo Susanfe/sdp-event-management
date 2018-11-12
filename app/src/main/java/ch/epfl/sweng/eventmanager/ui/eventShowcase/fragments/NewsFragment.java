@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +24,9 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.tweetui.CompactTweetView;
+import dagger.android.support.AndroidSupportInjection;
 
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,10 +39,19 @@ public class NewsFragment extends AbstractShowcaseFragment {
     TextView emptyListTextView;
     @BindView(R.id.news_create_button)
     Button newsCreateButton;
+    @Inject
+    Session session;
     private NewsAdapter newsAdapter;
 
     public NewsFragment() {
         super(R.layout.fragment_news);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+
+        super.onAttach(context);
     }
 
     @Override
@@ -71,7 +83,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
         }
 
         super.model.getEvent().observe(this, ev -> {
-            if (Session.isClearedFor(Role.ADMIN, ev)) {
+            if (session.isClearedFor(Role.ADMIN, ev)) {
                 newsCreateButton.setVisibility(View.VISIBLE);
             } else {
                 newsCreateButton.setVisibility(View.GONE);

@@ -5,8 +5,7 @@ import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.*;
 import ch.epfl.sweng.eventmanager.test.ObservableMap;
-import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
-import ch.epfl.sweng.eventmanager.users.Role;
+import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

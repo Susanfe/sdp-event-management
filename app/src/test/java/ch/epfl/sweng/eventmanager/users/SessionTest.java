@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.users;
 
+import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,17 +13,22 @@ import java.util.List;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class SessionTest {
+    private Session session;
+
     @Before
-    public void disableFirebaseAuth() { Session.enforceDummySessions(); }
+    public void disableFirebaseAuth() { session = new Session(new DummyInMemorySession()); }
 
     @Test
     public void testAuthentication() {
-        assert(Session.isLoggedIn() == false);
-        Session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD, null, null);
-        assert(Session.isLoggedIn() == true);
-        Session.logout();
-        assert(Session.isLoggedIn() == false);
+        assertFalse(session.isLoggedIn());
+        session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD, null, null);
+        assertTrue(session.isLoggedIn());
+        session.logout();
+        assertFalse(session.isLoggedIn());
     }
 
     @Test
@@ -46,16 +52,16 @@ public class SessionTest {
                 null, null, null, spotList, unknownUserMapping, null);
 
         // The user is not logged in, supposed to fail cleanly
-        assert(Session.isClearedFor(Role.ADMIN, ev2) == false);
+        assertFalse(session.isClearedFor(Role.ADMIN, ev2));
 
         // User sign in
-        Session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD,null, null);
-        assert(Session.isLoggedIn() == true);
+        session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD,null, null);
+        assertTrue(session.isLoggedIn());
 
         //
-        assert(Session.isClearedFor(Role.ADMIN, ev1) == false);
-        assert(Session.isClearedFor(Role.ADMIN, ev2) == true);
-        assert(Session.isClearedFor(Role.STAFF, ev2) == false);
-        assert(Session.isClearedFor(Role.ADMIN, ev3) == false);
+        assertFalse(session.isClearedFor(Role.ADMIN, ev1));
+        assertTrue(session.isClearedFor(Role.ADMIN, ev2));
+        assertFalse(session.isClearedFor(Role.STAFF, ev2));
+        assertFalse(session.isClearedFor(Role.ADMIN, ev3));
     }
 }

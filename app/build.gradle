@@ -36,6 +36,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    sourceSets {
+        test { java.srcDirs = ['src/test/java', 'src/commonTest/java/'] }
+        androidTest { java.srcDirs = ['src/androidTest/java', 'src/commonTest/java/'] }
+    }
     testOptions {
         animationsDisabled = "true"
     }

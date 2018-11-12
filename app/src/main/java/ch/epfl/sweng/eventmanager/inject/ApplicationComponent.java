@@ -4,6 +4,7 @@ import android.app.Application;
 import ch.epfl.sweng.eventmanager.EventManagerApplication;
 import ch.epfl.sweng.eventmanager.repository.RepositoriesModule;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
+import ch.epfl.sweng.eventmanager.users.SessionModule;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
@@ -21,6 +22,7 @@ import javax.inject.Singleton;
         ActivityBuilder.class,
         ApplicationModule.class,
         RepositoriesModule.class,
+        SessionModule.class,
         RoomModule.class})
 @Singleton
 public interface ApplicationComponent {

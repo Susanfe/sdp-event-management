@@ -44,6 +44,8 @@ public class EventShowcaseActivity extends AppCompatActivity
 
     @Inject
     ViewModelFactory factory;
+    @Inject
+    Session session;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -125,7 +127,7 @@ public class EventShowcaseActivity extends AppCompatActivity
                             return;
                         }
 
-                        if (Session.isLoggedIn() && Session.isClearedFor(Role.ADMIN, ev)) {
+                        if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN, ev)) {
                             MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
                             adminMenuItem.setVisible(true);
                         }

@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.arch.lifecycle.ViewModel;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.NewsFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.SendNewsFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
@@ -42,5 +43,7 @@ public abstract class EventShowcaseModule {
 
     @ContributesAndroidInjector
     abstract SendNewsFragment contributeSendNewsFragmentInjector();
+    @ContributesAndroidInjector
+    abstract NewsFragment contributeNewsFragmentInjector();
 }
 

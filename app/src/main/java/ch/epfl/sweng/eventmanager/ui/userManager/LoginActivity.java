@@ -20,6 +20,8 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.users.Session;
 import dagger.android.AndroidInjection;
 
+import javax.inject.Inject;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -32,6 +34,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private Button mLoginButton;
     private ProgressBar mProgressBar;
+
+    @Inject
+    Session session;
 
     private void setupFields() {
         mEmailView = findViewById(R.id.email_field);
@@ -111,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            Session.login(email, password, this, getSignInOnCompleteListener(this));
+            session.login(email, password, this, getSignInOnCompleteListener(this));
         }
     }
 

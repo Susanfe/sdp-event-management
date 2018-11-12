@@ -30,6 +30,8 @@ public class EventPickingActivity extends AppCompatActivity {
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
     @Inject
     ViewModelFactory factory;
+    @Inject
+    Session session;
 
     private TextView joinedHelpText;
     private TextView notJoinedHelpText;
@@ -111,7 +113,7 @@ public class EventPickingActivity extends AppCompatActivity {
 
         // Login button
         Button loginButton = findViewById(R.id.login_button);
-        if (Session.isLoggedIn()) {
+        if (session.isLoggedIn()) {
             loginButton.setText(R.string.account_button);
         } else {
             loginButton.setText(R.string.login_button);
@@ -124,7 +126,7 @@ public class EventPickingActivity extends AppCompatActivity {
 
     public void openLoginOrAccountActivity(View view) {
        Class nextActivity;
-       if (Session.isLoggedIn()) {
+       if (session.isLoggedIn()) {
            nextActivity = DisplayAccountActivity.class;
        } else {
            nextActivity = LoginActivity.class;

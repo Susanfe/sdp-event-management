@@ -1,39 +1,39 @@
 package ch.epfl.sweng.eventmanager.users;
 
 import android.app.Activity;
-import android.content.Context;
-
+import ch.epfl.sweng.eventmanager.repository.data.FirebaseBackedUser;
+import ch.epfl.sweng.eventmanager.repository.data.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ch.epfl.sweng.eventmanager.repository.data.FirebaseBackedUser;
-import ch.epfl.sweng.eventmanager.repository.data.User;
-
 @Singleton
-public class InMemoryFirebaseSession implements InMemorySession{
-    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+public class InMemoryFirebaseSession implements InMemorySession {
+    @Inject
+    InMemoryFirebaseSession() {}
+
 
     @Override
     public void login(String email, String password, Activity context, OnCompleteListener callback) {
-        mAuth.signInWithEmailAndPassword(email, password)
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(context, callback);
     }
 
     @Override
     public User getCurrentUser() {
-        if (mAuth.getCurrentUser() == null) return null;
-        else return new FirebaseBackedUser(mAuth.getCurrentUser());
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) return null;
+        else return new FirebaseBackedUser(FirebaseAuth.getInstance().getCurrentUser());
     }
 
     @Override
     public boolean isLoggedIn() {
-        return (mAuth.getCurrentUser() != null);
+        return (FirebaseAuth.getInstance().getCurrentUser() != null);
     }
 
     @Override
     public void logout() {
-        mAuth.signOut();
+        FirebaseAuth.getInstance().signOut();
     }
 }

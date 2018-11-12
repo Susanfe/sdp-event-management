@@ -10,7 +10,7 @@ import ch.epfl.sweng.eventmanager.ToastMatcher;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.TestApplication;
 import ch.epfl.sweng.eventmanager.test.repository.MockNewsRepository;
-import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
+import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
 import ch.epfl.sweng.eventmanager.users.Session;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -33,6 +33,8 @@ public class NewsFragmentTest {
 
     @Inject
     MockNewsRepository repository;
+    @Inject
+    Session session;
 
 
     private String newsTitle = "A sweet news";
@@ -42,8 +44,7 @@ public class NewsFragmentTest {
     public void setup() {
         TestApplication.component.inject(this);
 
-        Session.enforceDummySessions();
-        Session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD, null, null);
+        session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD, null, null);
 
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.LEFT)))
