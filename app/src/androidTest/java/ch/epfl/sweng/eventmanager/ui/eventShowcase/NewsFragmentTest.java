@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.DrawerActions;
@@ -54,6 +55,8 @@ public class NewsFragmentTest {
         onView(withId(R.id.news_create_button))
                 .check(ViewAssertions.matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
                 .perform(ViewActions.click());
+
+        SystemClock.sleep(500);
 
         String newsTitle = "A sweet news";
         String newsContent = "This is the news content. Sweet, right?";
