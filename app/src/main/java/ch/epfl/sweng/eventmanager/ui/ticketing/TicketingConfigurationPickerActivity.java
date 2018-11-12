@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
-import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
+import ch.epfl.sweng.eventmanager.ticketing.impl.TicketingServiceImpl;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
 
@@ -61,7 +61,7 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
 
     private void fetchData() {
         try {
-            this.service.getConfigurations(new TicketingService.ApiCallback<List<ScanConfiguration>>() {
+            this.service.getConfigurations(new TicketingServiceImpl.ApiCallback<List<ScanConfiguration>>() {
                 @Override
                 public void onSuccess(List<ScanConfiguration> data) {
                     adapter.setConfigurations(data);

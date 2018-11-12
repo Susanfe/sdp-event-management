@@ -36,6 +36,7 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
@@ -49,6 +50,8 @@ public class EventShowcaseActivity extends AppCompatActivity
 
     @Inject
     ViewModelFactory factory;
+    @Inject
+    TicketingManager ticketingManager;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -212,7 +215,7 @@ public class EventShowcaseActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_scan:
-                startActivity(TicketingActivity.start(model.getEvent().getValue(), this));
+                startActivity(ticketingManager.start(model.getEvent().getValue(), this));
                 break;
 
         }

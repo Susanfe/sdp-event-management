@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
+import ch.epfl.sweng.eventmanager.ticketing.impl.TicketingServiceImpl;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import dagger.android.AndroidInjection;
 
@@ -104,7 +104,7 @@ public final class TicketingLoginActivity extends TicketingActivity {
             // perform the user login attempt.
             showProgress(true);
 
-            service.login(email, password, new TicketingService.ApiCallback<Void>() {
+            service.login(email, password, new TicketingServiceImpl.ApiCallback<Void>() {
                 @Override
                 public void onSuccess(Void data) {
                     Intent openIntent = switchActivity(getNextActivityForState(service));

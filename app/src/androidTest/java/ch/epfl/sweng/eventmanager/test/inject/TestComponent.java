@@ -5,6 +5,7 @@ import ch.epfl.sweng.eventmanager.inject.ApplicationComponent;
 import ch.epfl.sweng.eventmanager.inject.ApplicationModule;
 import ch.epfl.sweng.eventmanager.test.repository.MockRepositoriesModule;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
+import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingModule;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.NewsFragmentTest;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
@@ -18,7 +19,8 @@ import javax.inject.Singleton;
         ActivityBuilder.class,
         ApplicationModule.class,
         RoomModule.class,
-        MockRepositoriesModule.class})
+        MockRepositoriesModule.class,
+        MockTicketingModule.class})
 @Singleton
 public interface TestComponent extends ApplicationComponent {
     void inject(NewsFragmentTest test);

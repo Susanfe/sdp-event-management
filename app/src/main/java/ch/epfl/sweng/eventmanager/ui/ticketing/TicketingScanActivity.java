@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
-import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
+import ch.epfl.sweng.eventmanager.ticketing.impl.TicketingServiceImpl;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
 import com.google.zxing.BarcodeFormat;
@@ -121,7 +121,7 @@ public final class TicketingScanActivity extends TicketingActivity {
             view.setText(R.string.loading_text);
 
             try {
-                service.scan(configId, result.getText(), new TicketingService.ApiCallback<ScanResult>() {
+                service.scan(configId, result.getText(), new TicketingServiceImpl.ApiCallback<ScanResult>() {
                     @Override
                     public void onSuccess(ScanResult data) {
                         beepManager.playBeepSoundAndVibrate();
