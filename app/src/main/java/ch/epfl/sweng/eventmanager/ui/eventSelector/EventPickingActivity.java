@@ -40,6 +40,7 @@ public class EventPickingActivity extends AppCompatActivity {
     RecyclerView joinedEvents;
     @BindView(R.id.not_joined_event_list)
     RecyclerView eventList;
+    private Menu menu;
     private EventPickingModel model;
 
     private void setupRecyclerView(RecyclerView view) {
@@ -127,6 +128,7 @@ public class EventPickingActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_event_picking,menu);
         if (Session.isLoggedIn()) {
             menu.findItem(R.id.login_button).setTitle(R.string.account_button);
@@ -148,10 +150,12 @@ public class EventPickingActivity extends AppCompatActivity {
 
             case R.id.logout_button :
                 Session.logout();
+                menu.close();
                 invalidateOptionsMenu();
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 }
