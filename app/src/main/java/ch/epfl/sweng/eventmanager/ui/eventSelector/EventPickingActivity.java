@@ -91,7 +91,10 @@ public class EventPickingActivity extends AppCompatActivity {
         this.model = ViewModelProviders.of(this, factory).get(EventPickingModel.class);
         this.model.init();
         ButterKnife.bind(this);
+        Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
+        setSupportActionBar(toolbar);
         setupObservers();
+
 
         // Help text
         // Both invisible by default

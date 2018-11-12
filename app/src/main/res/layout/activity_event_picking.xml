@@ -16,6 +16,11 @@
     tools:context=".ui.eventSelector.EventPickingActivity"
     android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Toolbar"
+        android:id="@+id/event_picking_toolbar"/>
 
     <TextView
                     android:id="@+id/help_text"
