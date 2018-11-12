@@ -135,4 +135,8 @@ public class TicketingService {
 
     }
 
+    public void logout() {
+        storage.setToken(null);
+    }
+
 }

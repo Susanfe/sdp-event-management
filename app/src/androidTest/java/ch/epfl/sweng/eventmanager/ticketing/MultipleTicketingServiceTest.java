@@ -1,25 +1,21 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
-import android.os.SystemClock;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
 import com.android.volley.toolbox.BaseHttpStack;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Louis Vialar
  */
-public class TicketingServiceTest {
+public class MultipleTicketingServiceTest {
     private EventTicketingConfiguration configuration = new EventTicketingConfiguration(
             null, null, TicketingHelper.SCAN_URL
     );

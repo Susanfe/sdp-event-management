@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.repository.impl;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -56,7 +57,10 @@ public class FirebaseEventRepository implements EventRepository {
             }
         });
 
-        return ret;
+        return Transformations.switchMap(ret, event -> Transformations.map(getEventImage(event), image -> {
+            event.setImage(image);
+            return event;
+        }));
     }
 
     private String getImageName(Event event) {
