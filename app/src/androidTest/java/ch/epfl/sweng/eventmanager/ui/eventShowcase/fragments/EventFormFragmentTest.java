@@ -14,6 +14,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 import org.hamcrest.Matchers;
@@ -35,22 +36,16 @@ import static org.hamcrest.Matchers.not;
 public class EventFormFragmentTest {
 
     @Rule
-    public final ActivityTestRule<EventShowcaseActivity> mActivityRule =
-            new ActivityTestRule<>(EventShowcaseActivity.class);
+    public final EventTestRule<EventShowcaseActivity> mActivityRule =
+            new EventTestRule<>(EventShowcaseActivity.class);
 
     @Before
     public void setUp() {
-        Intent intent = new Intent();
-        System.err.println("SetUp called");
-        new Throwable().printStackTrace();
-        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 1);
-        mActivityRule.launchActivity(intent);
-
-        SystemClock.sleep(2000);
+        SystemClock.sleep(200);
 
         onView(withId(R.id.contact_form_go_button)).perform(click());
 
-        SystemClock.sleep(2000);
+        SystemClock.sleep(500);
 
         Intents.init();
 
@@ -94,7 +89,7 @@ public class EventFormFragmentTest {
                 IntentMatchers.hasExtra(Matchers.is(Intent.EXTRA_INTENT), Matchers.allOf(
                         IntentMatchers.hasType("message/rfc822"), //email MIME data
                         // TODO: mock event to test email address
-                        // IntentMatchers.hasExtra(Intent.EXTRA_EMAIL  , new String[] {email});
+                        IntentMatchers.hasExtra(Intent.EXTRA_EMAIL  , new String[] {"events@epfl.ch"}),
                         IntentMatchers.hasExtra(Intent.EXTRA_SUBJECT, target + " : " + title),
                         IntentMatchers.hasExtra(Intent.EXTRA_TEXT, content)
                 ))

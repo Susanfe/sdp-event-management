@@ -9,6 +9,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.view.Gravity;
 import android.view.View;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 import org.hamcrest.Description;
@@ -28,8 +29,8 @@ import static org.hamcrest.core.AllOf.allOf;
 @RunWith(AndroidJUnit4.class)
 public class MyScheduleTest {
     @Rule
-    public final ActivityTestRule<EventShowcaseActivity> mActivityRule =
-            new ActivityTestRule<>(EventShowcaseActivity.class);
+    public final EventTestRule<EventShowcaseActivity> mActivityRule =
+            new EventTestRule<>(EventShowcaseActivity.class);
 
     public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
         return new TypeSafeMatcher<View>() {
@@ -51,11 +52,6 @@ public class MyScheduleTest {
 
     @Test
     public void addScheduleItemAndDeleteItTest() {
-        Intent intent = new Intent();
-        // Opens Sysmic Event
-        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 2);
-        //wait for firebase to load
-        mActivityRule.launchActivity(intent);
         SystemClock.sleep(800);
 
         onView(withId(R.id.drawer_layout))

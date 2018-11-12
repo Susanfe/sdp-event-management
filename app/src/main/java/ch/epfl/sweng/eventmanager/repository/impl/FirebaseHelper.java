@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository;
+package ch.epfl.sweng.eventmanager.repository.impl;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
