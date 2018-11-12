@@ -7,10 +7,12 @@ import android.support.test.espresso.contrib.NavigationViewActions;
 import android.view.Gravity;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ToastMatcher;
+import ch.epfl.sweng.eventmanager.repository.data.DummyUser;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.TestApplication;
 import ch.epfl.sweng.eventmanager.test.repository.MockNewsRepository;
+import ch.epfl.sweng.eventmanager.test.userManagement.TestInMemorySession;
 import ch.epfl.sweng.eventmanager.userManagement.Session;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -42,7 +44,8 @@ public class NewsFragmentTest {
 
     @Before
     public void setup() {
-        Session.login(new User(1, "admin", "admin", new HashSet<>(Arrays.asList(User.Permission.values()))), "secret");
+        TestInMemorySession.enable();
+        TestInMemorySession.instance.setCurrentUser(new DummyUser("1", "admin", "admin", new HashSet<>(Arrays.asList(User.Permission.values()))));
 
         TestApplication.component.inject(this);
 

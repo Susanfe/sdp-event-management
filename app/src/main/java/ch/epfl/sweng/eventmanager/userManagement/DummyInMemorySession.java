@@ -9,6 +9,8 @@ import ch.epfl.sweng.eventmanager.repository.data.DummyUser;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
 
+import java.util.HashSet;
+
 /**
  * Dummy InMemorySession class, only used in tests.
  */
@@ -24,7 +26,7 @@ public class DummyInMemorySession implements InMemorySession{
     @Override
     public void login(String email, String password, Activity context, OnCompleteListener callback) {
         if (email.equals(DUMMY_EMAIL) && password.equals(DUMMY_PASSWORD)) {
-            user = new DummyUser(DUMMY_UID,DUMMY_DISPLAYNAME, DUMMY_EMAIL);
+            user = new DummyUser(DUMMY_UID,DUMMY_DISPLAYNAME, DUMMY_EMAIL, new HashSet<>());
 
             // Switch to DisplayAccountActivity if successfully authenticated
             Intent intent = new Intent(context, DisplayAccountActivity.class);
