@@ -1,14 +1,11 @@
 package ch.epfl.sweng.eventmanager.ui.userManager;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 
 public class DisplayAccountActivity extends AppCompatActivity {
