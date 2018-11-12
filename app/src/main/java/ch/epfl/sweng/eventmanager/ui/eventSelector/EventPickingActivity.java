@@ -130,8 +130,10 @@ public class EventPickingActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_event_picking,menu);
         if (Session.isLoggedIn()) {
             menu.findItem(R.id.login_button).setTitle(R.string.account_button);
+            menu.findItem(R.id.logout_button).setVisible(true);
         } else {
             menu.findItem(R.id.login_button).setTitle(R.string.login_button);
+            menu.findItem(R.id.logout_button).setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -140,7 +142,14 @@ public class EventPickingActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.login_button : openLoginOrAccountActivity();
+            case R.id.login_button :
+                openLoginOrAccountActivity();
+                break;
+
+            case R.id.logout_button :
+                Session.logout();
+                invalidateOptionsMenu();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
