@@ -59,8 +59,9 @@ public class EventShowcaseActivity extends AppCompatActivity
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
 
+    private int eventID;
 
-    private void initModels(int eventID) {
+    private void initModels() {
         this.model = ViewModelProviders.of(this, factory).get(EventShowcaseModel.class);
         this.model.init(eventID);
 
@@ -127,7 +128,8 @@ public class EventShowcaseActivity extends AppCompatActivity
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
-            this.initModels(eventID);
+            this.eventID = eventID;
+            this.initModels();
             this.setupHeader();
             this.setupMenu();
 
@@ -285,6 +287,15 @@ public class EventShowcaseActivity extends AppCompatActivity
         }
 
 
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        toolbar.setTitle(title);
+    }
+
+    public int getEventID() {
+        return eventID;
     }
 }
 

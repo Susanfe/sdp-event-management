@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -78,15 +79,15 @@ public class EventPickingActivity extends AppCompatActivity {
 
         // Help text
         // Both invisible by default
-        joinedHelpText = (TextView) findViewById(R.id.joined_help_text);
+        joinedHelpText = findViewById(R.id.joined_help_text);
         joinedHelpText.setVisibility(View.INVISIBLE);
 
-        TextView helpText = (TextView) findViewById(R.id.help_text);
+        TextView helpText = findViewById(R.id.help_text);
         helpText.setTypeface(helpText.getTypeface(), Typeface.BOLD);
         helpText.setText(R.string.help_text_activity_event_picking);
 
         // Event list
-        RecyclerView eventList = (RecyclerView) findViewById(R.id.event_list);
+        RecyclerView eventList = findViewById(R.id.event_list);
         eventList.setHasFixedSize(true);
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
@@ -96,12 +97,12 @@ public class EventPickingActivity extends AppCompatActivity {
         );
         eventList.addItemDecoration(eventListDividerItemDecoration);
 
-        notJoinedHelpText = (TextView) findViewById(R.id.not_joined_help_text);
+        notJoinedHelpText = findViewById(R.id.not_joined_help_text);
         notJoinedHelpText.setVisibility(View.INVISIBLE);
 
         // Event lists
-        notJoinedEvents = (RecyclerView) findViewById(R.id.event_list);
-        joinedEvents = (RecyclerView) findViewById(R.id.joined_events_list);
+        notJoinedEvents = eventList;
+        joinedEvents = findViewById(R.id.joined_events_list);
 
         setupRecyclerView(notJoinedEvents);
         setupRecyclerView(joinedEvents);
@@ -109,12 +110,16 @@ public class EventPickingActivity extends AppCompatActivity {
         setupObservers();
 
         // Login button
-        Button loginButton = (Button) findViewById(R.id.login_button);
+        Button loginButton = findViewById(R.id.login_button);
         if (Session.isLoggedIn()) {
             loginButton.setText(R.string.account_button);
         } else {
             loginButton.setText(R.string.login_button);
         }
+
+        // Toolbar setup
+        Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
+        setSupportActionBar(toolbar);
     }
 
     public void openLoginOrAccountActivity(View view) {

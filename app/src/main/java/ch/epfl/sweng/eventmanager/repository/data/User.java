@@ -1,30 +1,25 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-public final class User {
-    private final int id;
-    private String name;
-    private String email;
+public interface User {
+    /**
+     * @return a string representation of the user's common name
+     */
+    public String getDisplayName();
 
-    public User(int id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
+    /**
+     * @return a string representation of the user's email
+     */
+    public String getEmail();
 
-    public int getId() {
-        return id;
-    }
+    /**
+     * @return a string representation of the user's unique ID
+     */
+    public String getUid();
 
-    public String getName() {
-        return name;
-    }
+    public boolean hasPermission(Permission permission);
 
-    public String getEmail() {
-        return email;
-    }
-
-    public Boolean checkPassword(String password) {
-        // FIXME: replace this dumb, hardcoded value by proper logic
-        return (password.equals("secret"));
+    public static enum Permission {
+        PUBLISH_NEWS,
+        UPDATE_EVENT
     }
 }

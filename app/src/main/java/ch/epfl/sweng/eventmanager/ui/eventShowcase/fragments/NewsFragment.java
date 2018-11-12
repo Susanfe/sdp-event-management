@@ -11,13 +11,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
+import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
+import ch.epfl.sweng.eventmanager.userManagement.Session;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -27,6 +30,7 @@ import com.twitter.sdk.android.tweetui.CompactTweetView;
 import com.twitter.sdk.android.tweetui.TimelineResult;
 import com.twitter.sdk.android.tweetui.UserTimeline;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,6 +41,8 @@ public class NewsFragment extends AbstractShowcaseFragment {
     RecyclerView recyclerView;
     @BindView(R.id.news_empty_tv)
     TextView emptyListTextView;
+    @BindView(R.id.news_create_button)
+    Button newsCreateButton;
     private NewsAdapter newsAdapter;
 
     public NewsFragment() {
@@ -53,6 +59,10 @@ public class NewsFragment extends AbstractShowcaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
+        newsCreateButton.setOnClickListener(v -> {
+            getParentActivity().changeFragment(new SendNewsFragment(), true);
+        });
+
         newsAdapter = new NewsAdapter();
         recyclerView.setAdapter(newsAdapter);
 
@@ -65,6 +75,12 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
         if (model == null) {
             model = ViewModelProviders.of(requireActivity()).get(NewsViewModel.class);
+        }
+
+        if (Session.hasPermission(User.Permission.PUBLISH_NEWS)) {
+            newsCreateButton.setVisibility(View.VISIBLE);
+        } else {
+            newsCreateButton.setVisibility(View.GONE);
         }
 
         LiveData<String> twitterName = Transformations.map(super.model.getEvent(), event -> event.getTwitterName());
@@ -137,6 +153,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
             this.news = news;
 
             Collections.sort(this.news);
+
 
             this.notifyDataSetChanged();
         }

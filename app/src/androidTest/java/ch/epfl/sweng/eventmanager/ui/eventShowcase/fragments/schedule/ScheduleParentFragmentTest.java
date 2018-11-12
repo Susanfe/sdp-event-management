@@ -11,6 +11,7 @@ import android.view.Gravity;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +28,7 @@ public class ScheduleParentFragmentTest {
     @Rule
     public final ActivityTestRule<EventShowcaseActivity> mActivityRule =
             new ActivityTestRule<>(EventShowcaseActivity.class);
+
 
     @Test
     public void navigateInViewPager() {
@@ -55,6 +57,8 @@ public class ScheduleParentFragmentTest {
         SystemClock.sleep(800);
 
         onView(withText("My Schedule")).perform(click()).check(matches(isCompletelyDisplayed()));
+
+        mActivityRule.finishActivity();
     }
 
     @Test

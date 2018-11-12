@@ -21,7 +21,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner ".MockTestRunner"
     }
     buildTypes {
         release {
@@ -61,6 +61,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.4'
     implementation 'com.google.firebase:firebase-database:16.0.3'
     implementation 'com.google.firebase:firebase-storage:16.0.3'
+    implementation 'com.google.firebase:firebase-auth:16.0.4'
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
     implementation 'com.google.zxing:core:3.3.0'
@@ -78,9 +79,14 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.22.0'
     testImplementation "android.arch.core:core-testing:1.1.1"
+    
+    androidTestAnnotationProcessor 'com.google.dagger:dagger-android-processor:2.17'
+    androidTestAnnotationProcessor 'com.google.dagger:dagger-compiler:2.17'
 
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
     androidTestImplementation 'androidx.test:runner:1.1.0'

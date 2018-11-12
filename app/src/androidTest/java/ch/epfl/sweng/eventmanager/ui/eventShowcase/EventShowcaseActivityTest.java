@@ -10,6 +10,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.view.Gravity;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,12 +31,20 @@ public class EventShowcaseActivityTest {
     public final ActivityTestRule<EventShowcaseActivity> mActivityRule =
             new ActivityTestRule<>(EventShowcaseActivity.class);
 
-    @Test
-    public void testNavigation() {
+    @Before
+    public void setUp() {
         Intent intent = new Intent();
         intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 1);
         mActivityRule.launchActivity(intent);
+    }
 
+    @After
+    public void remove() {
+        mActivityRule.finishActivity();
+    }
+
+    @Test
+    public void testNavigation() {
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.LEFT)))
                 .perform(DrawerActions.open());
@@ -59,9 +69,6 @@ public class EventShowcaseActivityTest {
 
     @Test
     public void openEventPicker() {
-        Intent intent = new Intent();
-        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 1);
-        mActivityRule.launchActivity(intent);
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
@@ -80,10 +87,6 @@ public class EventShowcaseActivityTest {
 
     @Test
     public void testEventPicking() {
-        Intent intent = new Intent();
-        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, 1);
-        mActivityRule.launchActivity(intent);
-
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.LEFT)))
                 .perform(DrawerActions.open());
