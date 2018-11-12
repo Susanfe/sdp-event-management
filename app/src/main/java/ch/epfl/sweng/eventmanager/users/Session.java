@@ -43,6 +43,7 @@ public final class Session {
      * @return true is the user is cleared, false otherwise
      */
     public static boolean isClearedFor(Role role, Event ev) {
+        if (!isLoggedIn()) return false;
         if (ev == null || ev.getUsers() == null) return false;
         Map<String, List<String>> roleToUidMap = ev.getUsers();
 
