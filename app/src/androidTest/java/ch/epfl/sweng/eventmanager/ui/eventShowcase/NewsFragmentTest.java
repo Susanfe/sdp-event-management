@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.content.Intent;
-import android.os.SystemClock;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.DrawerActions;
@@ -19,10 +18,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 
-import static android.support.test.espresso.Espresso.onIdle;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
