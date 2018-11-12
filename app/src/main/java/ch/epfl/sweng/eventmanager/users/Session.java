@@ -11,7 +11,16 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 
 public final class Session {
-    private static InMemorySession session = new InMemoryFirebaseSession();
+    private static InMemorySession session;
+
+    /**
+     * Used to lazily access the session since InMemoryFirebaseSession blows up when
+     * instantiated out of the emulator.
+     */
+    private static InMemorySession getSession() {
+       if (session == null) return new InMemoryFirebaseSession();
+       else return session;
+    }
 
     /**
      * Used in tests to bypass Firebase Auth which is broken in our CI.
@@ -21,19 +30,19 @@ public final class Session {
     }
 
     public static User getCurrentUser() {
-       return session.getCurrentUser();
+       return getSession().getCurrentUser();
     }
 
     public static boolean isLoggedIn() {
-       return session.isLoggedIn();
+       return getSession().isLoggedIn();
     }
 
     public static void login(String email, String password, Activity context, OnCompleteListener callback) {
-        session.login(email, password, context, callback);
+        getSession().login(email, password, context, callback);
     }
 
     public static void logout() {
-        session.logout();
+        getSession().logout();
     }
 
     /**
