@@ -33,7 +33,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
 public class NewsFragmentTest {
     @Rule
     public final EventTestRule<EventShowcaseActivity> mActivityRule =
-            new EventTestRule<>(EventShowcaseActivity.class, 1);
+            new EventTestRule<>(EventShowcaseActivity.class);
 
     @Inject
     MockNewsRepository repository;
