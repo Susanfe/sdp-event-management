@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.notifications;
+package ch.epfl.sweng.eventmanager.repository.impl;
 
 import android.app.Notification;
 import android.content.BroadcastReceiver;
@@ -25,11 +25,11 @@ public class NotificationPublisher extends BroadcastReceiver {
         notificationManager.notify(id, notification);
     }
 
-    static String getNotificationId() {
+    public static String getNotificationId() {
         return NOTIFICATION_ID;
     }
 
-    static String getNOTIFICATION() {
+    public static String getNOTIFICATION() {
         return NOTIFICATION;
     }
 }

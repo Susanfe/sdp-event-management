@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import ch.epfl.sweng.eventmanager.repository.impl.NotificationPublisher;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
