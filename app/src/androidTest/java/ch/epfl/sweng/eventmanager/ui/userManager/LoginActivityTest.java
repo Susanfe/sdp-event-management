@@ -9,7 +9,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import junit.framework.AssertionFailedError;
 import org.junit.Before;
@@ -18,30 +17,20 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.*;
-import static android.support.test.espresso.Espresso.pressBack;
+import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.*;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static org.hamcrest.CoreMatchers.containsString;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityTest {
     @Rule
-    public final ActivityTestRule<EventPickingActivity> mActivityRule =
-            new ActivityTestRule<>(EventPickingActivity.class);
+    public final ActivityTestRule<LoginActivity> mActivityRule = new ActivityTestRule<>(LoginActivity.class);
     int MAX_RETRY_COUNT = 10;
 
     @Before
     public void disableFirebaseAuth() {
         Session.enforceDummySessions();
-    }
-
-    @Before
-    public void setup() {
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-        onView(withId(R.id.login_button)).perform(click());
     }
 
     @Test
@@ -66,18 +55,6 @@ public class LoginActivityTest {
                 break;
             }
         }
-
-        onView(withId(R.id.main_text)).check(matches(withText(containsString(email))));
-
-        //return to main activity
-        pressBack();
-        pressBack();
-        //click on my account
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-        onView(withId(R.id.login_button)).perform(click());
-        pressBack();
-        //logout
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
         onView(withId(R.id.logout_button)).perform(click());
     }
 
