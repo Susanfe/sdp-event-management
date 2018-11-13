@@ -19,6 +19,8 @@ public abstract class ScanningTest {
 
     @Inject
     protected MockTicketingServiceManager manager;
+    @Inject
+    protected TicketingManager ticketingManager;
 
     protected final int eventId;
 
