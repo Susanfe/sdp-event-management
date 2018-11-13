@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
@@ -99,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
             focusView = mPasswordView;
             cancel = true;
         }
-        if (TextUtils.isEmpty(email) || !isEmailValid(email)) {
+        if (TextUtils.isEmpty(email) || !FormHelper.isEmailValid(email)) {
             mEmailView.setError(getString(R.string.invalid_email_activity_login));
             focusView = mEmailView;
             cancel = true;
@@ -108,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            showProgress(true);
+            FormHelper.showProgress(mLoginButton, mProgressBar,true);
             Session.login(email, password, this, getSignInOnCompleteListener(this));
         }
     }
@@ -119,6 +120,11 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "Successful sign in");
                 Intent intent = new Intent(mContext, DisplayAccountActivity.class);
                 startActivity(intent);
+
+                Toast toast = Toast.makeText(
+                        this, getString(R.string.successful_login_toast), Toast.LENGTH_SHORT
+                );
+                toast.show();
             } else {
                 Exception error = task.getException();
                 Log.w(TAG, "Sign in failed", task.getException());
@@ -130,18 +136,8 @@ public class LoginActivity extends AppCompatActivity {
                 mPasswordView.requestFocus();
             }
 
-            showProgress(false);
+            FormHelper.showProgress(mLoginButton, mProgressBar,false);
         };
-    }
-
-    private boolean isEmailValid(String email) {
-        // FIXME: run a proper regex on the given email.
-        return email.contains("@");
-    }
-
-    private void showProgress(boolean displayed) {
-        mLoginButton.setEnabled(!displayed);
-        mProgressBar.setVisibility(displayed ? View.VISIBLE : View.INVISIBLE);
     }
 }
 

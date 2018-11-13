@@ -19,10 +19,16 @@
 
     <string name="invalid_email_activity_login">Invalid email address</string>
     <string name="empty_password_activity_login">The password cannot be empty</string>
+    <string name="password_match_error">The passwords do not match</string>
     <string name="generic_signin_failure_activity_login">Could not login</string>
+    <string name="generic_signup_failure_error">Could not register</string>
     <string name="help_text_activity_event_picking">Please select an event to continue.</string>
     <string name="joined_help_text_activity_event_picking">Events you joined:</string>
     <string name="not_joined_help_text_activity_event_picking">Other events:</string>
+
+    <string name="successful_login_toast">Signed in</string>
+    <string name="successful_registration_toast">Registered successfully</string>
+    <string name="logout_toast">Logged out</string>
 
     <string name="email_field">Email address</string>
     <string name="password_field">Password</string>

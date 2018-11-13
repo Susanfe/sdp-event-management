@@ -9,8 +9,6 @@ import ch.epfl.sweng.eventmanager.repository.data.DummyUser;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
 
-import java.util.HashSet;
-
 /**
  * Dummy InMemorySession class, only used in tests.
  */
@@ -37,6 +35,11 @@ public class DummyInMemorySession implements InMemorySession{
                 context.startActivity(intent);
             }
         }
+    }
+
+    @Override
+    public void registerAndLogin(String email, String password, Activity context, OnCompleteListener callback) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

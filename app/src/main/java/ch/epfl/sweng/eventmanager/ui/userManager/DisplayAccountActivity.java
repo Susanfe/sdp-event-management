@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
@@ -36,6 +37,12 @@ public class DisplayAccountActivity extends AppCompatActivity {
 
     public void logoutThenRedirectToEventSelector(View view) {
         Session.logout();
+
+        Toast toast = Toast.makeText(
+                this, getString(R.string.logout_toast), Toast.LENGTH_SHORT
+        );
+        toast.show();
+
         openEventSelector(view);
     }
 }
