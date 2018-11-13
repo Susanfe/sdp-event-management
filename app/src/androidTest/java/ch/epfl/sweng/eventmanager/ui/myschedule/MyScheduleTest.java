@@ -92,9 +92,10 @@ public class MyScheduleTest {
         onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
         onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click()).check(matches(isCompletelyDisplayed()));;
 
-        SystemClock.sleep(200);
+        SystemClock.sleep(1000);
 
         onView(allOf(isDisplayed(), withId(R.id.addToCalendar))).perform(click());
-    }
 
+        // TODO: Check Intent
+    }
 }

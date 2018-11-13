@@ -2,7 +2,6 @@ package ch.epfl.sweng.eventmanager.ui.userManager;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
-import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
 import static android.support.test.espresso.action.ViewActions.*;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
@@ -22,14 +21,13 @@ import android.util.Log;
 
 import junit.framework.AssertionFailedError;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.users.Session;
+
+import javax.inject.Inject;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityTest {
@@ -38,6 +36,12 @@ public class LoginActivityTest {
     @Before
     public void disableFirebaseAuth() {
         Session.enforceDummySessions();
+        Session.logout();
+    }
+
+    @After
+    public void autoLogOut() {
+        Session.logout();
     }
 
     @Rule
@@ -48,6 +52,7 @@ public class LoginActivityTest {
     public void testSuccessfulLogin() {
         String email = "lamb.da@domain.tld";
         String password = "secret";
+        SystemClock.sleep(1000);
 
         onView(ViewMatchers.withId(R.id.email_field))
                 .perform(typeText(email))
@@ -55,6 +60,8 @@ public class LoginActivityTest {
         onView(withId(R.id.password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
+        SystemClock.sleep(1000);
+
         onView(withId(R.id.login_button)).perform(click());
         SystemClock.sleep(1000);
 
