@@ -1,5 +1,17 @@
 language: android
 sudo: required # gives us actual VMs that are longer to boot but faster to build
+env:
+  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=15
+  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=15
+  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16
+  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24
+  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
+
+  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=17
+  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=18
+  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=19
+  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=21
+  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=22
 android:
   components:
     # The BuildTools version used by your project
@@ -7,13 +19,23 @@ android:
     # The SDK version used to compile your project
     - android-28
     # The SDK version used by the system image
-    - android-16
+    - android-$API
     # The system image, to run an emulator during the tests
-    - sys-img-armeabi-v7a-android-16
+    - sys-img-$ABI_IMAGE-$API
+
+    - extra-android-support
+    - extra-android-m2repository
+    - extra-google-m2repository
+    - tools
+    - platform-tools
 before_script:
+  # Ensure images are up to date
+  - echo "y" | android update sdk -a --no-ui --filter android-$API
+  - echo "y" | android update sdk -a --no-ui --filter sys-img-$ABI_IMAGE-$API
   # Emulator Management: Create, Start and Wait
-  - echo no | android create avd --force -n test -t android-16 --abi armeabi-v7a
-  - emulator -avd test -no-audio -no-window &
+  - android list target
+  - echo no | android create avd --force -n test -t android-$API --abi $ABI
+  - emulator -avd test -no-window & # no-audio causes failures, so I removed it
   - android-wait-for-emulator
   - adb shell input keyevent 82
   # Disable transitions
