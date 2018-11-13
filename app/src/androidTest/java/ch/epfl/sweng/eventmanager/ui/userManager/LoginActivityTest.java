@@ -41,7 +41,7 @@ public class LoginActivityTest {
     @Before
     public void setup() {
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-        onView(withText("Sign in")).perform(click());
+        onView(withId(R.id.login_button)).perform(click());
     }
 
     @Test
@@ -74,11 +74,11 @@ public class LoginActivityTest {
         pressBack();
         //click on my account
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-        onView(withText("My account")).perform(click());
+        onView(withId(R.id.login_button)).perform(click());
         pressBack();
         //logout
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-        onView(withText("Log out")).perform(click());
+        onView(withId(R.id.logout_button)).perform(click());
     }
 
 
