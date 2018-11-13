@@ -76,28 +76,31 @@
         android:layout_weight="20"
         android:id="@+id/main_fragment_relative">
 
-        <Switch
-            android:id="@+id/join_event_switch"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="8dp"
-            android:text="@string/title_activity_join_event_switch"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0.929"
-            android:layout_alignParentEnd="true" />
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
 
-        <Button
-            android:id="@+id/contact_form_go_button"
-            style="@style/Button_global"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_margin="8dp"
-            android:text="@string/contact_form_main_go_button" />
+            <Button
+                android:id="@+id/contact_form_go_button"
+                style="@style/Button_barButton_middle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:text="@string/contact_form_main_go_button" />
 
+            <CheckedTextView
+                android:id="@+id/join_event_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:text="@string/main_fragment_join_event"
+                android:gravity="center"
+                android:textAlignment="gravity"
+                style="@style/Button_barButton_checkable" />
+
+        </LinearLayout>
     </RelativeLayout>
 
 </LinearLayout>

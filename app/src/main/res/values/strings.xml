@@ -10,7 +10,7 @@
     <string name="my_schedule_empty">There is currently no saved activities for this event</string>
     <string name="send_news_failed">Cannot publish news. Try again later!</string>
 
-    <string name="title_activity_join_event_switch">Join the event</string>
+    <string name="main_fragment_join_event">Join</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_account_display">My account</string>
     <string name="title_activity_event_picking">EventPickingActivity</string>
