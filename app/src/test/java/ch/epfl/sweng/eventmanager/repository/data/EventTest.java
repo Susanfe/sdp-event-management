@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import android.graphics.Bitmap;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
@@ -102,5 +103,11 @@ public class EventTest {
         String end_s = f.format(end);
         assertEquals(start_s, ev1.beginDateAsString());
         assertEquals(end_s, ev1.endDateAsString());
+    }
+
+    @Test
+    public void setAndGetImageTest(){
+        ev1.setImage(null);
+        assertNull(ev1.getImage());
     }
 }
