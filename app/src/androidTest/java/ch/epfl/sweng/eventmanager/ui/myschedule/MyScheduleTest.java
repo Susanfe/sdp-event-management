@@ -82,13 +82,21 @@ public class MyScheduleTest {
         onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
         onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
 
+        SystemClock.sleep(200);
+
         onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
         onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
 
         onView(withId(R.id.viewpager)).perform(swipeRight()).check(matches(isCompletelyDisplayed()));
         onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click());
+
+        SystemClock.sleep(200);
+
         onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
         onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
+
+        SystemClock.sleep(200);
+
         onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
         onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click()).check(matches(isCompletelyDisplayed()));;
 

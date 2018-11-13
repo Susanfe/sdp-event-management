@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import static android.os.SystemClock.sleep;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -45,8 +46,13 @@ public class EventMapFragmentTest {
 
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
+
+        sleep(500);
+
         onView(withId(R.id.nav_view))
+                .check(matches(isDisplayed()))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_main));
+
         sleep(800);
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
