@@ -28,9 +28,9 @@
     <string name="email_field">Email address</string>
     <string name="password_field">Password</string>
 
-    <string name="login_button">Sign in »</string>
+    <string name="login_button">Sign in</string>
     <string name="logout_button">Log out</string>
-    <string name="account_button">My account »</string>
+    <string name="account_button">My account</string>
     <string name="back_button">Back</string>
 
     <string name="main_nav_item_activity_event_showcase">Description</string>
@@ -74,6 +74,10 @@
     <string name="send_news_content">News content...</string>
     <string name="send_news_send_button">Send</string>
     <string name="news_create">Create a news</string>
+
+    <!-- Accessibility text -->
+    <string name="event_thumbnail">Event thumbnail</string>
+
 
     <string name="contentDescription_main_fragment_image">Image representing the event</string>
 

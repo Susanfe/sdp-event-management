@@ -6,7 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
@@ -19,11 +22,17 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     // Provide a reference to the views for each data item
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
-        public TextView eventNameTextView;
+        @BindView(R.id.event_name)
+        TextView eventNameTextView;
+        @BindView(R.id.event_summary)
+        TextView eventSummary;
+        @BindView(R.id.event_thumbnail)
+        ImageView eventThumbnail;
+
         public ViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this,itemView);
             itemView.setOnClickListener(this);
-            eventNameTextView = (TextView) itemView.findViewById(R.id.event_name);
         }
 
         @Override
@@ -55,6 +64,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.eventNameTextView.setText(mEvents.get(position).getName());
+        holder.eventSummary.setText(mEvents.get(position).getDescription());
+        holder.eventThumbnail.setImageBitmap(mEvents.get(position).getImage());
     }
 
     @Override
