@@ -2,7 +2,6 @@ package ch.epfl.sweng.eventmanager.notifications;
 
 import android.app.Notification;
 import android.content.Context;
-import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
 /**
@@ -19,8 +18,6 @@ public class JoinedScheduledItemStrategy extends NotificationStrategy<ScheduledI
     public void scheduleNotification(ScheduledItem scheduledItem) {
         // get Notification based on scheduled item
         Notification notification = getNotificationFromScheduleItem(scheduledItem);
-
-        Log.d("hello", "was here");
 
         SchedulerHelper.scheduleNotification(context, scheduledItem.getId().hashCode(), notification, SchedulerHelper.getTimeTo(scheduledItem.getDate()) - TEN_MINUTES);
     }

@@ -1,7 +1,5 @@
 package ch.epfl.sweng.eventmanager.notifications;
 
-import android.util.Log;
-
 /**
  * An interface to notification handling.
  * This and Notification Strategies are the only public accessible's.
@@ -16,7 +14,6 @@ public class NotificationScheduler {
      */
     public static <I> void scheduleNotification(I item, NotificationStrategy<I> notificationStrategy) {
         notificationStrategy.scheduleNotification(item);
-        Log.d("HELLO", "WAS HERE");
     }
 
     /**
