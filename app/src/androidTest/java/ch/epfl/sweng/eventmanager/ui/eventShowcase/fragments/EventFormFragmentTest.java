@@ -43,20 +43,13 @@ public class EventFormFragmentTest {
     public void setUp() {
         Intents.init();
 
-        SystemClock.sleep(200);
-
-        onView(withId(R.id.contact_form_go_button)).perform(click());
-
-        SystemClock.sleep(500);
+        onView(withId(R.id.contact_form_go_button)).perform(scrollTo(), click());
 
         Intents.intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
     }
 
     @After
     public void removeIntents() {
-
-        SystemClock.sleep(500);
-
         mActivityRule.finishActivity();
 
         Intents.release();
@@ -71,6 +64,7 @@ public class EventFormFragmentTest {
                 .perform(click());
 
         onView(withId(R.id.contact_form_name)).check(matches(hasErrorText(errorText)));
+        Intents.assertNoUnverifiedIntents();
 
         String target = "John Snow";
         String title = "Knowledge is power";

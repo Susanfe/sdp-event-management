@@ -4,24 +4,16 @@ import android.os.SystemClock;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.intent.matcher.IntentMatchers;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
-import ch.epfl.sweng.eventmanager.ticketing.ErrorCodes;
-import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingConfigurationPickerActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingScanActivity;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.Collections;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.PASSWORD;
-import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.UNAUTHORIZED_USER;
 
 public class PickerTest extends ActivityTest<TicketingConfigurationPickerActivity> {
 
@@ -32,6 +24,8 @@ public class PickerTest extends ActivityTest<TicketingConfigurationPickerActivit
 
     @Test
     public void testDisplaysConfigs() {
+        SystemClock.sleep(200);
+
         onView(withId(R.id.recylcer)).check(matches(Matchers.allOf(
                 hasDescendant(withText("Config1")),
                 hasDescendant(withText("Config2"))

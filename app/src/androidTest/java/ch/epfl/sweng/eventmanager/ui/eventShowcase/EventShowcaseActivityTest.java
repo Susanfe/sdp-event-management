@@ -1,17 +1,19 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
-import android.support.test.rule.ActivityTestRule;
+import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.intent.Intents;
+import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.Gravity;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -33,9 +35,16 @@ public class EventShowcaseActivityTest {
     public final EventTestRule<EventShowcaseActivity> mActivityRule =
             new EventTestRule<>(EventShowcaseActivity.class);
 
+
     @After
     public void remove() {
         mActivityRule.finishActivity();
+        Intents.release();
+    }
+
+    @Before
+    public void startIntents() {
+        Intents.init();
     }
 
     @Test
@@ -81,16 +90,7 @@ public class EventShowcaseActivityTest {
 
     @Test
     public void testEventPicking() {
-        onView(withId(R.id.drawer_layout))
-                .check(matches(isClosed(Gravity.LEFT)))
-                .perform(DrawerActions.open());
-
-        onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
-
-        SystemClock.sleep(200);
-
-        onView(withText("Event without items")).perform(click());
+        Intents.release(); // Don't capture start intent
 
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.LEFT)))
@@ -101,7 +101,20 @@ public class EventShowcaseActivityTest {
 
         SystemClock.sleep(200);
 
-        onView(withText("Event with scheduled items")).perform(click());
+        // Click on an item and capture start intent
+        Intents.init();
+
+        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+
+        Intents.intended(Matchers.allOf(
+                IntentMatchers.hasComponent(EventShowcaseActivity.class.getName()),
+                IntentMatchers.hasExtraWithKey(EventPickingActivity.SELECTED_EVENT_ID)
+        ));
+
+        Intents.assertNoUnverifiedIntents();
+
+        // Leave the Intents initialized as it will be closed by the @After method
+
     }
 
 }

@@ -71,8 +71,6 @@ public class MyScheduleTest {
 
     @Test
     public void addScheduleItemAndDeleteItTest() {
-        SystemClock.sleep(800);
-
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.LEFT)))
                 .perform(DrawerActions.open());
@@ -81,28 +79,22 @@ public class MyScheduleTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
 
-        SystemClock.sleep(800);
+        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
+        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
 
-        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
-        SystemClock.sleep(200);
-        onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
-        SystemClock.sleep(200);
         onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
         onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
-        SystemClock.sleep(200);
+
         onView(withId(R.id.viewpager)).perform(swipeRight()).check(matches(isCompletelyDisplayed()));
-        SystemClock.sleep(200);
         onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click());
-        SystemClock.sleep(400);
         onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
         onView(withId(R.id.viewpager)).perform(swipeLeft()).check(matches(isCompletelyDisplayed()));
-        SystemClock.sleep(400);
         onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
-        SystemClock.sleep(400);
-        onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click());
-        SystemClock.sleep(400);
-        onView(allOf(isDisplayed(),withId(R.id.addToCalendar))).perform(click());
-        SystemClock.sleep(400);
+        onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click()).check(matches(isCompletelyDisplayed()));;
+
+        SystemClock.sleep(200);
+
+        onView(allOf(isDisplayed(), withId(R.id.addToCalendar))).perform(click());
     }
 
 }
