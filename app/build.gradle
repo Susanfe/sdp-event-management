@@ -11,17 +11,15 @@ android {
     compileOptions.incremental = false
 
     defaultConfig {
-        vectorDrawables.useSupportLibrary = true
-        multiDexEnabled true
-    }
-
-    defaultConfig {
         applicationId "ch.epfl.sweng.eventmanager"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner ".MockTestRunner"
+
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -86,7 +84,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.22.0'
     testImplementation "android.arch.core:core-testing:1.1.1"
     testImplementation "org.apache.httpcomponents:httpcore:4.4.10"
-    
+
     androidTestAnnotationProcessor 'com.google.dagger:dagger-android-processor:2.17'
     androidTestAnnotationProcessor 'com.google.dagger:dagger-compiler:2.17'
 
