@@ -57,7 +57,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             eventDescription.setText(ev.getDescription());
 
             ImageView eventLogo = view.findViewById(R.id.event_image);
-            model.getEventImage().observe(this, eventLogo::setImageBitmap);
+            eventLogo.setImageBitmap(ev.getImage());
 
             // Binds the 'joined event' switch to the database
             CheckedTextView joinEventButton = view.findViewById(R.id.join_event_button);
