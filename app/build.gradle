@@ -12,7 +12,6 @@ android {
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
-        multiDexEnabled true
     }
 
     defaultConfig {
