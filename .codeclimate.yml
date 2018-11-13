@@ -13,10 +13,10 @@ checks:
       threshold: 8
   similar-code:
     config:
-      threshold: 8
+      threshold: 80
   identical-code:
     config:
-      threshold: 6
+      threshold: 60
 exclude_patterns:
   - "app/src/main/java/ch/epfl/sweng/eventmanager/repository/room/daos"
   - "app/src/main/java/ch/epfl/sweng/eventmanager/repository/impl"
