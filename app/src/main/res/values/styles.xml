@@ -37,17 +37,20 @@
     </style>
 
     <!-- App buttonbar button style (see fragment_event_main) -->
-    <style name="Button_barButton_left">
-        <item name="android:textColor">@color/colorSecondary</item>
-        <item name="android:background">@drawable/button_barbutton_left</item>
-    </style>
-    <style name="Button_barButton_right">
-        <item name="android:textColor">@color/colorSecondary</item>
-        <item name="android:background">@drawable/button_barbutton_right</item>
-    </style>
     <style name="Button_barButton_middle">
         <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:background">@drawable/button_barbutton_middle</item>
+    </style>
+    <style name="Button_barButton_left" parent="Button_barButton_middle">
+        <item name="android:background">@drawable/button_barbutton_left</item>
+    </style>
+    <style name="Button_barButton_right" parent="Button_barButton_middle">
+        <item name="android:background">@drawable/button_barbutton_right</item>
+    </style>
+
+    <style name="Button_barButton_checkable" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:background">@drawable/button_barbutton_checkbutton</item>
     </style>
 
 
