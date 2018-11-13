@@ -41,13 +41,13 @@ public class EventFormFragmentTest {
 
     @Before
     public void setUp() {
+        Intents.init();
+
         SystemClock.sleep(200);
 
         onView(withId(R.id.contact_form_go_button)).perform(click());
 
         SystemClock.sleep(500);
-
-        Intents.init();
 
         Intents.intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
     }
