@@ -18,6 +18,7 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -61,6 +62,11 @@ public class MyScheduleTest {
         Intents.init();
 
         Intents.intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
+    }
+
+    @After
+    public void clean() {
+        Intents.release();
     }
 
     @Test

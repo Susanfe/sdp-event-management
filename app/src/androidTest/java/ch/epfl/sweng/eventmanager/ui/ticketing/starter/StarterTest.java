@@ -7,6 +7,7 @@ import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.intent.matcher.IntentMatchers;
+import android.util.Log;
 import android.view.Gravity;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
@@ -41,6 +42,8 @@ public abstract class StarterTest extends ScanningTest {
 
     @Before
     public void setUp() {
+        Intents.init();
+
         // Navigate
         SystemClock.sleep(200);
 
@@ -50,23 +53,21 @@ public abstract class StarterTest extends ScanningTest {
 
         SystemClock.sleep(200);
 
-        Intents.init();
 
         Intents.intending(isInternal()).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
-    }
-
-
-    @After
-    public void removeIntents() {
-        mActivityRule.finishActivity();
-
-        Intents.release();
     }
 
     @Test
     public void testOpen() {
         testOpen(this.expectedClass);
     }
+
+    @After
+    public void cleanup() {
+        Intents.release();
+        mActivityRule.finishActivity();
+    }
+
 
     protected void testOpen(Class expectedClass) {
         onView(withId(R.id.nav_view))
