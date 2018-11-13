@@ -2,11 +2,9 @@ language: android
 sudo: required # gives us actual VMs that are longer to boot but faster to build
 env:
   - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16
-  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=21
-  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=22
   - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24
 
-  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=16
+  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi API=16
   - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
 android:
   components:
@@ -46,7 +44,7 @@ before_script:
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-  - ./gradlew build connectedCheck jacocoTestReport --debug
+  - ./gradlew build connectedCheck jacocoTestReport --info
 after_script:
   # Report test coverage to Code Climate
   - export JACOCO_SOURCE_PATH=app/src/main/java/
