@@ -42,7 +42,8 @@
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_maps_key"/>
       
-        <activity android:name=".ui.eventSelector.EventPickingActivity"/>
+        <activity android:name=".ui.eventSelector.EventPickingActivity"
+                  android:launchMode="singleTop"/>
         <activity
                 android:name=".ui.userManager.LoginActivity"
                 android:label="@string/title_activity_login"/>
