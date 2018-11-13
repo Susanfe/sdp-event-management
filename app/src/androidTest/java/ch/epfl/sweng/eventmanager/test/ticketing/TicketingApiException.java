@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ticketing;
+package ch.epfl.sweng.eventmanager.test.ticketing;
 
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 

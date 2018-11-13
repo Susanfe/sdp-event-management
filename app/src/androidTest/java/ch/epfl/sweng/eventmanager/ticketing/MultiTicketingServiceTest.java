@@ -1,6 +1,9 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
+import ch.epfl.sweng.eventmanager.test.ticketing.MultiHttpStack;
+import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
+import ch.epfl.sweng.eventmanager.test.ticketing.TicketingHttpStack;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
@@ -20,7 +23,7 @@ import static org.junit.Assert.*;
  */
 public class MultiTicketingServiceTest {
     private EventTicketingConfiguration configuration = new EventTicketingConfiguration(
-            null, TicketingHelper.CONFIGS_URL, TicketingHelper.SCAN_CONFIG_URL + ":configId"
+            null, TicketingHttpStack.CONFIGS_URL, TicketingHttpStack.SCAN_CONFIG_PREFIX + ":configId"
     );
 
     private TicketingService service;
@@ -64,6 +67,11 @@ public class MultiTicketingServiceTest {
     @Test
     public void hasMultipleConfigurationsTest() throws Exception {
         assertTrue(service.hasMultipleConfigurations());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void scanWithoutConfigId() throws Exception {
+        service.scan(-1, "ABCDEFGHI", TestingCallback.alwaysFail());
     }
 
     @Test

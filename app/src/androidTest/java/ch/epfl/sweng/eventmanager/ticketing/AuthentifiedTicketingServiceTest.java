@@ -1,46 +1,25 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
-import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
+import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
-import com.android.volley.toolbox.BaseHttpStack;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.*;
 import static org.junit.Assert.*;
 
 /**
  * @author Louis Vialar
  */
 public class AuthentifiedTicketingServiceTest {
-    private static final ScanResult.Product PRODUCT = new ScanResult.Product("FP", "Descr");
-    private static final ScanResult.Client CLIENT = new ScanResult.Client("Dupont", "Jean", "jean.dupont@france.fr");
-    private static String AUTHORIZED_USER = "authorized_user";
-    private static String UNAUTHORIZED_USER = "unauthorized_user";
-    private static String PASSWORD = "P@ssword";
-    private EventTicketingConfiguration configuration = new EventTicketingConfiguration(
-            TicketingHelper.LOGIN_URL, null, TicketingHelper.SCAN_URL
-    );
     private TicketingService service;
-    private BaseHttpStack stack;
 
     @Before
     public void setUp() throws Exception {
-        Map<String, ScanResult> VALID_CODES = new HashMap<>();
-        VALID_CODES.put("ABCDEFGHI", new ScanResult(
-                PRODUCT, null, CLIENT
-        ));
-
-        Map<String, AuthentifiedHttpStack.User> userMap = new HashMap<>();
-        userMap.put(AUTHORIZED_USER, new AuthentifiedHttpStack.User(PASSWORD, true));
-        userMap.put(UNAUTHORIZED_USER, new AuthentifiedHttpStack.User(PASSWORD, false));
-
-        stack = new AuthentifiedHttpStack(new BasicTicketingHttpStack(VALID_CODES), userMap);
-        service = TicketingHelper.getService(configuration, stack);
+        service = TicketingHelper.getService(AUTH_BASIC_CONFIGURATION, AUTH_BASIC_STACK);
     }
 
     @Test

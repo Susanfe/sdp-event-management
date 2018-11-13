@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ticketing;
+package ch.epfl.sweng.eventmanager.test.ticketing;
 
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -26,6 +26,11 @@ import java.util.Map;
  */
 public abstract class TicketingHttpStack extends BaseHttpStack {
     private static final String TAG = TicketingHttpStack.class.getSimpleName();
+    public static String LOGIN_URL = "https://local/login";
+    public static String SCAN_URL = "https://local/scan";
+    public static String SCAN_CONFIG_PREFIX = SCAN_URL + "/";
+    public static String SCAN_CONFIG_URL = SCAN_CONFIG_PREFIX + ":configId";
+    public static String CONFIGS_URL = "https://local/configs";
 
     public abstract LoginResponse generateLoginResponse(String userName, String password) throws TicketingApiException;
 
@@ -56,17 +61,17 @@ public abstract class TicketingHttpStack extends BaseHttpStack {
                 authToken = additionalHeaders.get("authorization").substring("Bearer ".length());
             }
 
-            if (url.equalsIgnoreCase(TicketingHelper.LOGIN_URL)) {
+            if (url.equalsIgnoreCase(LOGIN_URL)) {
                 String email = object.getString("email");
                 String password = object.getString("password");
 
                 out = gson.toJson(generateLoginResponse(email, password));
-            } else if (url.equalsIgnoreCase(TicketingHelper.CONFIGS_URL)) {
+            } else if (url.equalsIgnoreCase(CONFIGS_URL)) {
                 out = gson.toJson(generateConfigurations(authToken));
-            } else if (url.equalsIgnoreCase(TicketingHelper.SCAN_URL)) {
+            } else if (url.equalsIgnoreCase(SCAN_URL)) {
                 out = gson.toJson(generateScanResult(object.getString("barcode"), null, authToken));
-            } else if (url.startsWith(TicketingHelper.SCAN_CONFIG_URL)) {
-                int scanConfigId = Integer.parseInt(url.substring(TicketingHelper.SCAN_CONFIG_URL.length()));
+            } else if (url.startsWith(SCAN_CONFIG_PREFIX)) {
+                int scanConfigId = Integer.parseInt(url.substring(SCAN_CONFIG_PREFIX.length()));
 
                 Log.i(TAG, "Found config id " + scanConfigId + " in url " + url);
 

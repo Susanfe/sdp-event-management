@@ -18,8 +18,8 @@ import javax.inject.Inject;
  * @author Louis Vialar
  */
 public abstract class TicketingActivity extends AppCompatActivity {
-    static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
-    static final String TICKETING_CONFIGURATION = "ch.epfl.sweng.TICKETING_CONFIGURATION";
+    public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
+    public static final String TICKETING_CONFIGURATION = "ch.epfl.sweng.TICKETING_CONFIGURATION";
     private static final String TAG = "TicketingActivity";
     @Inject
     protected TicketingServiceManager manager;

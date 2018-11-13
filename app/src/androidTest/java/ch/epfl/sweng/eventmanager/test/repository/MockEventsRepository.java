@@ -5,8 +5,9 @@ import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.*;
 import ch.epfl.sweng.eventmanager.test.ObservableMap;
+import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
+import ch.epfl.sweng.eventmanager.test.ticketing.TicketingHttpStack;
 import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
-import ch.epfl.sweng.eventmanager.users.Role;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -70,10 +71,16 @@ public class MockEventsRepository implements EventRepository {
 
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact"));
+                orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact",
+                MockStacks.BASIC_CONFIGURATION));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapanImpact"));
+                orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapnImpact",
+                MockStacks.MULTI_CONFIGURATION));
+
+        addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
+                orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapanImpact",
+                MockStacks.AUTH_MULTI_CONFIGURATION));
 
         List<ScheduledItem> items;
         String jsonSchedule = "[ {\n" +

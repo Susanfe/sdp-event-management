@@ -1,7 +1,8 @@
-package ch.epfl.sweng.eventmanager.ticketing;
+package ch.epfl.sweng.eventmanager.test.ticketing;
 
 import android.os.SystemClock;
 import android.util.Log;
+import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import org.junit.Assert;
 
@@ -25,16 +26,20 @@ public class TestingCallback<T> implements TicketingService.ApiCallback<T> {
         this.validateErrors = validateErrors;
     }
 
-    static <T> TestingCallback<T> expectSuccess(Consumer<T> validateSuccess) {
+    public static <T> TestingCallback<T> expectSuccess(Consumer<T> validateSuccess) {
         return new TestingCallback<>(validateSuccess, s -> {
             Assert.fail("Expected success but got error");
         });
     }
 
-    static <T> TestingCallback<T> expectErrors(Consumer<List<ApiResult.ApiError>> validateErrors) {
+    public static <T> TestingCallback<T> expectErrors(Consumer<List<ApiResult.ApiError>> validateErrors) {
         return new TestingCallback<>(s -> {
             Assert.fail("Expected error but got success");
         }, validateErrors);
+    }
+
+    public static <T> TestingCallback<T> alwaysFail() {
+        return new TestingCallback<>(s -> Assert.fail("Expected nothing but got success"), s -> Assert.fail("Expected nothing but got error"));
     }
 
     boolean isOk() {

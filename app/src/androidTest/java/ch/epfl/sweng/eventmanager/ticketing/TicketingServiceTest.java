@@ -1,52 +1,23 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
-import android.os.SystemClock;
-import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
+import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
-import com.android.volley.toolbox.BaseHttpStack;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.*;
 /**
  * @author Louis Vialar
  */
 public class TicketingServiceTest {
-    private EventTicketingConfiguration configuration = new EventTicketingConfiguration(
-            null, null, TicketingHelper.SCAN_URL
-    );
-
     private TicketingService service;
-    private BaseHttpStack stack;
-
-    public static final ScanResult.Product PRODUCT = new ScanResult.Product("FP", "Descr");
-    public static final ScanResult.Client CLIENT = new ScanResult.Client("Dupont", "Jean", "jean.dupont@france.fr");
-    public static final int AMOUNT = 10;
-
     @Before
     public void setUp() throws Exception {
-        Map<String, ScanResult> VALID_CODES = new HashMap<>();
-        VALID_CODES.put("ABCDEFGHI", new ScanResult(
-                PRODUCT, null, CLIENT
-        ));
-
-        Map<ScanResult.Product, Integer> map = new HashMap<>();
-        map.put(PRODUCT, AMOUNT);
-
-        VALID_CODES.put("123456789", new ScanResult(
-                null, map, CLIENT
-        ));
-
-        stack = new BasicTicketingHttpStack(VALID_CODES);
-        service = TicketingHelper.getService(configuration, stack);
+        service = TicketingHelper.getService(BASIC_CONFIGURATION, BASIC_STACK);
     }
 
     @Test
@@ -72,14 +43,19 @@ public class TicketingServiceTest {
         service.getConfigurations(null);
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void scanWithConfigurationTest() throws Exception {
+        service.scan(2, "ABCDEFGHI", TestingCallback.alwaysFail());
+    }
+
     @Test
     public void scanTest() throws Exception {
-        testScan("ABCDEFGHI", TestingCallback.expectSuccess(result -> {
+        testScan(SINGLE_BARCODE, TestingCallback.expectSuccess(result -> {
             assertTrue(result.isSuccess());
                 assertEquals(PRODUCT, result.getProduct());
                 assertEquals(CLIENT, result.getUser());
         }));
-        testScan("123456789", TestingCallback.expectSuccess(result -> {
+        testScan(MULTIPLE_BARCODE, TestingCallback.expectSuccess(result -> {
             assertTrue(result.isSuccess());
             assertEquals(10, (int) result.getProducts().get(PRODUCT));
                 assertEquals(CLIENT, result.getUser());
@@ -89,7 +65,7 @@ public class TicketingServiceTest {
             assertEquals("", err.getKey());
             assertEquals(ErrorCodes.NOT_FOUND.getCode(), err.getMessages().get(0));
         }));
-        testScan("ABCDEFGHI", TestingCallback.expectErrors(errors -> {
+        testScan(SINGLE_BARCODE, TestingCallback.expectErrors(errors -> {
             ApiResult.ApiError err = errors.get(0);
             assertEquals("", err.getKey());
             assertEquals(ErrorCodes.ALREADY_SCANNED.getCode(), err.getMessages().get(0));

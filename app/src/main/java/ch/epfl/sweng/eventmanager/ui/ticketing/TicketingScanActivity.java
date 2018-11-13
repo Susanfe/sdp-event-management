@@ -204,14 +204,20 @@ public final class TicketingScanActivity extends TicketingActivity {
     protected void onResume() {
         super.onResume();
 
-        barcodeView.resume();
+        if (barcodeView == null) {
+            startScan();
+        } else {
+            barcodeView.resume();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        barcodeView.pause();
+        if (barcodeView != null) {
+            barcodeView.pause();
+        }
     }
 
     @Override

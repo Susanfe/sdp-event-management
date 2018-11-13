@@ -1,6 +1,7 @@
-package ch.epfl.sweng.eventmanager.ticketing;
+package ch.epfl.sweng.eventmanager.test.ticketing;
 
 import android.support.annotation.Nullable;
+import ch.epfl.sweng.eventmanager.ticketing.ErrorCodes;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.LoginResponse;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
