@@ -24,8 +24,8 @@ public class MockStacks {
     public static final ScanResult.Client CLIENT = new ScanResult.Client("Dupont", "Jean", "jean.dupont@france.fr");
     public static final int AMOUNT = 10;
     public static final List<ScanConfiguration> CONFIGS = new ArrayList<>();
-    public static final String AUTHORIZED_USER = "authorized_user";
-    public static final String UNAUTHORIZED_USER = "unauthorized_user";
+    public static final String AUTHORIZED_USER = "authorized_user@domain.tld";
+    public static final String UNAUTHORIZED_USER = "unauthorized_user@domain.tld";
     public static final String PASSWORD = "P@ssword";
     public static final Map<String, AuthentifiedHttpStack.User> USER_MAP = new HashMap<>();
 

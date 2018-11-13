@@ -17,6 +17,17 @@ import java.util.*;
  * @author Louis Vialar
  */
 public class MockEventsRepository implements EventRepository {
+    public static final Map<Integer, EventTicketingConfiguration> CONFIG_BY_EVENT;
+
+    static {
+        Map<Integer, EventTicketingConfiguration> configurationMap = new HashMap<>();
+        configurationMap.put(1, MockStacks.BASIC_CONFIGURATION);
+        configurationMap.put(2, MockStacks.MULTI_CONFIGURATION);
+        configurationMap.put(3, MockStacks.AUTH_MULTI_CONFIGURATION);
+
+        CONFIG_BY_EVENT = Collections.unmodifiableMap(configurationMap);
+    }
+
     private final ObservableMap<Integer, Event> events = new ObservableMap<>();
     private final ObservableMap<Integer, Bitmap> eventImages = new ObservableMap<>();
     private final ObservableMap<Integer, List<Spot>> spots = new ObservableMap<>();
@@ -72,15 +83,15 @@ public class MockEventsRepository implements EventRepository {
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact",
-                MockStacks.BASIC_CONFIGURATION));
+                CONFIG_BY_EVENT.get(1)));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapnImpact",
-                MockStacks.MULTI_CONFIGURATION));
+                CONFIG_BY_EVENT.get(2)));
 
         addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
                 orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapanImpact",
-                MockStacks.AUTH_MULTI_CONFIGURATION));
+                CONFIG_BY_EVENT.get(3)));
 
         List<ScheduledItem> items;
         String jsonSchedule = "[ {\n" +
