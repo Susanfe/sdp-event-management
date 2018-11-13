@@ -96,7 +96,7 @@ public class MockEventsRepository implements EventRepository {
         List<ScheduledItem> items;
         String jsonSchedule = "[ {\n" +
                 "  \"artist\" : \"David Guetta\",\n" +
-                "  \"date\" : 1544913000000,\n" +
+                "  \"date\" : 1744913000000,\n" +
                 "  \"description\" : \"Incredible stage performance by famous DJ David Guetta!\",\n" +
                 "  \"duration\" : 1.5,\n" +
                 "  \"genre\" : \"Electro/Dance\",\n" +
@@ -104,7 +104,7 @@ public class MockEventsRepository implements EventRepository {
                 "  \"itemLocation\" : \"Polyv\"\n" +
                 "}, {\n" +
                 "  \"artist\" : \"ABBA\",\n" +
-                "  \"date\" : 1544904900000,\n" +
+                "  \"date\" : 1744904900000,\n" +
                 "  \"description\" : \"Wow! This is the great comeback of the well-known success group!\",\n" +
                 "  \"duration\" : 2,\n" +
                 "  \"genre\" : \"Rock\",\n" +
@@ -112,7 +112,7 @@ public class MockEventsRepository implements EventRepository {
                 "  \"itemLocation\" : \"CE\"\n" +
                 "}, {\n" +
                 "  \"artist\" : \"Daft Punk\",\n" +
-                "  \"date\" : 1544904900000,\n" +
+                "  \"date\" : 1744904900000,\n" +
                 "  \"description\" : \"Le retour des frenchies !\",\n" +
                 "  \"duration\" : 1.5,\n" +
                 "  \"genre\" : \"Pop/House\",\n" +
@@ -120,7 +120,7 @@ public class MockEventsRepository implements EventRepository {
                 "  \"itemLocation\" : \"Polyv\"\n" +
                 "}, {\n" +
                 "  \"artist\" : \"Black M\",\n" +
-                "  \"date\" : 1541980110000,\n" +
+                "  \"date\" : 1741980110000,\n" +
                 "  \"description\" : \"Le retour !\",\n" +
                 "  \"genre\" : \"R&B/Pop\",\n" +
                 "  \"id\" : \"7a9207df-202b-4e83-93a5-8466563466ca\",\n" +
