@@ -1,7 +1,10 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -107,7 +110,8 @@ public class EventTest {
 
     @Test
     public void setAndGetImageTest(){
-        ev1.setImage(null);
-        assertNull(ev1.getImage());
+        Bitmap img = Mockito.mock(Bitmap.class);
+        ev1.setImage(img);
+        assertEquals(ev1.getImage(), img);
     }
 }
