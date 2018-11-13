@@ -1,30 +1,25 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
-import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
-import ch.epfl.sweng.eventmanager.test.ticketing.MultiHttpStack;
 import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
-import ch.epfl.sweng.eventmanager.test.ticketing.TicketingHttpStack;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
-import com.android.volley.toolbox.BaseHttpStack;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 /**
  * @author Louis Vialar
  */
 public class MultiTicketingServiceTest {
     private TicketingService service;
+
     @Before
     public void setUp() throws Exception {
         service = TicketingHelper.getService(MockStacks.MULTI_CONFIGURATION);
@@ -43,7 +38,8 @@ public class MultiTicketingServiceTest {
     @Test
     public void getConfigurationsTest() throws Exception {
         TestingCallback<List<ScanConfiguration>> callback = TestingCallback.expectSuccess(list -> {
-            assertEquals(CONFIGS, list);
+            assertTrue("all configs are in the result", list.containsAll(CONFIGS));
+            assertTrue("no additional configs are in the result", CONFIGS.containsAll(list));
         });
         service.getConfigurations(callback);
         callback.assertOk("create configurations");
@@ -53,8 +49,8 @@ public class MultiTicketingServiceTest {
     public void scanTest() throws Exception {
         testScan("ABCDEFGHI", 1, TestingCallback.expectSuccess(result -> {
             assertTrue(result.isSuccess());
-                assertEquals(PRODUCT, result.getProduct());
-                assertEquals(CLIENT, result.getUser());
+            assertEquals(PRODUCT, result.getProduct());
+            assertEquals(CLIENT, result.getUser());
         }));
 
         testScan("123456789", 1, TestingCallback.expectErrors(errors -> {

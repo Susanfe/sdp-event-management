@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.DrawerActions;
 import android.support.test.espresso.contrib.NavigationViewActions;
@@ -87,6 +88,8 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
 
+        SystemClock.sleep(200);
+
         onView(withText("Event without items")).perform(click());
 
         onView(withId(R.id.drawer_layout))
@@ -96,8 +99,9 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
 
-        onView(withText("Event with scheduled items")).perform(click());
+        SystemClock.sleep(200);
 
+        onView(withText("Event with scheduled items")).perform(click());
     }
 
 }
