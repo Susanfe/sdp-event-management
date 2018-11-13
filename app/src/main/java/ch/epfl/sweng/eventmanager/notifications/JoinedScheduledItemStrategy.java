@@ -9,6 +9,7 @@ import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
  */
 public class JoinedScheduledItemStrategy extends NotificationStrategy<ScheduledItem> {
     private static final Integer TEN_MINUTES = 600000; // 10 mn in millis
+    private static final String titleText = " will start soon";
 
     public JoinedScheduledItemStrategy(Context context) {
         super(context);
@@ -28,6 +29,6 @@ public class JoinedScheduledItemStrategy extends NotificationStrategy<ScheduledI
     }
 
     private Notification getNotificationFromScheduleItem(ScheduledItem scheduledItem) {
-        return NotificationBuilder.getNotificationFromItem(context, scheduledItem.getArtist() + " concert will start soon", scheduledItem.getDescription());
+        return NotificationBuilder.getNotificationFromItem(context, scheduledItem.getArtist() + " " + scheduledItem.getItemType() + titleText, scheduledItem.getDescription());
     }
 }
