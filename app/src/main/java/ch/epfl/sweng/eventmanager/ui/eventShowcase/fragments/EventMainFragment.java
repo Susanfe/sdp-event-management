@@ -45,7 +45,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
                             new EventFormFragment(), true));
 
             ImageView eventLogo = view.findViewById(R.id.event_image);
-            model.getEventImage().observe(this, eventLogo::setImageBitmap);
+            eventLogo.setImageBitmap(ev.getImage());
 
             // Binds the 'joined event' switch to the database
             Switch joinEventSwitch = view.findViewById(R.id.join_event_switch);
