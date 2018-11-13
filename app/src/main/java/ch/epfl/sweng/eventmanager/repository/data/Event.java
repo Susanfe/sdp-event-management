@@ -150,5 +150,9 @@ public final class Event {
         return f.format(endDate);
     }
 
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
     // TODO put setters ??
 }
