@@ -24,7 +24,6 @@ import javax.inject.Inject;
  */
 public class EventShowcaseModel extends ViewModel {
     private LiveData<Event> event;
-    private LiveData<Bitmap> eventImage;
 
     private EventRepository eventRepository;
     private JoinedEventRepository joinedEventRepository;
@@ -42,16 +41,10 @@ public class EventShowcaseModel extends ViewModel {
         }
 
         this.event = eventRepository.getEvent(eventId);
-        this.eventImage = Transformations.switchMap(this.event, ev -> eventRepository.getEventImage(ev));
     }
 
     public LiveData<Event> getEvent() {
         return event;
-    }
-
-    public LiveData<Bitmap> getEventImage(){
-        return eventImage;
-
     }
 
     public void joinEvent(Event event){
