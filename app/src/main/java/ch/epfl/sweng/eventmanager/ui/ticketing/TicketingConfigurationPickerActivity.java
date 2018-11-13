@@ -75,7 +75,7 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
                     // TODO: parse errors
 
                     swipeRefreshLayout.setRefreshing(false);
-                    mTitle.setText(getResources().getString(R.string.loading_failed, errors.get(0).getKey()));
+                    mTitle.setText(getResources().getString(R.string.loading_failed, errors.get(0).getMessages().get(0)));
                 }
             });
         } catch (NotAuthenticatedException e) {

@@ -24,7 +24,7 @@ public class TicketingService {
     private final RequestQueue queue;
     private final TokenStorage storage;
 
-    TicketingService(EventTicketingConfiguration configuration, TokenStorage storage, RequestQueue queue) {
+    protected TicketingService(EventTicketingConfiguration configuration, TokenStorage storage, RequestQueue queue) {
         this.configuration = configuration;
         this.storage = storage;
         this.queue = queue;

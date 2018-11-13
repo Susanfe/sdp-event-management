@@ -47,6 +47,10 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
     public void testInvalidLogin() {
         Assert.assertFalse(getTicketingService().isLoggedIn());
 
+        onView(withId(R.id.email_sign_in_button)).perform(click());
+
+        Intents.assertNoUnverifiedIntents();
+
         onView(withId(R.id.email)).perform(typeText("clearly_invalid_value"), closeSoftKeyboard());
         onView(withId(R.id.password)).perform(typeText(MockStacks.PASSWORD), closeSoftKeyboard());
         onView(withId(R.id.email_sign_in_button)).perform(click());
@@ -58,6 +62,6 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
 
     @After
     public void cleanUp() {
-        getOrCreateTicketingService(mActivityRule.getActivity()).logout();
+        getTicketingService().logout();
     }
 }

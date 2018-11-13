@@ -33,16 +33,27 @@ public class MockTicketingServiceManager extends TicketingServiceManager {
         this.setAutomatically = false;
     }
 
+    public void resetService(int eventId) {
+        services.remove(eventId);
+
+        System.out.println("reset service for event " + eventId);
+    }
+
     public void setSetAutomatically(boolean setAutomatically) {
         this.setAutomatically = setAutomatically;
     }
 
     @Override
-    public TicketingService getService(int eventId, EventTicketingConfiguration configuration, Context context) {
+    public MockTicketingService getService(int eventId, EventTicketingConfiguration configuration, Context context) {
+        System.out.println("get service for event " + eventId);
+
         if (setAutomatically && MockStacks.STACKS.containsKey(configuration)) {
             stack = MockStacks.STACKS.get(configuration).create();
         }
 
-        return super.getService(eventId, configuration, context);
+        if (services.get(eventId) == null) {
+            services.put(eventId, new MockTicketingService(configuration, getTokenStorage(eventId, context), getRequestQueue(context)));
+        }
+        return (MockTicketingService) services.get(eventId);
     }
 }

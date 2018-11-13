@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Gravity;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
+import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingService;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
@@ -83,4 +84,8 @@ public abstract class StarterTest extends ScanningTest {
         Intents.assertNoUnverifiedIntents();
     }
 
+    @Override
+    public MockTicketingService getTicketingService() {
+        return getOrCreateTicketingService(mActivityRule.getActivity());
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.test.TestApplication;
 import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
+import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingService;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingServiceManager;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import org.junit.Before;
@@ -34,11 +35,11 @@ public abstract class ScanningTest {
         return repository.getEvent(eventId).getValue().getTicketingConfiguration();
     }
 
-    public TicketingService getTicketingService() {
+    public MockTicketingService getTicketingService() {
         return manager.getService(eventId, null, null);
     }
 
-    public TicketingService getOrCreateTicketingService(Context ctx) {
+    public MockTicketingService getOrCreateTicketingService(Context ctx) {
         return manager.getService(eventId, getConfiguration(), ctx);
     }
 

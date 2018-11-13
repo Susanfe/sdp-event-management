@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing;
 
 import android.content.Intent;
+import android.support.test.espresso.intent.Intents;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
