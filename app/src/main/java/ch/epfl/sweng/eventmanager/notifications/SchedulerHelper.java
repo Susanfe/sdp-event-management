@@ -39,8 +39,6 @@ class SchedulerHelper {
         if (delay < 0) //Special case where the event is past therefore, no notifications are sent
             return;
 
-        Log.d("NOTIFICATION_SCHEDULER", "Successfully scheduled a notification");
-
         long future = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, future, pendingIntent);
