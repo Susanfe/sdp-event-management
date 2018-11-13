@@ -17,7 +17,7 @@ public class TicketingServiceTest {
     private TicketingService service;
     @Before
     public void setUp() throws Exception {
-        service = TicketingHelper.getService(BASIC_CONFIGURATION, BASIC_STACK);
+        service = TicketingHelper.getService(BASIC_CONFIGURATION);
     }
 
     @Test

@@ -29,17 +29,17 @@ public class MockStacks {
     public static final String PASSWORD = "P@ssword";
     public static final Map<String, AuthentifiedHttpStack.User> USER_MAP = new HashMap<>();
 
-    public static final BasicTicketingHttpStack BASIC_STACK;
-    public static final MultiHttpStack MULTI_STACK;
-    public static final AuthentifiedHttpStack AUTH_BASIC_STACK;
-    public static final AuthentifiedHttpStack AUTH_MULTI_STACK;
+    public static final StackCreator BASIC_STACK;
+    public static final StackCreator MULTI_STACK;
+    public static final StackCreator AUTH_BASIC_STACK;
+    public static final StackCreator AUTH_MULTI_STACK;
 
     public static final EventTicketingConfiguration BASIC_CONFIGURATION = new EventTicketingConfiguration(null, null, TicketingHttpStack.SCAN_URL);
     public static final EventTicketingConfiguration MULTI_CONFIGURATION = new EventTicketingConfiguration(null, TicketingHttpStack.CONFIGS_URL, TicketingHttpStack.SCAN_CONFIG_URL);
     public static final EventTicketingConfiguration AUTH_BASIC_CONFIGURATION = new EventTicketingConfiguration(TicketingHttpStack.LOGIN_URL, null, TicketingHttpStack.SCAN_URL);
     public static final EventTicketingConfiguration AUTH_MULTI_CONFIGURATION = new EventTicketingConfiguration(TicketingHttpStack.LOGIN_URL, TicketingHttpStack.CONFIGS_URL, TicketingHttpStack.SCAN_CONFIG_URL);
 
-    public static final Map<EventTicketingConfiguration, TicketingHttpStack> STACKS = new HashMap<>();
+    public static final Map<EventTicketingConfiguration, StackCreator> STACKS = new HashMap<>();
 
     static {
         for (int i = 1; i <= 3; ++i) {
@@ -60,23 +60,27 @@ public class MockStacks {
         CONFIG_3.putAll(CONFIG_1);
         CONFIG_3.putAll(CONFIG_2);
 
-        MULTI_STACK = new MultiHttpStack(
+        MULTI_STACK = () -> new MultiHttpStack(
                 new MultiHttpStack.ScanConfigurationStack(CONFIG_1, CONFIGS.get(0)),
                 new MultiHttpStack.ScanConfigurationStack(CONFIG_2, CONFIGS.get(1)),
                 new MultiHttpStack.ScanConfigurationStack(CONFIG_3, CONFIGS.get(2))
         );
 
-        BASIC_STACK = new BasicTicketingHttpStack(CONFIG_3);
+        BASIC_STACK = () -> new BasicTicketingHttpStack(CONFIG_3);
 
         USER_MAP.put(AUTHORIZED_USER, new AuthentifiedHttpStack.User(PASSWORD, true));
         USER_MAP.put(UNAUTHORIZED_USER, new AuthentifiedHttpStack.User(PASSWORD, false));
 
-        AUTH_BASIC_STACK = new AuthentifiedHttpStack(BASIC_STACK, USER_MAP);
-        AUTH_MULTI_STACK = new AuthentifiedHttpStack(MULTI_STACK, USER_MAP);
+        AUTH_BASIC_STACK = () -> new AuthentifiedHttpStack(BASIC_STACK.create(), USER_MAP);
+        AUTH_MULTI_STACK = () -> new AuthentifiedHttpStack(MULTI_STACK.create(), USER_MAP);
 
         STACKS.put(BASIC_CONFIGURATION, BASIC_STACK);
         STACKS.put(MULTI_CONFIGURATION, MULTI_STACK);
         STACKS.put(AUTH_BASIC_CONFIGURATION, AUTH_BASIC_STACK);
         STACKS.put(AUTH_MULTI_CONFIGURATION, AUTH_MULTI_STACK);
+    }
+
+    public interface StackCreator {
+        TicketingHttpStack create();
     }
 }

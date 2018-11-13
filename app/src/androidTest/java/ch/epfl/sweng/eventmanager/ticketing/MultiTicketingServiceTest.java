@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
+import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
 import ch.epfl.sweng.eventmanager.test.ticketing.MultiHttpStack;
 import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
 import ch.epfl.sweng.eventmanager.test.ticketing.TicketingHttpStack;
@@ -18,50 +19,15 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.*;
 /**
  * @author Louis Vialar
  */
 public class MultiTicketingServiceTest {
-    private EventTicketingConfiguration configuration = new EventTicketingConfiguration(
-            null, TicketingHttpStack.CONFIGS_URL, TicketingHttpStack.SCAN_CONFIG_PREFIX + ":configId"
-    );
-
     private TicketingService service;
-    private BaseHttpStack stack;
-
-    public static final ScanResult.Product PRODUCT = new ScanResult.Product("FP", "Descr");
-    public static final ScanResult.Client CLIENT = new ScanResult.Client("Dupont", "Jean", "jean.dupont@france.fr");
-    public static final List<ScanConfiguration> CONFIGS = new ArrayList<>();
-
-    static {
-        for (int i = 1; i <= 3; ++i) {
-            CONFIGS.add(new ScanConfiguration(i, "Config" + i));
-        }
-    }
-
     @Before
     public void setUp() throws Exception {
-        Map<String, ScanResult> CONFIG_1 = new HashMap<>();
-        CONFIG_1.put("ABCDEFGHI", new ScanResult(
-                PRODUCT, null, CLIENT
-        ));
-
-        Map<String, ScanResult> CONFIG_2 = new HashMap<>();
-        CONFIG_2.put("123456789", new ScanResult(
-                PRODUCT, null, CLIENT
-        ));
-
-        Map<String, ScanResult> CONFIG_3 = new HashMap<>();
-        CONFIG_3.putAll(CONFIG_1);
-        CONFIG_3.putAll(CONFIG_2);
-
-        stack = new MultiHttpStack(
-                new MultiHttpStack.ScanConfigurationStack(CONFIG_1, CONFIGS.get(0)),
-                new MultiHttpStack.ScanConfigurationStack(CONFIG_2, CONFIGS.get(1)),
-                new MultiHttpStack.ScanConfigurationStack(CONFIG_3, CONFIGS.get(2))
-        );
-
-        service = TicketingHelper.getService(configuration, stack);
+        service = TicketingHelper.getService(MockStacks.MULTI_CONFIGURATION);
     }
 
     @Test
@@ -80,7 +46,7 @@ public class MultiTicketingServiceTest {
             assertEquals(CONFIGS, list);
         });
         service.getConfigurations(callback);
-        callback.assertOk("get configurations");
+        callback.assertOk("create configurations");
     }
 
     @Test

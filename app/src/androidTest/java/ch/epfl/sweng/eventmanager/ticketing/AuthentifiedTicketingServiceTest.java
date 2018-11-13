@@ -19,7 +19,7 @@ public class AuthentifiedTicketingServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        service = TicketingHelper.getService(AUTH_BASIC_CONFIGURATION, AUTH_BASIC_STACK);
+        service = TicketingHelper.getService(AUTH_BASIC_CONFIGURATION);
     }
 
     @Test

@@ -29,5 +29,7 @@ public class WithLoginTest extends StarterTest {
     @After
     public void cleanUp() {
         getOrCreateTicketingService(mActivityRule.getActivity()).logout();
+
+        super.removeIntents();
     }
 }

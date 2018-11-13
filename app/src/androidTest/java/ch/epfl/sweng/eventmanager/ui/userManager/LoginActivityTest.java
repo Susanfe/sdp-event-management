@@ -87,7 +87,7 @@ public class LoginActivityTest {
     public void testWrongCredentials() {
         String email = "lamb.da@domain.tld";
         String password = "wrong";
-        // FIXME: find a way to get the error message from Firebase
+        // FIXME: find a way to create the error message from Firebase
         String invalidCredentialError = "The password is invalid or the user does not have a password.";
 
 

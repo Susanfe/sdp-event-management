@@ -40,7 +40,7 @@ public class MockTicketingServiceManager extends TicketingServiceManager {
     @Override
     public TicketingService getService(int eventId, EventTicketingConfiguration configuration, Context context) {
         if (setAutomatically && MockStacks.STACKS.containsKey(configuration)) {
-            stack = MockStacks.STACKS.get(configuration);
+            stack = MockStacks.STACKS.get(configuration).create();
         }
 
         return super.getService(eventId, configuration, context);

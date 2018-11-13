@@ -1,8 +1,7 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
-import ch.epfl.sweng.eventmanager.ticketing.TokenStorage;
+import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.BaseHttpStack;
 import com.android.volley.toolbox.BasicNetwork;
@@ -19,8 +18,8 @@ public class TicketingHelper {
         return q;
     }
 
-    public static TicketingService getService(EventTicketingConfiguration config, BaseHttpStack stack) {
-        return new TicketingService(config, new NotCachedTokenStorage(), getRequestQueue(stack));
+    public static TicketingService getService(EventTicketingConfiguration config) {
+        return new TicketingService(config, new NotCachedTokenStorage(), getRequestQueue(MockStacks.STACKS.get(config).create()));
     }
 
     public static class NotCachedTokenStorage extends TokenStorage {
