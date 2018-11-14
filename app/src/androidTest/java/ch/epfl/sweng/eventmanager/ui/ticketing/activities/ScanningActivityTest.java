@@ -53,7 +53,7 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
         waitCameraReady();
 
         sendScanSuccess(MockStacks.SINGLE_BARCODE);
-        onView(withText(R.string.ticketing_scan_success)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        //onView(withText(R.string.ticketing_scan_success)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
         onView(withId(R.id.barcodePreview)).check(matches(withText(
                 Matchers.allOf(
                         Matchers.containsString(mActivityRule.getActivity().getString(R.string.ticketing_scan_success)),
@@ -67,7 +67,7 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
         SystemClock.sleep(5000);
 
         sendScanSuccess("THIS CODE DOESNT EXIST");
-        onView(withText(R.string.ticketing_scan_failure)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        //onView(withText(R.string.ticketing_scan_failure)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
         onView(withId(R.id.barcodePreview)).check(matches(withText(
                 Matchers.containsString(mActivityRule.getActivity().getString(R.string.ticketing_scan_failure))
         )));
@@ -75,7 +75,7 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
         SystemClock.sleep(5000);
 
         sendScanSuccess(MockStacks.MULTIPLE_BARCODE);
-        onView(withText(R.string.ticketing_scan_success)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        //onView(withText(R.string.ticketing_scan_success)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
         onView(withId(R.id.barcodePreview)).check(matches(withText(
                 Matchers.allOf(
                         Matchers.containsString(mActivityRule.getActivity().getString(R.string.ticketing_scan_success)),
