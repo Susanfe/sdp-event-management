@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
+package ch.epfl.sweng.eventmanager.ui.event.interaction.models;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
