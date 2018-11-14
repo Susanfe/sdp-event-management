@@ -84,16 +84,7 @@ public class LoginActivityTest {
 
         onView(withId(R.id.logout_button))
                 .perform(click());
-
-        SystemClock.sleep(1000);
-
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-
-        SystemClock.sleep(100);
-
-        onView(withText("Sign in"))
-                .perform(click());
-    }
+        }
 
     @Test
     @Ignore("Not handled by the dummy authentication")

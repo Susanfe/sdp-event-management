@@ -97,6 +97,8 @@ public abstract class BaseScanningActivityTest extends ScanningTest {
             try {
                 onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
                 cont = getDecoderThread() == null; // Wait for the decoder thread
+                if (cont)
+                    SystemClock.sleep(1000);
             } catch (NoMatchingViewException e) {
                 SystemClock.sleep(1000);
             }
