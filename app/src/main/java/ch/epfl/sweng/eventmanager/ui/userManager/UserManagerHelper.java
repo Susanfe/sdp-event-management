@@ -18,13 +18,13 @@ import com.google.firebase.auth.AuthResult;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 
-public class FormHelper {
-    private FormHelper() {
+public class UserManagerHelper {
+    private UserManagerHelper() {
         // Used to block instantiation. Empty on purpose.
     }
 
     /**
-     * When the next button is clicked on the keyboard, move to the next field
+     * When the next button is clicked on the keyboard, move to the next field.
      */
     public static TextView.OnEditorActionListener nextButtonHandler(EditText field) {
         return (v, actionId, event) -> {
@@ -36,16 +36,38 @@ public class FormHelper {
         };
     }
 
+    /**
+     * Check whether the format of an email address is 'good enough'.
+     *
+     * @param email address to validate
+     * @return true if 'valid', false otherwise
+     */
     public static boolean isEmailValid(String email) {
         // FIXME: run a proper regex on the given email.
         return email.contains("@");
     }
 
+    /**
+     * Toggle 'in progress' view on sign in/up forms while querying the authentication backend.
+     *
+     * @param loginButton button to be disable or enable
+     * @param progressBar progress bar to disable or enable
+     * @param displayed state of the 'in progress' view
+     */
     public static void showProgress(Button loginButton, ProgressBar progressBar, boolean displayed) {
         loginButton.setEnabled(!displayed);
         progressBar.setVisibility(displayed ? View.VISIBLE : View.INVISIBLE);
     }
 
+    /**
+     * Validate the content of a sign in/up form.
+     *
+     * @param context calling activity
+     * @param emailView email text field
+     * @param passwordView password text field
+     * @param passwordConfirmationView password confirmation text field, may be null
+     * @return A pair containing the decided actions and the extracted values
+     */
     public static Pair<Pair<Boolean, EditText>, Pair<String, String>> validateForm
             (Context context, EditText emailView, EditText passwordView, EditText passwordConfirmationView) {
 
@@ -76,7 +98,7 @@ public class FormHelper {
             cancel = true;
         }
 
-        if (TextUtils.isEmpty(email) || !FormHelper.isEmailValid(email)) {
+        if (TextUtils.isEmpty(email) || !UserManagerHelper.isEmailValid(email)) {
             emailView.setError(context.getString(R.string.invalid_email_error));
             focusView = emailView;
             cancel = true;
@@ -88,33 +110,42 @@ public class FormHelper {
         return new Pair(state, values);
     }
 
+    /**
+     * Generate the callback to be executed when the authentication process exits.
+     *
+     * @param context calling activity
+     * @param passwordView password text field, used to set error messages
+     * @param signUpButton button to re-enable when the auth process exits
+     * @param progressBar progress bar to disable when the auth process exits
+     * @return the generated callback
+     */
     public static OnCompleteListener<AuthResult> getAuthOnCompleteListener(
-            Context mContext, EditText passwordView, Button signUpButton, ProgressBar progressBar) {
+            Context context, EditText passwordView, Button signUpButton, ProgressBar progressBar) {
         return task -> {
             if (task.isSuccessful()) {
-                Intent intent = new Intent(mContext, EventPickingActivity.class);
-                mContext.startActivity(intent);
+                Intent intent = new Intent(context, EventPickingActivity.class);
+                context.startActivity(intent);
 
                 String toastMessage = "";
-                if (mContext instanceof SignUpActivity) {
-                    toastMessage = mContext.getString(R.string.successful_registration_toast);
-                } else if (mContext instanceof LoginActivity) {
-                    toastMessage = mContext.getString(R.string.successful_login_toast);
+                if (context instanceof SignUpActivity) {
+                    toastMessage = context.getString(R.string.successful_registration_toast);
+                } else if (context instanceof LoginActivity) {
+                    toastMessage = context.getString(R.string.successful_login_toast);
                 }
 
-                Toast toast = Toast.makeText(mContext, toastMessage, Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT);
                 toast.show();
             } else {
                 Exception error = task.getException();
                 if (error != null) {
                     passwordView.setError(error.getMessage());
                 } else {
-                    passwordView.setError(mContext.getString(R.string.generic_auth_error));
+                    passwordView.setError(context.getString(R.string.generic_auth_error));
                 }
                 passwordView.requestFocus();
             }
 
-            FormHelper.showProgress(signUpButton, progressBar,false);
+            UserManagerHelper.showProgress(signUpButton, progressBar,false);
         };
     }
 }

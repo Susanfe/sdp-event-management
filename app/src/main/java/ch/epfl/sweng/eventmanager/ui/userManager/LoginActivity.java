@@ -1,20 +1,16 @@
 package ch.epfl.sweng.eventmanager.ui.userManager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.auth.AuthResult;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.users.Session;
@@ -37,13 +33,13 @@ public class LoginActivity extends AppCompatActivity {
     private void setupFields() {
         mEmailView = findViewById(R.id.email_field);
         mEmailView.setHint(R.string.email_field);
-        mEmailView.setOnEditorActionListener(FormHelper.nextButtonHandler(mEmailView));
+        mEmailView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mEmailView));
 
         mPasswordView = findViewById(R.id.password_field);
         mPasswordView.setHint(R.string.password_field);
 
         // When the done button is clicked on the keyboard, try to login
-        mPasswordView.setOnEditorActionListener(FormHelper.nextButtonHandler(mPasswordView));
+        mPasswordView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mPasswordView));
     }
 
     private void setupButtons() {
@@ -81,9 +77,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void attemptLogin() {
         Pair<Pair<Boolean, EditText>, Pair<String, String>> validatedForm
-                = FormHelper.validateForm(this, mEmailView, mPasswordView, null);
+                = UserManagerHelper.validateForm(this, mEmailView, mPasswordView, null);
 
-        // FIXME: Quite ugly, do we have a sexier way to return from FormHelper.validateForm/3 ?
+        // FIXME: Quite ugly, do we have a sexier way to return from UserManagerHelper.validateForm/3 ?
         Boolean cancel = validatedForm.first.first;
         EditText focusView = validatedForm.first.second;
         String email = validatedForm.second.first;
@@ -92,8 +88,8 @@ public class LoginActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            FormHelper.showProgress(mLoginButton, mProgressBar,true);
-            OnCompleteListener callback = FormHelper.getAuthOnCompleteListener(
+            UserManagerHelper.showProgress(mLoginButton, mProgressBar,true);
+            OnCompleteListener callback = UserManagerHelper.getAuthOnCompleteListener(
                     this, mPasswordView, mSignUpButton, mProgressBar
             );
             Session.login(email, password, this, callback);
