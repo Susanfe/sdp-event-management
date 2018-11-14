@@ -38,8 +38,7 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
-public class EventShowcaseActivity extends MultiFragmentActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
 
     @Inject
@@ -125,16 +124,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity
 
         //Handle highlighting in drawer menu according to currently displayed fragment
         setHighlightedItemInNavigationDrawer();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -26,9 +26,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.Schedu
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
-public class EventAdministrationActivity extends MultiFragmentActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
+public class EventAdministrationActivity extends MultiFragmentActivity {
     private static final String TAG = "EventAdministration";
 
     @Inject
@@ -71,16 +69,6 @@ public class EventAdministrationActivity extends MultiFragmentActivity
 
         // Handle drawer events
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

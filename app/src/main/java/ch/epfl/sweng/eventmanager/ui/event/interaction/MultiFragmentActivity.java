@@ -1,14 +1,17 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +22,9 @@ import static android.support.constraint.Constraints.TAG;
 /**
  * This class is used to share the changeFragment method between our various multi-fragment classes.
  */
-public class MultiFragmentActivity extends AppCompatActivity {
+public class MultiFragmentActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @BindView(R.id.nav_view)
@@ -29,7 +34,6 @@ public class MultiFragmentActivity extends AppCompatActivity {
 
     protected void initializeSharedUI() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = mDrawerLayout.findViewById(R.id.nav_view);
         ButterKnife.bind(this);
 
         // Set toolbar as action bar
@@ -41,6 +45,21 @@ public class MultiFragmentActivity extends AppCompatActivity {
             actionbar.setDisplayHomeAsUpEnabled(true);
             actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        throw new UnsupportedOperationException(); // To be implemented in children.
     }
 
     /**
