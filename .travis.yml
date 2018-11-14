@@ -2,9 +2,6 @@ language: android
 env:
   #- ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16
   - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24
-  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=25
-  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
-  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=25
 
   #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi API=16
   #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
@@ -29,8 +26,7 @@ before_script:
   - echo no | android create avd --force -n test -t android-$API --abi $ABI
   - emulator -avd test -no-window & # no-audio causes failures, so I removed it
   - android-wait-for-emulator
-  - adb shell input keyevent 4
-  - adb shell input tap 300 250 # Should close the welcome screen
+  - adb shell input keyevent 82
   # Disable transitions
   - adb shell settings put global window_animation_scale 0.0
   - adb shell settings put global transition_animation_scale 0.0
@@ -42,7 +38,9 @@ before_script:
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
+  - adb logcat *:S TestRunner:V & LOGCAT_PID=$!
   - ./gradlew build connectedCheck jacocoTestReport
+  - if [ -n "$LOGCAT_PID" ] ; then kill $LOGCAT_PID; fi
 after_script:
   # Report test coverage to Code Climate
   - export JACOCO_SOURCE_PATH=app/src/main/java/
