@@ -146,4 +146,15 @@ public class MockEventsRepository implements EventRepository {
     public LiveData<List<ScheduledItem>> getScheduledItems(int eventId) {
         return scheduledItems.get(eventId);
     }
+
+    @Override
+    public LiveData<List<Zone>> getZones(int eventId) {
+        return null;
+        
+    }
+
+    @Override
+    public LiveData<Bitmap> getSpotImage(Spot spot) {
+        return null;
+    }
 }

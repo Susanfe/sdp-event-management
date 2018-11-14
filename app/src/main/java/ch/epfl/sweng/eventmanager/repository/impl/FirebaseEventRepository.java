@@ -111,7 +111,21 @@ public class FirebaseEventRepository implements EventRepository {
 
     @Override
     public LiveData<List<Spot>> getSpots(int eventId) {
-        return this.getElems(eventId, "spots", Spot.class);
+        FirebaseDatabase fdB = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = fdB.getReference("spots").child("event_" + eventId);
+
+        return Transformations.switchMap(FirebaseHelper.getList(dbRef, Spot.class), list -> {
+            MediatorLiveData<List<Spot>> events = new MediatorLiveData<>();
+            List<Spot> spotList = new ArrayList<>();
+            for (Spot spot: list){
+                events.addSource(getSpotImage(spot), img -> {
+                    spot.setImage(img);
+                    spotList.add(spot);
+                    events.setValue(spotList);
+                });
+            }
+            return events;
+        });
     }
 
     @Override
@@ -122,5 +136,26 @@ public class FirebaseEventRepository implements EventRepository {
     @Override
     public LiveData<List<Zone>> getZones(int eventId) {
         return this.getElems(eventId, "zones", Zone.class);
+    }
+
+    private String getImageName(Spot spot) {
+        Log.d(TAG, spot.getTitle());
+        return spot.getTitle().replace(" ", "_") + ".jpg";
+    }
+
+    @Override
+    public LiveData<Bitmap> getSpotImage(Spot spot) {
+        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("spots-pictures");
+        StorageReference spotImageReference = imagesRef.child(getImageName(spot));
+        final MutableLiveData<Bitmap> img = new MutableLiveData<>();
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        spotImageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inMutable = true;
+            Log.d(TAG, "Image is loaded");
+            img.setValue(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
+        }).addOnFailureListener(exception -> Log.w(TAG, "Could not load " + spot.getTitle() + " image"));
+        return img;
     }
 }

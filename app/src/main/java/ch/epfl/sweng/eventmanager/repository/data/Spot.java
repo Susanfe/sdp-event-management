@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -33,18 +34,19 @@ public class Spot implements ClusterItem {
     /**
      * The ressource picture
      */
-    private int bitmap;
+    private Bitmap bitmap;
     /**
      * List of scheduledItem
      */
     private List<ScheduledItem> scheduleList;
 
 
-    Spot(String title, SpotType spotType, double latitude, double longitude) {
+    Spot(String title, SpotType spotType, double latitude, double longitude, Bitmap bitmap) {
         this.title = title;
         this.spotType = spotType;
         this.position = new Position(latitude, longitude);
-        this.bitmap = R.drawable.panda;
+        Log.i("TAGBITMAP", String.valueOf(bitmap==null));
+        this.bitmap = bitmap;
     }
 
     public Spot() {}
@@ -71,8 +73,7 @@ public class Spot implements ClusterItem {
         return spotType;
     }
 
-    public int getBitmap() {
-        Log.i("TAGIMAGE", String.valueOf(bitmap==0));
+    public Bitmap getBitmap() {
         return bitmap;
     }
 
@@ -87,5 +88,9 @@ public class Spot implements ClusterItem {
 
     public List<ScheduledItem> getScheduleList() {
         return scheduleList;
+    }
+
+    public void setImage(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

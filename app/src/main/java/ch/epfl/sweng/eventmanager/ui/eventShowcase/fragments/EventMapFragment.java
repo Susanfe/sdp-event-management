@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -230,8 +231,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         protected void onBeforeClusterItemRendered(Spot spot, MarkerOptions markerOptions) {
             // Draw a single person.
             // Set the info window to show their name.
-            int drawableId = context.getResources().getIdentifier("panda", "drawable", context.getPackageName());
-            mImageView.setImageResource(drawableId);
+            mImageView.setImageBitmap(spot.getBitmap());
             Bitmap icon = mIconGenerator.makeIcon();
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(spot.getTitle());
         }
@@ -245,8 +245,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
             int height = mDimension;
 
             for (Spot p : cluster.getItems()) {
-                int drawableId = context.getResources().getIdentifier("panda", "drawable", context.getPackageName());
-                Drawable drawable = context.getResources().getDrawable(drawableId);
+                Drawable drawable = new BitmapDrawable(p.getBitmap());
                 drawable.setBounds(0, 0, width, height);
                 profilePhotos.add(drawable);
             }
