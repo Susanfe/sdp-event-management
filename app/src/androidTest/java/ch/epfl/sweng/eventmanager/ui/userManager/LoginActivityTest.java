@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.TestHelper;
 import ch.epfl.sweng.eventmanager.users.Session;
 
 @RunWith(AndroidJUnit4.class)
@@ -139,6 +140,14 @@ public class LoginActivityTest {
         onView(withId(R.id.login_button)).perform(click());
         onView(withId(R.id.email_field))
                 .check(matches(hasErrorText(invalidEmailError)));
+    }
+
+    @Test
+    public void testOpenSignUpForm() {
+        onView(withId(R.id.signup_button))
+                .perform(click());
+
+        TestHelper.withToolbarTitle(getResourceString(R.string.title_activity_sign_up));
     }
 
     private String getResourceString(int id) {
