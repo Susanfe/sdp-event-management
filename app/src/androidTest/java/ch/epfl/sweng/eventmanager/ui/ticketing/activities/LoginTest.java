@@ -76,8 +76,8 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
         onView(withId(R.id.password)).perform(typeText(MockStacks.PASSWORD), closeSoftKeyboard());
         onView(withId(R.id.email_sign_in_button)).perform(click());
 
-        onView(withText(Matchers.startsWith("Erreur de connexion"))).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
-
+        //onView(withText(Matchers.startsWith("Erreur de connexion"))).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        Intents.assertNoUnverifiedIntents();
 
         Assert.assertFalse(getTicketingService().isLoggedIn());
     }

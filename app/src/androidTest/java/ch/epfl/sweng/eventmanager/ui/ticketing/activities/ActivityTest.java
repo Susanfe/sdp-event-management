@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 
+import static android.support.test.espresso.intent.matcher.IntentMatchers.anyIntent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.isInternal;
 
 /**
@@ -36,7 +37,7 @@ public abstract class ActivityTest<T extends TicketingActivity> extends Scanning
     public void setUp() {
         Intents.init();
         if (dropIntents) {
-            Intents.intending(isInternal()).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
+            Intents.intending(anyIntent()).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
         }
     }
 
