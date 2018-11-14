@@ -10,7 +10,7 @@
     <string name="my_schedule_empty">There is currently no saved activities for this event</string>
     <string name="send_news_failed">Cannot publish news. Try again later!</string>
 
-    <string name="title_activity_join_event_switch">Join the event</string>
+    <string name="main_fragment_join_event">Join</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_account_display">My account</string>
     <string name="title_activity_event_picking">EventPickingActivity</string>
@@ -58,16 +58,18 @@
     <string name="news_nav_item_activity_event_showcase">News</string>
     <string name="send_news_title">Create a news</string>
     <string name="send_news_title_field">Title</string>
-    <string name="send_news_content">News content...</string>
+    <string name="send_news_content">News content…</string>
     <string name="send_news_send_button">Send</string>
     <string name="news_create">Create a news</string>
 
     <!-- Accessibility text -->
     <string name="event_thumbnail">Event thumbnail</string>
 
-
-    <string name="contentDescription_main_fragment_image">Image representing the event</string>
     <string name="contentDescription_custom_drawer">ImageView holding the custom marker image</string>
 
+    <string name="main_fragment_image_contentDescription">Image representing the event</string>
     <string name="main_fragment_error_no_description">Could not load event description.</string>
+    <string name="main_fragment_button_news">News</string>
+    <string name="main_fragment_button_map">Map</string>
+    <string name="main_fragment_button_schedule">Schedule</string>
 </resources>
