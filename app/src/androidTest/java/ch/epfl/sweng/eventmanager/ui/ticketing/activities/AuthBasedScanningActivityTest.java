@@ -36,6 +36,8 @@ public class AuthBasedScanningActivityTest extends BaseScanningActivityTest {
 
     @Test
     public void testLoggedOut() {
+        Intents.assertNoUnverifiedIntents();
+
         waitCameraReady();
 
         onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
