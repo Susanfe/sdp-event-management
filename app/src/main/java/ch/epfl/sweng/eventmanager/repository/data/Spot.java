@@ -1,15 +1,12 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import ch.epfl.sweng.eventmanager.R;
 
 /**
  * Represents a place into the event
@@ -44,7 +41,6 @@ public class Spot implements ClusterItem {
         this.title = title;
         this.spotType = spotType;
         this.position = new Position(latitude, longitude);
-        Log.i("TAGBITMAP", String.valueOf(bitmap==null));
         this.bitmap = bitmap;
     }
 
