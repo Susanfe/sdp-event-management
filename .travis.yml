@@ -15,7 +15,8 @@ before_script:
   - echo no | android create avd --force -n test -t android-16 --abi armeabi-v7a
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
-  - adb shell input keyevent 82
+  - adb shell input keyevent 4
+  - adb shell input tap 300 250 # Should close the welcome screen
   # Disable transitions
   - adb shell settings put global window_animation_scale 0.0
   - adb shell settings put global transition_animation_scale 0.0
