@@ -98,10 +98,12 @@ public class EventShowcaseActivityTest {
 
         onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
-        onView(withId(R.id.join_event_switch))
+        SystemClock.sleep(200);
+
+        onView(withId(R.id.join_event_button))
                 .perform(click());
 
-        onView(withId(R.id.join_event_switch))
+        onView(withId(R.id.join_event_button))
                 .perform(click());
     }
 

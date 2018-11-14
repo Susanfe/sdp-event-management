@@ -10,6 +10,9 @@
     <color name="colorSecondaryText">#000000</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="colorCheckEnabled">#2e7d32</color>
+
     <color name="button_lateral_navigation">@color/colorPrimaryLight</color>
     <color name="button_lateral_navigation_state_pressed">@color/colorPrimary</color>
+
 </resources>

@@ -137,7 +137,7 @@ public class LoginActivityTest {
         onView(withId(R.id.email_field))
                 .perform(typeText(email))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.login_button)).perform(scrollTo(), click());
+        onView(withId(R.id.login_button)).perform(click());
         onView(withId(R.id.password_field))
                 .check(matches(hasErrorText(emptyPasswordError)));
 
@@ -145,7 +145,7 @@ public class LoginActivityTest {
         onView(withId(R.id.password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.login_button)).perform(scrollTo(), click());
+        onView(withId(R.id.login_button)).perform(click());
         onView(withId(R.id.email_field))
                 .check(matches(hasErrorText(invalidEmailError)));
     }

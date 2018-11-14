@@ -127,7 +127,7 @@ public class EventShowcaseActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             ActionBar actionbar = getSupportActionBar();
             actionbar.setDisplayHomeAsUpEnabled(true);
-            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionbar.setHomeAsUpIndicator(R.drawable.menu_customized_solor);
         }
 
         // Fetch event from passed ID
@@ -136,7 +136,6 @@ public class EventShowcaseActivity extends AppCompatActivity
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
-            this.eventID = eventID;
             this.initModels();
             this.setupHeader();
             this.setupMenu();
