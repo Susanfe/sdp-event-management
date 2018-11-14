@@ -53,6 +53,14 @@ public class EventPickingActivity extends AppCompatActivity {
         view.setAdapter(new EventListAdapter(Collections.emptyList()));
     }
 
+    private void setUIVisibility(int joinedEvent, int eventList, int joinedHelpText,
+                               int notJoinedHelpText) {
+        this.joinedEvents.setVisibility(joinedEvent);
+        this.eventList.setVisibility(eventList);
+        this.joinedHelpText.setVisibility(joinedHelpText);
+        this.notJoinedHelpText.setVisibility(notJoinedHelpText);
+    }
+
     private void setupObservers() {
         this.model.getEventsPair().observe(this, list -> {
             if (list == null) {
@@ -66,21 +74,12 @@ public class EventPickingActivity extends AppCompatActivity {
 
             if (!list.getJoinedEvents().isEmpty()) {
                 if (list.getOtherEvents().isEmpty()) {
-                    joinedEvents.setVisibility(View.VISIBLE);
-                    eventList.setVisibility(View.GONE);
-                    joinedHelpText.setVisibility(View.VISIBLE);
-                    notJoinedHelpText.setVisibility(View.GONE);
+                    setUIVisibility(View.VISIBLE, View.GONE, View.VISIBLE, View.GONE);
                 } else {
-                    joinedEvents.setVisibility(View.VISIBLE);
-                    eventList.setVisibility(View.VISIBLE);
-                    joinedHelpText.setVisibility(View.VISIBLE);
-                    notJoinedHelpText.setVisibility(View.VISIBLE);
+                    setUIVisibility(View.VISIBLE, View.VISIBLE, View.VISIBLE, View.VISIBLE);
                 }
             } else {
-                joinedEvents.setVisibility(View.GONE);
-                eventList.setVisibility(View.VISIBLE);
-                joinedHelpText.setVisibility(View.GONE);
-                notJoinedHelpText.setVisibility(View.GONE);
+                setUIVisibility(View.GONE, View.VISIBLE, View.GONE, View.GONE);
             }
         });
     }
