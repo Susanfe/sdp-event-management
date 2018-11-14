@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventSelector;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
 import dagger.Binds;

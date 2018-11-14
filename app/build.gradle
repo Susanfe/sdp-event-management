@@ -7,7 +7,7 @@ jacoco {
 
 android {
     compileSdkVersion 28
-    buildToolsVersion "28.0.2"
+    buildToolsVersion '28.0.3'
     compileOptions.incremental = false
 
     defaultConfig {
@@ -57,13 +57,13 @@ dependencies {
     // Lifecycle and DI
     implementation 'androidx.lifecycle:lifecycle-livedata:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'com.google.dagger:dagger:2.17'
-    implementation 'com.google.dagger:dagger-android:2.17'
-    implementation 'com.google.dagger:dagger-android-support:2.17'
+    implementation 'com.google.dagger:dagger:2.19'
+    implementation 'com.google.dagger:dagger-android:2.19'
+    implementation 'com.google.dagger:dagger-android-support:2.19'
 
     // Layout tools
     implementation 'com.github.vipulasri:timelineview:1.0.6'
-    implementation 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.jakewharton:butterknife:9.0.0-rc1'
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 
     // Firebase
@@ -88,17 +88,17 @@ dependencies {
 
     // Annotations
     annotationProcessor 'androidx.room:room-compiler:2.0.0-rc01'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.17'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.19'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.19'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
 
     // Tests
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.22.0'
     testImplementation "androidx.arch.core:core-testing:2.0.0"
 
-    androidTestAnnotationProcessor 'com.google.dagger:dagger-android-processor:2.17'
-    androidTestAnnotationProcessor 'com.google.dagger:dagger-compiler:2.17'
+    androidTestAnnotationProcessor 'com.google.dagger:dagger-android-processor:2.19'
+    androidTestAnnotationProcessor 'com.google.dagger:dagger-compiler:2.19'
 
     androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
     androidTestImplementation 'androidx.test:runner:1.1.0'

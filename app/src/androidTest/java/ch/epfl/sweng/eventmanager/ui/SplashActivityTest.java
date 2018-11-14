@@ -1,6 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui;
 
-import android.support.test.rule.ActivityTestRule;
+import androidx.test.rule.ActivityTestRule;
 import org.junit.Rule;
 import org.junit.Test;
 

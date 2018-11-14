@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 
-import android.support.test.espresso.intent.Intents;
-import android.support.v7.widget.RecyclerView;
+import androidx.test.espresso.intent.Intents;
+import androidx.recyclerview.widget.RecyclerView;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.ticketing.MultiHttpStack;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingConfigurationPickerActivity;

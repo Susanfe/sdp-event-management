@@ -1,12 +1,11 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.*;
 import ch.epfl.sweng.eventmanager.test.ObservableMap;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
-import ch.epfl.sweng.eventmanager.test.ticketing.TicketingHttpStack;
 import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

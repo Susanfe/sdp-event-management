@@ -1,6 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import com.google.android.gms.tasks.Task;
 import com.twitter.sdk.android.core.models.Tweet;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,7 +8,7 @@
         tools:context=".ui.ticketing.TicketingConfigurationPickerActivity">
 
 
-    <android.support.v4.widget.SwipeRefreshLayout android:layout_width="match_parent"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:layout_width="match_parent"
                                                   android:layout_height="match_parent"
     android:id="@+id/swipe_refresher">
 
@@ -27,14 +27,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" android:text="@string/pick_configuration"
                         android:textStyle="bold" android:gravity="center_horizontal" android:textSize="18sp" android:id="@+id/pick_config"/>
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/recylcer"
                         android:layout_margin="8dp"/>
             </LinearLayout>
         </ScrollView>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

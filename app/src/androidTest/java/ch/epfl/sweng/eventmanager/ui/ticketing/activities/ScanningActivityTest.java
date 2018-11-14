@@ -1,9 +1,9 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 
 import android.os.SystemClock;
-import android.support.test.espresso.action.ViewActions;
-import android.support.test.espresso.intent.Intents;
-import android.support.test.espresso.intent.matcher.IntentMatchers;
+import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.intent.matcher.IntentMatchers;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
@@ -11,10 +11,10 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 public class ScanningActivityTest extends BaseScanningActivityTest {
     public ScanningActivityTest() {
@@ -26,7 +26,8 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
         waitCameraReady();
 
         sendScanSuccess(MockStacks.SINGLE_BARCODE);
-        //onView(withText(R.string.ticketing_scan_success)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        SystemClock.sleep(1000);
+
         onView(withId(R.id.barcodePreview)).check(matches(withText(
                 Matchers.allOf(
                         Matchers.containsString(mActivityRule.getActivity().getString(R.string.ticketing_scan_success)),
@@ -37,18 +38,16 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
                 ))));
 
 
-        SystemClock.sleep(5000);
-
         sendScanSuccess("THIS CODE DOESNT EXIST");
-        //onView(withText(R.string.ticketing_scan_failure)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        SystemClock.sleep(1000);
+
         onView(withId(R.id.barcodePreview)).check(matches(withText(
                 Matchers.containsString(mActivityRule.getActivity().getString(R.string.ticketing_scan_failure))
         )));
 
-        SystemClock.sleep(5000);
-
         sendScanSuccess(MockStacks.MULTIPLE_BARCODE);
-        //onView(withText(R.string.ticketing_scan_success)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        SystemClock.sleep(1000);
+
         onView(withId(R.id.barcodePreview)).check(matches(withText(
                 Matchers.allOf(
                         Matchers.containsString(mActivityRule.getActivity().getString(R.string.ticketing_scan_success)),
@@ -57,8 +56,6 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
                         Matchers.containsString(MockStacks.CLIENT.getFirstname() + " " + MockStacks.CLIENT.getLastname()),
                         Matchers.containsString(MockStacks.AMOUNT + " * " + MockStacks.PRODUCT.getName())
                 ))));
-
-        SystemClock.sleep(500);
 
         Intents.assertNoUnverifiedIntents();
     }

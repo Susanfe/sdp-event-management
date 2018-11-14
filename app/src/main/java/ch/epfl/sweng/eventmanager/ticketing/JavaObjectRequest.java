@@ -1,6 +1,6 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import com.android.volley.*;
 import com.android.volley.toolbox.HttpHeaderParser;

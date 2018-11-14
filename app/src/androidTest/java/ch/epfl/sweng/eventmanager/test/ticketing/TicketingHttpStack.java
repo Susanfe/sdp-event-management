@@ -1,6 +1,6 @@
 package ch.epfl.sweng.eventmanager.test.ticketing;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.ticketing.data.LoginResponse;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;

@@ -1,22 +1,16 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.intent.Intents;
-import android.support.test.rule.GrantPermissionRule;
+import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.rule.GrantPermissionRule;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
-import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingScanActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingTestRule;
 import com.google.zxing.Result;
@@ -26,15 +20,16 @@ import com.journeyapps.barcodescanner.BarcodeView;
 import com.journeyapps.barcodescanner.DecoderThread;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 
 import java.lang.reflect.Field;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 public abstract class BaseScanningActivityTest extends ScanningTest {
 
@@ -93,16 +88,21 @@ public abstract class BaseScanningActivityTest extends ScanningTest {
 
     protected void waitCameraReady() {
         boolean cont = true;
-        for (int i = 0; i < 20 && cont; ++i) {
+        for (int i = 0; i < 60 && cont; ++i) {
             try {
                 onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
                 cont = getDecoderThread() == null; // Wait for the decoder thread
+
+                if (cont)
+                    SystemClock.sleep(1000);
             } catch (NoMatchingViewException e) {
                 SystemClock.sleep(1000);
             }
         }
 
         onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
+
+        Assert.assertNotNull(getDecoderThread());
     }
 
 }
