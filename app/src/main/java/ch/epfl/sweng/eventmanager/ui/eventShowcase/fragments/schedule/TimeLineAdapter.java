@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ch.epfl.sweng.eventmanager.notifications.ScheduledItemNotification;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
+import ch.epfl.sweng.eventmanager.notifications.JoinedScheduledItemStrategy;
+import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import com.github.vipulasri.timelineview.TimelineView;
@@ -100,10 +100,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
                 if (wasAdded) {
                     Toast.makeText(context, R.string.timeline_view_added_to_own_schedule, Toast.LENGTH_SHORT).show();
-                    ScheduledItemNotification.scheduleNotification(context, scheduledItem);
+                    NotificationScheduler.scheduleNotification(scheduledItem, new JoinedScheduledItemStrategy(context));
                 } else {
                     Toast.makeText(context, R.string.timeline_view_removed_from_own_schedule, Toast.LENGTH_SHORT).show();
-                    ScheduledItemNotification.unscheduleNotification(context, scheduledItem);
+                    NotificationScheduler.unscheduleNotification(scheduledItem, new JoinedScheduledItemStrategy(context));
                 }
             });
         });

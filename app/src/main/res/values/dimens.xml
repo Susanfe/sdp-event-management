@@ -6,4 +6,6 @@
 
     <dimen name="custom_marker_size">100dp</dimen>
     <dimen name="custom_marker_padding">2dp</dimen>
+
+    <dimen name="button_edges_radius">25dp</dimen>
 </resources>

@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -13,8 +13,28 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Launcher theme. Sets the main window background to the splash_screen drawable -->
+    <style name="AppTheme.Launcher" parent="AppTheme.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- App's toolbar global style for every activity/fragment-->
+    <style name="Toolbar">
+        <item name="titleTextColor">@color/colorSecondary</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <!-- Add font -->
+    </style>
+
+    <!-- App button global style for every activity/fragment-->
+    <style name="Button_global">
+        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:background">@drawable/button_lateral_navigation</item>
+    </style>
+
 
 </resources>

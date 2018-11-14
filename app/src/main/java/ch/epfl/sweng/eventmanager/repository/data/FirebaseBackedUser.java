@@ -10,6 +10,9 @@ public final class FirebaseBackedUser implements User {
     }
 
     @Override
+    public String getUid() { return firebaseUser.getUid(); }
+
+    @Override
     public String getDisplayName() {
         return firebaseUser.getDisplayName();
     }
@@ -18,7 +21,4 @@ public final class FirebaseBackedUser implements User {
     public String getEmail() {
         return firebaseUser.getEmail();
     }
-
-    @Override
-    public String getUid() { return firebaseUser.getUid(); }
 }

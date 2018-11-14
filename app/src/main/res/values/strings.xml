@@ -8,6 +8,7 @@
     <string name="scheduled_items_empty">Sorry! There are no registered activities for this event :/</string>
     <string name="news_empty">The event organizer hasn\'t published any news yet.</string>
     <string name="my_schedule_empty">There is currently no saved activities for this event</string>
+    <string name="send_news_failed">Cannot publish news. Try again later!</string>
 
     <string name="title_activity_join_event_switch">Join the event</string>
     <string name="title_activity_login">Sign in</string>
@@ -25,15 +26,16 @@
     <string name="email_field">Email address</string>
     <string name="password_field">Password</string>
 
-    <string name="login_button">Sign in »</string>
+    <string name="login_button">Sign in</string>
     <string name="logout_button">Log out</string>
-    <string name="account_button">My account »</string>
+    <string name="account_button">My account</string>
     <string name="back_button">Back</string>
 
     <string name="main_nav_item_activity_event_showcase">Description</string>
     <string name="map_nav_item_activity_event_showcase">Map</string>
     <string name="schedule_nav_item_activity_event_showcase">Schedule</string>
     <string name="ticket_nav_item_activity_event_showcase">Tickets</string>
+    <string name="admin_nav_item_activity_event_showcase">Admin</string>
     <string name="pick_event_nav_item_activity_event_showcase">Event picker</string>
 
     <string name="timeline_view_added_to_own_schedule">Event added to your schedule!</string>
@@ -54,4 +56,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="news_nav_item_activity_event_showcase">News</string>
+    <string name="send_news_title">Create a news</string>
+    <string name="send_news_title_field">Title</string>
+    <string name="send_news_content">News content...</string>
+    <string name="send_news_send_button">Send</string>
+    <string name="news_create">Create a news</string>
+
+    <!-- Accessibility text -->
+    <string name="event_thumbnail">Event thumbnail</string>
+
+
+    <string name="contentDescription_main_fragment_image">Image representing the event</string>
+
+    <string name="main_fragment_error_no_description">Could not load event description.</string>
 </resources>
