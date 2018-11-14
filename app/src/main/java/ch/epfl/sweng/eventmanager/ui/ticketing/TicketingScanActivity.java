@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -37,7 +38,7 @@ import java.util.Map;
 public final class TicketingScanActivity extends TicketingActivity {
     public static final String SELECTED_CONFIG_ID = "ch.epfl.sweng.SELECTED_CONFIG_ID";
     private static final String TAG = "TicketingScanActivity";
-    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 42; // Magic value
     private int configId = -1;
 
     private DecoratedBarcodeView barcodeView;
@@ -189,12 +190,13 @@ public final class TicketingScanActivity extends TicketingActivity {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startScan();
-                } else {
+                } else if (grantResults.length > 0) {
+                    Log.e(TAG, "Refused CAMERA access (result " + grantResults[0] + ")");
                     startActivity(backToShowcase());
+                } else {
+                    Log.w(TAG, "Permission result with no result");
                 }
             }
         }
