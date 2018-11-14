@@ -12,18 +12,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 import ch.epfl.sweng.eventmanager.repository.data.MultiDrawable;
-import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
@@ -37,7 +33,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
@@ -46,7 +41,6 @@ import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Display the map and his features
@@ -154,9 +148,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         mClusterManager.setAnimation(true);
 
         this.scheduleViewModel.getScheduledItems().observe(getActivity(), items -> this.spotsModel.getSpots().observe(getActivity(), spots -> {
-            if (spots == null)
+            if (spots == null) {
                 return;
-
+            }
 
             // 1. clear old spots
             mClusterManager.clearItems();
@@ -168,7 +162,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
             }
         }));
     }
-
 
     private void enableMyLocationIfPermitted() {
         // FIXME handle nullpointerexception
@@ -185,7 +178,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     }
 
     private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener = () -> {
-        Log.i("test:", "buttonCkick");
         Toast.makeText(getActivity(), "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
@@ -193,10 +185,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     };
 
     private GoogleMap.OnMyLocationClickListener onMyLocationClickListener = location -> {
-        Log.i("test:", "buttonCkickListener");
         Toast.makeText(getActivity(), "Current location:\n" + location, Toast.LENGTH_LONG).show();
     };
-
 
     private class SpotRenderer extends DefaultClusterRenderer<Spot> {
         // FIXME handlenullpointerexception
@@ -205,13 +195,10 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         private final ImageView mImageView;
         private final ImageView mClusterImageView;
         private final int mDimension;
-        private Context context;
 
         public SpotRenderer(Context context) {
             // FIXME handle nullpointerexception
             super(getActivity(), mMap, mClusterManager);
-
-            this.context = context;
 
             View multiProfile = getLayoutInflater().inflate(R.layout.custom_marker, null);
 
