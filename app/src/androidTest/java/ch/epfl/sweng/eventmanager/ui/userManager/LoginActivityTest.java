@@ -122,8 +122,8 @@ public class LoginActivityTest {
     public void testInvalidCredentialsInput() {
         String email = "al.pha";
         String password = "secret";
-        String emptyPasswordError = getResourceString(R.string.empty_password_activity_login);
-        String invalidEmailError = getResourceString(R.string.invalid_email_activity_login);
+        String emptyPasswordError = getResourceString(R.string.empty_password_error);
+        String invalidEmailError = getResourceString(R.string.invalid_email_error);
 
         // Test empty password
         onView(withId(R.id.email_field))

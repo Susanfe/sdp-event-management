@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.userManager;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.view.View;
@@ -66,13 +65,13 @@ public class FormHelper {
         }
 
         if (TextUtils.isEmpty(password)) {
-            passwordView.setError(context.getString(R.string.empty_password_activity_login));
+            passwordView.setError(context.getString(R.string.empty_password_error));
             focusView = passwordView;
             cancel = true;
         }
 
         if (TextUtils.isEmpty(email) || !FormHelper.isEmailValid(email)) {
-            emailView.setError(context.getString(R.string.invalid_email_activity_login));
+            emailView.setError(context.getString(R.string.invalid_email_error));
             focusView = emailView;
             cancel = true;
         }

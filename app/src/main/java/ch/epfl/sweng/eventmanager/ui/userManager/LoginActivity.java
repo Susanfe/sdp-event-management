@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (error != null) {
                     mPasswordView.setError(error.getMessage());
                 } else {
-                    mPasswordView.setError(getString(R.string.generic_signin_failure_activity_login));
+                    mPasswordView.setError(getString(R.string.generic_signin_failure_error));
                 }
                 mPasswordView.requestFocus();
             }
