@@ -6,39 +6,23 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.action.ViewActions;
-import android.support.test.espresso.intent.Intents;
-import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.rule.GrantPermissionRule;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ToastMatcher;
-import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
-import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
-import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingLoginActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingScanActivity;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingTestRule;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.BarcodeView;
 import com.journeyapps.barcodescanner.DecoderThread;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
-import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Assert;
 import org.junit.Rule;
-import org.junit.Test;
 
 import java.lang.reflect.Field;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.AUTHORIZED_USER;
-import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.PASSWORD;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 public abstract class BaseScanningActivityTest extends ActivityTest<TicketingScanActivity> {
     @Rule
