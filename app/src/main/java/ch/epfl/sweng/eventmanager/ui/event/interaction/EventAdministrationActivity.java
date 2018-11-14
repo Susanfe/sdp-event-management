@@ -35,7 +35,6 @@ public class EventAdministrationActivity extends MultiFragmentActivity
     ViewModelFactory factory;
 
     private EventInteractionModel model;
-    private DrawerLayout mDrawerLayout;
     private int eventID;
 
     @Override
@@ -44,19 +43,7 @@ public class EventAdministrationActivity extends MultiFragmentActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_administration);
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = mDrawerLayout.findViewById(R.id.nav_view);
-
-        // Set toolbar as action bar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Add drawer button to the action bar
-        if(getSupportActionBar() != null) {
-            ActionBar actionbar = getSupportActionBar();
-            actionbar.setDisplayHomeAsUpEnabled(true);
-            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-        }
+        initializeSharedUI();
 
         // Fetch event from passed ID
         Intent intent = getIntent();

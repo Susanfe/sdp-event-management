@@ -45,13 +45,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity
     @Inject
     ViewModelFactory factory;
 
-    @BindView(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
-    @BindView(R.id.nav_view)
-    NavigationView navigationView;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
     private EventInteractionModel model;
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
@@ -94,19 +87,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_showcase);
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = mDrawerLayout.findViewById(R.id.nav_view);
-        ButterKnife.bind(this);
-
-        // Set toolbar as action bar
-        setSupportActionBar(toolbar);
-
-        // Add drawer button to the action bar
-        if (getSupportActionBar() != null) {
-            ActionBar actionbar = getSupportActionBar();
-            actionbar.setDisplayHomeAsUpEnabled(true);
-            actionbar.setHomeAsUpIndicator(R.drawable.menu_customized_solor);
-        }
+        initializeSharedUI();
 
         // Fetch event from passed ID
         Intent intent = getIntent();

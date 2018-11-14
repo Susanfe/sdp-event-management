@@ -1,11 +1,17 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 
 import static android.support.constraint.Constraints.TAG;
@@ -14,6 +20,28 @@ import static android.support.constraint.Constraints.TAG;
  * This class is used to share the changeFragment method between our various multi-fragment classes.
  */
 public class MultiFragmentActivity extends AppCompatActivity {
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    protected void initializeSharedUI() {
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = mDrawerLayout.findViewById(R.id.nav_view);
+        ButterKnife.bind(this);
+
+        // Set toolbar as action bar
+        setSupportActionBar(toolbar);
+
+        // Add drawer button to the action bar
+        if (getSupportActionBar() != null) {
+            ActionBar actionbar = getSupportActionBar();
+            actionbar.setDisplayHomeAsUpEnabled(true);
+            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        }
+    }
 
     /**
      * Change the current displayed fragment by a new one.
