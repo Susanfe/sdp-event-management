@@ -2,35 +2,46 @@ package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Location;
-import android.support.annotation.NonNull;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
-import ch.epfl.sweng.eventmanager.repository.data.Position;
+import ch.epfl.sweng.eventmanager.repository.data.MultiDrawable;
+import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleParentFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ZoneModel;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,16 +53,16 @@ import java.util.List;
  * @author Robin Zbinden (274236)
  * @author Stanislas Jouven (260580)
  */
-public class EventMapFragment extends AbstractShowcaseFragment {
+public class EventMapFragment extends AbstractShowcaseFragment implements ClusterManager.OnClusterItemInfoWindowClickListener<Spot> {
 
     private static final String TAG = "EventMapFragment";
     private static final float ZOOMLEVEL = 19.0f; //This goes up to 21
+    public static final String TAB_NB_KEY = "ch.epfl.sweng.eventmanager.TAB_NB_KEY";
     private GoogleMap mMap;
     private ClusterManager<Spot> mClusterManager;
     protected SpotsModel spotsModel;
     protected ZoneModel zonesModel;
-    //Polygon shape;
-    List<Marker> markers = new ArrayList<>();
+    protected ScheduleViewModel scheduleViewModel;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -72,30 +83,31 @@ public class EventMapFragment extends AbstractShowcaseFragment {
             zonesModel = ViewModelProviders.of(requireActivity()).get(ZoneModel.class);
         }
 
+        if(scheduleViewModel == null) {
+            scheduleViewModel = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapFragment);
         if (mapFragment == null) {
             FragmentManager fragmentManager = getFragmentManager();
+            // FIXME handle nullpointerexception
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mapFragment = SupportMapFragment.newInstance();
             fragmentTransaction.replace(R.id.mapFragment, mapFragment).commit();
         }
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(googleMap -> {
-                mMap = googleMap;
-                if (mMap != null) {
-                    setUpMap();
-                    setUpClusterer();
-                    setUpOverlay();
-                }
-            });
-
-        }
-        TextView textView = (TextView) view.findViewById(R.id.text_test);
-        textView.setText("everything is ready");
+        mapFragment.getMapAsync(googleMap -> {
+            mMap = googleMap;
+            if (mMap != null) {
+                setUpMap();
+                setUpClusterer();
+                setUpOverlay();
+            }
+        });
     }
 
     private void setUpMap() {
+        // FIXME handle nullpointerException
         model.getEvent().observe(getActivity(), event -> {
             if (event == null || event.getLocation() == null)
                 return;
@@ -114,6 +126,7 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     }
 
     private void setUpOverlay() {
+        // FIXME handle nullpointerexception
         this.zonesModel.getZone().observe(getActivity(), zones -> {
             if(zones == null) {
                 return;
@@ -125,7 +138,12 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     }
 
     private void setUpClusterer() {
+        // FIXME handle nullpointerexception
         mClusterManager = new ClusterManager<>(getActivity(), mMap);
+        mClusterManager.setOnClusterItemInfoWindowClickListener(this);
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mMap.setOnInfoWindowClickListener(mClusterManager);
+        mClusterManager.setRenderer(new SpotRenderer(getActivity()));
 
         // Point the map's listeners at the listeners implemented by the cluster
         // manager.
@@ -134,22 +152,25 @@ public class EventMapFragment extends AbstractShowcaseFragment {
 
         mClusterManager.setAnimation(true);
 
-        this.spotsModel.getSpots().observe(getActivity(), spots -> {
+        this.scheduleViewModel.getScheduledItems().observe(getActivity(), items -> this.spotsModel.getSpots().observe(getActivity(), spots -> {
             if (spots == null)
                 return;
+
 
             // 1. clear old spots
             mClusterManager.clearItems();
 
             // 2. Add new spots
             for (Spot s : spots) {
-                System.out.println(s);
+                s.setScheduleList(items);
                 mClusterManager.addItem(s);
             }
-        });
+        }));
     }
 
+
     private void enableMyLocationIfPermitted() {
+        // FIXME handle nullpointerexception
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -162,22 +183,99 @@ public class EventMapFragment extends AbstractShowcaseFragment {
         }
     }
 
-    private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener = new GoogleMap.OnMyLocationButtonClickListener() {
-        @Override
-        public boolean onMyLocationButtonClick() {
-            Log.i("test:", "buttonCkick");
-            Toast.makeText(getActivity(), "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-            // Return false so that we don't consume the event and the default behavior still occurs
-            // (the camera animates to the user's current position).
-            return false;
-        }
+    private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener = () -> {
+        Log.i("test:", "buttonCkick");
+        Toast.makeText(getActivity(), "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false;
     };
 
-    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener =  new GoogleMap.OnMyLocationClickListener() {
-        @Override
-        public void onMyLocationClick(@NonNull Location location) {
-            Log.i("test:", "buttonCkickListener");
-            Toast.makeText(getActivity(), "Current location:\n" + location, Toast.LENGTH_LONG).show();
-        }
+    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener = location -> {
+        Log.i("test:", "buttonCkickListener");
+        Toast.makeText(getActivity(), "Current location:\n" + location, Toast.LENGTH_LONG).show();
     };
+
+
+    private class SpotRenderer extends DefaultClusterRenderer<Spot> {
+        // FIXME handlenullpointerexception
+        private final IconGenerator mIconGenerator = new IconGenerator(getActivity().getApplicationContext());
+        private final IconGenerator mClusterIconGenerator = new IconGenerator(getActivity().getApplicationContext());
+        private final ImageView mImageView;
+        private final ImageView mClusterImageView;
+        private final int mDimension;
+        private Context context;
+
+        public SpotRenderer(Context context) {
+            // FIXME handle nullpointerexception
+            super(getActivity(), mMap, mClusterManager);
+
+            this.context = context;
+
+            View multiProfile = getLayoutInflater().inflate(R.layout.custom_marker, null);
+
+            mClusterIconGenerator.setContentView(multiProfile);
+            mClusterImageView = multiProfile.findViewById(R.id.image);
+
+            mImageView = new ImageView(getActivity());
+            mDimension = (int) context.getResources().getDimension(R.dimen.custom_marker_size);
+            mImageView.setLayoutParams(new ViewGroup.LayoutParams(mDimension, mDimension));
+            int padding = (int) context.getResources().getDimension(R.dimen.custom_marker_padding);
+            mImageView.setPadding(padding, padding, padding, padding);
+            mIconGenerator.setContentView(mImageView);
+        }
+
+
+        @Override
+        protected void onBeforeClusterItemRendered(Spot spot, MarkerOptions markerOptions) {
+            // Draw a single person.
+            // Set the info window to show their name.
+            int drawableId = context.getResources().getIdentifier("panda", "drawable", context.getPackageName());
+            mImageView.setImageResource(drawableId);
+            Bitmap icon = mIconGenerator.makeIcon();
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(spot.getTitle());
+        }
+
+        @Override
+        protected void onBeforeClusterRendered(Cluster<Spot> cluster, MarkerOptions markerOptions) {
+            // Draw multiple people.
+            // Note: this method runs on the UI thread. Don't spend too much time in here (like in this example).
+            List<Drawable> profilePhotos = new ArrayList<>(Math.min(4, cluster.getSize()));
+            int width = mDimension;
+            int height = mDimension;
+
+            for (Spot p : cluster.getItems()) {
+                int drawableId = context.getResources().getIdentifier("panda", "drawable", context.getPackageName());
+                Drawable drawable = context.getResources().getDrawable(drawableId);
+                drawable.setBounds(0, 0, width, height);
+                profilePhotos.add(drawable);
+            }
+            MultiDrawable multiDrawable = new MultiDrawable(profilePhotos);
+            multiDrawable.setBounds(0, 0, width, height);
+
+            mClusterImageView.setImageDrawable(multiDrawable);
+            Bitmap icon = mClusterIconGenerator.makeIcon(String.valueOf(cluster.getSize()));
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));
+        }
+
+        @Override
+        protected boolean shouldRenderAsCluster(Cluster cluster) {
+            // Always render clusters.
+            return cluster.getSize() > 1;
+        }
+    }
+
+    @Override
+    public void onClusterItemInfoWindowClick(Spot spot) {
+        if(spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
+            ScheduleParentFragment scheduleParentFragment = new ScheduleParentFragment();
+            Bundle args = new Bundle();
+            args.putString(TAB_NB_KEY, spot.getTitle());
+            scheduleParentFragment.setArguments(args);
+            // FIXME handle nullpointerexception
+            ((EventShowcaseActivity)getActivity()).changeFragment(
+                    scheduleParentFragment, true);
+        }
+    }
+
 }
