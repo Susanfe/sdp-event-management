@@ -33,10 +33,7 @@ public class AuthBasedScanningActivityTest extends BaseScanningActivityTest {
     }
 
     @Test
-    @Ignore("Generates a fucking permission box because I can't get the bloody testrules to work, so we won't test that")
     public void testLoggedOut() {
-        Intents.assertNoUnverifiedIntents();
-
         waitCameraReady();
 
         onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
