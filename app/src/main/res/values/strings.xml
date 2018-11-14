@@ -67,6 +67,7 @@
 
 
     <string name="contentDescription_main_fragment_image">Image representing the event</string>
+    <string name="contentDescription_custom_drawer">ImageView holding the custom marker image</string>
 
     <string name="main_fragment_error_no_description">Could not load event description.</string>
 </resources>

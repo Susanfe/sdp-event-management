@@ -12,6 +12,8 @@ import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.repository.data.Zone;
+
 import com.google.firebase.database.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -30,7 +32,7 @@ public class FirebaseEventRepository implements EventRepository {
     private static String TAG = "EventRepository";
 
     @Inject
-    public FirebaseEventRepository() {
+    FirebaseEventRepository() {
     }
 
     @Override
@@ -115,5 +117,10 @@ public class FirebaseEventRepository implements EventRepository {
     @Override
     public LiveData<List<ScheduledItem>> getScheduledItems(int eventId) {
         return this.getElems(eventId, "schedule_items", ScheduledItem.class);
+    }
+
+    @Override
+    public LiveData<List<Zone>> getZones(int eventId) {
+        return this.getElems(eventId, "zones", Zone.class);
     }
 }
