@@ -14,6 +14,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.NoMatchingViewException;
@@ -77,13 +78,9 @@ public class LoginActivityTest {
         onView(withId(R.id.main_text))
                 .check(matches(withText(containsString(email))));
 
-        onView(withId(R.id.logout_button))
+        onView(withId(R.id.logout_btn))
                 .perform(click());
 
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-
-        onView(withText("Sign in"))
-                .perform(click());
     }
 
     @Test
