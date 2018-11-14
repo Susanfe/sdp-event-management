@@ -15,7 +15,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcas
  * to handle interaction events.
  */
 public class EventUserManagementFragment extends AbstractShowcaseFragment {
-    private static final String TAG = "EventUserManagementFragment";
+    private static final String TAG = "UserManagement";
 
     public EventUserManagementFragment() {
         // Required empty public constructor
