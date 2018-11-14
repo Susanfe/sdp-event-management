@@ -105,7 +105,7 @@ public class EventShowcaseActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             ActionBar actionbar = getSupportActionBar();
             actionbar.setDisplayHomeAsUpEnabled(true);
-            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionbar.setHomeAsUpIndicator(R.drawable.menu_customized_solor);
         }
 
         // Fetch event from passed ID
@@ -163,6 +163,7 @@ public class EventShowcaseActivity extends AppCompatActivity
         switch(menuItem.getItemId()) {
             case R.id.nav_pick_event :
                 Intent pickingIntent = new Intent(this, EventPickingActivity.class);
+                pickingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(pickingIntent);
                 break;
 

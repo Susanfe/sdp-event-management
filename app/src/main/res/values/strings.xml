@@ -10,7 +10,7 @@
     <string name="my_schedule_empty">There is currently no saved activities for this event</string>
     <string name="send_news_failed">Cannot publish news. Try again later!</string>
 
-    <string name="title_activity_join_event_switch">Join the event</string>
+    <string name="main_fragment_join_event">Join</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_sign_up">Sign up</string>
     <string name="title_activity_account_display">My account</string>
@@ -24,6 +24,7 @@
     <string name="help_text_activity_event_picking">Please select an event to continue.</string>
     <string name="joined_help_text_activity_event_picking">Events you joined:</string>
     <string name="not_joined_help_text_activity_event_picking">Other events:</string>
+    <string name="double_back_press_to_exit">Press once again to exit</string>
 
     <string name="successful_login_toast">Signed in</string>
     <string name="successful_registration_toast">Registered successfully</string>
@@ -36,7 +37,7 @@
     <string name="login_button">Sign in »</string>
     <string name="signup_button">Sign up »</string>
     <string name="logout_button">Log out</string>
-    <string name="account_button">My account »</string>
+    <string name="account_button">My account</string>
     <string name="back_button">Back</string>
 
     <string name="main_nav_item_activity_event_showcase">Description</string>
@@ -66,11 +67,17 @@
     <string name="news_nav_item_activity_event_showcase">News</string>
     <string name="send_news_title">Create a news</string>
     <string name="send_news_title_field">Title</string>
-    <string name="send_news_content">News content...</string>
+    <string name="send_news_content">News content…</string>
     <string name="send_news_send_button">Send</string>
     <string name="news_create">Create a news</string>
 
-    <string name="contentDescription_main_fragment_image">Image representing the event</string>
+    <!-- Accessibility text -->
+    <string name="event_thumbnail">Event thumbnail</string>
 
+
+    <string name="main_fragment_image_contentDescription">Image representing the event</string>
     <string name="main_fragment_error_no_description">Could not load event description.</string>
+    <string name="main_fragment_button_news">News</string>
+    <string name="main_fragment_button_map">Map</string>
+    <string name="main_fragment_button_schedule">Schedule</string>
 </resources>
