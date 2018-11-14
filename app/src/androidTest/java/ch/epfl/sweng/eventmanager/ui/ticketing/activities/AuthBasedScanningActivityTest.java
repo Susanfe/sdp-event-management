@@ -6,11 +6,8 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingLoginActivity;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingScanActivity;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingTestRule;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -22,14 +19,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
  * @author Louis Vialar
  */
 public class AuthBasedScanningActivityTest extends BaseScanningActivityTest {
-
     public AuthBasedScanningActivityTest() {
         super(3);
-    }
-
-    @Override
-    protected TicketingTestRule<TicketingScanActivity> prepareRule(Class<TicketingScanActivity> testClass) {
-        return super.prepareRule(testClass).withConfigId(3);
     }
 
     @Test
@@ -38,9 +29,6 @@ public class AuthBasedScanningActivityTest extends BaseScanningActivityTest {
 
         onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
         Assert.assertFalse(getTicketingService().isLoggedIn());
-
-        Intents.release();
-        Intents.init();
 
         sendScanSuccess(MockStacks.SINGLE_BARCODE);
 

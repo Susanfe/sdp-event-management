@@ -18,7 +18,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class ScanningActivityTest extends BaseScanningActivityTest {
     public ScanningActivityTest() {
-        super(1);
+        super(2);
     }
 
     @Test

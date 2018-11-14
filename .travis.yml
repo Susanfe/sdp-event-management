@@ -8,7 +8,7 @@ env:
 
 matrix:
   allow_failures:
-  - env: ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24
+  - env: ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16
   fast_finish: true
 android:
   components:
