@@ -66,9 +66,17 @@
             style="@style/Button_global"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:indeterminate="true"
             android:layout_marginTop="16dp"
             android:textStyle="bold" />
 
+        <Button
+            android:id="@+id/signup_button"
+            style="@style/Button_global"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </LinearLayout>
