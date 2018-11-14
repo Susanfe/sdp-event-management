@@ -42,7 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.sign_in_progress_bar);
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        Toolbar toolbar = findViewById(R.id.login_toolbar);
+        Toolbar toolbar = findViewById(R.id.signup_toolbar);
         setSupportActionBar(toolbar);
     }
 

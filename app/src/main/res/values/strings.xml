@@ -12,7 +12,7 @@
 
     <string name="title_activity_join_event_switch">Join the event</string>
     <string name="title_activity_login">Sign in</string>
-    <string name="title_activity_signup">Sign un</string>
+    <string name="title_activity_sign_up">Sign up</string>
     <string name="title_activity_account_display">My account</string>
     <string name="title_activity_event_picking">EventPickingActivity</string>
     <string name="title_activity_maps">Map</string>
