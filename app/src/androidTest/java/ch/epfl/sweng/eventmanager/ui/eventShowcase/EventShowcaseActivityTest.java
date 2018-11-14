@@ -96,7 +96,7 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
 
-        onView(withText("Event without items")).perform(click());
+        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
         onView(withId(R.id.join_event_switch))
                 .perform(click());
