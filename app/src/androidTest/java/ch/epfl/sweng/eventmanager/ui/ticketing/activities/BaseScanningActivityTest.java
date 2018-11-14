@@ -1,20 +1,32 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.test.espresso.NoMatchingViewException;
+import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.GrantPermissionRule;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.test.EventTestRule;
+import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
+import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingScanActivity;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingTestRule;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.BarcodeView;
 import com.journeyapps.barcodescanner.DecoderThread;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 
 import java.lang.reflect.Field;
@@ -24,12 +36,25 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
-public abstract class BaseScanningActivityTest extends ActivityTest<TicketingScanActivity> {
-    @Rule
-    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(Manifest.permission.CAMERA);
+public abstract class BaseScanningActivityTest extends ScanningTest {
+
+
+    @Rule public GrantPermissionRule permissionRule = GrantPermissionRule.grant(Manifest.permission.CAMERA);
+    // @Rule public EventTestRule<EventShowcaseActivity> mActivityRule = new EventTestRule<>(EventShowcaseActivity.class, eventId);
+    @Rule public TicketingTestRule<TicketingScanActivity> mActivityRule = new TicketingTestRule<>(TicketingScanActivity.class, eventId, MockEventsRepository.CONFIG_BY_EVENT.get(eventId)).withConfigId(3);
+
+    @Before
+    public void initIntents() {
+        Intents.init();
+    }
+
+    @After
+    public void releaseIntents() {
+        Intents.release();
+    }
 
     public BaseScanningActivityTest(int eventId) {
-        super(eventId, TicketingScanActivity.class);
+        super(eventId);
     }
 
     private static <T> T getField(Object o, String field) {
