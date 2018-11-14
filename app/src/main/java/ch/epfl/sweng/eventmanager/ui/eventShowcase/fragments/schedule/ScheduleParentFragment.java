@@ -76,11 +76,13 @@ public class ScheduleParentFragment extends Fragment {
 
                 //fetches tab to be displays if existing
                 // FIXME handle nullpointerexception
-                String room = getArguments().getString(EventMapFragment.TAB_NB_KEY, "");
-                int cond = viewPagerAdapter.getTitlePage(room);
-                if(cond != -1) {
-                    viewPager.postDelayed(() -> viewPager.setCurrentItem(cond), 100);
-
+                Bundle args = getArguments();
+                if(args!= null){
+                    String room = getArguments().getString(EventMapFragment.TAB_NB_KEY, "");
+                    int cond = viewPagerAdapter.getTitlePage(room);
+                    if(cond != -1) {
+                        viewPager.postDelayed(() -> viewPager.setCurrentItem(cond), 100);
+                    }
                 }
             } else {
                 tabLayout.setVisibility(View.GONE);
