@@ -32,7 +32,7 @@ public class TicketingServiceTest {
 
     @Test
     public void loginTest() throws Exception {
-        TestingCallback<Void> callback = TestingCallback.expectSuccess(v -> {});
+        TestingCallback<Void> callback = TestingCallback.expectSuccess(TestingCallback.accept());
         service.login(null, null, callback);
 
         callback.assertOk("login");

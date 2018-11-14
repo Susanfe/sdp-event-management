@@ -8,7 +8,6 @@ import org.junit.Assert;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
 import static org.junit.Assert.assertTrue;
 
@@ -20,6 +19,14 @@ public class TestingCallback<T> implements TicketingService.ApiCallback<T> {
     private AtomicBoolean finished = new AtomicBoolean(false);
     private Consumer<T> validateSuccess;
     private Consumer<List<ApiResult.ApiError>> validateErrors;
+
+    public static <T> Consumer<T> accept() {
+        return t -> {};
+    }
+
+    public static interface Consumer<T> {
+        void accept(T t);
+    }
 
     private TestingCallback(Consumer<T> validateSuccess, Consumer<List<ApiResult.ApiError>> validateErrors) {
         this.validateSuccess = validateSuccess;
