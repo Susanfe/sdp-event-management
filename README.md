@@ -21,3 +21,9 @@ Finally no fears of missing out as *our app* connects you to a wide range of eve
 With *our app* the event will become **your** event.
 
 *n.b : Please comment and review !* :+1: *wherever there is OUR APP written, this must be replaced by the app name.*
+
+## New Version
+
+Hi ! You may not know it already but *Tiket* is your best friend as it will guide you through all your future events. To do so, *Tiket* has a fully interactive map, with all the important locations, including you ! Moreover, the map is linked to a customizable schedule, where you can save every activity you want to attend and export it to your own private calendar ! *Tiket* also allows you to keep in touch with the event through a news feed, and you can always contact event organizers for more informations. *Tiket* was also designed for managing the event, and event organizers can login to access features such as ticket scanning, new publishing and much more. Finally, everyone can discover events and share on *Tiket*!
+
+*n.b : Please comment and review !* :+1: *wherever there is TIKET written, this must be replaced by the app name.*
