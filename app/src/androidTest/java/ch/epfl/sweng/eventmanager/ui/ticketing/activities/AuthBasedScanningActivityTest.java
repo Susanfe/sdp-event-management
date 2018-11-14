@@ -1,7 +1,10 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 
+import android.Manifest;
+import android.content.Intent;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.intent.matcher.IntentMatchers;
+import android.support.test.rule.GrantPermissionRule;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ToastMatcher;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
@@ -11,6 +14,7 @@ import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingScanActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingTestRule;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -23,10 +27,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  * @author Louis Vialar
  */
 public class AuthBasedScanningActivityTest extends BaseScanningActivityTest {
+
     public AuthBasedScanningActivityTest() {
         super(3);
 
-        dropIntents = false;
+        dropIntents = true;
     }
 
     @Override
@@ -42,6 +47,9 @@ public class AuthBasedScanningActivityTest extends BaseScanningActivityTest {
 
         onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
         Assert.assertFalse(getTicketingService().isLoggedIn());
+
+        Intents.release();
+        Intents.init();
 
         sendScanSuccess(MockStacks.SINGLE_BARCODE);
 
