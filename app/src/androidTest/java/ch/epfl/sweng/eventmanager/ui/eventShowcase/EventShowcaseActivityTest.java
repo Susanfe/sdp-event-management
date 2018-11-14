@@ -11,11 +11,11 @@ import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.Gravity;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ToastMatcher;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import org.hamcrest.Matchers;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,15 +25,13 @@ import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static androidx.test.espresso.Espresso.onIdle;
 
 @RunWith(AndroidJUnit4.class)
 public class EventShowcaseActivityTest {
     @Rule
-    public final EventTestRule<EventShowcaseActivity> mActivityRule =
-            new EventTestRule<>(EventShowcaseActivity.class);
+    public final EventTestRule<EventShowcaseActivity> mActivityRule = new EventTestRule<>(EventShowcaseActivity.class);
 
 
     @After
@@ -49,45 +47,38 @@ public class EventShowcaseActivityTest {
 
     @Test
     public void testNavigation() {
-        onView(withId(R.id.drawer_layout))
-                .check(matches(isClosed(Gravity.LEFT)))
-                .perform(DrawerActions.open());
+        onView(withId(R.id.drawer_layout)).check(matches(isClosed(Gravity.LEFT))).perform(DrawerActions.open());
 
         // Switch displayed fragment
-        onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_map));
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_map));
 
         onIdle();
         SystemClock.sleep(1000);
         //test back navigation
-        onView(withId(R.id.drawer_layout))
-                .check(matches(isClosed(Gravity.LEFT)))
+        onView(withId(R.id.drawer_layout)).check(matches(isClosed(Gravity.LEFT)))
                 .perform(DrawerActions.open());
 
 
         SystemClock.sleep(1000);
-
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
 
         pressBack();
 
 
-        onView(withId(R.id.drawer_layout))
-                .perform(DrawerActions.open());
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_map));
         pressBack();
     }
 
     @Test
     public void openEventPicker() {
-        onView(withId(R.id.drawer_layout))
-                .perform(DrawerActions.open());
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
 
         String help_text = getResourceString(R.string.help_text_activity_event_picking);
 
-        onView(withId(R.id.help_text))
-                .check(matches(withText(help_text)));
+        onView(withId(R.id.help_text)).check(matches(withText(help_text)));
+
     }
 
     private String getResourceString(int id) {
@@ -120,12 +111,9 @@ public class EventShowcaseActivityTest {
     public void testEventPicking() {
         Intents.release(); // Don't capture start intent
 
-        onView(withId(R.id.drawer_layout))
-                .check(matches(isClosed(Gravity.LEFT)))
-                .perform(DrawerActions.open());
+        onView(withId(R.id.drawer_layout)).check(matches(isClosed(Gravity.LEFT))).perform(DrawerActions.open());
 
-        onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
 
         SystemClock.sleep(200);
 
@@ -145,4 +133,19 @@ public class EventShowcaseActivityTest {
 
     }
 
+    @Test
+    public void testDoubleBackToExit() {
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
+        pressBack();
+        pressBack();
+    }
+
+    @Test
+    public void singleBackShouldNotExit() {
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
+        pressBack();
+        onView(withText(getResourceString(R.string.double_back_press_to_exit))).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+    }
 }

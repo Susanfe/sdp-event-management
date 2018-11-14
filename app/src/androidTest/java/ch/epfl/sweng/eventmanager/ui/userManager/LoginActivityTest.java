@@ -11,6 +11,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.NoMatchingViewException;
@@ -25,6 +26,7 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.TestHelper;
 import ch.epfl.sweng.eventmanager.users.Session;
 
 import javax.inject.Inject;
@@ -82,13 +84,9 @@ public class LoginActivityTest {
         onView(withId(R.id.main_text))
                 .check(matches(withText(containsString(email))));
 
-        onView(withId(R.id.logout_button))
+        onView(withId(R.id.logout_btn))
                 .perform(click());
 
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
-
-        onView(withText("Sign in"))
-                .perform(click());
     }
 
     @Test
@@ -130,8 +128,8 @@ public class LoginActivityTest {
     public void testInvalidCredentialsInput() {
         String email = "al.pha";
         String password = "secret";
-        String emptyPasswordError = getResourceString(R.string.empty_password_activity_login);
-        String invalidEmailError = getResourceString(R.string.invalid_email_activity_login);
+        String emptyPasswordError = getResourceString(R.string.empty_password_error);
+        String invalidEmailError = getResourceString(R.string.invalid_email_error);
 
         // Test empty password
         onView(withId(R.id.email_field))
@@ -148,6 +146,14 @@ public class LoginActivityTest {
         onView(withId(R.id.login_button)).perform(click());
         onView(withId(R.id.email_field))
                 .check(matches(hasErrorText(invalidEmailError)));
+    }
+
+    @Test
+    public void testOpenSignUpForm() {
+        onView(withId(R.id.signup_button))
+                .perform(click());
+
+        TestHelper.withToolbarTitle(getResourceString(R.string.title_activity_sign_up));
     }
 
     private String getResourceString(int id) {

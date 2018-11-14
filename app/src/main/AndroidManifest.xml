@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="ch.epfl.sweng.eventmanager">
+    package="ch.epfl.sweng.eventmanager">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -44,13 +44,18 @@
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_maps_key"/>
 
-        <activity android:name=".ui.eventSelector.EventPickingActivity"/>
+        <activity android:name=".ui.eventSelector.EventPickingActivity"
+                  android:launchMode="singleTop"/>
+
+        <activity android:name=".ui.userManager.LoginActivity"
+            android:label="@string/title_activity_login" />
+
+        <activity android:name=".ui.userManager.SignUpActivity"
+            android:label="@string/title_activity_sign_up" />
         <activity
-                android:name=".ui.userManager.LoginActivity"
-                android:label="@string/title_activity_login"/>
-        <activity
-                android:name=".ui.userManager.DisplayAccountActivity"
-                android:label="@string/title_activity_account_display"/>
+            android:name=".ui.userManager.DisplayAccountActivity"
+            android:label="@string/title_activity_account_display" />
+
         <activity
                 android:name=".ui.eventShowcase.EventShowcaseActivity"
                 android:theme="@style/AppTheme.NoActionBar"/>
@@ -68,9 +73,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".ui.eventAdministration.EventAdministrationActivity"></activity>
+        <activity android:name=".ui.eventAdministration.EventAdministrationActivity" />
         <receiver android:name=".repository.impl.NotificationPublisher"/>
-
     </application>
 
 </manifest>

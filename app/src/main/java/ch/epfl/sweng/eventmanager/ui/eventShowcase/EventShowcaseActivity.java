@@ -185,6 +185,7 @@ public class EventShowcaseActivity extends AppCompatActivity
         switch(menuItem.getItemId()) {
             case R.id.nav_pick_event :
                 Intent pickingIntent = new Intent(this, EventPickingActivity.class);
+                pickingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(pickingIntent);
                 break;
 
