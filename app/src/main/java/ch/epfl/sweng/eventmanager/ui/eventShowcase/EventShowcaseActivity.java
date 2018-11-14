@@ -110,7 +110,7 @@ public class EventShowcaseActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             ActionBar actionbar = getSupportActionBar();
             actionbar.setDisplayHomeAsUpEnabled(true);
-            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionbar.setHomeAsUpIndicator(R.drawable.menu_customized_solor);
         }
 
         // Fetch event from passed ID
