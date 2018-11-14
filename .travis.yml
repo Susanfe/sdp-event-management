@@ -1,8 +1,10 @@
 language: android
-sudo: required # gives us actual VMs that are longer to boot but faster to build
 env:
   #- ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16
   - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24
+  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=25
+  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
+  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=25
 
   #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi API=16
   #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
@@ -16,11 +18,6 @@ android:
     - android-$API
     # The system image, to run an emulator during the tests
     - sys-img-$ABI_IMAGE-$API
-
-    - extra-android-support
-    - extra-android-m2repository
-    - extra-google-m2repository
-    - addon-google_apis-google-$API
     - tools
     - platform-tools
 before_script:
