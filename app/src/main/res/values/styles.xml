@@ -36,23 +36,5 @@
         <item name="android:background">@drawable/button_lateral_navigation</item>
     </style>
 
-    <!-- App buttonbar button style (see fragment_event_main) -->
-    <style name="Button_barButton_middle">
-        <item name="android:textColor">@color/colorSecondary</item>
-        <item name="android:background">@drawable/button_barbutton_middle</item>
-    </style>
-    <style name="Button_barButton_left" parent="Button_barButton_middle">
-        <item name="android:background">@drawable/button_barbutton_left</item>
-    </style>
-    <style name="Button_barButton_right" parent="Button_barButton_middle">
-        <item name="android:background">@drawable/button_barbutton_right</item>
-    </style>
-
-    <!-- App Button that can be checked (green) or unchecked (classic), to be used in bar-->
-    <style name="Button_barButton_checkable" parent="TextAppearance.MaterialComponents.Button">
-        <item name="android:textColor">@color/colorSecondary</item>
-        <item name="android:background">@drawable/button_barbutton_checkbutton</item>
-    </style>
-
 
 </resources>

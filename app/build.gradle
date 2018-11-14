@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
-        multiDexEnabled true
+        multiDexEnabled false
     }
 
     defaultConfig {
@@ -68,7 +68,6 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.auth0.android:jwtdecode:1.1.1'
-    implementation 'com.android.support:multidex:1.0.3'
 
 
 

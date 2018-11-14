@@ -28,9 +28,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class AuthBasedScanningActivityTest extends BaseScanningActivityTest {
     public AuthBasedScanningActivityTest() {
         super(3);
-
-        dropIntents = true;
-    }
+        }
 
     @Test
     public void testLoggedOut() {
