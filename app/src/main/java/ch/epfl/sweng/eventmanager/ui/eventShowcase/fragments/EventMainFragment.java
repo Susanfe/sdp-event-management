@@ -66,7 +66,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             // State of the switch depends on if the user joined the event
             this.model.isJoined(ev).observe(this, joinEventButton::setChecked);
             joinEventButton.setOnClickListener(v -> {
-                if (joinEventButton.isChecked()) {
+                if (!joinEventButton.isChecked()) {
                     this.model.joinEvent(ev);
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getContext()));
                 }
