@@ -227,16 +227,16 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         protected void onBeforeClusterRendered(Cluster<Spot> cluster, MarkerOptions markerOptions) {
             // Draw multiple people.
             // Note: this method runs on the UI thread. Don't spend too much time in here (like in this example).
-            List<Drawable> profilePhotos = new ArrayList<>(Math.min(4, cluster.getSize()));
+            List<Drawable> spotImages = new ArrayList<>(Math.min(4, cluster.getSize()));
             int width = mDimension;
             int height = mDimension;
 
             for (Spot p : cluster.getItems()) {
                 Drawable drawable = new BitmapDrawable(p.getBitmap());
                 drawable.setBounds(0, 0, width, height);
-                profilePhotos.add(drawable);
+                spotImages.add(drawable);
             }
-            MultiDrawable multiDrawable = new MultiDrawable(profilePhotos);
+            MultiDrawable multiDrawable = new MultiDrawable(spotImages);
             multiDrawable.setBounds(0, 0, width, height);
 
             mClusterImageView.setImageDrawable(multiDrawable);
