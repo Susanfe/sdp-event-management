@@ -88,10 +88,10 @@ public class EventShowcaseActivityTest {
 
         onView(withText("Event without items")).perform(click());
 
-        onView(withId(R.id.join_event_switch))
+        onView(withId(R.id.join_event_button))
                 .perform(click());
 
-        onView(withId(R.id.join_event_switch))
+        onView(withId(R.id.join_event_button))
                 .perform(click());
     }
 
