@@ -14,6 +14,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
+import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleParentFragment;
 
@@ -62,10 +64,16 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             // Binds the 'joined event' switch to the database
             CheckedTextView joinEventButton = view.findViewById(R.id.join_event_button);
             // State of the switch depends on if the user joined the event
-            this.model.isJoined(ev).observe(this, joinEventButton::setChecked);
-            joinEventButton.setOnClickListener(v -> {
-                if (joinEventButton.isChecked()) this.model.unjoinEvent(ev);
-                else this.model.joinEvent(ev);
+            this.model.isJoined(ev).observe(this, joinEventSwitch::setChecked);
+            joinEventSwitch.setOnClickListener(v -> {
+                if (joinEventSwitch.isChecked()) {
+                    this.model.joinEvent(ev);
+                    NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getContext()));
+                }
+                else {
+                    this.model.unjoinEvent(ev);
+                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getContext()));
+                }
             });
         });
     }
