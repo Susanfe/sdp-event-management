@@ -1,6 +1,8 @@
 package ch.epfl.sweng.eventmanager.ui.userManager;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
@@ -12,6 +14,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.NoMatchingViewException;
@@ -29,7 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.userManagement.Session;
+import ch.epfl.sweng.eventmanager.users.Session;
 
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityTest {
@@ -75,11 +78,9 @@ public class LoginActivityTest {
         onView(withId(R.id.main_text))
                 .check(matches(withText(containsString(email))));
 
-        onView(withId(R.id.logout_button))
+        onView(withId(R.id.logout_btn))
                 .perform(click());
 
-        onView(withId(R.id.login_button))
-                .check(matches(withText(containsString(getResourceString(R.string.login_button)))));
     }
 
     @Test

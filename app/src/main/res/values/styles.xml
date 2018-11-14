@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionOverflowButtonStyle">@style/Toolbar.OverFlow</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -13,21 +14,55 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- Launcher theme. Sets the main window background to the splash_screen drawable -->
+    <style name="AppTheme.Launcher" parent="AppTheme.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- ############################### TOOLBAR UI ############################################-->
 
     <!-- App's toolbar global style for every activity/fragment-->
     <style name="Toolbar">
         <item name="titleTextColor">@color/colorSecondary</item>
         <item name="android:background">@color/colorPrimary</item>
+        <item name="android:actionOverflowButtonStyle">@color/colorSecondary</item>
         <!-- Add font -->
     </style>
+
+    <!-- Custom overflow color-->
+    <style name="Toolbar.OverFlow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/colorSecondary</item>
+    </style>
+
+    <!-- ############################### BUTTON UI #############################################-->
 
     <!-- App button global style for every activity/fragment-->
     <style name="Button_global">
         <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:background">@drawable/button_lateral_navigation</item>
+    </style>
+
+    <!-- App buttonbar button style (see fragment_event_main) -->
+    <style name="Button_barButton_middle">
+        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:background">@drawable/button_barbutton_middle</item>
+    </style>
+    <style name="Button_barButton_left" parent="Button_barButton_middle">
+        <item name="android:background">@drawable/button_barbutton_left</item>
+    </style>
+    <style name="Button_barButton_right" parent="Button_barButton_middle">
+        <item name="android:background">@drawable/button_barbutton_right</item>
+    </style>
+
+    <!-- App Button that can be checked (green) or unchecked (classic), to be used in bar-->
+    <style name="Button_barButton_checkable" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:background">@drawable/button_barbutton_checkbutton</item>
     </style>
 
 

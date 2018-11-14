@@ -17,7 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.userManagement.Session;
+import ch.epfl.sweng.eventmanager.users.Session;
 import dagger.android.AndroidInjection;
 
 /**
@@ -120,7 +120,9 @@ public class LoginActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 Log.d(TAG, "Successful sign in");
                 Intent intent = new Intent(mContext, DisplayAccountActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             } else {
                 Exception error = task.getException();
                 Log.w(TAG, "Sign in failed", task.getException());
