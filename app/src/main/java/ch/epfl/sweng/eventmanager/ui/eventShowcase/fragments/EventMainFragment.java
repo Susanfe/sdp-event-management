@@ -64,9 +64,9 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             // Binds the 'joined event' switch to the database
             CheckedTextView joinEventButton = view.findViewById(R.id.join_event_button);
             // State of the switch depends on if the user joined the event
-            this.model.isJoined(ev).observe(this, joinEventSwitch::setChecked);
-            joinEventSwitch.setOnClickListener(v -> {
-                if (joinEventSwitch.isChecked()) {
+            this.model.isJoined(ev).observe(this, joinEventButton::setChecked);
+            joinEventButton.setOnClickListener(v -> {
+                if (joinEventButton.isChecked()) {
                     this.model.joinEvent(ev);
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getContext()));
                 }
