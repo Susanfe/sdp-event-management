@@ -93,34 +93,11 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             FormHelper.showProgress(mLoginButton, mProgressBar,true);
-            Session.login(email, password, this, getSignInOnCompleteListener(this));
+            OnCompleteListener callback = FormHelper.getAuthOnCompleteListener(
+                    this, mPasswordView, mSignUpButton, mProgressBar
+            );
+            Session.login(email, password, this, callback);
         }
-    }
-
-    private OnCompleteListener<AuthResult> getSignInOnCompleteListener(Context mContext) {
-        return task -> {
-            if (task.isSuccessful()) {
-                Log.d(TAG, "Successful sign in");
-                Intent intent = new Intent(mContext, DisplayAccountActivity.class);
-                startActivity(intent);
-
-                Toast toast = Toast.makeText(
-                        this, getString(R.string.successful_login_toast), Toast.LENGTH_SHORT
-                );
-                toast.show();
-            } else {
-                Exception error = task.getException();
-                Log.w(TAG, "Sign in failed", task.getException());
-                if (error != null) {
-                    mPasswordView.setError(error.getMessage());
-                } else {
-                    mPasswordView.setError(getString(R.string.generic_signin_failure_error));
-                }
-                mPasswordView.requestFocus();
-            }
-
-            FormHelper.showProgress(mLoginButton, mProgressBar,false);
-        };
     }
 }
 

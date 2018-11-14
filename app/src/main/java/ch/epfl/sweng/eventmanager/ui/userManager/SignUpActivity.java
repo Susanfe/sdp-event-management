@@ -83,33 +83,10 @@ public class SignUpActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             FormHelper.showProgress(mSignUpButton, mProgressBar, true);
-            Session.registerAndLogin(email, password, this, getSignUpOnCompleteListener(this));
+            OnCompleteListener callback = FormHelper.getAuthOnCompleteListener(
+                    this, mPasswordView, mSignUpButton, mProgressBar
+            );
+            Session.registerAndLogin(email, password, this, callback);
         }
-    }
-
-    private OnCompleteListener<AuthResult> getSignUpOnCompleteListener(Context mContext) {
-        return task -> {
-            if (task.isSuccessful()) {
-                Log.d(TAG, "Successfully signed up");
-                Intent intent = new Intent(mContext, EventPickingActivity.class);
-                startActivity(intent);
-
-                Toast toast = Toast.makeText(
-                        this, getString(R.string.successful_registration_toast), Toast.LENGTH_SHORT
-                );
-                toast.show();
-            } else {
-                Exception error = task.getException();
-                Log.w(TAG, "Registration failed", task.getException());
-                if (error != null) {
-                    mPasswordView.setError(error.getMessage());
-                } else {
-                    mPasswordView.setError(getString(R.string.generic_signup_failure_error));
-                }
-                mPasswordView.requestFocus();
-            }
-
-            FormHelper.showProgress(mSignUpButton, mProgressBar,false);
-        };
     }
 }

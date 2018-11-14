@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.userManager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,8 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 
 public class FormHelper {
     private FormHelper() {
@@ -80,5 +86,35 @@ public class FormHelper {
         Pair<String, String> values = new Pair(email, password);
 
         return new Pair(state, values);
+    }
+
+    public static OnCompleteListener<AuthResult> getAuthOnCompleteListener(
+            Context mContext, EditText passwordView, Button signUpButton, ProgressBar progressBar) {
+        return task -> {
+            if (task.isSuccessful()) {
+                Intent intent = new Intent(mContext, EventPickingActivity.class);
+                mContext.startActivity(intent);
+
+                String toastMessage = "";
+                if (mContext instanceof SignUpActivity) {
+                    toastMessage = mContext.getString(R.string.successful_registration_toast);
+                } else if (mContext instanceof LoginActivity) {
+                    toastMessage = mContext.getString(R.string.successful_login_toast);
+                }
+
+                Toast toast = Toast.makeText(mContext, toastMessage, Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                Exception error = task.getException();
+                if (error != null) {
+                    passwordView.setError(error.getMessage());
+                } else {
+                    passwordView.setError(mContext.getString(R.string.generic_auth_error));
+                }
+                passwordView.requestFocus();
+            }
+
+            FormHelper.showProgress(signUpButton, progressBar,false);
+        };
     }
 }
