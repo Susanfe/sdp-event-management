@@ -120,7 +120,9 @@ public class LoginActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 Log.d(TAG, "Successful sign in");
                 Intent intent = new Intent(mContext, DisplayAccountActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             } else {
                 Exception error = task.getException();
                 Log.w(TAG, "Sign in failed", task.getException());
