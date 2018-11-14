@@ -3,12 +3,11 @@ package ch.epfl.sweng.eventmanager.ui.userManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -16,8 +15,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
-
-import java.text.Normalizer;
 
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.users.Session;
@@ -83,28 +80,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        Pair<Pair<Boolean, EditText>, Pair<String, String>> validatedForm
+                = FormHelper.validateForm(this, mEmailView, mPasswordView, null);
 
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Validate input from login form.
-        if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.empty_password_activity_login));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-        if (TextUtils.isEmpty(email) || !FormHelper.isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.invalid_email_activity_login));
-            focusView = mEmailView;
-            cancel = true;
-        }
+        // FIXME: Quite ugly, do we have a sexier way to return from FormHelper.validateForm/3 ?
+        Boolean cancel = validatedForm.first.first;
+        EditText focusView = validatedForm.first.second;
+        String email = validatedForm.second.first;
+        String password = validatedForm.second.second;
 
         if (cancel) {
             focusView.requestFocus();

@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.userManager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -69,35 +70,14 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void attemptSignUp() {
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        Pair<Pair<Boolean, EditText>, Pair<String, String>> validatedForm
+                = FormHelper.validateForm(this, mEmailView, mPasswordView, mPasswordConfirmationView);
 
-        // Store values at the time of the sign up attempt
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-        String password_confirmation = mPasswordConfirmationView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Validate input from login form.
-        if (!password.equals(password_confirmation)) {
-            mPasswordView.setError(getString(R.string.password_match_error));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.empty_password_activity_login));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-        if (TextUtils.isEmpty(email) || !FormHelper.isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.invalid_email_activity_login));
-            focusView = mEmailView;
-            cancel = true;
-        }
+        // FIXME: Quite ugly, do we have a sexier way to return from FormHelper.validateForm/3 ?
+        Boolean cancel = validatedForm.first.first;
+        EditText focusView = validatedForm.first.second;
+        String email = validatedForm.second.first;
+        String password = validatedForm.second.second;
 
         if (cancel) {
             focusView.requestFocus();
