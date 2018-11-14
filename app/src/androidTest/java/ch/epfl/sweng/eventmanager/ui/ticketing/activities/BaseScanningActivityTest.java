@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.test.espresso.NoMatchingViewException;
@@ -94,7 +95,8 @@ public abstract class BaseScanningActivityTest extends ScanningTest {
         BarcodeResult barcodeResult =
                 new BarcodeResult(new Result(code, code.getBytes(), code.getBytes().length, new ResultPoint[0], null, System.currentTimeMillis()), null);
 
-        getCallback().barcodeResult(barcodeResult);
+        mActivityRule.getActivity().runOnUiThread(() -> getCallback().barcodeResult(barcodeResult)); // Don't require the camera to start, we don't need it
+
     }
 
     protected void waitCameraReady() {
@@ -110,7 +112,7 @@ public abstract class BaseScanningActivityTest extends ScanningTest {
 
         onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
 
-        getView().pause(); // Don't require the camera to start, we don't need it
+        mActivityRule.getActivity().runOnUiThread(() -> getView().pause()); // Don't require the camera to start, we don't need it
     }
 
 }
