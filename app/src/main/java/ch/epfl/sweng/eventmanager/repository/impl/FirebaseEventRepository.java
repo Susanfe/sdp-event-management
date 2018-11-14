@@ -21,7 +21,6 @@ import com.google.firebase.storage.StorageReference;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -108,6 +107,7 @@ public class FirebaseEventRepository implements EventRepository {
 
         return FirebaseHelper.getList(dbRef, classOfT);
     }
+
 
     @Override
     public LiveData<List<Spot>> getSpots(int eventId) {
