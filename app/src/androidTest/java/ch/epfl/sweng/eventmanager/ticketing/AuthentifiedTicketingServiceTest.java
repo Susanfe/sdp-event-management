@@ -36,8 +36,7 @@ public class AuthentifiedTicketingServiceTest {
     public void loginTest() {
         assertFalse(service.isLoggedIn());
 
-        TestingCallback<Void> callback = TestingCallback.expectSuccess(v -> {
-        });
+        TestingCallback<Void> callback = TestingCallback.expectSuccess(TestingCallback.accept());
         service.login(AUTHORIZED_USER, PASSWORD, callback);
 
         callback.assertOk("login first account");
@@ -47,8 +46,7 @@ public class AuthentifiedTicketingServiceTest {
         service.logout();
         assertFalse(service.isLoggedIn());
 
-        callback = TestingCallback.expectSuccess(v -> {
-        });
+        callback = TestingCallback.expectSuccess(TestingCallback.accept());
         service.login(UNAUTHORIZED_USER, PASSWORD, callback);
 
         callback.assertOk("login second account");
@@ -71,8 +69,7 @@ public class AuthentifiedTicketingServiceTest {
 
     @Test
     public void scanTest() throws Exception {
-        TestingCallback<Void> callback = TestingCallback.expectSuccess(v -> {
-        });
+        TestingCallback<Void> callback = TestingCallback.expectSuccess(TestingCallback.accept());
         service.login(UNAUTHORIZED_USER, PASSWORD, callback);
         callback.assertOk("login unauthorized");
 
@@ -82,8 +79,7 @@ public class AuthentifiedTicketingServiceTest {
         }));
 
         service.logout();
-        callback = TestingCallback.expectSuccess(v -> {
-        });
+        callback = TestingCallback.expectSuccess(TestingCallback.accept());
         service.login(AUTHORIZED_USER, PASSWORD, callback);
         callback.assertOk("login authorized");
 

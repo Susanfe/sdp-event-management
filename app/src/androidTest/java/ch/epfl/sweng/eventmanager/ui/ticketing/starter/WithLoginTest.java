@@ -26,8 +26,7 @@ public class WithLoginTest extends StarterTest {
 
     @Test
     public void testAlreadyLoggedIn() {
-        TestingCallback<Void> callback = TestingCallback.expectSuccess(a -> {
-        });
+        TestingCallback<Void> callback = TestingCallback.expectSuccess(TestingCallback.accept());
         getOrCreateTicketingService(mActivityRule.getActivity()).login(AUTHORIZED_USER, PASSWORD, callback);
         callback.assertOk("login should succeed");
 
