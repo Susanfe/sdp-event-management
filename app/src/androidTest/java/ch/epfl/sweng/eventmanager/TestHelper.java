@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.EditText;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -31,6 +32,24 @@ public class TestHelper {
             public void describeTo(Description description) {
                 description.appendText("with toolbar title: ");
                 textMatcher.describeTo(description);
+            }
+        };
+    }
+
+    /**
+     * Stolen from StackOverflow question 42668617.
+     */
+    public static Matcher<View> hasNoErrorText() {
+        return new BoundedMatcher<View, EditText>(EditText.class) {
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("has no error text: ");
+            }
+
+            @Override
+            protected boolean matchesSafely(EditText view) {
+                return view.getError() == null;
             }
         };
     }

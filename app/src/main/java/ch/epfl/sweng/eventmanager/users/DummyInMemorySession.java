@@ -39,7 +39,7 @@ public class DummyInMemorySession implements InMemorySession{
 
     @Override
     public void registerAndLogin(String email, String password, Activity context, OnCompleteListener callback) {
-        throw new UnsupportedOperationException();
+        // Nothing to do
     }
 
     @Override

@@ -65,6 +65,32 @@ public class SignUpActivityTest {
                 .check(matches(hasErrorText(passwordMatchError)));
     }
 
+    @Test
+    public void testValidInput() {
+        String email = "al.pha@domain.tld";
+        String password = "secret";
+
+        onView(withId(R.id.email_field))
+                .perform(typeText(email))
+                .perform(closeSoftKeyboard());
+        onView(withId(R.id.password_field))
+                .perform(typeText(password))
+                .perform(closeSoftKeyboard());
+        onView(withId(R.id.password_confirmation_field))
+                .perform(typeText(password))
+                .perform(closeSoftKeyboard());
+        onView(withId(R.id.signup_button)).perform(click());
+
+        // Nothing is going to happen since we use the DummyInMemorySession
+        // Check that everything went fine with the lack of error messages
+        onView(withId(R.id.email_field))
+                .check(matches(TestHelper.hasNoErrorText()));
+        onView(withId(R.id.password_field))
+                .check(matches(TestHelper.hasNoErrorText()));
+        onView(withId(R.id.password_confirmation_field))
+                .check(matches(TestHelper.hasNoErrorText()));
+    }
+
     private String getResourceString(int id) {
         Context targetContext = InstrumentationRegistry.getTargetContext();
         return targetContext.getResources().getString(id);
