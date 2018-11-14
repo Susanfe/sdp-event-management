@@ -66,6 +66,24 @@ public class EventShowcaseActivityTest {
         return targetContext.getResources().getString(id);
     }
 
+    @Test
+    public void joinEventTest() {
+        onView(withId(R.id.drawer_layout))
+                .check(matches(isClosed(Gravity.LEFT)))
+                .perform(DrawerActions.open());
+
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
+
+        onView(withText("Event without items")).perform(click());
+
+        onView(withId(R.id.join_event_button))
+                .perform(click());
+
+        onView(withId(R.id.join_event_button))
+                .perform(click());
+    }
+
 
     @Test
     public void testEventPicking() {

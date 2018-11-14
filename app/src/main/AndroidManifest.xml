@@ -65,7 +65,7 @@
         </provider>
 
         <activity android:name=".ui.eventAdministration.EventAdministrationActivity"></activity>
-        <receiver android:name=".notifications.NotificationPublisher"/>
+        <receiver android:name=".repository.impl.NotificationPublisher"/>
 
     </application>
 
