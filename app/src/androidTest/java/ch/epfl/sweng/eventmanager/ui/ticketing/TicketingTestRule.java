@@ -11,6 +11,7 @@ import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
  */
 public class TicketingTestRule<T extends TicketingActivity> extends EventTestRule<T> {
     private EventTicketingConfiguration configuration;
+    private int configId = -1; // for Scanning activity
 
     public TicketingTestRule(Class<T> activityClass) {
         super(activityClass);
@@ -22,10 +23,17 @@ public class TicketingTestRule<T extends TicketingActivity> extends EventTestRul
         this.configuration = configuration;
     }
 
+    public TicketingTestRule<T> withConfigId(int configId) {
+        this.configId = configId;
+        return this;
+    }
+
     @Override
     protected Intent getActivityIntent() {
         Intent intent = super.getActivityIntent();
         intent.putExtra(TicketingActivity.TICKETING_CONFIGURATION, configuration);
+        if (configId != -1)
+            intent.putExtra(TicketingScanActivity.SELECTED_CONFIG_ID, configId);
         return intent;
     }
 }
