@@ -1,7 +1,7 @@
 language: android
 env:
-  # - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16
-  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24
+  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16 VIEW_AVD_LOGS=1
+  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24 VIEW_AVD_LOGS=1
 
   #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi API=16
   #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
