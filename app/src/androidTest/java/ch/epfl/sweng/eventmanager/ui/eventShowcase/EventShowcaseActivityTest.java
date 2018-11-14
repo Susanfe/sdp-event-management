@@ -58,12 +58,20 @@ public class EventShowcaseActivityTest {
                 .perform(NavigationViewActions.navigateTo(R.id.nav_map));
 
         onIdle();
-
+        SystemClock.sleep(1000);
         //test back navigation
         onView(withId(R.id.drawer_layout))
+                .check(matches(isClosed(Gravity.LEFT)))
                 .perform(DrawerActions.open());
+
+
+        SystemClock.sleep(1000);
+
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
+
         pressBack();
+
+
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_map));
