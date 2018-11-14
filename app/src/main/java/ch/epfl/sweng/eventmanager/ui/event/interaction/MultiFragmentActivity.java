@@ -32,6 +32,9 @@ public class MultiFragmentActivity extends AppCompatActivity
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    /**
+     * Initialize the UI structure: toolbar and drawer.
+     */
     protected void initializeSharedUI() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         ButterKnife.bind(this);
@@ -47,6 +50,9 @@ public class MultiFragmentActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Handle drawer opening.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -57,6 +63,12 @@ public class MultiFragmentActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Handle selected item in navigation drawer.
+     *
+     * @param menuItem selected item
+     * @return true if the event was handled, false otherwise
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         throw new UnsupportedOperationException(); // To be implemented in children.
