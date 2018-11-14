@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class ScheduleParentFragment extends Fragment {
     private ScheduleViewModel scheduleViewModel;
     private ViewPagerAdapter viewPagerAdapter;
     private static String TAG = "ScheduleParentFragment";
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -71,6 +73,15 @@ public class ScheduleParentFragment extends Fragment {
                 tabLayout.setVisibility(View.VISIBLE);
                 updateTabs(map.keySet());
                 viewPagerAdapter.notifyDataSetChanged();
+
+                //fetches tab to be displays if existing
+                // FIXME handle nullpointerexception
+                String room = getArguments().getString(EventMapFragment.TAB_NB_KEY, "");
+                int cond = viewPagerAdapter.getTitlePage(room);
+                if(cond != -1) {
+                    viewPager.postDelayed(() -> viewPager.setCurrentItem(cond), 100);
+
+                }
             } else {
                 tabLayout.setVisibility(View.GONE);
                 destroyUnusedFragments(viewPagerAdapter.mFragmentList, Collections.emptySet(), true);
@@ -164,5 +175,11 @@ public class ScheduleParentFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+
+        int getTitlePage(String str) {
+            return mFragmentTitleList.indexOf(str);
+        }
+
     }
+
 }
