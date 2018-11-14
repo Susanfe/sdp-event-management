@@ -21,6 +21,7 @@ import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingScanActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingTestRule;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
+import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.BarcodeView;
 import com.journeyapps.barcodescanner.DecoderThread;
@@ -77,6 +78,14 @@ public abstract class BaseScanningActivityTest extends ScanningTest {
         return getField(view, "decoderThread");
     }
 
+    private DecoratedBarcodeView getView() {
+        return getField(mActivityRule.getActivity(), "barcodeView");
+    }
+
+    private BarcodeCallback getCallback() {
+        return getField(mActivityRule.getActivity(), "callback");
+    }
+
     private Handler getResultHandler() {
         return getField(getDecoderThread(), "resultHandler");
     }
@@ -85,10 +94,7 @@ public abstract class BaseScanningActivityTest extends ScanningTest {
         BarcodeResult barcodeResult =
                 new BarcodeResult(new Result(code, code.getBytes(), code.getBytes().length, new ResultPoint[0], null, System.currentTimeMillis()), null);
 
-        Message message = Message.obtain(getResultHandler(), com.google.zxing.client.android.R.id.zxing_decode_succeeded, barcodeResult);
-        Bundle bundle = new Bundle();
-        message.setData(bundle);
-        message.sendToTarget();
+        getCallback().barcodeResult(barcodeResult);
     }
 
     protected void waitCameraReady() {
@@ -96,15 +102,15 @@ public abstract class BaseScanningActivityTest extends ScanningTest {
         for (int i = 0; i < 20 && cont; ++i) {
             try {
                 onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
-                cont = getDecoderThread() == null; // Wait for the decoder thread
-                if (cont)
-                    SystemClock.sleep(1000);
+                cont = false;
             } catch (NoMatchingViewException e) {
                 SystemClock.sleep(1000);
             }
         }
 
         onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
+
+        getView().pause(); // Don't require the camera to start, we don't need it
     }
 
 }
