@@ -61,7 +61,8 @@ public final class TicketingScanActivity extends TicketingActivity {
 
                         barcodeView.setStatusText("");
                         Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_success, Toast.LENGTH_SHORT).show();
-                        barcodeView.resume();
+
+                        resumeDecoding();
                     }
 
                     @Override
@@ -72,7 +73,8 @@ public final class TicketingScanActivity extends TicketingActivity {
 
                         barcodeView.setStatusText("");
                         Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_failure, Toast.LENGTH_SHORT).show();
-                        barcodeView.resume();
+
+                        resumeDecoding();
                     }
                 });
             } catch (NotAuthenticatedException e) {
@@ -166,12 +168,12 @@ public final class TicketingScanActivity extends TicketingActivity {
         Intent intent = getIntent();
         this.configId = intent.getIntExtra(SELECTED_CONFIG_ID, -1);
 
-        startScan();
+        initScan();
 
         beepManager = new BeepManager(this);
     }
 
-    private void startScan() {
+    private void initScan() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -181,8 +183,12 @@ public final class TicketingScanActivity extends TicketingActivity {
             barcodeView = findViewById(R.id.barcode_scanner);
             barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(Arrays.asList(BarcodeFormat.values())));
             barcodeView.initializeFromIntent(getIntent());
-            barcodeView.decodeContinuous(callback);
         }
+    }
+
+    private void resumeDecoding() {
+        barcodeView.resume();
+        barcodeView.decodeContinuous(callback);
     }
 
     @Override
@@ -191,7 +197,7 @@ public final class TicketingScanActivity extends TicketingActivity {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startScan();
+                    initScan();
                 } else if (grantResults.length > 0) {
                     Log.e(TAG, "Refused CAMERA access (result " + grantResults[0] + ")");
                     startActivity(backToShowcase());
@@ -207,10 +213,10 @@ public final class TicketingScanActivity extends TicketingActivity {
         super.onResume();
 
         if (barcodeView == null) {
-            startScan();
-        } else {
-            barcodeView.resume();
+            initScan();
         }
+
+        resumeDecoding();
     }
 
     @Override
