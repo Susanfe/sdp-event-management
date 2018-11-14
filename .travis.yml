@@ -38,7 +38,7 @@ before_script:
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-  - adb logcat *:V & LOGCAT_PID=$!
+  - if [ -n "$VIEW_AVD_LOGS" ] ; then adb logcat *:V & LOGCAT_PID=$!; fi
   - ./gradlew build connectedCheck jacocoTestReport
   - if [ -n "$LOGCAT_PID" ] ; then kill $LOGCAT_PID; fi
 after_script:
@@ -46,11 +46,3 @@ after_script:
   - export JACOCO_SOURCE_PATH=app/src/main/java/
   - ./cc-test-reporter format-coverage ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml --input-type jacoco
   - ./cc-test-reporter upload-coverage
-before_cache:
-- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-cache:
-  directories:
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
-  - $HOME/.android/build-cache
