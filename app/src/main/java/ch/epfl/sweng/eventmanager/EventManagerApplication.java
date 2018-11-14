@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager;
 
 import android.app.Activity;
-import android.support.multidex.MultiDexApplication;
+import android.app.Application;
 import android.support.v4.app.Fragment;
 import ch.epfl.sweng.eventmanager.inject.DaggerApplicationComponent;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
@@ -16,7 +16,7 @@ import javax.inject.Inject;
 /**
  * @author Louis Vialar
  */
-public class EventManagerApplication extends MultiDexApplication implements HasActivityInjector, HasSupportFragmentInjector {
+public class EventManagerApplication extends Application implements HasActivityInjector, HasSupportFragmentInjector {
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
     @Inject

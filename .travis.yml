@@ -1,10 +1,15 @@
 language: android
 env:
-  #- ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16
+  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16
   - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24
 
   #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi API=16
   #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
+
+matrix:
+  allow_failures:
+  - env: ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24
+  fast_finish: true
 android:
   components:
     # The BuildTools version used by your project
