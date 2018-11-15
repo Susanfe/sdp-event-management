@@ -15,10 +15,7 @@ import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingScanActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingTestRule;
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
-import com.journeyapps.barcodescanner.BarcodeResult;
-import com.journeyapps.barcodescanner.BarcodeView;
-import com.journeyapps.barcodescanner.DecoderThread;
-import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -66,43 +63,15 @@ public abstract class BaseScanningActivityTest extends ScanningTest {
         return null;
     }
 
-    private DecoderThread getDecoderThread() {
-        DecoratedBarcodeView dView = getField(mActivityRule.getActivity(), "barcodeView");
-        BarcodeView view = getField(dView, "barcodeView");
-        return getField(view, "decoderThread");
-    }
-
-    private Handler getResultHandler() {
-        return getField(getDecoderThread(), "resultHandler");
+    private BarcodeCallback getCallback() {
+        return getField(mActivityRule.getActivity(), "callback");
     }
 
     protected void sendScanSuccess(String code) {
         BarcodeResult barcodeResult =
                 new BarcodeResult(new Result(code, code.getBytes(), code.getBytes().length, new ResultPoint[0], null, System.currentTimeMillis()), null);
 
-        Message message = Message.obtain(getResultHandler(), com.google.zxing.client.android.R.id.zxing_decode_succeeded, barcodeResult);
-        Bundle bundle = new Bundle();
-        message.setData(bundle);
-        message.sendToTarget();
-    }
-
-    protected void waitCameraReady() {
-        boolean cont = true;
-        for (int i = 0; i < 60 && cont; ++i) {
-            try {
-                onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
-                cont = getDecoderThread() == null; // Wait for the decoder thread
-
-                if (cont)
-                    SystemClock.sleep(1000);
-            } catch (NoMatchingViewException e) {
-                SystemClock.sleep(1000);
-            }
-        }
-
-        onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
-
-        Assert.assertNotNull(getDecoderThread());
+        mActivityRule.getActivity().runOnUiThread(() -> getCallback().barcodeResult(barcodeResult)); // Don't require the camera to start, we don't need it
     }
 
 }

@@ -5,6 +5,7 @@ import ch.epfl.sweng.eventmanager.EventManagerApplication;
 import ch.epfl.sweng.eventmanager.repository.RepositoriesModule;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingModule;
+import ch.epfl.sweng.eventmanager.ui.ticketing.BarcodeViewManagerModule;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
@@ -23,6 +24,7 @@ import javax.inject.Singleton;
         ApplicationModule.class,
         RepositoriesModule.class,
         TicketingModule.class,
+        BarcodeViewManagerModule.class,
         RoomModule.class})
 @Singleton
 public interface ApplicationComponent {
