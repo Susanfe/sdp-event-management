@@ -3,23 +3,13 @@ package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 import android.os.SystemClock;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.intent.matcher.IntentMatchers;
-import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
-import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
 import ch.epfl.sweng.eventmanager.ui.ticketing.*;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.PASSWORD;
-import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.UNAUTHORIZED_USER;
 
 public class LoggedOutPickerTest extends ScanningTest {
 
@@ -49,7 +39,7 @@ public class LoggedOutPickerTest extends ScanningTest {
         getTicketingService().logout();
     }
 
-    @Test @Ignore("Crash")
+    @Test
     public void testNotAuthenticated() {
         Assert.assertFalse(getTicketingService().isLoggedIn());
 

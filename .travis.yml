@@ -3,7 +3,6 @@ sudo: required # gives us actual VMs that are longer to boot but faster to build
 env:
 - API_VERSION=16
 - API_VERSION=24
-- API_VERSION=25
 android:
   components:
     # The BuildTools version used by your project
