@@ -40,6 +40,7 @@ public class EventPickerActivityTest {
 
     @Test
     public void testGoToLogin() {
+        SystemClock.sleep(500);
 
         openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
 

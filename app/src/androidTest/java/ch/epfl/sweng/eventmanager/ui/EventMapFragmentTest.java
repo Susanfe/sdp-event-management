@@ -8,6 +8,7 @@ import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

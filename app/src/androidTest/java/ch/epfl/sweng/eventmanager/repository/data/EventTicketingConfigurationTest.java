@@ -2,6 +2,8 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.os.Parcel;
 import android.os.SystemClock;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
