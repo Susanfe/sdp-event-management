@@ -96,23 +96,6 @@ public abstract class BaseScanningActivityTest extends ScanningTest {
                 new BarcodeResult(new Result(code, code.getBytes(), code.getBytes().length, new ResultPoint[0], null, System.currentTimeMillis()), null);
 
         mActivityRule.getActivity().runOnUiThread(() -> getCallback().barcodeResult(barcodeResult)); // Don't require the camera to start, we don't need it
-
-    }
-
-    protected void waitCameraReady() {
-        boolean cont = true;
-        for (int i = 0; i < 20 && cont; ++i) {
-            try {
-                onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
-                cont = false;
-            } catch (NoMatchingViewException e) {
-                SystemClock.sleep(1000);
-            }
-        }
-
-        onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
-
-        mActivityRule.getActivity().runOnUiThread(() -> getView().pause()); // Don't require the camera to start, we don't need it
     }
 
 }
