@@ -22,7 +22,7 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
         super(2);
     }
 
-    @Test @Ignore("Crash")
+    @Test
     public void testScanningActivity() {
         sendScanSuccess(MockStacks.SINGLE_BARCODE);
         SystemClock.sleep(5000);
@@ -59,7 +59,7 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
         Intents.assertNoUnverifiedIntents();
     }
 
-    @Test @Ignore("Crash")
+    @Test
     public void testBackBehaviour() {
         onView(withText(R.string.back_button)).perform(ViewActions.click());
 

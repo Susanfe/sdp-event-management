@@ -24,7 +24,7 @@ public class PickerTest extends ActivityTest<TicketingConfigurationPickerActivit
 
     @Test
     public void testDisplaysConfigs() {
-        SystemClock.sleep(200);
+        SystemClock.sleep(2000);
 
         onView(withId(R.id.recylcer)).check(matches(Matchers.allOf(
                 hasDescendant(withText("Config1")),
