@@ -62,7 +62,7 @@ public abstract class StarterTest extends ScanningTest {
     public void testOpen() {
         testOpen(this.expectedClass);
 
-        SystemClock.sleep(30_000);
+        SystemClock.sleep(45_000);
     }
 
     @After
