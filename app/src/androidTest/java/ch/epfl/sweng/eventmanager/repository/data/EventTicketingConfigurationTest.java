@@ -50,9 +50,6 @@ public class EventTicketingConfigurationTest {
 
         created = EventTicketingConfiguration.CREATOR.createFromParcel(target);
         assertEquals(conf, created);
-
-        SystemClock.sleep(250_000);
-        // Wait for crash
      }
 
 }

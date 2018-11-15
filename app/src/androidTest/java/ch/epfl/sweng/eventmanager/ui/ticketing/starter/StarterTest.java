@@ -61,8 +61,6 @@ public abstract class StarterTest extends ScanningTest {
     @Test
     public void testOpen() {
         testOpen(this.expectedClass);
-
-        SystemClock.sleep(45_000);
     }
 
     @After

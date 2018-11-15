@@ -27,7 +27,7 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
         waitCameraReady();
 
         sendScanSuccess(MockStacks.SINGLE_BARCODE);
-        SystemClock.sleep(5000);
+        SystemClock.sleep(2000);
 
         onView(withId(R.id.barcodePreview)).check(matches(withText(
                 Matchers.allOf(
@@ -41,14 +41,14 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
 
 
         sendScanSuccess("THIS CODE DOESNT EXIST");
-        SystemClock.sleep(5000);
+        SystemClock.sleep(2000);
         onView(withId(R.id.barcodePreview)).check(matches(withText(
                 Matchers.containsString(mActivityRule.getActivity().getString(R.string.ticketing_scan_failure))
         )));
 
 
         sendScanSuccess(MockStacks.MULTIPLE_BARCODE);
-        SystemClock.sleep(5000);
+        SystemClock.sleep(2000);
         onView(withId(R.id.barcodePreview)).check(matches(withText(
                 Matchers.allOf(
                         Matchers.containsString(mActivityRule.getActivity().getString(R.string.ticketing_scan_success)),
