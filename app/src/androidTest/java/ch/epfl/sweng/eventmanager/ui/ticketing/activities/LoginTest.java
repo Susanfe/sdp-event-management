@@ -31,7 +31,7 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
         super(3, TicketingLoginActivity.class);
     }
 
-    @Test @Ignore("Crash")
+    @Test
     public void testValidLogin() {
         Assert.assertFalse(getTicketingService().isLoggedIn());
 
@@ -50,7 +50,7 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
         Assert.assertTrue(getTicketingService().isLoggedIn());
     }
 
-    @Test @Ignore("Crash")
+    @Test
     public void testInvalidLogin() {
         Assert.assertFalse(getTicketingService().isLoggedIn());
 
@@ -67,7 +67,7 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
         Assert.assertFalse(getTicketingService().isLoggedIn());
     }
 
-    @Test @Ignore("Crash")
+    @Test
     public void testFailingLogin() {
         Assert.assertFalse(getTicketingService().isLoggedIn());
 
