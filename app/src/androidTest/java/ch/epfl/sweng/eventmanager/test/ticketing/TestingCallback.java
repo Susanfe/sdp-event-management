@@ -87,7 +87,7 @@ public class TestingCallback<T> implements TicketingService.ApiCallback<T> {
 
     public void assertOk(String message) {
         int total = 0;
-        while (total++ < 10 && !isFinished())
+        while (total++ < 150 && !isFinished())
             SystemClock.sleep(200);
 
         assertTrue(message, isOk());
