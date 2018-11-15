@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +19,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
+ * Our main view on the 'visitor' side of the event. Displays a general description of the event.
  */
 public class EventMainFragment extends AbstractShowcaseFragment {
     private static final String TAG = "EventMainFragment";

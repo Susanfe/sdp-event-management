@@ -1,18 +1,12 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.Switch;
-import android.widget.TextView;
 
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcaseFragment;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
+ * Allows an administrator a manage the users allowed to work with this event (= access to admin
+ * features).
  */
 public class EventUserManagementFragment extends AbstractShowcaseFragment {
     private static final String TAG = "UserManagement";

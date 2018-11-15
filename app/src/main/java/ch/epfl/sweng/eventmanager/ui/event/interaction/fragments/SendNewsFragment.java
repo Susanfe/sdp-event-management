@@ -18,6 +18,9 @@ import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
 
+/**
+ * Allows an administrator to write and share news.
+ */
 public class SendNewsFragment extends AbstractShowcaseFragment {
     private static String TAG = "SendNewsFragment";
 

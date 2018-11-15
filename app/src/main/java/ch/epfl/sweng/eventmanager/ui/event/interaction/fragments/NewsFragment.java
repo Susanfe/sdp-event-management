@@ -29,6 +29,9 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 
+/**
+ * Display an event's news feed.
+ */
 public class NewsFragment extends AbstractShowcaseFragment {
     private static String TAG = "NewsFragment";
     protected NewsViewModel model;
