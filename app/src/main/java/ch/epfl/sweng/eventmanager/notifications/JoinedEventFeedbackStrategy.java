@@ -5,7 +5,7 @@ import android.content.Context;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 
 public class JoinedEventFeedbackStrategy extends NotificationStrategy<Event> {
-    private static final long ONE_DAY = 86_400_000;
+    private static final long ONE_DAY = 86_400_000; //24H in millis
     private static final String titleText = "Rate this event : ";
 
     public JoinedEventFeedbackStrategy(Context context) {
@@ -16,7 +16,7 @@ public class JoinedEventFeedbackStrategy extends NotificationStrategy<Event> {
     void scheduleNotification(Event event) {
         // get Notification based on scheduled item
         Notification notification = getNotificationFromEvent(event);
-
+        // The user is notified one day after the event is passed
         SchedulerHelper.scheduleNotification(context, event.getId(), notification, SchedulerHelper.getTimeTo(event.getEndDate()) + ONE_DAY);
     }
 
