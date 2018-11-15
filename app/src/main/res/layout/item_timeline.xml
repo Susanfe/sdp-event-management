@@ -46,14 +46,6 @@
                         android:textSize="12sp"
                         tools:text="2018-1-1 12:00"/>
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/text_timeline_duration"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        tools:text="1h30"/>
-
                 <TextView android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
                           android:id="@+id/text_item_room"
@@ -61,6 +53,13 @@
                           android:gravity="end"
                           tools:text="Polyvalente"/>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_timeline_duration"
+                android:gravity="end"
+                tools:text="1h30"/>
 
 
             <TextView
@@ -80,7 +79,7 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/ite_timeline_descirption_height"
                 android:id="@+id/text_timeline_description"
                 tools:text="Description"
                 />

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.eventShowcase.fragments.schedule.ScheduleFragment"
-        android:layout_marginTop="?android:attr/actionBarSize">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.eventShowcase.fragments.schedule.ScheduleFragment"
+    android:layout_marginTop="?android:attr/actionBarSize">
 
 
     <include layout="@layout/content_timeline" android:id="@+id/include"/>
 
     <TextView
-            android:text="@string/scheduled_items_empty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/scheduled_items_empty_tv"
-            android:gravity="center"
-            app:layout_anchorGravity="center_vertical|center_horizontal"
-            app:layout_anchor="@+id/include" android:visibility="gone"/>
+        android:text="@string/scheduled_items_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:id="@+id/scheduled_items_empty_tv"
+        android:gravity="center"
+        app:layout_anchorGravity="center_vertical|center_horizontal"
+        app:layout_anchor="@+id/include" android:visibility="gone"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

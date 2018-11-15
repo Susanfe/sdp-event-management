@@ -67,7 +67,7 @@
     <string name="news_nav_item_activity_event_showcase">News</string>
     <string name="send_news_title">Create a news</string>
     <string name="send_news_title_field">Title</string>
-    <string name="send_news_content">News content…</string>
+    <string name="send_news_content">News content</string>
     <string name="send_news_send_button">Send</string>
     <string name="news_create">Create a news</string>
 

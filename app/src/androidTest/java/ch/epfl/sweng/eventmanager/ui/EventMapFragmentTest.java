@@ -41,8 +41,6 @@ public class EventMapFragmentTest {
 
     @Test
     public void eventMapTest() {
-        onView(withId(R.id.text_test)).check(matches(withText("everything is ready")));
-
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
         onView(withId(R.id.nav_view))

@@ -45,6 +45,7 @@
     <style name="Button_global">
         <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:background">@drawable/button_lateral_navigation</item>
+        <item name="android:layout_margin">8dp</item>
     </style>
 
     <!-- App buttonbar button style (see fragment_event_main) -->
