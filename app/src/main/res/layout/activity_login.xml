@@ -11,6 +11,13 @@
         style="@style/Toolbar"
         android:id="@+id/login_toolbar"/>
 
+    <ProgressBar
+        android:id="@+id/sign_in_progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true" />
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -25,63 +32,51 @@
 
         <!-- Login progress -->
 
-        <ScrollView
-            android:id="@+id/login_form"
+        <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                        android:id="@+id/email_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:singleLine="true" android:imeOptions="actionNext"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/email_login_form"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                            android:id="@+id/email_field"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress"
-                            android:maxLines="1"
-                            android:singleLine="true" android:imeOptions="actionNext"/>
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                            android:id="@+id/password_field"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:imeActionId="6"
-                            android:inputType="textPassword"
-                            android:maxLines="1"
-                            android:singleLine="true" android:imeOptions="actionDone"/>
-
-                </android.support.design.widget.TextInputLayout>
-
-                <Button
-                    android:id="@+id/login_button"
-                    style="@style/Button_global"
+            <EditText
+                    android:id="@+id/password_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:textStyle="bold" />
+                    android:imeActionId="6"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true" android:imeOptions="actionDone"/>
 
-            </LinearLayout>
-        </ScrollView>
+        </android.support.design.widget.TextInputLayout>
 
-        <ProgressBar
-            android:id="@+id/sign_in_progress_bar"
-            style="?android:attr/progressBarStyleHorizontal"
+        <Button
+            android:id="@+id/login_button"
+            style="@style/Button_global"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/signup_button"
+            style="@style/Button_global"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.userManagement;
+package ch.epfl.sweng.eventmanager.users;
 
 import android.app.Activity;
 
@@ -20,6 +20,20 @@ public interface InMemorySession {
      * @param callback code to execute when the login process returns
      */
     void login(String email, String password, Activity context, OnCompleteListener callback);
+
+    /**
+     * Start the registration process and execute action when finished.
+     *
+     * Note: the callback will be ignored if the activity is closed before the end of the registration
+     * process. This is intentional since the callback is supposed to be used to handle UI
+     * animations.
+     *
+     * @param email email used to identify the account
+     * @param password password to set
+     * @param context activity making the call
+     * @param callback code to execute when the registration process returns
+     */
+    void registerAndLogin(String email, String password, Activity context, OnCompleteListener callback);
 
     /**
      * Get you any currently logged user.
