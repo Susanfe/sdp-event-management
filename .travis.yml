@@ -2,16 +2,6 @@ language: android
 sudo: required # gives us actual VMs that are longer to boot but faster to build
 env:
 - API_VERSION=16
-- API_VERSION=15
-- API_VERSION=17
-- API_VERSION=18
-- API_VERSION=24
-matrix:
-  allow_failures:
-  - env: API_VERSION=15
-  - env: API_VERSION=17
-  - env: API_VERSION=18
-  - env: API_VERSION=24
 android:
   components:
     # The BuildTools version used by your project
@@ -40,7 +30,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - adb logcat *:I & LOGCAT_PID=$!
-  - ./gradlew build connectedCheck jacocoTestReport
+  - travis_retry ./gradlew build connectedCheck jacocoTestReport
   - if [ -n "$LOGCAT_PID" ] ; then kill $LOGCAT_PID; fi
 after_script:
   # Report test coverage to Code Climate
