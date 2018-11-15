@@ -9,7 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
-import static androidx.test.espresso.Espresso.onIdle;
+
+import static android.support.test.espresso.Espresso.onIdle;
 
 @RunWith(AndroidJUnit4.class)
 public class EventAdministrationActivityTest {
