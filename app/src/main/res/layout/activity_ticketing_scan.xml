@@ -10,7 +10,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_above="@+id/buttonsLayout"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:visibility="gone"
+        >
 
     </com.journeyapps.barcodescanner.DecoratedBarcodeView>
 

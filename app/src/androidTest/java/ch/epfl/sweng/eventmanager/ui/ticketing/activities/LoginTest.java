@@ -67,7 +67,7 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
         Assert.assertFalse(getTicketingService().isLoggedIn());
     }
 
-    @Test @Ignore("try to avoid travis crash")
+    @Test
     public void testFailingLogin() {
         Assert.assertFalse(getTicketingService().isLoggedIn());
 
