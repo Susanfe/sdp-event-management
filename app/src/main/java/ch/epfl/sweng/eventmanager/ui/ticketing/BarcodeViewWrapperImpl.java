@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
-import android.view.View;
 
 import com.google.zxing.BarcodeFormat;
 import com.journeyapps.barcodescanner.BarcodeCallback;
@@ -33,8 +32,6 @@ public class BarcodeViewWrapperImpl implements BarcodeViewWrapper {
     public void initialize(DecoratedBarcodeView v, TicketingScanActivity activity, BarcodeCallback callback) {
         this.callback = callback;
         this.view = v;
-
-        v.setVisibility(View.VISIBLE);
 
         activity.getLifecycle().addObserver(new LifecycleObserver() {
             @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
