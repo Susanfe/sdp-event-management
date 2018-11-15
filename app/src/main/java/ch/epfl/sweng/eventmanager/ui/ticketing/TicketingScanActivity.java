@@ -1,8 +1,11 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -10,22 +13,22 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.zxing.ResultPoint;
-import com.google.zxing.client.android.BeepManager;
-import com.journeyapps.barcodescanner.BarcodeCallback;
-import com.journeyapps.barcodescanner.BarcodeResult;
-
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.BeepManager;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.DefaultDecoderFactory;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Source: https://github.com/journeyapps/zxing-android-embedded/blob/master/sample/src/main/java/example/zxing/ContinuousCaptureActivity.java
@@ -36,17 +39,15 @@ public final class TicketingScanActivity extends TicketingActivity {
     public static final String SELECTED_CONFIG_ID = "ch.epfl.sweng.SELECTED_CONFIG_ID";
     private static final String TAG = "TicketingScanActivity";
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 42; // Magic value
-    @Inject
-    BarcodeViewWrapper viewWrapper;
     private int configId = -1;
 
+    private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
-
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
-            viewWrapper.pause();
-            viewWrapper.setStatusText(result.getText());
+            barcodeView.pause();
+            barcodeView.setStatusText(result.getText());
             TextView view = findViewById(R.id.barcodePreview);
             view.setText(R.string.loading_text);
 
@@ -58,10 +59,10 @@ public final class TicketingScanActivity extends TicketingActivity {
 
                         view.setText(buildHtml(data));
 
-                        viewWrapper.setStatusText("");
+                        barcodeView.setStatusText("");
                         Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_success, Toast.LENGTH_SHORT).show();
 
-                        viewWrapper.resume();
+                        resumeDecoding();
                     }
 
                     @Override
@@ -70,10 +71,10 @@ public final class TicketingScanActivity extends TicketingActivity {
 
                         view.setText(buildHtmlForError(errors));
 
-                        viewWrapper.setStatusText("");
+                        barcodeView.setStatusText("");
                         Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_failure, Toast.LENGTH_SHORT).show();
 
-                        viewWrapper.resume();
+                        resumeDecoding();
                     }
                 });
             } catch (NotAuthenticatedException e) {
@@ -173,7 +174,21 @@ public final class TicketingScanActivity extends TicketingActivity {
     }
 
     private void initScan() {
-        viewWrapper.initialize(findViewById(R.id.barcode_scanner), this, callback);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    MY_PERMISSIONS_REQUEST_CAMERA);
+        } else {
+            barcodeView = findViewById(R.id.barcode_scanner);
+            barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(Arrays.asList(BarcodeFormat.values())));
+            barcodeView.initializeFromIntent(getIntent());
+        }
+    }
+
+    private void resumeDecoding() {
+        barcodeView.resume();
+        barcodeView.decodeContinuous(callback);
     }
 
     @Override
@@ -197,25 +212,29 @@ public final class TicketingScanActivity extends TicketingActivity {
     protected void onResume() {
         super.onResume();
 
-        if (!viewWrapper.isReady())
+        if (barcodeView == null) {
             initScan();
-        viewWrapper.resume();
+        }
+
+        resumeDecoding();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        viewWrapper.pause();
+        if (barcodeView != null) {
+            barcodeView.pause();
+        }
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return viewWrapper.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
+        return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
     public void goBack(View view) {
-        viewWrapper.pause();
+        barcodeView.pause();
 
         startActivity(this.backToShowcase());
     }

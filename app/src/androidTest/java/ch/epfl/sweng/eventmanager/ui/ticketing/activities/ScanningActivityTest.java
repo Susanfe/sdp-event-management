@@ -24,6 +24,8 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
 
     @Test
     public void testScanningActivity() {
+        waitCameraReady();
+
         sendScanSuccess(MockStacks.SINGLE_BARCODE);
         SystemClock.sleep(5000);
 
@@ -61,6 +63,8 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
 
     @Test
     public void testBackBehaviour() {
+        waitCameraReady();
+
         onView(withText(R.string.back_button)).perform(ViewActions.click());
 
 

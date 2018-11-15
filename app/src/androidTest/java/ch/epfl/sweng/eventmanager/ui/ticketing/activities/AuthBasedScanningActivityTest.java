@@ -32,6 +32,9 @@ public class AuthBasedScanningActivityTest extends BaseScanningActivityTest {
 
     @Test @Ignore("Crash")
     public void testLoggedOut() {
+        waitCameraReady();
+
+        onView(withId(R.id.barcode_scanner)).check(matches(isDisplayed()));
         Assert.assertFalse(getTicketingService().isLoggedIn());
 
         sendScanSuccess(MockStacks.SINGLE_BARCODE);

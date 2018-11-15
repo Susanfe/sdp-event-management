@@ -8,7 +8,6 @@ import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingModule;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.NewsFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
-import ch.epfl.sweng.eventmanager.ui.ticketing.activities.NoOpBarcodeViewManagerModule;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
 import dagger.android.support.AndroidSupportInjectionModule;
@@ -22,7 +21,6 @@ import javax.inject.Singleton;
         ApplicationModule.class,
         RoomModule.class,
         MockRepositoriesModule.class,
-        NoOpBarcodeViewManagerModule.class,
         MockTicketingModule.class})
 @Singleton
 public interface TestComponent extends ApplicationComponent {
