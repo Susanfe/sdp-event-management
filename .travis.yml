@@ -1,8 +1,13 @@
 language: android
 sudo: required # gives us actual VMs that are longer to boot but faster to build
 env:
-- API_VERSION=16
+- API_VERSION=16 OPTS="--skin 768x1280"
 - API_VERSION=24
+- API_VERSION=24 OPTS="--skin 768x1280"
+matrix:
+  allow_failures:
+  - env: API_VERSION=24
+  - env: API_VERSION=24 OPTS="--skin 768x1280"
 android:
   components:
     # The BuildTools version used by your project
@@ -15,7 +20,7 @@ android:
     - sys-img-armeabi-v7a-android-$API_VERSION
 before_script:
   # Emulator Management: Create, Start and Wait
-  - echo no | android create avd --force -n test -t android-$API_VERSION --abi armeabi-v7a --skin 768x1280
+  - echo no | android create avd --force -n test -t android-$API_VERSION --abi armeabi-v7a $OPTS
   - emulator -avd test -no-audio -no-window -no-boot-anim -camera-back none -camera-front none -verbose &
   - android-wait-for-emulator
   - adb shell input keyevent 82
