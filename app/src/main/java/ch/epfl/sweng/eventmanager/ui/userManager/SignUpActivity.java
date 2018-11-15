@@ -42,15 +42,12 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void setupFields() {
         mEmailView = findViewById(R.id.email_field);
-        mEmailView.setHint(R.string.email_field);
         mEmailView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mEmailView));
 
         mPasswordView = findViewById(R.id.password_field);
-        mPasswordView.setHint(R.string.password_field);
         mPasswordView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mPasswordView));
 
         mPasswordConfirmationView = findViewById(R.id.password_confirmation_field);
-        mPasswordConfirmationView.setHint(R.string.password_confirmation_field);
         mPasswordConfirmationView.setOnEditorActionListener(
                 UserManagerHelper.nextButtonHandler(mPasswordConfirmationView)
         );
@@ -58,7 +55,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void setupButtons() {
         mSignUpButton = findViewById(R.id.signup_button);
-        mSignUpButton.setText(R.string.signup_button);
         mSignUpButton.setOnClickListener(view -> attemptSignUp());
     }
 
