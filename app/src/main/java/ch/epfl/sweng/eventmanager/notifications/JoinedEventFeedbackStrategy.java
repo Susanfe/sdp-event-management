@@ -4,6 +4,9 @@ import android.app.Notification;
 import android.content.Context;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 
+/**
+ * Alerts the user a day after the event ended for him to give his feedback on the event
+ */
 public class JoinedEventFeedbackStrategy extends NotificationStrategy<Event> {
     private static final long ONE_DAY = 86_400_000; //24H in millis
     private static final String titleText = "Rate this event : ";
@@ -25,8 +28,8 @@ public class JoinedEventFeedbackStrategy extends NotificationStrategy<Event> {
         SchedulerHelper.unscheduleNotification(context, event.getId());
     }
 
-    private Notification getNotificationFromEvent(Event event){
+    private Notification getNotificationFromEvent(Event event) {
         //TODO make the notification on click action send the user to the feedback fragment
-         return NotificationBuilder.getNotificationFromItem(context, titleText + event.getName(), "");
+        return NotificationBuilder.getNotificationFromItem(context, titleText + event.getName(), "");
     }
 }
