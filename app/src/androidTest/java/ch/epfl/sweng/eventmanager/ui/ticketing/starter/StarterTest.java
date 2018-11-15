@@ -55,12 +55,14 @@ public abstract class StarterTest extends ScanningTest {
         SystemClock.sleep(200);
 
 
-        Intents.intending(isInternal()).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
+        // Intents.intending(isInternal()).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
     }
 
     @Test
     public void testOpen() {
         testOpen(this.expectedClass);
+
+        SystemClock.sleep(30_000);
     }
 
     @After

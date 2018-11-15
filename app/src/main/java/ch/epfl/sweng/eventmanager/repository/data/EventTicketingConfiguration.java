@@ -35,14 +35,23 @@ public class EventTicketingConfiguration implements Parcelable {
         this.scanUrl = scanUrl;
     }
 
+    protected EventTicketingConfiguration(Parcel in) {
+        loginUrl = in.readString();
+        configurationsUrl = in.readString();
+        scanUrl = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(loginUrl);
+        dest.writeString(configurationsUrl);
+        dest.writeString(scanUrl);
+    }
+
     public static final Creator<EventTicketingConfiguration> CREATOR = new Creator<EventTicketingConfiguration>() {
         @Override
         public EventTicketingConfiguration createFromParcel(Parcel in) {
-            EventTicketingConfiguration configuration = new EventTicketingConfiguration();
-            configuration.loginUrl = in.readString();
-            configuration.configurationsUrl = in.readString();
-            configuration.scanUrl = in.readString();
-            return configuration;
+            return new EventTicketingConfiguration(in);
         }
 
         @Override
@@ -66,13 +75,6 @@ public class EventTicketingConfiguration implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(loginUrl);
-        dest.writeString(configurationsUrl);
-        dest.writeString(scanUrl);
     }
 
 

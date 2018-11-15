@@ -33,9 +33,10 @@ public final class TicketingLoginActivity extends TicketingActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
-
         super.onCreate(savedInstanceState);
+        /*AndroidInjection.inject(this);
+
+
 
         setContentView(R.layout.activity_ticketing_login);
 
@@ -55,7 +56,7 @@ public final class TicketingLoginActivity extends TicketingActivity {
         mEmailSignInButton.setOnClickListener(view1 -> attemptLogin());
 
         mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        mProgressView = findViewById(R.id.login_progress);*/
     }
 
     private boolean checkFieldInvalid(EditText textView, Validator isValid) {
