@@ -22,7 +22,7 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
         super(2);
     }
 
-    @Test @Ignore("Crash")
+    @Test
     public void testScanningActivity() {
         waitCameraReady();
 
@@ -61,7 +61,7 @@ public class ScanningActivityTest extends BaseScanningActivityTest {
         Intents.assertNoUnverifiedIntents();
     }
 
-    @Test @Ignore("Crash")
+    @Test
     public void testBackBehaviour() {
         waitCameraReady();
 
