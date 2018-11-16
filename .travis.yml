@@ -27,7 +27,7 @@ before_script:
   # Emulator Management: Create, Start and Wait
   - android list target
   - echo no | android create avd --force -n test -t android-$API --abi $ABI
-  - emulator -avd test -no-window & # no-audio causes failures, so I removed it
+  - emulator -avd test -no-window -verbose -memory 1024 & # no-audio causes failures, so I removed it
   - android-wait-for-emulator
   - adb shell input keyevent 82
   # Disable transitions
