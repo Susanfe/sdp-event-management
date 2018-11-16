@@ -18,6 +18,8 @@
     <string name="title_activity_maps">Map</string>
 
     <string name="invalid_email_error">Invalid email address</string>
+    <string name="error_field_required">Required field</string>
+    <string name="error_field_invalid">Invalid value</string>
     <string name="empty_password_error">The password cannot be empty</string>
     <string name="password_match_error">The passwords do not match</string>
     <string name="generic_auth_error">Could not authenticate. Unknown error.</string>
@@ -65,6 +67,17 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="news_nav_item_activity_event_showcase">News</string>
+
+    <string name="pick_configuration">Pick a scanning configuration</string>
+    <string name="loading_text">Loading…</string>
+    <string name="loading_failed">Loading failed : %1$s</string>
+    <string name="ticketing_missing_service">Internal error (missing API service)</string>
+    <string name="scan_nav_item_activity_event_showcase">Scan Tickets</string>
+    <string name="ticketing_scan_success">Valid ticket!</string>
+    <string name="ticketing_scan_failure">Invalid ticket :(</string>
+    <string name="ticketing_scan_user">Buyer:</string>
+    <string name="ticketing_scan_bought_product">Ticket details:</string>
+    <string name="ticketing_requires_login">You have to be logged in to do that.</string>
     <string name="send_news_title">Create a news</string>
     <string name="send_news_title_field">Title</string>
     <string name="send_news_content">News content…</string>

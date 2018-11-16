@@ -1,9 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 /**
  * @author Louis Vialar

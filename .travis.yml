@@ -1,35 +1,48 @@
 language: android
-sudo: required # gives us actual VMs that are longer to boot but faster to build
+env:
+  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=19 VIEW_AVD_LOGS=1
+
+  # disabled: dies randomly
+  # - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16 VIEW_AVD_LOGS=1 EMU_OPTS="-noaudio"
+  # disabled: boots so slowly it's killed by travis
+  #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
 android:
   components:
     # The BuildTools version used by your project
-    - build-tools-27.0.3
+    - build-tools-28.0.3
     # The SDK version used to compile your project
     - android-28
     # The SDK version used by the system image
-    - android-16
+    - android-$API
     # The system image, to run an emulator during the tests
-    - sys-img-armeabi-v7a-android-16
-    # add google play services
-    - extra-google-google_play_services
+    - sys-img-$ABI_IMAGE-$API
+    - tools
+    - platform-tools
 before_script:
+  # Ensure images are up to date
+  #} - echo "y" | android update sdk -a --no-ui --filter android-$API
+  # - echo "y" | android update sdk -a --no-ui --filter sys-img-$ABI_IMAGE-$API
   # Emulator Management: Create, Start and Wait
-  - echo no | android create avd --force -n test -t android-16 --abi armeabi-v7a --skin 768x1280
-  - emulator -avd test -no-audio -no-window &
+  - android list target
+  - echo no | android create avd --force -n test -t android-$API --abi $ABI
+  - emulator -avd test -no-window -verbose -memory 1536 $EMU_OPTS & # no-audio causes failures, so I removed it
   - android-wait-for-emulator
-  - adb shell input keyevent 82
+  - adb shell input keyevent 82 &
   # Disable transitions
   - adb shell settings put global window_animation_scale 0.0
   - adb shell settings put global transition_animation_scale 0.0
   - adb shell settings put global animator_duration_scale 0.0
   # Set twitter key
   - sed -i 's/${CONSUMER_SECRET}/$TWITTER_CONSUMMER_SECRET/' app/src/main/res/values/twitter.xml
-    # Set up Code Climate test reporter
+  - adb shell input keyevent 4 &
+  # Set up Code Climate test reporter
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-  - travis_retry ./gradlew build connectedCheck jacocoTestReport
+  - if [ -n "$VIEW_AVD_LOGS" ] ; then adb logcat *:I & LOGCAT_PID=$!; fi
+  - ./gradlew build connectedCheck jacocoTestReport
+  - if [ -n "$LOGCAT_PID" ] ; then kill $LOGCAT_PID; fi
 after_script:
   # Report test coverage to Code Climate
   - export JACOCO_SOURCE_PATH=app/src/main/java/

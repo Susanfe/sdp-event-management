@@ -1,8 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
+import androidx.test.InstrumentationRegistry;
 import ch.epfl.sweng.eventmanager.repository.room.AppDataBase;
 import ch.epfl.sweng.eventmanager.repository.room.daos.GenericDAO;
 import org.junit.After;

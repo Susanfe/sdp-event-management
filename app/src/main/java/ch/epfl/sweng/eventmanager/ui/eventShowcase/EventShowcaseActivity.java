@@ -1,25 +1,31 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.navigation.NavigationView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ui.eventAdministration.EventAdministrationActivity;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
@@ -31,6 +37,7 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
@@ -44,6 +51,8 @@ public class EventShowcaseActivity extends AppCompatActivity
 
     @Inject
     ViewModelFactory factory;
+    @Inject
+    TicketingManager ticketingManager;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -71,6 +80,20 @@ public class EventShowcaseActivity extends AppCompatActivity
 
         this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
         this.spotsModel.init(eventID);
+    }
+
+    private void setupMenu() {
+        LiveData<EventTicketingConfiguration> data = Transformations.map(model.getEvent(), Event::getTicketingConfiguration);
+        data.observe(this, d -> {
+            MenuItem item = navigationView.getMenu().findItem(R.id.nav_scan);
+            if (d != null) {
+                Log.i(TAG, "Got a ticketing configuration, setting button visible");
+                item.setVisible(true);
+            } else {
+                Log.i(TAG, "Got no ticketing configuration, setting button invisible");
+                item.setVisible(false);
+            }
+        });
     }
 
     private void setupHeader() {
@@ -114,9 +137,9 @@ public class EventShowcaseActivity extends AppCompatActivity
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
-            this.eventID = eventID;
             this.initModels();
             this.setupHeader();
+            this.setupMenu();
 
             // Only display admin button if the user is at least staff
             model.getEvent().observe(this, ev -> {
@@ -191,6 +214,11 @@ public class EventShowcaseActivity extends AppCompatActivity
             case R.id.nav_schedule:
                 changeFragment(new ScheduleParentFragment(), true);
                 break;
+
+            case R.id.nav_scan:
+                startActivity(ticketingManager.start(model.getEvent().getValue(), this));
+                break;
+
         }
 
         return true;

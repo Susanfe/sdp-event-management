@@ -64,10 +64,19 @@ public final class Event {
      */
     private String twitterName;
 
+    private EventTicketingConfiguration ticketingConfiguration;
+
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate,
                  EventOrganizer organizer, Bitmap image, EventLocation location,
                  List<Spot> spotList, Map<String, List<String>> users, String twitterName) {
+        this(id, name, description, beginDate, endDate, organizer, image, location, spotList, users, twitterName, null);
+    }
+
+    public Event(int id, String name, String description, Date beginDate, Date endDate,
+                 EventOrganizer organizer, Bitmap image, EventLocation location,
+                 List<Spot> spotList, Map<String, List<String>> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
+        this.ticketingConfiguration = ticketingConfiguration;
 
         if (beginDate.getTime() > endDate.getTime())
             throw new IllegalArgumentException("The time at the start of the event should be later than the time at the end");
@@ -152,6 +161,10 @@ public final class Event {
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    public EventTicketingConfiguration getTicketingConfiguration() {
+        return ticketingConfiguration;
     }
 
     // TODO put setters ??
