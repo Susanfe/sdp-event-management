@@ -5,6 +5,9 @@ import android.view.KeyEvent;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
+/**
+ * //FIXME Needed for the tests to pass on emulator but clearly not ideal, find some other solution
+ */
 public interface BarcodeViewWrapper {
 
     boolean isReady();

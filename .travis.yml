@@ -1,13 +1,11 @@
 language: android
 env:
-  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16 VIEW_AVD_LOGS=1 EMU_OPTS="-noaudio"
-  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=18 VIEW_AVD_LOGS=1
   - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=19 VIEW_AVD_LOGS=1
-  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24 VIEW_AVD_LOGS=1
 
-  #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi API=16
+  # disabled: dies randomly
+  # - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16 VIEW_AVD_LOGS=1 EMU_OPTS="-noaudio"
+  # disabled: boots so slowly it's killed by travis
   #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
-
 android:
   components:
     # The BuildTools version used by your project
