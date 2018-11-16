@@ -3,7 +3,6 @@ package ch.epfl.sweng.eventmanager.ui.eventSelector;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -15,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -43,6 +44,10 @@ public class EventPickingActivity extends AppCompatActivity {
     RecyclerView joinedEvents;
     @BindView(R.id.not_joined_event_list)
     RecyclerView eventList;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.event_linear_layout)
+    LinearLayout content;
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
 
@@ -63,6 +68,8 @@ public class EventPickingActivity extends AppCompatActivity {
 
             //once data is loaded
             helpText.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            content.setVisibility(View.VISIBLE);
 
             if (!list.getJoinedEvents().isEmpty()) {
                 if (list.getOtherEvents().isEmpty()) {
@@ -93,17 +100,10 @@ public class EventPickingActivity extends AppCompatActivity {
         this.model = ViewModelProviders.of(this, factory).get(EventPickingModel.class);
         this.model.init();
         ButterKnife.bind(this);
+        content.setVisibility(View.GONE);
         Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
         setSupportActionBar(toolbar);
         setupObservers();
-
-
-        // Help text
-        // Both invisible by default
-        joinedHelpText.setVisibility(View.GONE);
-        helpText.setTypeface(helpText.getTypeface(), Typeface.BOLD);
-        helpText.setText(R.string.help_text_activity_event_picking);
-        helpText.setVisibility(View.GONE);
 
         // Event list
         eventList.setHasFixedSize(true);
@@ -112,11 +112,8 @@ public class EventPickingActivity extends AppCompatActivity {
         notJoinedHelpText.setVisibility(View.GONE);
 
         // Event lists
-
         setupRecyclerView(eventList);
-        eventList.setVisibility(View.GONE);
         setupRecyclerView(joinedEvents);
-        eventList.setVisibility(View.GONE);
     }
 
     private void openLoginOrAccountActivity() {
