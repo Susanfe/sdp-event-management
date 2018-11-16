@@ -2,11 +2,10 @@ language: android
 sudo: required # gives us actual VMs that are longer to boot but faster to build
 env:
 - API_VERSION=16 OPTS="--skin 768x1280"
-- API_VERSION=24
 android:
   components:
     # The BuildTools version used by your project
-    - build-tools-28.0.2
+    - build-tools-27.0.3
     # The SDK version used to compile your project
     - android-28
     # The SDK version used by the system image
