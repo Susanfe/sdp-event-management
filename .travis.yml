@@ -39,24 +39,12 @@ before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
-  # Take a screenshot
-  - targetName=$(date +%s | sha256sum | base64 | head -c 8)
-  - adb shell screencap -p | sed 's/\r$//' > $targetName-before.png
-  - echo $targetName
-  - scp -oStrictHostKeyChecking=no -i id_rsa $targetName-before.png zyuiop@atlas.zyuiop.net:~/screenshots/
 script:
   - if [ -n "$VIEW_AVD_LOGS" ] ; then adb logcat *:I & LOGCAT_PID=$!; fi
   - ./gradlew build connectedCheck jacocoTestReport
   - if [ -n "$LOGCAT_PID" ] ; then kill $LOGCAT_PID; fi
-  # Take a screenshot
-  - adb shell screencap -p | sed 's/\r$//' > $targetName-after.png
-  - scp -oStrictHostKeyChecking=no -i id_rsa $targetName-after.png zyuiop@atlas.zyuiop.net:~/screenshots/
 after_script:
   # Report test coverage to Code Climate
   - export JACOCO_SOURCE_PATH=app/src/main/java/
   - ./cc-test-reporter format-coverage ./app/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml --input-type jacoco
   - ./cc-test-reporter upload-coverage
-before_install:
-- openssl aes-256-cbc -K $encrypted_d1100674ed4a_key -iv $encrypted_d1100674ed4a_iv
-  -in id_rsa.enc -out id_rsa -d
-- chmod 600 id_rsa
