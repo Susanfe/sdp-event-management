@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -53,6 +54,7 @@ public class ScheduleParentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        scheduleViewModel = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
         setRetainInstance(true);
     }
 

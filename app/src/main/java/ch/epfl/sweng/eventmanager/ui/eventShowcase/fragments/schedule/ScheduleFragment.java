@@ -31,5 +31,6 @@ public class ScheduleFragment extends AbstractScheduleFragment {
     }
 
     public String getRoom() { return room; }
+
 }
 

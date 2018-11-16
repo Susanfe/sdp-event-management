@@ -26,6 +26,7 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventTicketFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.NewsFragment;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
@@ -56,6 +57,10 @@ public class EventShowcaseActivity extends AppCompatActivity
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
+    private Fragment eventMainFragment;
+    private Fragment eventMapFragment;
+    private Fragment newsFragment;
+    private Fragment scheduleParentFragment;
 
     private int eventID;
 
@@ -91,7 +96,6 @@ public class EventShowcaseActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_showcase);
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -131,8 +135,11 @@ public class EventShowcaseActivity extends AppCompatActivity
                         }
                     });
 
-            // Set displayed fragment
-            changeFragment(new EventMainFragment(), true);
+            // Set displayed fragment only when no other fragment where previously inflated.
+            if(savedInstanceState == null) {
+                eventMainFragment = new EventMainFragment();
+                changeFragment(eventMainFragment, true);
+            }
         }
 
         // Handle drawer events
@@ -173,11 +180,17 @@ public class EventShowcaseActivity extends AppCompatActivity
                 startActivity(adminIntent);
 
             case R.id.nav_main:
+                if(eventMainFragment == null) {
+                    eventMainFragment = new EventMainFragment();
+                }
                 changeFragment(new EventMainFragment(), true);
                 break;
 
             case R.id.nav_map:
-                changeFragment(new EventMapFragment(), true);
+                if(eventMapFragment == null) {
+                    eventMapFragment = new EventMapFragment();
+                }
+                changeFragment(eventMapFragment, true);
                 break;
 
             case R.id.nav_tickets:
@@ -185,11 +198,17 @@ public class EventShowcaseActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_news:
-                changeFragment(new NewsFragment(), true);
+                if(newsFragment == null) {
+                    newsFragment = new NewsFragment();
+                }
+                changeFragment(newsFragment, true);
                 break;
 
             case R.id.nav_schedule:
-                changeFragment(new ScheduleParentFragment(), true);
+                if(scheduleParentFragment == null) {
+                    scheduleParentFragment = new ScheduleParentFragment();
+                }
+                changeFragment(scheduleParentFragment, true);
                 break;
         }
 
