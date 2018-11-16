@@ -6,7 +6,7 @@ env:
   - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24 VIEW_AVD_LOGS=1
 
   #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi API=16
-  #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
+  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
 
 android:
   components:
@@ -22,8 +22,8 @@ android:
     - platform-tools
 before_script:
   # Ensure images are up to date
-  - echo "y" | android update sdk -a --no-ui --filter android-$API
-  - echo "y" | android update sdk -a --no-ui --filter sys-img-$ABI_IMAGE-$API
+  #} - echo "y" | android update sdk -a --no-ui --filter android-$API
+  # - echo "y" | android update sdk -a --no-ui --filter sys-img-$ABI_IMAGE-$API
   # Emulator Management: Create, Start and Wait
   - android list target
   - echo no | android create avd --force -n test -t android-$API --abi $ABI
