@@ -6,7 +6,7 @@ env:
   - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24 VIEW_AVD_LOGS=1
 
   #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi API=16
-  - ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
+  #- ABI_IMAGE=armeabi-v7a-google_apis ABI=google_apis/armeabi-v7a API=24
 
 android:
   components:
@@ -27,16 +27,17 @@ before_script:
   # Emulator Management: Create, Start and Wait
   - android list target
   - echo no | android create avd --force -n test -t android-$API --abi $ABI
-  - emulator -avd test -no-window -verbose -memory 1024 & # no-audio causes failures, so I removed it
+  - emulator -avd test -no-window -verbose -memory 1536 & # no-audio causes failures, so I removed it
   - android-wait-for-emulator
-  - adb shell input keyevent 82
+  - adb shell input keyevent 82 &
   # Disable transitions
   - adb shell settings put global window_animation_scale 0.0
   - adb shell settings put global transition_animation_scale 0.0
   - adb shell settings put global animator_duration_scale 0.0
   # Set twitter key
   - sed -i 's/${CONSUMER_SECRET}/$TWITTER_CONSUMMER_SECRET/' app/src/main/res/values/twitter.xml
-    # Set up Code Climate test reporter
+  - adb shell input keyevent 4 &
+  # Set up Code Climate test reporter
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
