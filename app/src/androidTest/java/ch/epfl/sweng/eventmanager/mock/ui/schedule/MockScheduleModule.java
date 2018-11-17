@@ -1,6 +1,6 @@
 package ch.epfl.sweng.eventmanager.mock.ui.schedule;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseModule;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
 import dagger.Binds;

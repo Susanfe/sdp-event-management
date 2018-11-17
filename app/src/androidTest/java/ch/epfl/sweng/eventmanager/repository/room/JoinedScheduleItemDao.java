@@ -1,10 +1,9 @@
 package ch.epfl.sweng.eventmanager.repository.room;
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.test.runner.AndroidJUnit4;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemTestUtils;
 import ch.epfl.sweng.eventmanager.repository.LiveDataTestUtil;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import org.junit.Rule;
 import org.junit.Test;

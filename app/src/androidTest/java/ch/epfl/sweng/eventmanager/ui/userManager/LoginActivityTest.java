@@ -1,37 +1,30 @@
 package ch.epfl.sweng.eventmanager.ui.userManager;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
-import static android.support.test.espresso.Espresso.openContextualActionModeOverflowMenu;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.*;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.SystemClock;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import junit.framework.AssertionFailedError;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.TestHelper;
 import ch.epfl.sweng.eventmanager.users.Session;
 
 @RunWith(AndroidJUnit4.class)
@@ -41,6 +34,12 @@ public class LoginActivityTest {
     @Before
     public void disableFirebaseAuth() {
         Session.enforceDummySessions();
+        Session.logout();
+    }
+
+    @After
+    public void autoLogOut() {
+        Session.logout();
     }
 
     @Rule
@@ -51,6 +50,7 @@ public class LoginActivityTest {
     public void testSuccessfulLogin() {
         String email = "lamb.da@domain.tld";
         String password = "secret";
+        SystemClock.sleep(1000);
 
         onView(ViewMatchers.withId(R.id.email_field))
                 .perform(typeText(email))
@@ -58,6 +58,8 @@ public class LoginActivityTest {
         onView(withId(R.id.password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
+        SystemClock.sleep(1000);
+
         onView(withId(R.id.login_button)).perform(click());
         SystemClock.sleep(1000);
 
@@ -88,7 +90,7 @@ public class LoginActivityTest {
     public void testWrongCredentials() {
         String email = "lamb.da@domain.tld";
         String password = "wrong";
-        // FIXME: find a way to get the error message from Firebase
+        // FIXME: find a way to create the error message from Firebase
         String invalidCredentialError = "The password is invalid or the user does not have a password.";
 
 
@@ -122,8 +124,8 @@ public class LoginActivityTest {
     public void testInvalidCredentialsInput() {
         String email = "al.pha";
         String password = "secret";
-        String emptyPasswordError = getResourceString(R.string.empty_password_activity_login);
-        String invalidEmailError = getResourceString(R.string.invalid_email_activity_login);
+        String emptyPasswordError = getResourceString(R.string.empty_password_error);
+        String invalidEmailError = getResourceString(R.string.invalid_email_error);
 
         // Test empty password
         onView(withId(R.id.email_field))
@@ -140,6 +142,14 @@ public class LoginActivityTest {
         onView(withId(R.id.login_button)).perform(click());
         onView(withId(R.id.email_field))
                 .check(matches(hasErrorText(invalidEmailError)));
+    }
+
+    @Test
+    public void testOpenSignUpForm() {
+        onView(withId(R.id.signup_button))
+                .perform(click());
+
+        TestHelper.withToolbarTitle(getResourceString(R.string.title_activity_sign_up));
     }
 
     private String getResourceString(int id) {
