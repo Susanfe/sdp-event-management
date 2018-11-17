@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.eventSelector.EventPickingActivity"
+        android:orientation="vertical">
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -47,25 +55,12 @@
                     android:layout_height="match_parent" android:id="@+id/joined_events_list"
                     android:layout_margin="8dp">
             </androidx.recyclerview.widget.RecyclerView>
-
-            <TextView
-                    android:text="@string/not_joined_help_text_activity_event_picking"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/not_joined_help_text"
-                    android:textStyle="italic" android:gravity="center_horizontal"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/not_joined_event_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-            </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
+    <Button
+            android:text="Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/btn_show_events"/>
 </LinearLayout>
+    <include layout="@layout/event_picking_bottom_sheet" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,5 +1,8 @@
 package ch.epfl.sweng.eventmanager.ui.eventSelector;
 
+import android.widget.Button;
+import android.widget.LinearLayout;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -19,11 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.userManager.LoginActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
@@ -43,8 +48,13 @@ public class EventPickingActivity extends AppCompatActivity {
     RecyclerView joinedEvents;
     @BindView(R.id.not_joined_event_list)
     RecyclerView eventList;
+    @BindView(R.id.btn_show_events)
+    Button btnBottomSheet;
+    @BindView(R.id.event_picking_list_layout)
+    LinearLayout layoutBottomSheet;
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
+    private BottomSheetBehavior behavior;
 
     private void setupRecyclerView(RecyclerView view) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -93,10 +103,14 @@ public class EventPickingActivity extends AppCompatActivity {
         this.model = ViewModelProviders.of(this, factory).get(EventPickingModel.class);
         this.model.init();
         ButterKnife.bind(this);
+
         Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
         setSupportActionBar(toolbar);
-        setupObservers();
 
+        behavior = BottomSheetBehavior.from(layoutBottomSheet);
+        setSheetBehavior();
+
+        setupObservers();
 
         // Help text
         // Both invisible by default
@@ -117,6 +131,54 @@ public class EventPickingActivity extends AppCompatActivity {
         eventList.setVisibility(View.GONE);
         setupRecyclerView(joinedEvents);
         eventList.setVisibility(View.GONE);
+    }
+
+    private void setSheetBehavior() {
+        /**
+         * bottom sheet state change listener
+         * we are changing button text when sheet changed state
+         * */
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED: {
+                        btnBottomSheet.setText("Close event list");
+                    }
+                    break;
+                    case BottomSheetBehavior.STATE_COLLAPSED: {
+                        btnBottomSheet.setText("Expand event list");
+                    }
+                    break;
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        break;
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+    }
+
+    /**
+     * manually opening / closing bottom sheet on button click
+     */
+
+    @OnClick(R.id.btn_show_events)
+    public void toggleBottomSheet() {
+        if (behavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            btnBottomSheet.setText("Close sheet");
+        } else {
+            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            btnBottomSheet.setText("Expand sheet");
+        }
     }
 
     private void openLoginOrAccountActivity() {

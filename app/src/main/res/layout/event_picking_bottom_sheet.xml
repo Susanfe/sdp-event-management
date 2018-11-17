@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/event_picking_list_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#fff"
+              android:orientation="vertical"
+              app:behavior_hideable="true"
+              app:behavior_peekHeight="56dp"
+              app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <TextView
+            android:text="@string/not_joined_help_text_activity_event_picking"
+            android:layout_width="match_parent"
+            android:layout_height="56dp" android:id="@+id/not_joined_help_text"
+            android:gravity="center_vertical|center_horizontal"
+            android:background="@color/colorPrimaryLight"
+            android:textColor="@color/colorSecondary" android:textStyle="bold"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/not_joined_event_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="56dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</LinearLayout>

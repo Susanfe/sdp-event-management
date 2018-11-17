@@ -25,7 +25,7 @@
     <string name="generic_auth_error">Could not authenticate. Unknown error.</string>
     <string name="help_text_activity_event_picking">Please select an event to continue.</string>
     <string name="joined_help_text_activity_event_picking">Events you joined:</string>
-    <string name="not_joined_help_text_activity_event_picking">Other events:</string>
+    <string name="not_joined_help_text_activity_event_picking">Choose an event to join !</string>
     <string name="double_back_press_to_exit">Press once again to exit</string>
 
     <string name="successful_login_toast">Signed in</string>
