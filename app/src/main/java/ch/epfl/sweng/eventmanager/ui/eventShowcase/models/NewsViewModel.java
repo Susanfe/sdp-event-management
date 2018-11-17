@@ -1,17 +1,16 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
-import android.util.Log;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import javax.inject.Inject;
-import java.util.Arrays;
+
 import java.util.List;
 
 public class NewsViewModel extends ViewModel {

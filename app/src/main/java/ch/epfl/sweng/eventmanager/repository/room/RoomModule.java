@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.room;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedEventDao;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
 import dagger.Module;

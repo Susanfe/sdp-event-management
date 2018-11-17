@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager;
 
 import android.os.IBinder;
-import android.support.test.espresso.Root;
+import androidx.test.espresso.Root;
 import android.view.WindowManager;
 
 import org.hamcrest.Description;

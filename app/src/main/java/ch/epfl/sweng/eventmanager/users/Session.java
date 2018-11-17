@@ -41,6 +41,10 @@ public final class Session {
         getSession().login(email, password, context, callback);
     }
 
+    public static void registerAndLogin(String email, String password, Activity context, OnCompleteListener callback) {
+        getSession().registerAndLogin(email, password, context, callback);
+    }
+
     public static void logout() {
         getSession().logout();
     }

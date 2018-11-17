@@ -12,12 +12,18 @@ import ch.epfl.sweng.eventmanager.repository.data.FirebaseBackedUser;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 
 @Singleton
-public class InMemoryFirebaseSession implements InMemorySession{
+public class InMemoryFirebaseSession implements InMemorySession {
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     public void login(String email, String password, Activity context, OnCompleteListener callback) {
         mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(context, callback);
+    }
+
+    @Override
+    public void registerAndLogin(String email, String password, Activity context, OnCompleteListener callback) {
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(context, callback);
     }
 

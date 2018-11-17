@@ -2,9 +2,8 @@ package ch.epfl.sweng.eventmanager;
 
 import android.app.Activity;
 import android.app.Application;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import ch.epfl.sweng.eventmanager.inject.DaggerApplicationComponent;
-import ch.epfl.sweng.eventmanager.repository.RepositoriesModule;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import com.twitter.sdk.android.core.Twitter;
 import dagger.android.AndroidInjector;
