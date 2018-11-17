@@ -1,24 +1,21 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
-import android.content.res.Configuration;
-import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.material.tabs.TabLayout;
-
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,7 +79,7 @@ public class ScheduleParentFragment extends Fragment {
                 tabLayout.setVisibility(View.VISIBLE);
                 updateTabs(map.keySet());
                 viewPagerAdapter.notifyDataSetChanged();
-                if(savedInstanceState != null) {
+                if (savedInstanceState != null) {
                     int page = savedInstanceState.getInt("current_item");
                     viewPager.setCurrentItem(page);
                 }
