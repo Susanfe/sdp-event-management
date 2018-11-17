@@ -77,9 +77,7 @@ public abstract class AbstractScheduleFragment extends Fragment {
         });
     }
 
-    protected void onItemsUpdate(List<ScheduledItem> items) {
-
-    }
+    protected void onItemsUpdate(List<ScheduledItem> items) {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

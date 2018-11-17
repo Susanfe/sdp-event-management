@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
 import android.arch.lifecycle.LiveData;
+import android.os.Bundle;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
@@ -9,7 +10,7 @@ import java.util.List;
 public class ScheduleFragment extends AbstractScheduleFragment {
 
 
-    private  String room;
+    private String room;
 
     @Override
     protected int getLayout() {
@@ -26,11 +27,18 @@ public class ScheduleFragment extends AbstractScheduleFragment {
         return this.model.getScheduleItemsForRoom(room);
     }
 
+    public String getRoom() {
+        return room;
+    }
+
     public void setRoom(String room) {
         this.room = room;
     }
 
-    public String getRoom() { return room; }
-
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 }
 

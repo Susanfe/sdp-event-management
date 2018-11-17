@@ -26,7 +26,6 @@ import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventTicketFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.NewsFragment;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
@@ -39,8 +38,7 @@ import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
 
-public class EventShowcaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class EventShowcaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "EventShowcaseActivity";
 
     @Inject
@@ -124,19 +122,19 @@ public class EventShowcaseActivity extends AppCompatActivity
 
             // Only display admin button if the user is at least staff
             model.getEvent().observe(this, ev -> {
-                        if (ev == null) {
-                            Log.e(TAG, "Got null model from parent activity");
-                            return;
-                        }
+                if (ev == null) {
+                    Log.e(TAG, "Got null model from parent activity");
+                    return;
+                }
 
-                        if (Session.isLoggedIn() && Session.isClearedFor(Role.ADMIN, ev)) {
-                            MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
-                            adminMenuItem.setVisible(true);
-                        }
-                    });
+                if (Session.isLoggedIn() && Session.isClearedFor(Role.ADMIN, ev)) {
+                    MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
+                    adminMenuItem.setVisible(true);
+                }
+            });
 
             // Set displayed fragment only when no other fragment where previously inflated.
-            if(savedInstanceState == null) {
+            if (savedInstanceState == null) {
                 eventMainFragment = new EventMainFragment();
                 changeFragment(eventMainFragment, true);
             }
@@ -167,27 +165,27 @@ public class EventShowcaseActivity extends AppCompatActivity
         // close drawer when item is tapped
         mDrawerLayout.closeDrawers();
 
-        switch(menuItem.getItemId()) {
-            case R.id.nav_pick_event :
+        switch (menuItem.getItemId()) {
+            case R.id.nav_pick_event:
                 Intent pickingIntent = new Intent(this, EventPickingActivity.class);
                 pickingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(pickingIntent);
                 break;
 
-            case R.id.nav_admin :
+            case R.id.nav_admin:
                 Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
                 adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
                 startActivity(adminIntent);
 
             case R.id.nav_main:
-                if(eventMainFragment == null) {
+                if (eventMainFragment == null) {
                     eventMainFragment = new EventMainFragment();
                 }
                 changeFragment(new EventMainFragment(), true);
                 break;
 
             case R.id.nav_map:
-                if(eventMapFragment == null) {
+                if (eventMapFragment == null) {
                     eventMapFragment = new EventMapFragment();
                 }
                 changeFragment(eventMapFragment, true);
@@ -198,14 +196,14 @@ public class EventShowcaseActivity extends AppCompatActivity
                 break;
 
             case R.id.nav_news:
-                if(newsFragment == null) {
+                if (newsFragment == null) {
                     newsFragment = new NewsFragment();
                 }
                 changeFragment(newsFragment, true);
                 break;
 
             case R.id.nav_schedule:
-                if(scheduleParentFragment == null) {
+                if (scheduleParentFragment == null) {
                     scheduleParentFragment = new ScheduleParentFragment();
                 }
                 changeFragment(scheduleParentFragment, true);
@@ -219,21 +217,14 @@ public class EventShowcaseActivity extends AppCompatActivity
      * Sets the highlighted item in the drawer according to the fragment which is displayed to the user
      */
     private void setHighlightedItemInNavigationDrawer() {
-        this.getSupportFragmentManager().addOnBackStackChangedListener(
-                () -> {
-                    Fragment current = getCurrentFragment();
-                    if (current instanceof EventMainFragment)
-                        navigationView.setCheckedItem(R.id.nav_main);
-                    if (current instanceof NewsFragment)
-                        navigationView.setCheckedItem(R.id.nav_news);
-                    if (current instanceof EventMapFragment)
-                        navigationView.setCheckedItem(R.id.nav_map);
-                    if (current instanceof ScheduleParentFragment)
-                        navigationView.setCheckedItem(R.id.nav_schedule);
-                    if (current instanceof EventTicketFragment)
-                        navigationView.setCheckedItem(R.id.nav_tickets);
-                }
-        );
+        this.getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            Fragment current = getCurrentFragment();
+            if (current instanceof EventMainFragment) navigationView.setCheckedItem(R.id.nav_main);
+            if (current instanceof NewsFragment) navigationView.setCheckedItem(R.id.nav_news);
+            if (current instanceof EventMapFragment) navigationView.setCheckedItem(R.id.nav_map);
+            if (current instanceof ScheduleParentFragment) navigationView.setCheckedItem(R.id.nav_schedule);
+            if (current instanceof EventTicketFragment) navigationView.setCheckedItem(R.id.nav_tickets);
+        });
     }
 
     /**
@@ -270,9 +261,7 @@ public class EventShowcaseActivity extends AppCompatActivity
             }
         } catch (IllegalStateException exception) {
             Log.w(TAG,
-                    "Unable to commit fragment, could be activity as been killed in background. "
-                            + exception.toString()
-            );
+                    "Unable to commit fragment, could be activity as been killed in background. " + exception.toString());
         }
     }
 
