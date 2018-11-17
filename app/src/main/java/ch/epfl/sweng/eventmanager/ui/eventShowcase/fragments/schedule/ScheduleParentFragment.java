@@ -110,6 +110,7 @@ public class ScheduleParentFragment extends Fragment {
             if (!viewPagerAdapter.mFragmentTitleList.contains(fragmentName)) {
                 ScheduleFragment fragment = new ScheduleFragment();
                 fragment.setRoom(room);
+                fragment.setRetainInstance(true);
                 viewPagerAdapter.addFragment(fragment, fragmentName);
             }
         }
