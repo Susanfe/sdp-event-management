@@ -37,6 +37,7 @@ public class ScheduleParentFragment extends Fragment {
     TabLayout tabLayout;
     private ScheduleViewModel scheduleViewModel;
     private ViewPagerAdapter viewPagerAdapter;
+    private Bundle savedInstanceState;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,6 +49,9 @@ public class ScheduleParentFragment extends Fragment {
         //Setup the ViewPager
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        if (savedInstanceState != null) {
+            this.savedInstanceState = savedInstanceState;
+        }
         return view;
     }
 
@@ -55,6 +59,12 @@ public class ScheduleParentFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createViewPagerAdapter();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("current_item", viewPager.getCurrentItem());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -72,6 +82,10 @@ public class ScheduleParentFragment extends Fragment {
                 tabLayout.setVisibility(View.VISIBLE);
                 updateTabs(map.keySet());
                 viewPagerAdapter.notifyDataSetChanged();
+                if(savedInstanceState != null) {
+                    int page = savedInstanceState.getInt("current_item");
+                    viewPager.setCurrentItem(page);
+                }
             } else {
                 tabLayout.setVisibility(View.GONE);
                 destroyUnusedFragments(viewPagerAdapter.mFragmentList, Collections.emptySet(), true);
@@ -79,11 +93,6 @@ public class ScheduleParentFragment extends Fragment {
                 viewPagerAdapter.notifyDataSetChanged();
             }
         });
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
     }
 
     /**
@@ -160,6 +169,7 @@ public class ScheduleParentFragment extends Fragment {
         }
 
         void addFragment(Fragment fragment, String title) {
+            fragment.setRetainInstance(true);
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
