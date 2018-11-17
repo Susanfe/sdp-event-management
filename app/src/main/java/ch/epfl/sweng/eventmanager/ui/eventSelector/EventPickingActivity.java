@@ -1,28 +1,26 @@
 package ch.epfl.sweng.eventmanager.ui.eventSelector;
 
-import android.widget.Button;
-import android.widget.LinearLayout;
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.userManager.LoginActivity;
@@ -48,8 +46,6 @@ public class EventPickingActivity extends AppCompatActivity {
     RecyclerView joinedEvents;
     @BindView(R.id.not_joined_event_list)
     RecyclerView eventList;
-    @BindView(R.id.btn_show_events)
-    Button btnBottomSheet;
     @BindView(R.id.event_picking_list_layout)
     LinearLayout layoutBottomSheet;
     private Boolean doubleBackToExitPressedOnce = false;
@@ -144,14 +140,10 @@ public class EventPickingActivity extends AppCompatActivity {
                 switch (newState) {
                     case BottomSheetBehavior.STATE_HIDDEN:
                         break;
-                    case BottomSheetBehavior.STATE_EXPANDED: {
-                        btnBottomSheet.setText("Close event list");
-                    }
-                    break;
-                    case BottomSheetBehavior.STATE_COLLAPSED: {
-                        btnBottomSheet.setText("Expand event list");
-                    }
-                    break;
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                         break;
                     case BottomSheetBehavior.STATE_SETTLING:
@@ -164,21 +156,6 @@ public class EventPickingActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    /**
-     * manually opening / closing bottom sheet on button click
-     */
-
-    @OnClick(R.id.btn_show_events)
-    public void toggleBottomSheet() {
-        if (behavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            btnBottomSheet.setText("Close sheet");
-        } else {
-            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            btnBottomSheet.setText("Expand sheet");
-        }
     }
 
     private void openLoginOrAccountActivity() {
