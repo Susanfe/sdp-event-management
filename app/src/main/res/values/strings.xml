@@ -95,4 +95,7 @@
     <string name="main_fragment_button_news">News</string>
     <string name="main_fragment_button_map">Map</string>
     <string name="main_fragment_button_schedule">Schedule</string>
+    <string name="join_event_event_item_btn">Join event</string>
+    <string name="goto_event_btn">Go to event</string>
+
 </resources>
