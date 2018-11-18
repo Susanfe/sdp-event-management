@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?android:attr/actionBarSize"
-        tools:context=".ui.eventShowcase.fragments.schedule.ScheduleParentFragment"
+        tools:context=".ui.event.interaction.fragments.schedule.ScheduleParentFragment"
         android:id="@+id/main_content">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

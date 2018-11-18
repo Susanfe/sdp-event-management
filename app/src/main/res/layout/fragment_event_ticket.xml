@@ -5,5 +5,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
-    tools:context=".ui.eventShowcase.fragments.EventTicketFragment">
+    tools:context=".ui.event.interaction.fragments.EventTicketFragment">
 </androidx.constraintlayout.widget.ConstraintLayout>
