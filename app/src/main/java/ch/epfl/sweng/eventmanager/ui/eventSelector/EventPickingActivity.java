@@ -43,6 +43,8 @@ public class EventPickingActivity extends AppCompatActivity {
     TextView bottomSheetText;
     @BindView(R.id.help_text)
     TextView helpText;
+    @BindView(R.id.no_more_events)
+    TextView noMoreEventsText;
     @BindView(R.id.joined_events_list)
     RecyclerView joinedEvents;
     @BindView(R.id.not_joined_event_list)
@@ -71,14 +73,19 @@ public class EventPickingActivity extends AppCompatActivity {
             //once data is loaded
             helpText.setVisibility(View.VISIBLE);
 
-            if(!list.getOtherEvents().isEmpty()) {
+            if (list.getOtherEvents().isEmpty()) {
+                eventList.setVisibility(View.GONE);
+                noMoreEventsText.setVisibility(View.VISIBLE);
+            } else {
                 eventList.setVisibility(View.VISIBLE);
+                noMoreEventsText.setVisibility(View.GONE);
             }
-            if(list.getJoinedEvents().isEmpty()) {
+            if (list.getJoinedEvents().isEmpty()) {
                 joinedHelpText.setText(getString(R.string.help_text_go_join_events));
                 joinedHelpText.setVisibility(View.VISIBLE);
             } else {
                 joinedHelpText.setVisibility(View.GONE);
+                joinedEvents.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -122,7 +129,7 @@ public class EventPickingActivity extends AppCompatActivity {
 
     /**
      * bottom sheet state change listener
-     * */
+     */
     private void setSheetBehavior() {
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -195,7 +202,7 @@ public class EventPickingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
+        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             return;
         }
@@ -215,7 +222,7 @@ public class EventPickingActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.bottom_sheet_event_picking_text)
-     void openOrCloseBottomSheet(View view) {
+    void openOrCloseBottomSheet(View view) {
         switch (bottomSheetBehavior.getState()) {
             case BottomSheetBehavior.STATE_COLLAPSED:
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
