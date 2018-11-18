@@ -5,9 +5,11 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,8 +72,16 @@ public class EventPickingActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
         setSupportActionBar(toolbar);
 
+        //BottomSheet
         bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         setSheetBehavior();
+        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+        int height = displayMetrics.heightPixels;
+        int maxHeight = (int) (height*0.80);
+        ViewGroup.LayoutParams params = layoutBottomSheet.getLayoutParams();
+        // Changes the height and width to the specified *pixels*
+        params.height = maxHeight;
+        layoutBottomSheet.setLayoutParams(params);
 
         setupObservers();
 
@@ -119,7 +129,6 @@ public class EventPickingActivity extends AppCompatActivity {
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
             }
         });
     }
