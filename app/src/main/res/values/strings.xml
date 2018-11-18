@@ -43,6 +43,8 @@
     <string name="logout_button">Log out</string>
     <string name="account_button">My account</string>
     <string name="back_button">Back</string>
+    <string name="join_event_event_item_btn">Join Event</string>
+    <string name="goto_event_btn">Go to event</string>
 
     <string name="main_nav_item_activity_event_showcase">Description</string>
     <string name="map_nav_item_activity_event_showcase">Map</string>
