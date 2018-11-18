@@ -46,11 +46,11 @@ public class EventPickingActivity extends AppCompatActivity {
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
 
-    private void setupRecyclerView(RecyclerView view) {
+    private void setupRecyclerView(RecyclerView view, EventListAdapter.ItemType type) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         view.setLayoutManager(layoutManager);
         // Set an empty list adapter
-        view.setAdapter(new EventListAdapter(Collections.emptyList()));
+        view.setAdapter(new EventListAdapter(Collections.emptyList(), type));
     }
 
     private void setupObservers() {
@@ -58,8 +58,8 @@ public class EventPickingActivity extends AppCompatActivity {
             if (list == null) {
                 return;
             }
-            eventList.setAdapter(new EventListAdapter(list.getOtherEvents()));
-            joinedEvents.setAdapter(new EventListAdapter(list.getJoinedEvents()));
+            eventList.setAdapter(new EventListAdapter(list.getOtherEvents(), EventListAdapter.ItemType.Event));
+            joinedEvents.setAdapter(new EventListAdapter(list.getJoinedEvents(), EventListAdapter.ItemType.JoinedEvents));
 
             //once data is loaded
             helpText.setVisibility(View.VISIBLE);
@@ -113,9 +113,9 @@ public class EventPickingActivity extends AppCompatActivity {
 
         // Event lists
 
-        setupRecyclerView(eventList);
+        setupRecyclerView(eventList, EventListAdapter.ItemType.Event);
         eventList.setVisibility(View.GONE);
-        setupRecyclerView(joinedEvents);
+        setupRecyclerView(joinedEvents, EventListAdapter.ItemType.JoinedEvents);
         eventList.setVisibility(View.GONE);
     }
 
