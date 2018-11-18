@@ -1,23 +1,21 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule;
 
-import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.material.tabs.TabLayout;
-
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,33 +27,41 @@ import java.util.Set;
  */
 public class ScheduleParentFragment extends Fragment {
 
+    private static String TAG = "ScheduleParentFragment";
     @BindView(R.id.viewpager)
     ViewPager viewPager;
     @BindView(R.id.tabs)
     TabLayout tabLayout;
-
     private ScheduleViewModel scheduleViewModel;
     private ViewPagerAdapter viewPagerAdapter;
-    private static String TAG = "ScheduleParentFragment";
+    private Bundle savedInstanceState;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         //Create view and bindings
         View view = inflater.inflate(R.layout.fragment_schedule_parent, container, false);
         ButterKnife.bind(this, view);
 
         //Setup the ViewPager
-        createViewPager(viewPager);
+        viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        if (savedInstanceState != null) {
+            this.savedInstanceState = savedInstanceState;
+        }
         return view;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        createViewPagerAdapter();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("current_item", viewPager.getCurrentItem());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -73,6 +79,10 @@ public class ScheduleParentFragment extends Fragment {
                 tabLayout.setVisibility(View.VISIBLE);
                 updateTabs(map.keySet());
                 viewPagerAdapter.notifyDataSetChanged();
+                if (savedInstanceState != null) {
+                    int page = savedInstanceState.getInt("current_item");
+                    viewPager.setCurrentItem(page);
+                }
             } else {
                 tabLayout.setVisibility(View.GONE);
                 destroyUnusedFragments(viewPagerAdapter.mFragmentList, Collections.emptySet(), true);
@@ -84,13 +94,10 @@ public class ScheduleParentFragment extends Fragment {
 
     /**
      * Take care of setting up the viewPager Adapter and binding it to the viewPager
-     *
-     * @param viewPager viewpager
      */
-    private void createViewPager(ViewPager viewPager) {
+    private void createViewPagerAdapter() {
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragment(new MyScheduleFragment(), "My Schedule");
-        viewPager.setAdapter(viewPagerAdapter);
     }
 
     /**
@@ -109,6 +116,7 @@ public class ScheduleParentFragment extends Fragment {
             if (!viewPagerAdapter.mFragmentTitleList.contains(fragmentName)) {
                 ScheduleFragment fragment = new ScheduleFragment();
                 fragment.setRoom(room);
+                fragment.setRetainInstance(true);
                 viewPagerAdapter.addFragment(fragment, fragmentName);
             }
         }
@@ -122,7 +130,8 @@ public class ScheduleParentFragment extends Fragment {
      * @param rooms             current known rooms
      * @param destroyMySchedule true if mySchedule need to be destroyed, false otherwise
      */
-    private void destroyUnusedFragments(@NonNull List<Fragment> allFragments, @NonNull Set<String> rooms, Boolean destroyMySchedule) {
+    private void destroyUnusedFragments(@NonNull List<Fragment> allFragments, @NonNull Set<String> rooms,
+                                        Boolean destroyMySchedule) {
         for (Fragment fragment : viewPagerAdapter.mFragmentList) {
             if (fragment instanceof ScheduleFragment && !rooms.contains(((ScheduleFragment) fragment).getRoom())) {
                 requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
@@ -134,7 +143,6 @@ public class ScheduleParentFragment extends Fragment {
             }
         }
     }
-
 
     /**
      * Basic Adapter for ViewPager
@@ -158,6 +166,7 @@ public class ScheduleParentFragment extends Fragment {
         }
 
         void addFragment(Fragment fragment, String title) {
+            fragment.setRetainInstance(true);
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
