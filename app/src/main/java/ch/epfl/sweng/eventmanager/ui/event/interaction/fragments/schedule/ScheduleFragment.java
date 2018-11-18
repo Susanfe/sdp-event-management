@@ -9,7 +9,7 @@ import java.util.List;
 public class ScheduleFragment extends AbstractScheduleFragment {
 
 
-    private  String room;
+    private String room;
 
     @Override
     protected int getLayout() {
@@ -26,10 +26,13 @@ public class ScheduleFragment extends AbstractScheduleFragment {
         return this.model.getScheduleItemsForRoom(room);
     }
 
+    public String getRoom() {
+        return room;
+    }
+
     public void setRoom(String room) {
         this.room = room;
     }
 
-    public String getRoom() { return room; }
 }
 

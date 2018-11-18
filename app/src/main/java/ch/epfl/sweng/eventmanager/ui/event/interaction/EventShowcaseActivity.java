@@ -45,6 +45,10 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
+    private Fragment eventMainFragment;
+    private Fragment eventMapFragment;
+    private Fragment newsFragment;
+    private Fragment scheduleParentFragment;
 
     private int eventID;
 
@@ -94,7 +98,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_showcase);
         initializeSharedUI();
@@ -111,23 +114,22 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             // Only display admin button if the user is at least staff
             model.getEvent().observe(this, ev -> {
-                        if (ev == null) {
-                            Log.e(TAG, "Got null model from parent activity");
-                            return;
-                        }
+                if (ev == null) {
+                    Log.e(TAG, "Got null model from parent activity");
+                    return;
+                }
 
-                        // Set window title
-                        setTitle("Admin: " + ev.getName());
+                if (Session.isLoggedIn() && Session.isClearedFor(Role.ADMIN, ev)) {
+                    MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
+                    adminMenuItem.setVisible(true);
+                }
+            });
 
-                        // Only display the admin button is the user is cleared for ADMIN rights
-                        if (Session.isLoggedIn() && Session.isClearedFor(Role.ADMIN, ev)) {
-                            MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
-                            adminMenuItem.setVisible(true);
-                        }
-                    });
-
-            // Set displayed fragment
-            changeFragment(new EventMainFragment(), true);
+            // Set displayed fragment only when no other fragment where previously inflated.
+            if (savedInstanceState == null) {
+                eventMainFragment = new EventMainFragment();
+                changeFragment(eventMainFragment, true);
+            }
         }
 
         // Handle drawer events
@@ -145,24 +147,30 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         // close drawer when item is tapped
         mDrawerLayout.closeDrawers();
 
-        switch(menuItem.getItemId()) {
-            case R.id.nav_pick_event :
+        switch (menuItem.getItemId()) {
+            case R.id.nav_pick_event:
                 Intent pickingIntent = new Intent(this, EventPickingActivity.class);
                 pickingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(pickingIntent);
                 break;
 
-            case R.id.nav_admin :
+            case R.id.nav_admin:
                 Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
                 adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
                 startActivity(adminIntent);
 
             case R.id.nav_main:
+                if (eventMainFragment == null) {
+                    eventMainFragment = new EventMainFragment();
+                }
                 changeFragment(new EventMainFragment(), true);
                 break;
 
             case R.id.nav_map:
-                changeFragment(new EventMapFragment(), true);
+                if (eventMapFragment == null) {
+                    eventMapFragment = new EventMapFragment();
+                }
+                changeFragment(eventMapFragment, true);
                 break;
 
             case R.id.nav_tickets:
@@ -170,11 +178,17 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case R.id.nav_news:
-                changeFragment(new NewsFragment(), true);
+                if (newsFragment == null) {
+                    newsFragment = new NewsFragment();
+                }
+                changeFragment(newsFragment, true);
                 break;
 
             case R.id.nav_schedule:
-                changeFragment(new ScheduleParentFragment(), true);
+                if (scheduleParentFragment == null) {
+                    scheduleParentFragment = new ScheduleParentFragment();
+                }
+                changeFragment(scheduleParentFragment, true);
                 break;
 
             case R.id.nav_scan:
@@ -190,21 +204,14 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
      * Sets the highlighted item in the drawer according to the fragment which is displayed to the user
      */
     private void setHighlightedItemInNavigationDrawer() {
-        this.getSupportFragmentManager().addOnBackStackChangedListener(
-                () -> {
-                    Fragment current = getCurrentFragment();
-                    if (current instanceof EventMainFragment)
-                        navigationView.setCheckedItem(R.id.nav_main);
-                    if (current instanceof NewsFragment)
-                        navigationView.setCheckedItem(R.id.nav_news);
-                    if (current instanceof EventMapFragment)
-                        navigationView.setCheckedItem(R.id.nav_map);
-                    if (current instanceof ScheduleParentFragment)
-                        navigationView.setCheckedItem(R.id.nav_schedule);
-                    if (current instanceof EventTicketFragment)
-                        navigationView.setCheckedItem(R.id.nav_tickets);
-                }
-        );
+        this.getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            Fragment current = getCurrentFragment();
+            if (current instanceof EventMainFragment) navigationView.setCheckedItem(R.id.nav_main);
+            if (current instanceof NewsFragment) navigationView.setCheckedItem(R.id.nav_news);
+            if (current instanceof EventMapFragment) navigationView.setCheckedItem(R.id.nav_map);
+            if (current instanceof ScheduleParentFragment) navigationView.setCheckedItem(R.id.nav_schedule);
+            if (current instanceof EventTicketFragment) navigationView.setCheckedItem(R.id.nav_tickets);
+        });
     }
 
     /**
