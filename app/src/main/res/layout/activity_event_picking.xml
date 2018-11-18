@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.eventSelector.EventPickingActivity"
+    tools:context=".ui.event.selection.EventPickingActivity"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
@@ -28,19 +28,19 @@
             android:orientation="vertical">
 
             <TextView
-                    android:id="@+id/help_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" android:text="@string/help_text_activity_event_picking"
-                    android:textStyle="bold" android:gravity="center_horizontal" android:textSize="18sp"/>
+                android:id="@+id/help_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" android:text="@string/help_text_activity_event_picking"
+                android:textStyle="bold" android:gravity="center_horizontal" android:textSize="18sp"/>
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/joined_help_text"
-                    android:text="@string/joined_help_text_activity_event_picking" android:textStyle="italic"
-                    android:gravity="center_horizontal"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/joined_help_text"
+                android:text="@string/joined_help_text_activity_event_picking" android:textStyle="italic"
+                android:gravity="center_horizontal"/>
 
             <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
@@ -49,10 +49,10 @@
             </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
-                    android:text="@string/not_joined_help_text_activity_event_picking"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/not_joined_help_text"
-                    android:textStyle="italic" android:gravity="center_horizontal"/>
+                android:text="@string/not_joined_help_text_activity_event_picking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/not_joined_help_text"
+                android:textStyle="italic" android:gravity="center_horizontal"/>
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/not_joined_event_list"

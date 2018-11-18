@@ -26,7 +26,9 @@
 
         <activity
                 android:name=".ui.SplashActivity"
-                android:theme="@style/AppTheme.Launcher">
+                android:theme="@style/AppTheme.Launcher" />
+
+        <activity android:name=".ui.event.selection.EventPickingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -40,25 +42,20 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-        <meta-data
-                android:name="com.google.android.geo.API_KEY"
-                android:value="@string/google_maps_key"/>
-
-        <activity android:name=".ui.eventSelector.EventPickingActivity"
-                  android:launchMode="singleTop"/>
-
-        <activity android:name=".ui.userManager.LoginActivity"
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key"/>
+        <activity
+            android:name=".ui.user.LoginActivity"
             android:label="@string/title_activity_login" />
 
-        <activity android:name=".ui.userManager.SignUpActivity"
+        <activity android:name=".ui.user.SignUpActivity"
             android:label="@string/title_activity_sign_up" />
         <activity
-            android:name=".ui.userManager.DisplayAccountActivity"
+            android:name=".ui.user.DisplayAccountActivity"
             android:label="@string/title_activity_account_display" />
 
-        <activity
-                android:name=".ui.eventShowcase.EventShowcaseActivity"
-                android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.event.interaction.EventShowcaseActivity"
+          android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.ticketing.TicketingConfigurationPickerActivity"/>
         <activity android:name=".ui.ticketing.TicketingLoginActivity"/>
         <activity android:name=".ui.ticketing.TicketingScanActivity"/>
@@ -73,7 +70,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".ui.eventAdministration.EventAdministrationActivity" />
+        <activity android:name=".ui.event.interaction.EventAdministrationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <receiver android:name=".repository.impl.NotificationPublisher"/>
     </application>
 
