@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager.mock.ui.schedule;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.mock.repository.MockConcertRepository;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 

@@ -1,23 +1,22 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-
-import static android.support.constraint.Constraints.TAG;
 
 /**
  * This class is used to share the changeFragment method between our various multi-fragment classes.
@@ -31,6 +30,8 @@ public class MultiFragmentActivity extends AppCompatActivity
     NavigationView navigationView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    private static final String TAG = "MultiFragmentActivity";
 
     /**
      * Initialize the UI structure: toolbar and drawer.

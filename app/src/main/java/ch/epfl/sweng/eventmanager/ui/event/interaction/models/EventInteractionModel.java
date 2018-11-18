@@ -1,15 +1,12 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.models;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
-
-import javax.inject.Inject;
+import androidx.lifecycle.*;
 
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+import javax.inject.Inject;
 
 /**
  * This is the model for the event list. It connects with the repository to pull a list of events and communicate them

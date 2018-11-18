@@ -2,34 +2,35 @@ package ch.epfl.sweng.eventmanager.ui.user;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import junit.framework.AssertionFailedError;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.TestHelper;
 import ch.epfl.sweng.eventmanager.users.Session;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
 
 @RunWith(AndroidJUnit4.class)
@@ -39,6 +40,12 @@ public class LoginActivityTest {
     @Before
     public void disableFirebaseAuth() {
         Session.enforceDummySessions();
+        Session.logout();
+    }
+
+    @After
+    public void autoLogOut() {
+        Session.logout();
     }
 
     @Rule
@@ -49,6 +56,7 @@ public class LoginActivityTest {
     public void testSuccessfulLogin() {
         String email = "lamb.da@domain.tld";
         String password = "secret";
+        SystemClock.sleep(1000);
 
         onView(ViewMatchers.withId(R.id.email_field))
                 .perform(typeText(email))
@@ -56,6 +64,8 @@ public class LoginActivityTest {
         onView(withId(R.id.password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
+        SystemClock.sleep(1000);
+
         onView(withId(R.id.login_button)).perform(click());
         SystemClock.sleep(1000);
 
@@ -86,7 +96,7 @@ public class LoginActivityTest {
     public void testWrongCredentials() {
         String email = "lamb.da@domain.tld";
         String password = "wrong";
-        // FIXME: find a way to get the error message from Firebase
+        // FIXME: find a way to create the error message from Firebase
         String invalidCredentialError = "The password is invalid or the user does not have a password.";
 
 

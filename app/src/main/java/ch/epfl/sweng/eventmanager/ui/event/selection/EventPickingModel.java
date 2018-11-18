@@ -1,8 +1,8 @@
 package ch.epfl.sweng.eventmanager.ui.event.selection;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;

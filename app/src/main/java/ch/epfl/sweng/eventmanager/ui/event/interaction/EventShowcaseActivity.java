@@ -1,10 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +9,14 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
@@ -23,6 +27,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
@@ -33,6 +38,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
     @Inject
     ViewModelFactory factory;
+    @Inject
+    TicketingManager ticketingManager;
 
     private EventInteractionModel model;
     private ScheduleViewModel scheduleModel;
@@ -53,6 +60,20 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
         this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
         this.spotsModel.init(eventID);
+    }
+
+    private void setupMenu() {
+        LiveData<EventTicketingConfiguration> data = Transformations.map(model.getEvent(), Event::getTicketingConfiguration);
+        data.observe(this, d -> {
+            MenuItem item = navigationView.getMenu().findItem(R.id.nav_scan);
+            if (d != null) {
+                Log.i(TAG, "Got a ticketing configuration, setting button visible");
+                item.setVisible(true);
+            } else {
+                Log.i(TAG, "Got no ticketing configuration, setting button invisible");
+                item.setVisible(false);
+            }
+        });
     }
 
     private void setupHeader() {
@@ -84,9 +105,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
-            this.eventID = eventID;
             this.initModels();
             this.setupHeader();
+            this.setupMenu();
 
             // Only display admin button if the user is at least staff
             model.getEvent().observe(this, ev -> {
@@ -155,6 +176,11 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             case R.id.nav_schedule:
                 changeFragment(new ScheduleParentFragment(), true);
                 break;
+
+            case R.id.nav_scan:
+                startActivity(ticketingManager.start(model.getEvent().getValue(), this));
+                break;
+
         }
 
         return true;

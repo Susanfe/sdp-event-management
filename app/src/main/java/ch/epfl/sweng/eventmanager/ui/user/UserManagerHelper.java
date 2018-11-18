@@ -2,7 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.user;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;

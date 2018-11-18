@@ -1,8 +1,8 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import android.widget.TextView;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
@@ -16,9 +16,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Display the map and his features

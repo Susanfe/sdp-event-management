@@ -8,11 +8,13 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
             android:name=".EventManagerApplication"
             android:theme="@style/AppTheme"
             android:allowBackup="true"
+            android:hardwareAccelerated="true"
             android:fullBackupContent="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -48,17 +50,18 @@
 
         <activity android:name=".ui.user.SignUpActivity"
             android:label="@string/title_activity_sign_up" />
-
         <activity
             android:name=".ui.user.DisplayAccountActivity"
             android:label="@string/title_activity_account_display" />
 
-        <activity
-            android:name=".ui.event.interaction.EventShowcaseActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.event.interaction.EventShowcaseActivity"
+          android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.ticketing.TicketingConfigurationPickerActivity"/>
+        <activity android:name=".ui.ticketing.TicketingLoginActivity"/>
+        <activity android:name=".ui.ticketing.TicketingScanActivity"/>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="ch.epfl.sweng.eventmanager.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
