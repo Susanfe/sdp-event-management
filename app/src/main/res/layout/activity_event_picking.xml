@@ -41,12 +41,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/joined_help_text"
                     android:text="@string/joined_help_text_activity_event_picking" android:textStyle="italic"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_vertical|center_horizontal"/>
 
             <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:id="@+id/joined_events_list"
-                    android:layout_margin="8dp">
+                    android:layout_height="match_parent"
+                    android:id="@+id/joined_events_list"
+                    android:layout_margin="8dp"
+                    android:visibility="gone">
             </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
 </LinearLayout>

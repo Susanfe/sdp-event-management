@@ -39,8 +39,8 @@ public class EventPickingActivity extends AppCompatActivity {
     ViewModelFactory factory;
     @BindView(R.id.joined_help_text)
     TextView joinedHelpText;
-    @BindView(R.id.not_joined_help_text)
-    TextView notJoinedHelpText;
+    @BindView(R.id.bottom_sheet_event_picking_text)
+    TextView bottomSheetText;
     @BindView(R.id.help_text)
     TextView helpText;
     @BindView(R.id.joined_events_list)
@@ -71,23 +71,14 @@ public class EventPickingActivity extends AppCompatActivity {
             //once data is loaded
             helpText.setVisibility(View.VISIBLE);
 
-            if (!list.getJoinedEvents().isEmpty()) {
-                if (list.getOtherEvents().isEmpty()) {
-                    joinedEvents.setVisibility(View.VISIBLE);
-                    eventList.setVisibility(View.GONE);
-                    joinedHelpText.setVisibility(View.VISIBLE);
-                    notJoinedHelpText.setVisibility(View.GONE);
-                } else {
-                    joinedEvents.setVisibility(View.VISIBLE);
-                    eventList.setVisibility(View.VISIBLE);
-                    joinedHelpText.setVisibility(View.VISIBLE);
-                    notJoinedHelpText.setVisibility(View.VISIBLE);
-                }
-            } else {
-                joinedEvents.setVisibility(View.GONE);
+            if(!list.getOtherEvents().isEmpty()) {
                 eventList.setVisibility(View.VISIBLE);
+            }
+            if(list.getJoinedEvents().isEmpty()) {
+                joinedHelpText.setText(getString(R.string.help_text_go_join_events));
+                joinedHelpText.setVisibility(View.VISIBLE);
+            } else {
                 joinedHelpText.setVisibility(View.GONE);
-                notJoinedHelpText.setVisibility(View.GONE);
             }
         });
     }
@@ -120,7 +111,6 @@ public class EventPickingActivity extends AppCompatActivity {
         eventList.setHasFixedSize(true);
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
-        notJoinedHelpText.setVisibility(View.GONE);
 
         // Event lists
 
@@ -224,7 +214,7 @@ public class EventPickingActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
-    @OnClick(R.id.not_joined_help_text)
+    @OnClick(R.id.bottom_sheet_event_picking_text)
      void openOrCloseBottomSheet(View view) {
         switch (bottomSheetBehavior.getState()) {
             case BottomSheetBehavior.STATE_COLLAPSED:
