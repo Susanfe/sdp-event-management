@@ -205,6 +205,10 @@ public class EventPickingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if(bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            return;
+        }
         if (doubleBackToExitPressedOnce) {
             finish();
             return;
