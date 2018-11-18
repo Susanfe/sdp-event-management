@@ -10,13 +10,17 @@
               app:behavior_peekHeight="56dp"
               app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
             android:text="@string/not_joined_help_text_activity_event_picking"
             android:layout_width="match_parent"
-            android:layout_height="56dp" android:id="@+id/not_joined_help_text"
+            android:layout_height="56dp"
+            android:id="@+id/not_joined_help_text"
             android:gravity="center_vertical|center_horizontal"
             android:background="@color/colorPrimaryLight"
-            android:textColor="@color/colorSecondary" android:textStyle="bold"/>
+            android:textColor="@color/colorSecondary"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/not_joined_event_list"

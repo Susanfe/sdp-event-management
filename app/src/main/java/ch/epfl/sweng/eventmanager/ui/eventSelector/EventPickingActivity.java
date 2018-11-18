@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.userManager.LoginActivity;
@@ -50,7 +51,7 @@ public class EventPickingActivity extends AppCompatActivity {
     LinearLayout layoutBottomSheet;
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
-    private BottomSheetBehavior behavior;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     private void setupRecyclerView(RecyclerView view) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -103,7 +104,7 @@ public class EventPickingActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
         setSupportActionBar(toolbar);
 
-        behavior = BottomSheetBehavior.from(layoutBottomSheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         setSheetBehavior();
 
         setupObservers();
@@ -129,12 +130,11 @@ public class EventPickingActivity extends AppCompatActivity {
         eventList.setVisibility(View.GONE);
     }
 
+    /**
+     * bottom sheet state change listener
+     * */
     private void setSheetBehavior() {
-        /**
-         * bottom sheet state change listener
-         * we are changing button text when sheet changed state
-         * */
-        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 switch (newState) {
@@ -218,5 +218,17 @@ public class EventPickingActivity extends AppCompatActivity {
         toast.show();
 
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
+    }
+
+    @OnClick(R.id.not_joined_help_text)
+    public void openOrCloseBottomSheet(View view) {
+        switch (bottomSheetBehavior.getState()) {
+            case BottomSheetBehavior.STATE_COLLAPSED:
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                break;
+            case BottomSheetBehavior.STATE_EXPANDED:
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                break;
+        }
     }
 }
