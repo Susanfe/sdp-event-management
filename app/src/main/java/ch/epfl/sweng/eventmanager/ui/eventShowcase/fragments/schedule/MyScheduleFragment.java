@@ -52,13 +52,10 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
 
     @Override
     protected void onItemsUpdate(List<ScheduledItem> items) {
-        if (addToCalendarButton == null)
-            return;
+        if (addToCalendarButton == null) return;
 
-        if (items != null && items.size() > 0)
-            addToCalendarButton.setVisibility(Button.VISIBLE);
-        else
-            addToCalendarButton.setVisibility(Button.INVISIBLE);
+        if (items != null && items.size() > 0) addToCalendarButton.setVisibility(Button.VISIBLE);
+        else addToCalendarButton.setVisibility(Button.INVISIBLE);
     }
 
     @Override
@@ -83,9 +80,8 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
     void writeCalendar(List<ScheduledItem> events, OutputStream stream) {
         PrintStream printer = new PrintStream(stream);
 
-        printer.println("BEGIN:VCALENDAR\n" +
-                "VERSION:2.0\n" +
-                "PRODID:-//EventManager/MySchedule//Event Schedule//EN");
+        printer.println("BEGIN:VCALENDAR\n" + "VERSION:2.0\n" + "PRODID:-//EventManager/MySchedule//Event " +
+                "Schedule//EN");
 
         for (ScheduledItem item : events) {
             item.printAsIcalendar(printer);
@@ -98,7 +94,8 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
 
     private void openCalendar() {
         Intent openFile = new Intent(Intent.ACTION_VIEW);
-        Uri uri = FileProvider.getUriForFile(getContext(), "ch.epfl.sweng.eventmanager.fileprovider", new File(getContext().getFilesDir(), CALENDAR_FILE_NAME));
+        Uri uri = FileProvider.getUriForFile(getContext(), "ch.epfl.sweng.eventmanager.fileprovider",
+                new File(getContext().getFilesDir(), CALENDAR_FILE_NAME));
         openFile.setDataAndType(uri, "text/calendar");
 
         // https://developer.android.com/reference/android/support/v4/content/FileProvider#GetUri
