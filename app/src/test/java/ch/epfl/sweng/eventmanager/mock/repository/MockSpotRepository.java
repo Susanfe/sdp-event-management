@@ -14,7 +14,6 @@ public class MockSpotRepository {
     private List<Spot> spots = new ArrayList<>();
 
     public MockSpotRepository(){
-        Spot c1 = new Spot();
         Spot spot1 = new Spot("satelitte", SpotType.BAR, 46.520433, 6.567822, null);
         Spot spot2 = new Spot("information", SpotType.INFORMATION, 46.520533, 6.567822, null);
         Spot spot3 = new Spot("wc", SpotType.WC, 46.520633, 6.567822, null);
