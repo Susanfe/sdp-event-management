@@ -221,7 +221,7 @@ public class EventPickingActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.not_joined_help_text)
-    public void openOrCloseBottomSheet(View view) {
+     void openOrCloseBottomSheet(View view) {
         switch (bottomSheetBehavior.getState()) {
             case BottomSheetBehavior.STATE_COLLAPSED:
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
