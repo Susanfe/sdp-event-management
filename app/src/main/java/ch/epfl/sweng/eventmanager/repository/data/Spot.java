@@ -37,7 +37,7 @@ public class Spot implements ClusterItem {
      */
     private List<ScheduledItem> scheduleList;
 
-    Spot(String title, SpotType spotType, double latitude, double longitude, Bitmap bitmap) {
+    public Spot(String title, SpotType spotType, double latitude, double longitude, Bitmap bitmap) {
         this.title = title;
         this.spotType = spotType;
         this.position = new Position(latitude, longitude);
