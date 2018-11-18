@@ -23,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.userManager.LoginActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
@@ -46,7 +47,7 @@ public class EventPickingActivity extends AppCompatActivity {
     @BindView(R.id.no_more_events)
     TextView noMoreEventsText;
     @BindView(R.id.joined_events_list)
-    RecyclerView joinedEvents;
+    RecyclerView joinedEventsList;
     @BindView(R.id.not_joined_event_list)
     RecyclerView eventList;
     @BindView(R.id.event_picking_list_layout)
@@ -54,41 +55,8 @@ public class EventPickingActivity extends AppCompatActivity {
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
     private BottomSheetBehavior bottomSheetBehavior;
-
-    private void setupRecyclerView(RecyclerView view, EventListAdapter.ItemType type) {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        view.setLayoutManager(layoutManager);
-        // Set an empty list adapter
-        view.setAdapter(new EventListAdapter(Collections.emptyList(), type));
-    }
-
-    private void setupObservers() {
-        this.model.getEventsPair().observe(this, list -> {
-            if (list == null) {
-                return;
-            }
-            eventList.setAdapter(new EventListAdapter(list.getOtherEvents(), EventListAdapter.ItemType.Event));
-            joinedEvents.setAdapter(new EventListAdapter(list.getJoinedEvents(), EventListAdapter.ItemType.JoinedEvents));
-
-            //once data is loaded
-            helpText.setVisibility(View.VISIBLE);
-
-            if (list.getOtherEvents().isEmpty()) {
-                eventList.setVisibility(View.GONE);
-                noMoreEventsText.setVisibility(View.VISIBLE);
-            } else {
-                eventList.setVisibility(View.VISIBLE);
-                noMoreEventsText.setVisibility(View.GONE);
-            }
-            if (list.getJoinedEvents().isEmpty()) {
-                joinedHelpText.setText(getString(R.string.help_text_go_join_events));
-                joinedHelpText.setVisibility(View.VISIBLE);
-            } else {
-                joinedHelpText.setVisibility(View.GONE);
-                joinedEvents.setVisibility(View.VISIBLE);
-            }
-        });
-    }
+    private EventListAdapter eventsAdapter;
+    private EventListAdapter joinedEventsAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,10 +88,11 @@ public class EventPickingActivity extends AppCompatActivity {
         eventList.setLayoutManager(eventListLayoutManager);
 
         // Event lists
-
-        setupRecyclerView(eventList, EventListAdapter.ItemType.Event);
+        eventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.Event);
+        setupRecyclerView(eventList, eventsAdapter);
         eventList.setVisibility(View.GONE);
-        setupRecyclerView(joinedEvents, EventListAdapter.ItemType.JoinedEvents);
+        joinedEventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.JoinedEvents);
+        setupRecyclerView(joinedEventsList, joinedEventsAdapter);
         eventList.setVisibility(View.GONE);
     }
 
@@ -165,6 +134,41 @@ public class EventPickingActivity extends AppCompatActivity {
         Intent intent = new Intent(this, nextActivity);
         startActivity(intent);
     }
+
+    private void setupRecyclerView(RecyclerView view, EventListAdapter adapter) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        view.setLayoutManager(layoutManager);
+        view.setAdapter(adapter);
+    }
+
+    private void setupObservers() {
+        this.model.getEventsPair().observe(this, list -> {
+            if (list == null) {
+                return;
+            }
+            eventsAdapter.update(list.getOtherEvents());
+            joinedEventsAdapter.update(list.getJoinedEvents());
+
+            //once data is loaded
+            helpText.setVisibility(View.VISIBLE);
+
+            if (list.getOtherEvents().isEmpty()) {
+                eventList.setVisibility(View.GONE);
+                noMoreEventsText.setVisibility(View.VISIBLE);
+            } else {
+                eventList.setVisibility(View.VISIBLE);
+                noMoreEventsText.setVisibility(View.GONE);
+            }
+            if (list.getJoinedEvents().isEmpty()) {
+                joinedHelpText.setText(getString(R.string.help_text_go_join_events));
+                joinedHelpText.setVisibility(View.VISIBLE);
+            } else {
+                joinedHelpText.setVisibility(View.GONE);
+                joinedEventsList.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -231,5 +235,9 @@ public class EventPickingActivity extends AppCompatActivity {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 break;
         }
+    }
+
+    void joinEvent(Event event) {
+        this.model.joinEvent(event);
     }
 }

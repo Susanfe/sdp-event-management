@@ -2,8 +2,12 @@ package ch.epfl.sweng.eventmanager.ui.eventSelector;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Button;
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListUpdateCallback;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,19 +21,60 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Event> mEvents;
 
-    public enum ItemType {JoinedEvents, Event}
+    public void update(List<Event> events) {
+        class EventDiffCallback extends DiffUtil.Callback {
+            private final List<Event> oldEventList;
+            private final List<Event> newEventList;
 
-    ;
+            EventDiffCallback(List<Event> oldEventList, List<Event> newEventList) {
+                this.oldEventList = oldEventList;
+                this.newEventList = newEventList;
+            }
+            @Override
+            public int getOldListSize() {
+                return oldEventList.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newEventList.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return oldEventList.get(oldItemPosition).getId() == newEventList.get(newItemPosition).getId();
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                return oldEventList.get(oldItemPosition).equals(newEventList.get(newItemPosition));
+            }
+        }
+        final EventDiffCallback diffCallback = new EventDiffCallback(this.mEvents,events);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+        diffResult.dispatchUpdatesTo(this);
+        this.mEvents.clear();
+        this.mEvents.addAll(events);
+    }
+
+    public enum ItemType {JoinedEvents, Event}
     private ItemType itemType;
 
-    public EventListAdapter(List<Event> myEvents, ItemType itemType) {
+    private EventListAdapter(List<Event> myEvents, ItemType itemType) {
         mEvents = myEvents;
         this.itemType = itemType;
+    }
+
+    public static EventListAdapter newInstance(ItemType itemType) {
+        List<Event> emptyList = new ArrayList<>();
+        EventListAdapter eventListAdapter = new EventListAdapter(emptyList,itemType);
+        return eventListAdapter;
     }
 
     // Create new views (invoked by the layout manager)
@@ -106,13 +151,9 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @Override
         public void onClick(View view) {
-            // TODO: display animation on click?
-            Context context = itemView.getContext();
-            Intent intent = new Intent(context, EventShowcaseActivity.class);
-            Event selectedEvent = mEvents.get(getAdapterPosition());
-            intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, selectedEvent.getId());
-            context.startActivity(intent);
+            goToEvent(itemView,getAdapterPosition());
         }
+
     }
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
@@ -132,6 +173,25 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+
+        @OnClick(R.id.goto_event_btn)
+        public void onClickEventButton() {
+            goToEvent(itemView,getAdapterPosition());
+        }
+
+        @OnClick(R.id.join_event_btn)
+        public void onClickJoinButton() {
+            Context context = itemView.getContext();
+            ((EventPickingActivity) context).joinEvent(mEvents.get(getAdapterPosition()));
+        }
     }
 
+    private void goToEvent(View itemView, int eventPosition) {
+        // TODO: display animation on click?
+        Context context = itemView.getContext();
+        Intent intent = new Intent(context, EventShowcaseActivity.class);
+        Event selectedEvent = mEvents.get(eventPosition);
+        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, selectedEvent.getId());
+        context.startActivity(intent);
+    }
 }
