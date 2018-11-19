@@ -24,8 +24,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.ui.event.selection.EventListAdapter;
-import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingModel;
 import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.user.LoginActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
@@ -73,23 +71,16 @@ public class EventPickingActivity extends AppCompatActivity {
         this.model = ViewModelProviders.of(this, factory).get(EventPickingModel.class);
         this.model.init();
         ButterKnife.bind(this);
+        setupObservers();
 
         content.setVisibility(View.GONE);
+        layoutBottomSheet.setVisibility(View.GONE);
         Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
         setSupportActionBar(toolbar);
 
         //BottomSheet
         bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         setSheetBehavior();
-
-        setupObservers();
-
-        // Help text
-        // Both invisible by default
-        joinedHelpText.setVisibility(View.GONE);
-        helpText.setTypeface(helpText.getTypeface(), Typeface.BOLD);
-        helpText.setText(R.string.help_text_activity_event_picking);
-        helpText.setVisibility(View.GONE);
 
         // Event list
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
@@ -98,10 +89,8 @@ public class EventPickingActivity extends AppCompatActivity {
         // Event lists
         eventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.Event);
         setupRecyclerView(eventList, eventsAdapter, new OvershootInRightAnimator());
-        eventList.setVisibility(View.GONE);
         joinedEventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.JoinedEvents);
         setupRecyclerView(joinedEventsList, joinedEventsAdapter, new LandingAnimator());
-        eventList.setVisibility(View.GONE);
     }
 
     /**
@@ -159,6 +148,8 @@ public class EventPickingActivity extends AppCompatActivity {
 
             //once data is loaded
             helpText.setVisibility(View.VISIBLE);
+            layoutBottomSheet.setVisibility(View.VISIBLE);
+            content.setVisibility(View.VISIBLE);
 
             if (list.getOtherEvents().isEmpty()) {
                 eventList.setVisibility(View.GONE);
@@ -169,10 +160,8 @@ public class EventPickingActivity extends AppCompatActivity {
             }
             if (list.getJoinedEvents().isEmpty()) {
                 joinedHelpText.setText(getString(R.string.help_text_go_join_events));
-                joinedHelpText.setVisibility(View.VISIBLE);
             } else {
-                joinedHelpText.setVisibility(View.GONE);
-                joinedEventsList.setVisibility(View.VISIBLE);
+                joinedHelpText.setText(getString(R.string.joined_help_text_activity_event_picking));
             }
         });
     }

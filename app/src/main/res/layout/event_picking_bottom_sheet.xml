@@ -8,8 +8,9 @@
         android:background="#fff"
         android:orientation="vertical"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="56dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        app:behavior_peekHeight="@dimen/event_picking_bottom_sheet_peek"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:visibility="gone">
 
     <androidx.appcompat.widget.AppCompatTextView
             android:text="@string/not_joined_help_text_activity_event_picking"
@@ -27,9 +28,7 @@
             android:id="@+id/not_joined_event_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="56dp">
+            android:layout_margin="8dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -39,6 +38,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/no_more_events"
             android:gravity="center_vertical|center_horizontal"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/list_item_spacing"
+            android:layout_marginTop="@dimen/list_item_spacing"/>
 
 </ch.epfl.sweng.eventmanager.ui.event.selection.ConstrainedLinearLayout>
