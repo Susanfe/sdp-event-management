@@ -1,11 +1,11 @@
 package ch.epfl.sweng.eventmanager.mock.repository;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

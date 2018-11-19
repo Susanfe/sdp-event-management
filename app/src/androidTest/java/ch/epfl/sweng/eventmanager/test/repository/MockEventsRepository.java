@@ -1,12 +1,12 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.*;
 import ch.epfl.sweng.eventmanager.test.ObservableMap;
+import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
 import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
-import ch.epfl.sweng.eventmanager.users.Role;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,6 +16,17 @@ import java.util.*;
  * @author Louis Vialar
  */
 public class MockEventsRepository implements EventRepository {
+    public static final Map<Integer, EventTicketingConfiguration> CONFIG_BY_EVENT;
+
+    static {
+        Map<Integer, EventTicketingConfiguration> configurationMap = new HashMap<>();
+        configurationMap.put(1, MockStacks.BASIC_CONFIGURATION);
+        configurationMap.put(2, MockStacks.MULTI_CONFIGURATION);
+        configurationMap.put(3, MockStacks.AUTH_MULTI_CONFIGURATION);
+
+        CONFIG_BY_EVENT = Collections.unmodifiableMap(configurationMap);
+    }
+
     private final ObservableMap<Integer, Event> events = new ObservableMap<>();
     private final ObservableMap<Integer, Bitmap> eventImages = new ObservableMap<>();
     private final ObservableMap<Integer, List<Spot>> spots = new ObservableMap<>();
@@ -70,15 +81,21 @@ public class MockEventsRepository implements EventRepository {
 
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact"));
+                orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact",
+                CONFIG_BY_EVENT.get(1)));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapanImpact"));
+                orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapnImpact",
+                CONFIG_BY_EVENT.get(2)));
+
+        addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
+                orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapanImpact",
+                CONFIG_BY_EVENT.get(3)));
 
         List<ScheduledItem> items;
         String jsonSchedule = "[ {\n" +
                 "  \"artist\" : \"David Guetta\",\n" +
-                "  \"date\" : 1544913000000,\n" +
+                "  \"date\" : 1744913000000,\n" +
                 "  \"description\" : \"Incredible stage performance by famous DJ David Guetta!\",\n" +
                 "  \"duration\" : 1.5,\n" +
                 "  \"genre\" : \"Electro/Dance\",\n" +
@@ -86,7 +103,7 @@ public class MockEventsRepository implements EventRepository {
                 "  \"itemLocation\" : \"Polyv\"\n" +
                 "}, {\n" +
                 "  \"artist\" : \"ABBA\",\n" +
-                "  \"date\" : 1544904900000,\n" +
+                "  \"date\" : 1744904900000,\n" +
                 "  \"description\" : \"Wow! This is the great comeback of the well-known success group!\",\n" +
                 "  \"duration\" : 2,\n" +
                 "  \"genre\" : \"Rock\",\n" +
@@ -94,7 +111,7 @@ public class MockEventsRepository implements EventRepository {
                 "  \"itemLocation\" : \"CE\"\n" +
                 "}, {\n" +
                 "  \"artist\" : \"Daft Punk\",\n" +
-                "  \"date\" : 1544904900000,\n" +
+                "  \"date\" : 1744904900000,\n" +
                 "  \"description\" : \"Le retour des frenchies !\",\n" +
                 "  \"duration\" : 1.5,\n" +
                 "  \"genre\" : \"Pop/House\",\n" +
@@ -102,7 +119,7 @@ public class MockEventsRepository implements EventRepository {
                 "  \"itemLocation\" : \"Polyv\"\n" +
                 "}, {\n" +
                 "  \"artist\" : \"Black M\",\n" +
-                "  \"date\" : 1541980110000,\n" +
+                "  \"date\" : 1741980110000,\n" +
                 "  \"description\" : \"Le retour !\",\n" +
                 "  \"genre\" : \"R&B/Pop\",\n" +
                 "  \"id\" : \"7a9207df-202b-4e83-93a5-8466563466ca\",\n" +

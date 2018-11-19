@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -52,7 +51,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             }
 
             // FIXME handle NullPointerException in setTitle
-            // Set window titlze
+            // Set window title
             getActivity().setTitle(ev.getName());
 
             TextView eventDescription = view.findViewById(R.id.event_description);
@@ -69,8 +68,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
                 if (!joinEventButton.isChecked()) {
                     this.model.joinEvent(ev);
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getContext()));
-                }
-                else {
+                } else {
                     this.model.unjoinEvent(ev);
                     NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getContext()));
                 }
@@ -86,19 +84,14 @@ public class EventMainFragment extends AbstractShowcaseFragment {
         ButterKnife.bind(this, view);
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
-        contactButton.setOnClickListener(v ->
-                ((EventShowcaseActivity)getActivity()).changeFragment(
-                        new EventFormFragment(), true));
+        contactButton.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFormFragment(), true));
 
-        news.setOnClickListener(v -> ((EventShowcaseActivity)getActivity()).changeFragment(
-                new NewsFragment(), true));
+        news.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new NewsFragment(), true));
 
-        map.setOnClickListener(v -> ((EventShowcaseActivity)getActivity()).changeFragment(
-                new EventMapFragment(), true));
+        map.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventMapFragment(),
+                true));
 
-        schedule.setOnClickListener(v -> ((EventShowcaseActivity)getActivity()).changeFragment(
-                new ScheduleParentFragment(), true));
-
+        schedule.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new ScheduleParentFragment(), true));
 
 
         return view;

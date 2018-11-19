@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.inject;
 
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingModule;
 import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseModule;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingModule;
 import ch.epfl.sweng.eventmanager.ui.userManager.UserManagerModule;
 import dagger.Module;
 import dagger.android.AndroidInjectionModule;
@@ -15,7 +16,8 @@ import dagger.android.AndroidInjectionModule;
         AndroidInjectionModule.class,
         EventPickingModule.class,
         EventShowcaseModule.class,
-        UserManagerModule.class
+        UserManagerModule.class,
+        TicketingModule.class
 })
 public abstract class ActivityBuilder {
 

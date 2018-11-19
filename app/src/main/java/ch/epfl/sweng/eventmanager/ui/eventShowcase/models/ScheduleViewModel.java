@@ -1,20 +1,19 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
-import android.content.Context;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
-import com.twitter.sdk.android.core.Callback;
 
 import javax.inject.Inject;
 import java.util.*;
 
 /**
- * This is the model for the scheduled item list. It connects with the repository to pull a list of scheduledItems and communicate them
+ * This is the model for the scheduled item list. It connects with the repository to pull a list of scheduledItems
+ * and communicate them
  * to the view (here, the activity).
  *
  * @author Louis Vialar
@@ -70,33 +69,30 @@ public class ScheduleViewModel extends ViewModel {
         toggleMySchedule(scheduledItemId, null);
     }
 
-    public void toggleMySchedule(UUID scheduledItemId,
-                                 JoinedScheduleItemRepository.ToggleCallback wasAdded) {
+    public void toggleMySchedule(UUID scheduledItemId, JoinedScheduleItemRepository.ToggleCallback wasAdded) {
         joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), wasAdded);
     }
 
     private LiveData<List<ScheduledItem>> buildJoinedScheduledItemsList(LiveData<List<JoinedScheduleItem>> joinedItems) {
         LiveData<List<ScheduledItem>> allItems = getScheduledItems();
 
-        return Transformations.switchMap(allItems, items ->
-                Transformations.map(joinedItems, joinedScheduleItems -> {
-                    List<ScheduledItem> joined = new ArrayList<>();
+        return Transformations.switchMap(allItems, items -> Transformations.map(joinedItems, joinedScheduleItems -> {
+            List<ScheduledItem> joined = new ArrayList<>();
 
-                    if (items == null || joinedScheduleItems == null) {
-                        return null;
-                    }
+            if (items == null || joinedScheduleItems == null) {
+                return null;
+            }
 
-                    for (ScheduledItem scheduledItem : items) {
-                        for (JoinedScheduleItem joinedScheduleItem : joinedScheduleItems) {
-                            if (joinedScheduleItem.getUid().equals(scheduledItem.getId())) {
-                                joined.add(scheduledItem);
-                                break;
-                            }
-                        }
+            for (ScheduledItem scheduledItem : items) {
+                for (JoinedScheduleItem joinedScheduleItem : joinedScheduleItems) {
+                    if (joinedScheduleItem.getUid().equals(scheduledItem.getId())) {
+                        joined.add(scheduledItem);
+                        break;
                     }
-                    return joined;
-                })
-        );
+                }
+            }
+            return joined;
+        }));
     }
 
     private LiveData<Map<String, List<ScheduledItem>>> buildScheduleItemByRoom() {

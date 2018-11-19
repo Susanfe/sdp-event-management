@@ -2,7 +2,7 @@ package ch.epfl.sweng.eventmanager.test;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.test.rule.ActivityTestRule;
+import androidx.test.rule.ActivityTestRule;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
 
 /**

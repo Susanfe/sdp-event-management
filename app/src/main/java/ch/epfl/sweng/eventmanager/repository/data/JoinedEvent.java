@@ -1,13 +1,9 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverter;
-import android.support.annotation.NonNull;
-
-import java.util.Objects;
-import java.util.UUID;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 
 /**
  * Defines the JoinedEvent Entity. We only store the event-id and the name of the event to minimise storage space
