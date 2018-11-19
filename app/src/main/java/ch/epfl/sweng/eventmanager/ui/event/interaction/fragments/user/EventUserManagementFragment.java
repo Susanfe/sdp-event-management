@@ -51,9 +51,17 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
+        // Help text
         TextView helpText = view.findViewById(R.id.help_text);
         helpText.setText(R.string.user_management_help_text);
 
+        // User lis header
+        TextView left_header = view.findViewById(R.id.user_list_left_header);
+        left_header.setText(getString(R.string.user_list_left_header));
+        TextView right_header = view.findViewById(R.id.user_list_right_header);
+        right_header.setText(getString(R.string.user_list_right_header));
+
+        // User list
         mUserList = view.findViewById(R.id.user_list);
         mUserList.setHasFixedSize(true);
         RecyclerView.LayoutManager userListLayoutManager = new LinearLayoutManager(getActivity());

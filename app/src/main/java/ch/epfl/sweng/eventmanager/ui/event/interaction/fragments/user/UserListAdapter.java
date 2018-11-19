@@ -27,10 +27,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         // each data item is just a string in this case
         @BindView(R.id.uid)
         public TextView userUid;
+        @BindView(R.id.role)
+        public TextView userRole;
 
         public ViewHolder(View v) {
             super(v);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, v);
         }
     }
 
@@ -66,7 +68,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         List<String> index = new ArrayList<String>(mUsers.keySet());
-        holder.userUid.setText(index.get(position));
+        String uid = index.get(position);
+        holder.userUid.setText(uid);
+        holder.userRole.setText(mUsers.get(uid).toString());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
