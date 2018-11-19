@@ -8,8 +8,8 @@ import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingServiceManager;
-import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
