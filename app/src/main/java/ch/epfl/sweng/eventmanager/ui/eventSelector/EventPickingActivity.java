@@ -32,6 +32,7 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import dagger.android.AndroidInjection;
+import jp.wasabeef.recyclerview.animators.*;
 
 import javax.inject.Inject;
 import java.util.Collections;
@@ -91,10 +92,10 @@ public class EventPickingActivity extends AppCompatActivity {
 
         // Event lists
         eventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.Event);
-        setupRecyclerView(eventList, eventsAdapter);
+        setupRecyclerView(eventList, eventsAdapter, new OvershootInRightAnimator());
         eventList.setVisibility(View.GONE);
         joinedEventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.JoinedEvents);
-        setupRecyclerView(joinedEventsList, joinedEventsAdapter);
+        setupRecyclerView(joinedEventsList, joinedEventsAdapter, new LandingAnimator());
         eventList.setVisibility(View.GONE);
     }
 
@@ -136,10 +137,11 @@ public class EventPickingActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void setupRecyclerView(RecyclerView view, EventListAdapter adapter) {
+    private void setupRecyclerView(RecyclerView view, EventListAdapter adapter, RecyclerView.ItemAnimator animator) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         view.setLayoutManager(layoutManager);
         view.setAdapter(adapter);
+        view.setItemAnimator(animator);
     }
 
     private void setupObservers() {

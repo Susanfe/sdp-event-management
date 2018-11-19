@@ -92,6 +92,9 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.19'
     annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc1'
 
+    //UI Animation
+    implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
+
     // Tests
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.22.0'
