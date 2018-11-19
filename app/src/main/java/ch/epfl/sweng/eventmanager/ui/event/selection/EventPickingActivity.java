@@ -159,9 +159,11 @@ public class EventPickingActivity extends AppCompatActivity {
                 noMoreEventsText.setVisibility(View.GONE);
             }
             if (list.getJoinedEvents().isEmpty()) {
-                joinedHelpText.setText(getString(R.string.help_text_go_join_events));
+                helpText.setText(getString(R.string.help_text_go_join_events));
+                joinedHelpText.setVisibility(View.GONE);
             } else {
-                joinedHelpText.setText(getString(R.string.joined_help_text_activity_event_picking));
+                helpText.setText(getString(R.string.help_text_activity_event_picking));
+                joinedHelpText.setVisibility(View.VISIBLE);
             }
         });
     }
