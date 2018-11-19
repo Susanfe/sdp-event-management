@@ -1,15 +1,15 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 public class EventRating {
-    private Float rating;
+    private float rating;
     private String description;
 
-    public EventRating(Float rating, String description) {
+    public EventRating(float rating, String description) {
         this.rating = rating;
         this.description = description;
     }
 
-    public Float getRating() {
+    public float getRating() {
         return rating;
     }
 
