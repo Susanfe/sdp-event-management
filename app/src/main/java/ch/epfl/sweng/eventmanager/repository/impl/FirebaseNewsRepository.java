@@ -33,12 +33,7 @@ public class FirebaseNewsRepository implements NewsRepository {
 
     @Override
     public Task<Void> publishNews(int eventId, News news) {
-        DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                .getReference("news")
-                .child("event_" + eventId)
-                .push(); // Create a new key in the list
-
-        return dbRef.setValue(news);
+        return FirebaseHelper.publishElement(eventId, "news", news);
     }
 
     @Override
