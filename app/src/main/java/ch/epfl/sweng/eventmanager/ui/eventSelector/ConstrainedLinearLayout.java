@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 public class ConstrainedLinearLayout extends LinearLayout {
 
     private final int maxHeight;
+    private final static double LAYOUT_SCREEN_PERCENTAGE = 0.7;
 
     public ConstrainedLinearLayout(Context context) {
         super(context);
@@ -35,7 +36,7 @@ public class ConstrainedLinearLayout extends LinearLayout {
     private int initScreenHeight() {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         float dpHeight = displayMetrics.heightPixels;
-        return (int) (dpHeight * 0.8);
+        return (int) (dpHeight * LAYOUT_SCREEN_PERCENTAGE);
     }
 
     @Override
