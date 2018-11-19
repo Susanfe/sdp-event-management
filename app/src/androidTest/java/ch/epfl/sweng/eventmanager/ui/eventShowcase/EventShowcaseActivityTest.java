@@ -11,6 +11,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers;
 import androidx.test.runner.AndroidJUnit4;
 import android.view.Gravity;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.RecyclerViewButtonClick;
 import ch.epfl.sweng.eventmanager.ToastMatcher;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
@@ -96,7 +97,9 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
 
-        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        onView(withId(R.id.bottom_sheet_event_picking_text)).perform(click());
+        SystemClock.sleep(300);
+        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, RecyclerViewButtonClick.clickChildViewWithId(R.id.goto_event_btn)));
 
         SystemClock.sleep(200);
 
@@ -121,7 +124,10 @@ public class EventShowcaseActivityTest {
         // Click on an item and capture start intent
         Intents.init();
 
-        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        onView(withId(R.id.bottom_sheet_event_picking_text)).perform(click());
+
+        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
+                RecyclerViewButtonClick.clickChildViewWithId(R.id.goto_event_btn)));
 
         Intents.intended(Matchers.allOf(
                 IntentMatchers.hasComponent(EventShowcaseActivity.class.getName()),
@@ -131,6 +137,25 @@ public class EventShowcaseActivityTest {
         Intents.assertNoUnverifiedIntents();
 
         // Leave the Intents initialized as it will be closed by the @After method
+
+    }
+
+    @Test
+    public void testJoinEvent() {
+        onView(withId(R.id.drawer_layout)).check(matches(isClosed(Gravity.LEFT))).perform(DrawerActions.open());
+
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
+
+        SystemClock.sleep(200);
+
+        onView(withId(R.id.bottom_sheet_event_picking_text)).perform(click());
+
+        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
+                RecyclerViewButtonClick.clickChildViewWithId(R.id.join_event_btn)));
+
+        onView(withId(R.id.bottom_sheet_event_picking_text)).perform(click());
+
+        onView(withId(R.id.joined_events_list)).check(matches(isDisplayed()));
 
     }
 
