@@ -1,9 +1,9 @@
 package ch.epfl.sweng.eventmanager.inject;
 
-import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingModule;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseModule;
+import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingModule;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventInteractionModule;
+import ch.epfl.sweng.eventmanager.ui.user.UserManagerModule;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingModule;
-import ch.epfl.sweng.eventmanager.ui.userManager.UserManagerModule;
 import dagger.Module;
 import dagger.android.AndroidInjectionModule;
 
@@ -15,7 +15,7 @@ import dagger.android.AndroidInjectionModule;
 @Module(includes = {
         AndroidInjectionModule.class,
         EventPickingModule.class,
-        EventShowcaseModule.class,
+        EventInteractionModule.class,
         UserManagerModule.class,
         TicketingModule.class
 })
