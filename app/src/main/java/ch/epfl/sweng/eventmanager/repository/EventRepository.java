@@ -1,6 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;

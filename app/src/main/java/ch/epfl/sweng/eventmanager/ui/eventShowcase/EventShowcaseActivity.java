@@ -1,43 +1,44 @@
 package ch.epfl.sweng.eventmanager.ui.eventShowcase;
 
-import android.arch.lifecycle.ViewModelProviders;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.navigation.NavigationView;
+
+import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.eventAdministration.EventAdministrationActivity;
-import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMainFragment;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventMapFragment;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.EventTicketFragment;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.NewsFragment;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.EventShowcaseModel;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.NewsViewModel;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ScheduleViewModel;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventAdministrationActivity;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
-
-import javax.inject.Inject;
 
 public class EventShowcaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -57,7 +58,6 @@ public class EventShowcaseActivity extends AppCompatActivity
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
-    private ZoneModel zonesModel;
 
     private int eventID;
 
@@ -73,9 +73,6 @@ public class EventShowcaseActivity extends AppCompatActivity
 
         this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
         this.spotsModel.init(eventID);
-
-        this.zonesModel = ViewModelProviders.of(this, factory).get(ZoneModel.class);
-        this.zonesModel.init(eventID);
     }
 
     private void setupHeader() {

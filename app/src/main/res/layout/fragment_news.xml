@@ -1,9 +1,9 @@
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.eventShowcase.fragments.NewsFragment"
+        tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment"
         android:layout_marginTop="?android:attr/actionBarSize">
 
     <LinearLayout
@@ -24,7 +24,7 @@
                         android:layout_height="match_parent"
                         android:id="@+id/news_relative_layout">
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -45,4 +45,4 @@
 
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

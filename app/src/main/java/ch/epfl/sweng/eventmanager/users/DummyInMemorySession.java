@@ -7,9 +7,7 @@ import javax.inject.Singleton;
 
 import ch.epfl.sweng.eventmanager.repository.data.DummyUser;
 import ch.epfl.sweng.eventmanager.repository.data.User;
-import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
-
-import java.util.HashSet;
+import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
 
 /**
  * Dummy InMemorySession class, only used in tests.
@@ -37,6 +35,11 @@ public class DummyInMemorySession implements InMemorySession{
                 context.startActivity(intent);
             }
         }
+    }
+
+    @Override
+    public void registerAndLogin(String email, String password, Activity context, OnCompleteListener callback) {
+        // Nothing to do
     }
 
     @Override
