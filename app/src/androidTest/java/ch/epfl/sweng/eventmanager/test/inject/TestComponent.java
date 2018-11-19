@@ -8,7 +8,7 @@ import ch.epfl.sweng.eventmanager.inject.ApplicationModule;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import ch.epfl.sweng.eventmanager.test.repository.MockRepositoriesModule;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingModule;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.NewsFragmentTest;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.activities.NoOpBarcodeViewManagerModule;
 import dagger.Component;

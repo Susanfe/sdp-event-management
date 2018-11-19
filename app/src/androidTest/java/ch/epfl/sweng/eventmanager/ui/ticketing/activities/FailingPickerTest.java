@@ -16,7 +16,7 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ticketing.ErrorCodes;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
 
 import static androidx.test.espresso.Espresso.onView;

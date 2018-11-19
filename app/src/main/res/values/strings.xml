@@ -50,6 +50,8 @@
     <string name="ticket_nav_item_activity_event_showcase">Tickets</string>
     <string name="admin_nav_item_activity_event_showcase">Admin</string>
     <string name="pick_event_nav_item_activity_event_showcase">Event picker</string>
+    <string name="user_management_nav_item_activity_event">User management</string>
+    <string name="showcase_nav_item_activity_event">Public area</string>
 
     <string name="timeline_view_added_to_own_schedule">Event added to your schedule!</string>
     <string name="timeline_view_removed_from_own_schedule">Event removed from your schedule!</string>

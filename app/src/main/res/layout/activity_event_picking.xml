@@ -1,71 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.eventSelector.EventPickingActivity"
-    android:orientation="vertical">
-
-    <androidx.appcompat.widget.Toolbar
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Toolbar"
-        android:id="@+id/event_picking_toolbar"/>
+        android:layout_height="match_parent"
+        tools:context=".ui.event.selection.EventPickingActivity">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="85"
-        android:id="@+id/event_picking_layout"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+    />
 
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:id="@+id/event_linear_layout">
 
-            <TextView
-                    android:id="@+id/help_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" android:text="@string/help_text_activity_event_picking"
-                    android:textStyle="bold" android:gravity="center_horizontal" android:textSize="18sp"/>
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/joined_help_text"
-                    android:text="@string/joined_help_text_activity_event_picking" android:textStyle="italic"
-                    android:gravity="center_horizontal"/>
+        <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Toolbar"
+                android:id="@+id/event_picking_toolbar"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:id="@+id/joined_events_list"
-                    android:layout_margin="8dp">
-            </androidx.recyclerview.widget.RecyclerView>
+        <androidx.core.widget.NestedScrollView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="85"
+                android:id="@+id/event_picking_layout">
 
-            <TextView
-                    android:text="@string/not_joined_help_text_activity_event_picking"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/not_joined_help_text"
-                    android:textStyle="italic" android:gravity="center_horizontal"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/not_joined_event_list"
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-            </androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
+                    android:orientation="vertical">
 
-    </androidx.core.widget.NestedScrollView>
+                <TextView
+                        android:id="@+id/help_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="@string/help_text_activity_event_picking"
+                        android:textStyle="bold" android:gravity="center_horizontal" android:textSize="18sp"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/joined_help_text"
+                        android:text="@string/joined_help_text_activity_event_picking" android:textStyle="italic"
+                        android:gravity="center_horizontal"/>
 
-</LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:id="@+id/joined_events_list"
+                        android:layout_margin="8dp">
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                        android:text="@string/not_joined_help_text_activity_event_picking"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:id="@+id/not_joined_help_text"
+                        android:textStyle="italic" android:gravity="center_horizontal"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/not_joined_event_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+</RelativeLayout>
