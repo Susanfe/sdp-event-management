@@ -37,7 +37,7 @@ public class EventFormFragmentTest {
     public void setUp() {
         Intents.init();
 
-        onView(withId(R.id.contact_form_go_button)).perform(scrollTo(), click());
+        onView(withId(R.id.contact_form_go_button)).perform(click());
 
         Intents.intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
     }

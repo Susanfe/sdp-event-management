@@ -2,13 +2,13 @@ package ch.epfl.sweng.eventmanager.ui.event.selection;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -53,6 +53,10 @@ public class EventPickingActivity extends AppCompatActivity {
     RecyclerView joinedEventsList;
     @BindView(R.id.not_joined_event_list)
     RecyclerView eventList;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.event_linear_layout)
+    LinearLayout content;
     @BindView(R.id.event_picking_list_layout)
     LinearLayout layoutBottomSheet;
     private Boolean doubleBackToExitPressedOnce = false;
@@ -70,6 +74,7 @@ public class EventPickingActivity extends AppCompatActivity {
         this.model.init();
         ButterKnife.bind(this);
 
+        content.setVisibility(View.GONE);
         Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
         setSupportActionBar(toolbar);
 
