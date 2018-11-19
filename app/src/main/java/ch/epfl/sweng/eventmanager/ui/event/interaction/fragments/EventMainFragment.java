@@ -33,6 +33,8 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     Button schedule;
     @BindView(R.id.main_fragment_map)
     Button map;
+    @BindView(R.id.feedback_for_go_button)
+    Button feedback;
 
     public EventMainFragment() {
         // Required empty public constructor
@@ -93,6 +95,8 @@ public class EventMainFragment extends AbstractShowcaseFragment {
                 true));
 
         schedule.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new ScheduleParentFragment(), true));
+
+        feedback.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFeedbackFragment(), true));
 
         return view;
 

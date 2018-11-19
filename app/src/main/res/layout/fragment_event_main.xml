@@ -87,6 +87,13 @@
                     android:layout_weight="50"
                     android:text="@string/contact_form_main_go_button"/>
 
+                <Button
+                        android:id="@+id/feedback_for_go_button"
+                        style="@style/Button_barButton_middle"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"
+                        android:text="Feedback"/>
                 <CheckedTextView
                     android:id="@+id/join_event_button"
                     android:layout_width="0dp"
