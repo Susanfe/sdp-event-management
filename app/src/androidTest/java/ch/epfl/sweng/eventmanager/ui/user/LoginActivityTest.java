@@ -32,7 +32,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
 
 public class LoginActivityTest {
-    int MAX_RETRY_COUNT = 10;
+    private final int MAX_RETRY_COUNT = 10;
 
     @Before
     public void disableFirebaseAuth() {

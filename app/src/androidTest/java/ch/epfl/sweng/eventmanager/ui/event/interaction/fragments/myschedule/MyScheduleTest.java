@@ -19,14 +19,7 @@ import androidx.test.espresso.contrib.NavigationViewActions;
 import androidx.test.espresso.intent.Intents;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 
-import androidx.test.espresso.contrib.DrawerActions;
-import androidx.test.espresso.contrib.NavigationViewActions;
-import androidx.test.espresso.intent.Intents;
-import androidx.test.runner.AndroidJUnit4;
-import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -49,7 +42,7 @@ public class MyScheduleTest {
     public final EventTestRule<EventShowcaseActivity> mActivityRule =
             new EventTestRule<>(EventShowcaseActivity.class);
 
-    public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
+    private static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
         return new TypeSafeMatcher<View>() {
             int currentIndex = 0;
 

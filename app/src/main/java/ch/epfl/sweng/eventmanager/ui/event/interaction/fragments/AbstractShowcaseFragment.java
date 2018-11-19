@@ -46,7 +46,7 @@ public abstract class AbstractShowcaseFragment extends Fragment {
         }
     }
 
-    public EventShowcaseActivity getParentActivity() {
+    EventShowcaseActivity getParentActivity() {
         return (EventShowcaseActivity) getActivity();
     }
 }

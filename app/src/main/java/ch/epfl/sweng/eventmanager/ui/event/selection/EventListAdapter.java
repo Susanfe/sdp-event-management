@@ -55,7 +55,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     // Create new views (invoked by the layout manager)
     @Override
     @NonNull
-    public EventListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public EventListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                    int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.event_list_item, parent, false);
@@ -64,7 +64,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.eventNameTextView.setText(mEvents.get(position).getName());
         holder.eventSummary.setText(mEvents.get(position).getDescription());
         holder.eventThumbnail.setImageBitmap(mEvents.get(position).getImage());

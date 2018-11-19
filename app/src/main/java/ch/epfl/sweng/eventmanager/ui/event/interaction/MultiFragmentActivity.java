@@ -103,8 +103,6 @@ public class MultiFragmentActivity extends AppCompatActivity
                 }
 
                 transaction.commit();
-            } else {
-                // custom effect if fragment is already instanciated
             }
         } catch (IllegalStateException exception) {
             Log.w(TAG,

@@ -42,7 +42,7 @@ public class EventPickingModel extends ViewModel {
     /**
      * Returns a pair of joined and not joined events
      */
-    public LiveData<EventsPair> getEventsPair() {
+    LiveData<EventsPair> getEventsPair() {
         LiveData<List<Integer>> joinedEvents = joinedEventRepository.findAllIds();
 
         return Transformations.switchMap(events, events -> {
