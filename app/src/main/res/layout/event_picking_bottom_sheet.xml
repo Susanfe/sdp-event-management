@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ch.epfl.sweng.eventmanager.ui.eventSelector.ConstrainedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/event_picking_list_layout"
               android:layout_width="match_parent"
@@ -40,4 +40,4 @@
             android:gravity="center_vertical|center_horizontal"
             android:visibility="gone"/>
 
-</LinearLayout>
+</ch.epfl.sweng.eventmanager.ui.eventSelector.ConstrainedLinearLayout>
