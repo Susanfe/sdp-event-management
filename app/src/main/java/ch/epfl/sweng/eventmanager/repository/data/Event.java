@@ -112,7 +112,7 @@ public final class Event {
         return new Date(beginDate);
     }
 
-    public Date getEndDate() {
+    Date getEndDate() {
         if (endDate <= 0) {
             return null;
         }
@@ -143,7 +143,7 @@ public final class Event {
         return this.twitterName;
     }
 
-    public String beginDateAsString() {
+    String beginDateAsString() {
         if (beginDate <= 0) {
             return null;
         }
@@ -151,7 +151,7 @@ public final class Event {
         return f.format(beginDate);
     }
 
-    public String endDateAsString(){
+    String endDateAsString(){
         if (endDate <= 0) {
             return null;
         }

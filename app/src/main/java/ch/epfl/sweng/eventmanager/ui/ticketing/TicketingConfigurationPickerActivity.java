@@ -141,7 +141,7 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
         private TextView configName;
         private TicketingConfigurationPickerActivity activity;
 
-        public ConfigurationViewHolder(View item, TicketingConfigurationPickerActivity activity) {
+        ConfigurationViewHolder(View item, TicketingConfigurationPickerActivity activity) {
             super(item);
 
             this.configName = item.findViewById(R.id.configuration);

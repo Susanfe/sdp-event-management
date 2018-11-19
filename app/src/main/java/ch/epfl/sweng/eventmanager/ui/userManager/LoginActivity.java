@@ -32,11 +32,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupFields() {
         mEmailView = findViewById(R.id.email_field);
-        mEmailView.setHint(R.string.email_field);
         mEmailView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mEmailView));
 
         mPasswordView = findViewById(R.id.password_field);
-        mPasswordView.setHint(R.string.password_field);
 
         // When the done button is clicked on the keyboard, try to login
         mPasswordView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mPasswordView));
@@ -80,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                 = UserManagerHelper.validateForm(this, mEmailView, mPasswordView, null);
 
         // FIXME: Quite ugly, do we have a sexier way to return from UserManagerHelper.validateForm/3 ?
-        Boolean cancel = validatedForm.first.first;
+        boolean cancel = validatedForm.first.first;
         EditText focusView = validatedForm.first.second;
         String email = validatedForm.second.first;
         String password = validatedForm.second.second;

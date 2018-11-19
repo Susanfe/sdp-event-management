@@ -1,10 +1,11 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
-import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedEventDao;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedEventDao;
 
 /**
  * @author Louis Vialar

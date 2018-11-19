@@ -42,7 +42,8 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:singleLine="true" android:imeOptions="actionNext"/>
+                        android:singleLine="true" android:imeOptions="actionNext"
+                    android:hint="@string/email_field"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -57,7 +58,8 @@
                     android:imeActionId="6"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" android:imeOptions="actionDone"/>
+                    android:singleLine="true" android:imeOptions="actionDone"
+                android:hint="@string/password_field"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

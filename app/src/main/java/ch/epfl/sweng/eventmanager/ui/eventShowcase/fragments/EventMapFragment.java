@@ -27,7 +27,7 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     private static final float ZOOMLEVEL = 19.0f; //This goes up to 21
     private GoogleMap mMap;
     private ClusterManager<Spot> mClusterManager;
-    protected SpotsModel spotsModel;
+    private SpotsModel spotsModel;
 
 
     public EventMapFragment() {
@@ -47,6 +47,7 @@ public class EventMapFragment extends AbstractShowcaseFragment {
                 .findFragmentById(R.id.mapFragment);
         if (mapFragment == null) {
             FragmentManager fragmentManager = getFragmentManager();
+            // TODO handle null pointer exception
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mapFragment = SupportMapFragment.newInstance();
             fragmentTransaction.replace(R.id.mapFragment, mapFragment).commit();

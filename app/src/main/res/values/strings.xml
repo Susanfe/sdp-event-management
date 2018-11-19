@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Event Manager</string>
+    
+    <string name="filter_title_event_picking">Filter for app indexing and URI</string>
 
     <string name="scheduled_item_no_artist">Unknown artist</string>
     <string name="scheduled_item_no_genre">Unknown genre</string>
@@ -87,6 +89,10 @@
     <!-- Accessibility text -->
     <string name="event_thumbnail">Event thumbnail</string>
 
+    <string name="display_account_activity_logged_as">Logged as: </string>
+
+    <string name="event_list_item_default_title">Event name</string>
+    <string name="event_list_item_default_description">This is a quick summary of the event</string>
 
     <string name="main_fragment_image_contentDescription">Image representing the event</string>
     <string name="main_fragment_error_no_description">Could not load event description.</string>

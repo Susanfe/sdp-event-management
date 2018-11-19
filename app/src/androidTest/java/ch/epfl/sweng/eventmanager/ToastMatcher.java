@@ -1,11 +1,12 @@
 package ch.epfl.sweng.eventmanager;
 
 import android.os.IBinder;
-import androidx.test.espresso.Root;
 import android.view.WindowManager;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
+
+import androidx.test.espresso.Root;
 
 /**
  * Class to be used as follows :

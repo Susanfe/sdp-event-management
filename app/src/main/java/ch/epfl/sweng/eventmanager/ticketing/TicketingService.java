@@ -30,7 +30,7 @@ public class TicketingService {
         this.queue = queue;
     }
 
-    public boolean requiresLogin() {
+    boolean requiresLogin() {
         return configuration.getLoginUrl() != null;
     }
 

@@ -20,10 +20,10 @@ public class DisplayAccountActivity extends AppCompatActivity {
 
         // We assume the user is logged in when the activity is opened.
         TextView helpText = findViewById(R.id.main_text);
-        helpText.setText("Logged as: " + Session.getCurrentUser().getEmail());
+        helpText.setText(getText(R.string.display_account_activity_logged_as)  + Session.getCurrentUser().getEmail());
 
 
-        Button logoutButton = (Button) findViewById(R.id.logout_btn);
+        Button logoutButton = findViewById(R.id.logout_btn);
         logoutButton.setText(R.string.logout_button);
     }
 

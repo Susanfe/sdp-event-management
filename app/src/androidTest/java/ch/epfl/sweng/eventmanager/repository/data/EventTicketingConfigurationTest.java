@@ -1,13 +1,11 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.os.Parcel;
-import android.os.SystemClock;
+
 import org.junit.Test;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Louis Vialar
@@ -15,7 +13,7 @@ import static org.junit.Assert.*;
 public class EventTicketingConfigurationTest {
     private EventTicketingConfiguration configuration = new EventTicketingConfiguration("login", "config", "scan");
 
-    public static Parcel getParcel() {
+    private static Parcel getParcel() {
         return Parcel.obtain();
     }
 

@@ -1,36 +1,37 @@
 package ch.epfl.sweng.eventmanager.test.ticketing;
 
-import androidx.annotation.Nullable;
 import android.util.Log;
-import ch.epfl.sweng.eventmanager.ticketing.data.LoginResponse;
-import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
-import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
-import com.android.volley.AuthFailureError;
+
 import com.android.volley.Request;
 import com.android.volley.toolbox.BaseHttpStack;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.HttpResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.Nullable;
+import ch.epfl.sweng.eventmanager.ticketing.data.LoginResponse;
+import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
+import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
 
 /**
  * @author Louis Vialar
  */
 public abstract class TicketingHttpStack extends BaseHttpStack {
     private static final String TAG = TicketingHttpStack.class.getSimpleName();
-    public static String LOGIN_URL = "https://local/login";
-    public static String SCAN_URL = "https://local/scan";
-    public static String SCAN_CONFIG_PREFIX = SCAN_URL + "/";
-    public static String SCAN_CONFIG_URL = SCAN_CONFIG_PREFIX + ":configId";
-    public static String CONFIGS_URL = "https://local/configs";
+    public static final String LOGIN_URL = "https://local/login";
+    public static final String SCAN_URL = "https://local/scan";
+    public static final String SCAN_CONFIG_PREFIX = SCAN_URL + "/";
+    public static final String SCAN_CONFIG_URL = SCAN_CONFIG_PREFIX + ":configId";
+    public static final String CONFIGS_URL = "https://local/configs";
 
     public abstract LoginResponse generateLoginResponse(String userName, String password) throws TicketingApiException;
 
@@ -39,7 +40,7 @@ public abstract class TicketingHttpStack extends BaseHttpStack {
     public abstract List<ScanConfiguration> generateConfigurations(@Nullable String authToken) throws TicketingApiException;
 
     @Override
-    public final HttpResponse executeRequest(Request<?> request, Map<String, String> additionalHeaders) throws IOException, AuthFailureError {
+    public final HttpResponse executeRequest(Request<?> request, Map<String, String> additionalHeaders) {
         String url = request.getUrl();
 
         String jsonString;
@@ -56,8 +57,10 @@ public abstract class TicketingHttpStack extends BaseHttpStack {
             Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
             String authToken = null;
             if (request.getHeaders().containsKey("authorization")) {
+                // TODO handle null exception
                 authToken = request.getHeaders().get("authorization").substring("Bearer ".length());
             } else if (additionalHeaders.containsKey("authorization")) {
+                // TODO handle null exception
                 authToken = additionalHeaders.get("authorization").substring("Bearer ".length());
             }
 

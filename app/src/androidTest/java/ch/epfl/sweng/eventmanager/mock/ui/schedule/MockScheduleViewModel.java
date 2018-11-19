@@ -1,12 +1,13 @@
 package ch.epfl.sweng.eventmanager.mock.ui.schedule;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.mock.repository.MockConcertRepository;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
-
-import javax.inject.Inject;
-import java.util.List;
 
 public class MockScheduleViewModel extends ViewModel {
     private LiveData<List<ScheduledItem>> concerts;

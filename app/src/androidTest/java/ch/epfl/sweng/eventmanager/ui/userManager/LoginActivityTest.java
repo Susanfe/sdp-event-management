@@ -1,7 +1,29 @@
 package ch.epfl.sweng.eventmanager.ui.userManager;
 
+import android.content.Context;
+import android.os.SystemClock;
+import android.util.Log;
+
+import junit.framework.AssertionFailedError;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+
+import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.rule.ActivityTestRule;
+import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.TestHelper;
+import ch.epfl.sweng.eventmanager.users.Session;
+
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.*;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -9,25 +31,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
 
-import android.content.Context;
-import android.os.SystemClock;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.espresso.NoMatchingViewException;
-import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
-import android.util.Log;
-
-import junit.framework.AssertionFailedError;
-
-import org.junit.*;
-import org.junit.runner.RunWith;
-
-import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.TestHelper;
-import ch.epfl.sweng.eventmanager.users.Session;
-
-@RunWith(AndroidJUnit4.class)
 public class LoginActivityTest {
     int MAX_RETRY_COUNT = 10;
 
@@ -153,6 +156,7 @@ public class LoginActivityTest {
     }
 
     private String getResourceString(int id) {
+        // FIXME use non deprecated method instead of following one
         Context targetContext = InstrumentationRegistry.getTargetContext();
         return targetContext.getResources().getString(id);
     }

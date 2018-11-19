@@ -1,12 +1,13 @@
 package ch.epfl.sweng.eventmanager;
 
-import androidx.test.espresso.matcher.BoundedMatcher;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.test.espresso.matcher.BoundedMatcher;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -21,7 +22,7 @@ public class TestHelper {
     /**
      * Stolen from StackOverflow question 36329978.
      */
-    public static Matcher<View> withToolbarTitle(final Matcher<CharSequence> textMatcher) {
+    private static Matcher<View> withToolbarTitle(final Matcher<CharSequence> textMatcher) {
         return new BoundedMatcher<View, Toolbar>(Toolbar.class) {
             @Override
             public boolean matchesSafely(Toolbar toolbar) {

@@ -156,7 +156,7 @@ public final class TicketingLoginActivity extends TicketingActivity {
         });
     }
 
-    public static interface Validator {
+    public interface Validator {
         // Replaces Function<String,Boolean> that is not available at this API level
         boolean apply(String value);
     }

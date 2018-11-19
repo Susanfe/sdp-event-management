@@ -1,37 +1,42 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
-import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
-import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
-import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
+import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
+import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
+
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.BASIC_CONFIGURATION;
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.CLIENT;
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.MULTIPLE_BARCODE;
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.PRODUCT;
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.SINGLE_BARCODE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.*;
 /**
  * @author Louis Vialar
  */
 public class TicketingServiceTest {
     private TicketingService service;
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         service = TicketingHelper.getService(BASIC_CONFIGURATION);
     }
 
     @Test
-    public void requiresLoginTest() throws Exception {
+    public void requiresLoginTest() {
         assertFalse(service.requiresLogin());
     }
 
     @Test
-    public void hasMultipleConfigurationsTest() throws Exception {
+    public void hasMultipleConfigurationsTest() {
         assertFalse(service.hasMultipleConfigurations());
     }
 
     @Test
-    public void loginTest() throws Exception {
+    public void loginTest() {
         TestingCallback<Void> callback = TestingCallback.expectSuccess(TestingCallback.accept());
         service.login(null, null, callback);
 
@@ -57,6 +62,7 @@ public class TicketingServiceTest {
         }));
         testScan(MULTIPLE_BARCODE, TestingCallback.expectSuccess(result -> {
             assertTrue(result.isSuccess());
+            // TODO Handle null exception
             assertEquals(10, (int) result.getProducts().get(PRODUCT));
                 assertEquals(CLIENT, result.getUser());
         }));
@@ -79,7 +85,7 @@ public class TicketingServiceTest {
     }
 
     @Test
-    public void isLoggedInTest() throws Exception {
+    public void isLoggedInTest() {
         assertTrue(service.isLoggedIn());
     }
 

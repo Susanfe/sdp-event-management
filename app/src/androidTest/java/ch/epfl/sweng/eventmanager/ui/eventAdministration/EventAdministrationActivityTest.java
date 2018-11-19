@@ -1,17 +1,15 @@
 package ch.epfl.sweng.eventmanager.ui.eventAdministration;
 
 import android.content.Intent;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
+import androidx.test.rule.ActivityTestRule;
 import ch.epfl.sweng.eventmanager.ui.eventSelector.EventPickingActivity;
+
 import static androidx.test.espresso.Espresso.onIdle;
 
-@RunWith(AndroidJUnit4.class)
 public class EventAdministrationActivityTest {
     @Rule
     public final ActivityTestRule<EventAdministrationActivity> mActivityRule =

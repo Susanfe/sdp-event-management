@@ -1,18 +1,21 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 
 import android.os.SystemClock;
-import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.intent.matcher.IntentMatchers;
-import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
-import ch.epfl.sweng.eventmanager.ui.ticketing.*;
+
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.intent.matcher.IntentMatchers;
+import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
+import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingConfigurationPickerActivity;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingLoginActivity;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingTestRule;
 
 public class LoggedOutPickerTest extends ScanningTest {
 

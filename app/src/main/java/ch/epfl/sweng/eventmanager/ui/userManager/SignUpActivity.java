@@ -63,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
                 = UserManagerHelper.validateForm(this, mEmailView, mPasswordView, mPasswordConfirmationView);
 
         // FIXME: Quite ugly, do we have a sexier way to return from UserManagerHelper.validateForm/3 ?
-        Boolean cancel = validatedForm.first.first;
+        boolean cancel = validatedForm.first.first;
         EditText focusView = validatedForm.first.second;
         String email = validatedForm.second.first;
         String password = validatedForm.second.second;

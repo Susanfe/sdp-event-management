@@ -37,7 +37,7 @@
                 android:layout_below="@+id/event_thumbnail"
                 android:maxLines="3"
                 android:padding="8dp"
-                android:text="Event name"
+                android:text="@string/event_list_item_default_title"
                 android:textStyle="bold"
                 android:textSize="22sp" />
 
@@ -48,7 +48,7 @@
                     android:id="@+id/event_summary"
                     android:maxLines="3"
                     android:padding="8dp"
-                    android:text="This is a quick summary of the event"
+                    android:text="@string/event_list_item_default_description"
                     android:textColor="#666"
                     android:textSize="14sp" />
 

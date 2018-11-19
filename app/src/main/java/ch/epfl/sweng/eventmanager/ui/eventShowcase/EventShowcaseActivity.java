@@ -233,6 +233,7 @@ public class EventShowcaseActivity extends AppCompatActivity implements Navigati
                 break;
 
             case R.id.nav_scan:
+                // TODO Handle null pointer exception
                 startActivity(ticketingManager.start(model.getEvent().getValue(), this));
                 break;
 

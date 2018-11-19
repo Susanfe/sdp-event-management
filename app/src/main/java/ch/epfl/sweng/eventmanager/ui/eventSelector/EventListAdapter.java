@@ -2,6 +2,8 @@ package ch.epfl.sweng.eventmanager.ui.eventSelector;
 
 import android.content.Context;
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +31,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         @BindView(R.id.event_thumbnail)
         ImageView eventThumbnail;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
             itemView.setOnClickListener(this);
@@ -46,18 +48,18 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         }
     }
 
-    public EventListAdapter(List<Event> myEvents) {
+    EventListAdapter(List<Event> myEvents) {
         mEvents = myEvents;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
+    @NonNull
     public EventListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
-        View v = (View) LayoutInflater.from(parent.getContext())
+        View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.event_list_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)

@@ -1,16 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 
 import android.os.SystemClock;
-import androidx.test.espresso.contrib.DrawerActions;
-import androidx.test.espresso.contrib.NavigationViewActions;
-
 import android.view.Gravity;
-import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.test.EventTestRule;
-import ch.epfl.sweng.eventmanager.ticketing.ErrorCodes;
-import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
-import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -18,6 +9,15 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Collections;
+
+import androidx.test.espresso.contrib.DrawerActions;
+import androidx.test.espresso.contrib.NavigationViewActions;
+import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.test.EventTestRule;
+import ch.epfl.sweng.eventmanager.ticketing.ErrorCodes;
+import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;

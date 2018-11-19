@@ -45,7 +45,28 @@
                 android:value="@string/google_maps_key"/>
 
         <activity android:name=".ui.eventSelector.EventPickingActivity"
-                  android:launchMode="singleTop"/>
+            android:launchMode="singleTop">
+
+            <!-- TODO Setup URI addressing for app indexing -->
+            <!-- Source stackoverflow answer https://stackoverflow.com/a/34368811-->
+            <intent-filter android:label="@string/filter_title_event_picking">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <!-- Accepts URIs that begin with "http://www.example.com/sdp” -->
+                <data android:scheme="http"
+                    android:host="www.example.com"
+                    android:pathPrefix="/sdp" />
+
+                <!-- note that the leading "/" is required for pathPrefix-->
+                <!-- Accepts URIs that begin with "example://sdp” -->
+                <data android:scheme="example"
+                    android:host="sdp" />
+            </intent-filter>
+            <!-- End of TODO-->
+
+        </activity>
 
         <activity android:name=".ui.userManager.LoginActivity"
             android:label="@string/title_activity_login" />

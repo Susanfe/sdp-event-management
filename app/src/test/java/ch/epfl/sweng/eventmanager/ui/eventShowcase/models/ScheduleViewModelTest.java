@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -94,19 +95,19 @@ public class ScheduleViewModelTest {
     @Test
     public void  buildJoinedScheduledItemsListOnNull() {
         ScheduleViewModel scheduleViewModel = new ScheduleViewModel(null,null);
-        assertEquals(null,scheduleViewModel.getJoinedScheduleItems());
+        assertNull(scheduleViewModel.getJoinedScheduleItems());
     }
 
     @Test
     public void getScheduleItemForRoomOnNull() {
         ScheduleViewModel scheduleViewModel = new ScheduleViewModel(null,null);
-        assertEquals(null,scheduleViewModel.getScheduleItemsByRoom());
+        assertNull(scheduleViewModel.getScheduleItemsByRoom());
     }
 
     @Test
     public void buildScheduleItemByRoomOnNull() {
         ScheduleViewModel scheduleViewModel = new ScheduleViewModel(null,null);
-        assertEquals(null,scheduleViewModel.getScheduleItemsByRoom());
+        assertNull(scheduleViewModel.getScheduleItemsByRoom());
     }
 
     @Test

@@ -3,15 +3,9 @@ package ch.epfl.sweng.eventmanager.ui.myschedule;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.os.SystemClock;
-import androidx.test.espresso.contrib.DrawerActions;
-import androidx.test.espresso.contrib.NavigationViewActions;
-import androidx.test.espresso.intent.Intents;
-import androidx.test.runner.AndroidJUnit4;
 import android.view.Gravity;
 import android.view.View;
-import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.test.EventTestRule;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -19,18 +13,29 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import androidx.test.espresso.contrib.DrawerActions;
+import androidx.test.espresso.contrib.NavigationViewActions;
+import androidx.test.espresso.intent.Intents;
+import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.test.EventTestRule;
+import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.*;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
+import static androidx.test.espresso.action.ViewActions.swipeLeft;
+import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.isInternal;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
+import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.AllOf.allOf;
 
-@RunWith(AndroidJUnit4.class)
 public class MyScheduleTest {
     @Rule
     public final EventTestRule<EventShowcaseActivity> mActivityRule =
@@ -95,7 +100,7 @@ public class MyScheduleTest {
         SystemClock.sleep(200);
 
         onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
-        onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click()).check(matches(isCompletelyDisplayed()));;
+        onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click()).check(matches(isCompletelyDisplayed()));
 
         SystemClock.sleep(1000);
 
