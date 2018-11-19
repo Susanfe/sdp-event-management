@@ -75,13 +75,6 @@ public class EventPickingActivity extends AppCompatActivity {
         //BottomSheet
         bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         setSheetBehavior();
-        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-        int height = displayMetrics.heightPixels;
-        int maxHeight = (int) (height*0.80);
-        ViewGroup.LayoutParams params = layoutBottomSheet.getLayoutParams();
-        // Changes the height and width to the specified *pixels*
-        params.height = maxHeight;
-        layoutBottomSheet.setLayoutParams(params);
 
         setupObservers();
 
@@ -93,7 +86,6 @@ public class EventPickingActivity extends AppCompatActivity {
         helpText.setVisibility(View.GONE);
 
         // Event list
-        eventList.setHasFixedSize(true);
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
 
