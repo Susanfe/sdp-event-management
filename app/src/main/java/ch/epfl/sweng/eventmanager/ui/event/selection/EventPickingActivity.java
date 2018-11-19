@@ -1,15 +1,13 @@
-package ch.epfl.sweng.eventmanager.ui.eventSelector;
+package ch.epfl.sweng.eventmanager.ui.event.selection;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,16 +24,18 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
-import ch.epfl.sweng.eventmanager.ui.userManager.LoginActivity;
+import ch.epfl.sweng.eventmanager.ui.event.selection.EventListAdapter;
+import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingModel;
+import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
+import ch.epfl.sweng.eventmanager.ui.user.LoginActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import dagger.android.AndroidInjection;
-import jp.wasabeef.recyclerview.animators.*;
+import jp.wasabeef.recyclerview.animators.LandingAnimator;
+import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator;
 
 import javax.inject.Inject;
-import java.util.Collections;
 
 public class EventPickingActivity extends AppCompatActivity {
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";

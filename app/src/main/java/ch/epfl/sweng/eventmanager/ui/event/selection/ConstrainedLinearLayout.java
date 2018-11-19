@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.eventSelector;
+package ch.epfl.sweng.eventmanager.ui.event.selection;
 
 import android.annotation.TargetApi;
 import android.content.Context;
