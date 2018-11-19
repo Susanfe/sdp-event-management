@@ -1,6 +1,5 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
-import android.view.animation.Transformation;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
@@ -8,17 +7,24 @@ import ch.epfl.sweng.eventmanager.repository.data.EventRating;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.List;
 
+@Singleton
 public class FirebaseFeedbackRepository implements FeedbackRepository {
     private static final String FIREBASE_REF = "ratings";
 
+    @Inject
+    public FirebaseFeedbackRepository() {
+    }
+
+    @Override
     public Task<Void> publishRating(int eventId, EventRating rating) {
         return FirebaseHelper.publishElement(eventId, FIREBASE_REF, rating);
     }
 
+    @Override
     public LiveData<List<EventRating>> getRatings(int eventId) {
         DatabaseReference dbRef = FirebaseDatabase.getInstance()
                 .getReference(FIREBASE_REF)
