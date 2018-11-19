@@ -145,6 +145,7 @@ public class EventPickingActivity extends AppCompatActivity {
             }
             eventsAdapter.update(list.getOtherEvents());
             joinedEventsAdapter.update(list.getJoinedEvents());
+            progressBar.setVisibility(View.GONE);
 
             //once data is loaded
             helpText.setVisibility(View.VISIBLE);
