@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository;
 
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseEventRepository;
+import ch.epfl.sweng.eventmanager.repository.impl.FirebaseFeedbackRepository;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseNewsRepository;
 import dagger.Binds;
 import dagger.Module;
@@ -20,4 +21,7 @@ public abstract class RepositoriesModule {
     @Singleton
     abstract EventRepository providesEventRepository(FirebaseEventRepository repository);
 
+    @Binds
+    @Singleton
+    abstract FeedbackRepository providesFeedbackRepository(FirebaseFeedbackRepository repository);
 }

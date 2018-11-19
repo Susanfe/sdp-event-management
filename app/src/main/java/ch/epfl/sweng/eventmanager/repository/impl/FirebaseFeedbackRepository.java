@@ -41,11 +41,22 @@ public class FirebaseFeedbackRepository implements FeedbackRepository {
     private Float getTotalRating(List<EventRating> ratings) {
         float mean = 0;
 
-        for (EventRating eventRating : ratings) {
+        for (EventRating eventRating : ratings)
             mean += eventRating.getRating();
-        }
-        mean /= ratings.size();
 
-        return mean;
+        return mean / ratings.size();
+    }
+
+    @Override
+    public LiveData<Boolean> isRatingAlreadyPublished(int eventId, String deviceId) {
+        LiveData<List<EventRating>> eventRatings = getRatings(eventId);
+
+        return Transformations.map(eventRatings, ratings -> {
+            for (EventRating eventRating: ratings){
+                if (eventRating.getDeviceId().equals(deviceId))
+                    return true;
+            }
+            return false;
+        });
     }
 }

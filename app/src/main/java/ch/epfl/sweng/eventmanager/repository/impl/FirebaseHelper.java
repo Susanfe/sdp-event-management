@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.annotation.NonNull;
 import android.util.Log;
+import androidx.lifecycle.Transformations;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
 
@@ -14,6 +16,8 @@ import java.util.List;
  * @author Louis Vialar
  */
 public class FirebaseHelper {
+    private static final String TAG = "FirebaseHelper";
+
     public static <T> LiveData<List<T>> getList(DatabaseReference dbRef, Class<T> classOfT) {
         final MutableLiveData<List<T>> data = new MutableLiveData<>();
 
@@ -31,26 +35,6 @@ public class FirebaseHelper {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.w("FirebaseHelper", "Error when getting data list.", databaseError.toException());
-            }
-        });
-
-        return data;
-    }
-
-    public static <T> LiveData<T> getElement(DatabaseReference dbRef, Class<T> classOfT) {
-        final MutableLiveData<T> data = new MutableLiveData<>();
-
-        dbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                T elem = dataSnapshot.getValue(classOfT);
-
-                data.postValue(elem);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w("FirebaseHelper", "Error when getting data element.", databaseError.toException());
             }
         });
 
