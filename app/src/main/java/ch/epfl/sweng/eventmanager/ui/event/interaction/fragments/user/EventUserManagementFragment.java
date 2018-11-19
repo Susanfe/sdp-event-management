@@ -38,8 +38,12 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
         model.getEvent().observe(this, ev -> {
             if (ev == null) {
                 Log.e(TAG, "Got null model from parent activity");
-                return;
             }
+
+            mUserListAdapter = new UserListAdapter(ev);
+            mUserList.setAdapter(mUserListAdapter);
+
+            return;
         });
     }
 
@@ -54,10 +58,6 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
         mUserList.setHasFixedSize(true);
         RecyclerView.LayoutManager userListLayoutManager = new LinearLayoutManager(getActivity());
         mUserList.setLayoutManager(userListLayoutManager);
-
-        String[] data = {"a", "b", "c"};
-        mUserListAdapter = new UserListAdapter(data);
-        mUserList.setAdapter(mUserListAdapter);
 
         return view;
     }

@@ -5,13 +5,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.users.Role;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
-    private String[] mDataset;
+    private Map<String, List<Role>> mUsers;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -28,8 +35,20 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public UserListAdapter(String[] myDataset) {
-        mDataset = myDataset;
+    public UserListAdapter(Event event) {
+
+        // Build our internal User to Roles representation
+        Map<String, List<String>> raw = event.getUsers();
+        mUsers = new HashMap<>();
+        for (String rawRole : raw.keySet()) {
+            for (String uid : raw.get(rawRole)) {
+                List roleList = mUsers.get(rawRole);
+                if (roleList == null) roleList = new ArrayList();
+
+                roleList.add(Role.valueOf(rawRole.toUpperCase()));
+                mUsers.put(uid, roleList);
+            }
+        }
     }
 
     // Create new views (invoked by the layout manager)
@@ -46,16 +65,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.userUid.setText(mDataset[position]);
-
+        List<String> index = new ArrayList<String>(mUsers.keySet());
+        holder.userUid.setText(index.get(position));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mUsers.size();
     }
 }
 
