@@ -6,10 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckedTextView;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -33,6 +30,14 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     Button schedule;
     @BindView(R.id.main_fragment_map)
     Button map;
+    @BindView(R.id.join_event_button)
+    CheckedTextView joinEventButton;
+    @BindView(R.id.event_description)
+    TextView eventDescription;
+    @BindView(R.id.event_image)
+    ImageView eventImage;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     public EventMainFragment() {
         // Required empty public constructor
@@ -53,14 +58,13 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             // Set window title
             getActivity().setTitle(ev.getName());
 
-            TextView eventDescription = view.findViewById(R.id.event_description);
             eventDescription.setText(ev.getDescription());
+            eventDescription.setVisibility(View.VISIBLE);
 
-            ImageView eventLogo = view.findViewById(R.id.event_image);
-            eventLogo.setImageBitmap(ev.getImage());
+            eventImage.setImageBitmap(ev.getImage());
+            eventImage.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
 
-            // Binds the 'joined event' switch to the database
-            CheckedTextView joinEventButton = view.findViewById(R.id.join_event_button);
             // State of the switch depends on if the user joined the event
             this.model.isJoined(ev).observe(this, joinEventButton::setChecked);
             joinEventButton.setOnClickListener(v -> {
