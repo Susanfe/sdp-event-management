@@ -47,8 +47,9 @@ public final class TicketingLoginActivity extends TicketingActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_ticketing_login);
+        ButterKnife.bind(this);
+
         toolbar.setTitle(R.string.ticketing_title_text);
 
         // Set up the login form.
@@ -63,13 +64,6 @@ public final class TicketingLoginActivity extends TicketingActivity {
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(view1 -> attemptLogin());
 
-    }
-
-    @Override
-    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-        View view = super.onCreateView(parent, name, context, attrs);
-        ButterKnife.bind(this, view);
-        return view;
     }
 
     private boolean checkFieldInvalid(EditText textView, Validator isValid) {
