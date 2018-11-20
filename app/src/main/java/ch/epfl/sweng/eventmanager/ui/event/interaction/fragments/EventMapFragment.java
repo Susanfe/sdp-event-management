@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
+import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -41,6 +42,9 @@ import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import dagger.android.support.AndroidSupportInjection;
+
+import javax.inject.Inject;
 
 /**
  * Display the map and his features
@@ -54,6 +58,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     private static final float ZOOMLEVEL = 19.0f; //This goes up to 21
     public static final String TAB_NB_KEY = "ch.epfl.sweng.eventmanager.TAB_NB_KEY";
     private GoogleMap mMap;
+
+    @Inject
+    ViewModelFactory factory;
     private ClusterManager<Spot> mClusterManager;
     protected SpotsModel spotsModel;
     protected ZoneModel zonesModel;
@@ -67,19 +74,25 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
         if (spotsModel == null) {
-            spotsModel = ViewModelProviders.of(requireActivity()).get(SpotsModel.class);
+            spotsModel = ViewModelProviders.of(requireActivity(), factory).get(SpotsModel.class);
         }
 
         if(zonesModel == null) {
-            zonesModel = ViewModelProviders.of(requireActivity()).get(ZoneModel.class);
+            zonesModel = ViewModelProviders.of(requireActivity(), factory).get(ZoneModel.class);
         }
 
         if(scheduleViewModel == null) {
-            scheduleViewModel = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
+            scheduleViewModel = ViewModelProviders.of(requireActivity(), factory).get(ScheduleViewModel.class);
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
