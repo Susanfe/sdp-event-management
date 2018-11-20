@@ -31,7 +31,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            style="@style/Button_global"/>
+            style="@style/Button_global"
+            android:text="@string/logout_button"/>
 
         <TextView
             android:id="@+id/main_text"
