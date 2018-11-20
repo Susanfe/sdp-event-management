@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.event.selection;
 
+import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -79,24 +80,29 @@ public class EventPickingActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //BottomSheet
-        bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
-        setSheetBehavior();
+        setupBottomSheet();
 
-        // Event list
+        setupAdapters();
+    }
+
+    /**
+     * Setup lists layout and adapters
+     */
+    private void setupAdapters() {
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
-
-        // Event lists
         eventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.Event);
         setupRecyclerView(eventList, eventsAdapter, new OvershootInRightAnimator());
         joinedEventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.JoinedEvents);
         setupRecyclerView(joinedEventsList, joinedEventsAdapter, new LandingAnimator());
     }
 
+
     /**
-     * bottom sheet state change listener
+     * Setup bottom sheet and related behavior
      */
-    private void setSheetBehavior() {
+    private void setupBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
