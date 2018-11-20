@@ -78,7 +78,6 @@ public class MockEventsRepository implements EventRepository {
                 "} ]\n";
 
 
-
         TypeToken<List<Zone>> zonesToken = new TypeToken<List<Zone>>() {
         };
 
@@ -92,11 +91,10 @@ public class MockEventsRepository implements EventRepository {
                 " \"latitude\" : 46.517365,\n        \"longitude\" :" +
                 " 6.566036\n      } ]\n    } ]";
 
-
-
-        Map<String, List<String>> usersMap = new HashMap<>();
-        usersMap.put("admin", Collections.singletonList(DummyInMemorySession.DUMMY_UID));
-
+        Map<String, Map<String, String>> usersMap = new HashMap<>();
+        Map<String, String> userUids = new HashMap<>();
+        userUids.put("key1", DummyInMemorySession.DUMMY_UID);
+        usersMap.put("admin", userUids);
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact",

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
@@ -145,17 +144,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         setHighlightedItemInNavigationDrawer();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // set item as selected to persist highlight
         menuItem.setChecked(true);

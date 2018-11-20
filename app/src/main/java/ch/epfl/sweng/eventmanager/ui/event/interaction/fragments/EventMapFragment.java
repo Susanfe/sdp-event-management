@@ -12,9 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
-import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -29,6 +26,8 @@ import com.google.maps.android.ui.IconGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -39,12 +38,13 @@ import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 import ch.epfl.sweng.eventmanager.repository.data.MultiDrawable;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
+import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.support.AndroidSupportInjection;
-
-import javax.inject.Inject;
 
 /**
  * Display the map and his features

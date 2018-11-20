@@ -1,0 +1,14 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+    "$event_id": {
+      ".read": true,
+      ".write": "auth != null && data.child('users').child('admin').val() === auth.uid"
+    },
+    "ratings": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

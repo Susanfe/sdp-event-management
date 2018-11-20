@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize"
     tools:context=".ui.event.interaction.fragments.EventMapFragment"
-          class="com.google.android.gms.maps.SupportMapFragment"
-          android:id="@+id/mapFragment">
+    class="com.google.android.gms.maps.SupportMapFragment"
+    android:id="@+id/mapFragment">
 
     <TextView
         android:id="@+id/text_test"
