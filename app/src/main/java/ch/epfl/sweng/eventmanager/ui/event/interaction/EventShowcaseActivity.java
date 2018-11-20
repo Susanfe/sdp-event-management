@@ -10,10 +10,10 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
-import androidx.core.view.GravityCompat;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
@@ -27,6 +27,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionMo
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
 import ch.epfl.sweng.eventmanager.users.Role;
@@ -46,6 +47,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
+    private ZoneModel zonesModel;
     private Fragment eventMainFragment;
     private Fragment eventMapFragment;
     private Fragment newsFragment;
@@ -65,6 +67,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
         this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
         this.spotsModel.init(eventID);
+
+        this.zonesModel = ViewModelProviders.of(this, factory).get(ZoneModel.class);
+        this.zonesModel.init(eventID);
     }
 
     private void setupMenu() {

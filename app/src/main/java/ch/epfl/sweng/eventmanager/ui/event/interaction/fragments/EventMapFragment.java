@@ -262,5 +262,4 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
                     scheduleParentFragment, true);
         }
     }
-
 }
