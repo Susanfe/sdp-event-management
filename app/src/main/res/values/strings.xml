@@ -43,6 +43,10 @@
     <string name="logout_button">Log out</string>
     <string name="account_button">My account</string>
     <string name="back_button">Back</string>
+    <string name="add_button">Add</string>
+
+    <string name="add_user_success">The user was added to this event</string>
+    <string name="add_user_failure">Could not add the user to this event</string>
 
     <string name="main_nav_item_activity_event_showcase">Description</string>
     <string name="map_nav_item_activity_event_showcase">Map</string>
@@ -52,6 +56,11 @@
     <string name="pick_event_nav_item_activity_event_showcase">Event picker</string>
     <string name="user_management_nav_item_activity_event">User management</string>
     <string name="showcase_nav_item_activity_event">Public area</string>
+
+    <string name="user_management_help_text">This page allows you to add and remove roles specific
+        to this event.</string>
+    <string name="user_list_left_header">User</string>
+    <string name="user_list_right_header">Roles</string>
 
     <string name="timeline_view_added_to_own_schedule">Event added to your schedule!</string>
     <string name="timeline_view_removed_from_own_schedule">Event removed from your schedule!</string>
