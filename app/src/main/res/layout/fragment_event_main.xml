@@ -23,12 +23,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/event_main_content" android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true" android:layout_alignParentLeft="true">
 
         <RatingBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/feedback_ratingBar"
-                android:layout_alignTop="@+id/event_main_content" android:layout_alignStart="@+id/event_main_content"/>
+                android:layout_alignTop="@+id/event_main_content" android:layout_alignStart="@+id/event_main_content"
+                android:layout_alignLeft="@+id/event_main_content"/>
         <ImageView
                 android:id="@+id/event_image"
                 android:layout_width="match_parent"
