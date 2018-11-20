@@ -23,6 +23,9 @@
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@android:color/white"/>
 
+        <RatingBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/feedback_ratingBar"/>
         <TextView
             android:id="@+id/event_description"
             android:layout_width="367dp"
@@ -74,18 +77,18 @@
             android:layout_weight="20"
             android:id="@+id/main_fragment_relative">
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentBottom="true">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true">
 
                 <Button
-                    android:id="@+id/contact_form_go_button"
-                    style="@style/Button_barButton_middle"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:text="@string/contact_form_main_go_button"/>
+                        android:id="@+id/contact_form_go_button"
+                        style="@style/Button_barButton_middle"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"
+                        android:text="@string/contact_form_main_go_button"/>
 
                 <Button
                         android:id="@+id/feedback_for_go_button"
@@ -95,14 +98,14 @@
                         android:layout_weight="50"
                         android:text="Feedback"/>
                 <CheckedTextView
-                    android:id="@+id/join_event_button"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:text="@string/main_fragment_join_event"
-                    android:gravity="center"
-                    android:textAlignment="gravity"
-                    style="@style/Button_barButton_checkable"/>
+                        android:id="@+id/join_event_button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"
+                        android:text="@string/main_fragment_join_event"
+                        android:gravity="center"
+                        android:textAlignment="gravity"
+                        style="@style/Button_barButton_checkable"/>
 
             </LinearLayout>
         </RelativeLayout>

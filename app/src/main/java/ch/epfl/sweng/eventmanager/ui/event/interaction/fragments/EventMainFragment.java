@@ -1,29 +1,33 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
+import android.widget.*;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckedTextView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
 import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
+import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
+import dagger.android.support.AndroidSupportInjection;
+
+import javax.inject.Inject;
 
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
  */
 public class EventMainFragment extends AbstractShowcaseFragment {
     private static final String TAG = "EventMainFragment";
+
+    @Inject
+    protected FeedbackRepository feedbackRepository;
 
     @BindView(R.id.contact_form_go_button)
     Button contactButton;
@@ -34,7 +38,9 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     @BindView(R.id.main_fragment_map)
     Button map;
     @BindView(R.id.feedback_for_go_button)
-    Button feedback;
+    Button feedbackButton;
+    @BindView(R.id.feedback_ratingBar)
+    RatingBar feedbackBar;
 
     public EventMainFragment() {
         // Required empty public constructor
@@ -60,6 +66,9 @@ public class EventMainFragment extends AbstractShowcaseFragment {
 
             ImageView eventLogo = view.findViewById(R.id.event_image);
             eventLogo.setImageBitmap(ev.getImage());
+
+            feedbackBar.setIsIndicator(true);
+            feedbackRepository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
 
             // Binds the 'joined event' switch to the database
             CheckedTextView joinEventButton = view.findViewById(R.id.join_event_button);
@@ -96,9 +105,14 @@ public class EventMainFragment extends AbstractShowcaseFragment {
 
         schedule.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new ScheduleParentFragment(), true));
 
-        feedback.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFeedbackFragment(), true));
+        feedbackButton.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFeedbackFragment(), true));
 
         return view;
+    }
 
+    @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
     }
 }

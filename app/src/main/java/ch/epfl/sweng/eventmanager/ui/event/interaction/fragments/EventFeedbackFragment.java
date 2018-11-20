@@ -17,7 +17,6 @@ import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.repository.data.EventRating;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import dagger.android.support.AndroidSupportInjection;
-
 import javax.inject.Inject;
 import java.util.UUID;
 
@@ -48,10 +47,10 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         model.getEvent().observe(this, ev -> {
             sendButton.setOnClickListener(l -> {
                 EventRating newEventRating = new EventRating(UNIQUE_ID_DEVICE, rating.getRating(), description.getText().toString());
-                //TODO Use the unique identifier to restrict each device to one feedback
+                //TODO Use a unique identifier to restrict each device to one feedbackButton
                 repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, ratingExists -> {
                     if (!ratingExists) {
-                        //Publish the rating and shows that feedback has been published
+                        //Publish the rating and shows that feedbackButton has been published
                         repository.publishRating(ev.getId(), newEventRating).addOnSuccessListener(aVoid -> {
                             Toast.makeText(getActivity(), R.string.event_feedback_submitted, Toast.LENGTH_SHORT).show();
                             // Returns to main showcase event screen
