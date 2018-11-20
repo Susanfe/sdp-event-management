@@ -1,10 +1,19 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
-import ch.epfl.sweng.eventmanager.users.Role;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import ch.epfl.sweng.eventmanager.users.Role;
+
 
 /**
  * This class holds the basic elements about an organized event.<br>
@@ -168,10 +177,9 @@ public final class Event {
     }
 
     public Collection<String> getUsersForRole(Role role) {
-        Map<String, String> uidMap = getUsers().get(role.toString().toLowerCase());
-        if (uidMap == null) return new ArrayList<>();
-
-        return uidMap.values();
+       Map<String, String> uidMap = getUsers().get(role.toString().toLowerCase());
+       if (uidMap == null) return new ArrayList<>();
+       return uidMap.values();
     }
 
     public String getTwitterName() {

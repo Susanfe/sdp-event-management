@@ -14,6 +14,7 @@ import ch.epfl.sweng.eventmanager.repository.data.User;
 @Singleton
 public class InMemoryFirebaseSession implements InMemorySession {
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseBackedUser user;
 
     @Override
     public void login(String email, String password, Activity context, OnCompleteListener callback) {
@@ -29,8 +30,12 @@ public class InMemoryFirebaseSession implements InMemorySession {
 
     @Override
     public User getCurrentUser() {
-        if (mAuth.getCurrentUser() == null) return null;
-        else return new FirebaseBackedUser(mAuth.getCurrentUser());
+        if (mAuth.getCurrentUser() == null) user = null;
+        else if (user == null || user.getUid() != mAuth.getCurrentUser().getUid()) {
+            user = new FirebaseBackedUser(mAuth.getCurrentUser());
+        }
+
+        return user;
     }
 
     @Override
