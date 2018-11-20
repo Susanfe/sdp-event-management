@@ -4,17 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
@@ -27,20 +32,21 @@ import java.util.List;
 public final class TicketingConfigurationPickerActivity extends TicketingActivity {
     private static final String TAG = "ConfigurationPicker";
 
-    private ScrollView mPickerView;
+    @BindView(R.id.activity_ticketing_toolbar)
+    private Toolbar toolbar;
+    @BindView(R.id.recycler)
     private RecyclerView mRecycler;
-    private TextView mTitle;
-    private ConfigurationAdapter adapter;
+    @BindView(R.id.swipe_refresher)
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private ConfigurationAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticketing_configuration_picker);
 
-        this.mRecycler = findViewById(R.id.recylcer);
-        this.mTitle = findViewById(R.id.pick_config);
-        this.swipeRefreshLayout = findViewById(R.id.swipe_refresher);
+        toolbar.setTitle(R.string.pick_configuration);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecycler.setLayoutManager(layoutManager);
@@ -59,6 +65,13 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
         this.swipeRefreshLayout.setOnRefreshListener(this::fetchData);
     }
 
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+        View view = super.onCreateView(parent, name, context, attrs);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
     private void fetchData() {
         try {
             this.service.getConfigurations(new TicketingService.ApiCallback<List<ScanConfiguration>>() {
@@ -66,7 +79,6 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
                 public void onSuccess(List<ScanConfiguration> data) {
                     adapter.setConfigurations(data);
                     swipeRefreshLayout.setRefreshing(false);
-                    mTitle.setText(getResources().getString(R.string.pick_configuration));
 
                 }
 
@@ -75,7 +87,9 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
                     // TODO: parse errors
 
                     swipeRefreshLayout.setRefreshing(false);
-                    mTitle.setText(getResources().getString(R.string.loading_failed, errors.get(0).getMessages().get(0)));
+                    Toast.makeText(TicketingConfigurationPickerActivity.this,
+                            getResources().getString(R.string.loading_failed, errors.get(0).getMessages().get(0)),
+                            Toast.LENGTH_LONG).show();
                 }
             });
         } catch (NotAuthenticatedException e) {
@@ -140,6 +154,7 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
         private ScanConfiguration configuration;
         private TextView configName;
         private TicketingConfigurationPickerActivity activity;
+
 
         ConfigurationViewHolder(View item, TicketingConfigurationPickerActivity activity) {
             super(item);
