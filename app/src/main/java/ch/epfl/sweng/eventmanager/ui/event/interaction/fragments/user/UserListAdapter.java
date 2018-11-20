@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,16 +43,15 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     public UserListAdapter(Event event) {
 
         // Build our internal User to Roles representation
-        Map<String, List<String>> raw = event.getUsers();
-        mUsers = new HashMap<>();
-        for (String rawRole : raw.keySet()) {
-            for (String uid : raw.get(rawRole)) {
-                List roleList = mUsers.get(rawRole);
-                if (roleList == null) roleList = new ArrayList();
+        Map<Role, List<String>> raw = event.getPermissions();
 
-                roleList.add(Role.valueOf(rawRole.toUpperCase()));
-                User user = new FirebaseBackedUser(uid);
-                mUsers.put(user.getUid(), roleList);
+        mUsers = new HashMap<>();
+        for (Role role : raw.keySet()) {
+            for (String uid : raw.get(role)) {
+                List roleList = mUsers.get(uid);
+                if (roleList == null) roleList = new ArrayList();
+                roleList.add(role);
+                mUsers.put(uid, roleList);
             }
         }
     }
