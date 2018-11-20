@@ -52,7 +52,5 @@ public abstract class EventInteractionModule {
     @ContributesAndroidInjector
     abstract EventAdministrationActivity contributeEventAdminsitrationActivityInjector();
 
-    @ContributesAndroidInjector
-    abstract EventMapFragment contributeEventMapFragmentInjector();
-}
+    }
 
