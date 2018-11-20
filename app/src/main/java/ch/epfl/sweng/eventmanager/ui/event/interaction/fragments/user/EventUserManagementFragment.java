@@ -13,20 +13,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcaseFragment;
 import ch.epfl.sweng.eventmanager.users.Role;
 
@@ -128,55 +119,13 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
         setInProgressState(true);
         String email = mAddUserEmailField.getText().toString();
         String role = mAddUserSpinner.getSelectedItem().toString().toLowerCase();
-        addUser(email, ev.getId(), role)
-                .addOnCompleteListener(new OnCompleteListener<Boolean>() {
-                    @Override
-                    public void onComplete(Task<Boolean> task) {
-                        Toast toast;
-                        if (task.isSuccessful()) {
-                            toast = Toast.makeText(getActivity(),
-                                    getString(R.string.add_user_success), Toast.LENGTH_LONG);
-                        } else {
-                            toast = Toast.makeText(getActivity(),
-                                    getString(R.string.add_user_failure), Toast.LENGTH_LONG);
-                        }
-                        toast.show();
-                        setInProgressState(false);
-                    }
-                });
-    }
-
-    /**
-     * Calls a dedicated FireBase Cloud Function allowing an event's administrator to add an user to
-     * its event.
-     *
-     * FIXME: move out of this fragment?
-     *
-     * @param email email of the target user
-     * @param eventId target event
-     * @param role string representation role to be assigned to the target user
-     * @return the related task
-     */
-    private Task<Boolean> addUser(String email, int eventId, String role) {
-        // Prepare parameters for the Firebase Cloud Function
-        Map<String, Object> data = new HashMap<>();
-        data.put("eventId", eventId);
-        data.put("userEmail", email);
-        data.put("role", role);
-        data.put("push", true);
-
-        return FirebaseFunctions.getInstance()
-                .getHttpsCallable("addUserToEvent")
-                .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, Boolean>() {
-                    @Override
-                    public Boolean then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        // This continuation runs on either success or failure, but if the task
-                        // has failed then getResult() will throw an Exception which will be
-                        // propagated down.
-                        Boolean result = (Boolean) task.getResult().getData();
-                        return result;
-                    }
+        FirebaseCloudFunction.addUserToEvent(email, ev.getId(), role)
+                .addOnCompleteListener(task -> {
+                    String toastText;
+                    if (task.isSuccessful()) toastText = getString(R.string.add_user_success);
+                    else toastText = getString(R.string.add_user_failure);
+                    Toast.makeText(getActivity(), toastText, Toast.LENGTH_LONG).show();
+                    setInProgressState(false);
                 });
     }
 }
