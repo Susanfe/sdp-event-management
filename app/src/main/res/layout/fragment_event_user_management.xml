@@ -72,7 +72,7 @@
         android:padding="16dp">
 
         <EditText
-            android:id="@+id/form_mail"
+            android:id="@+id/add_user_mail_field"
             android:layout_width="177dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -80,13 +80,13 @@
             android:inputType="textEmailAddress" />
 
         <Spinner
-            android:id="@+id/form_spinner"
+            android:id="@+id/add_user_spinner"
             android:layout_width="68dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/form_button"
+            android:id="@+id/add_user_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />

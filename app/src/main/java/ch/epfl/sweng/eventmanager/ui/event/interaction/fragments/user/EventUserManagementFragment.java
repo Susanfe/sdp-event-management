@@ -10,14 +10,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcaseFragment;
 import ch.epfl.sweng.eventmanager.users.Role;
 
@@ -30,6 +42,9 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
 
     private RecyclerView mUserList;
     private UserListAdapter mUserListAdapter;
+    private EditText mAddUserEmailField;
+    private Spinner mAddUserSpinner;
+    private Button mAddUserButton;
 
     public EventUserManagementFragment() {
         // Required empty public constructor
@@ -47,6 +62,9 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
 
             mUserListAdapter = new UserListAdapter(ev);
             mUserList.setAdapter(mUserListAdapter);
+
+            // Set handler on addUser form
+            mAddUserButton.setOnClickListener(v -> addUser(v, ev));
 
             return;
         });
@@ -73,19 +91,60 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
         mUserList.setLayoutManager(userListLayoutManager);
 
         // Add user/role form
-        Spinner formSpinner = view.findViewById(R.id.form_spinner);
+        mAddUserEmailField = view.findViewById(R.id.add_user_mail_field);
+        mAddUserEmailField.setHint(getString(R.string.email_field));
+
+        mAddUserSpinner = view.findViewById(R.id.add_user_spinner);
         String[] roles = Role.asArrayOfString();
-        ArrayAdapter<String> formSpinnerAdapter = new ArrayAdapter<String>(getActivity(),
+        ArrayAdapter<String> addUserSpinnerAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_item, roles);
-        formSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        formSpinner.setAdapter(formSpinnerAdapter);
+        addUserSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mAddUserSpinner.setAdapter(addUserSpinnerAdapter);
 
-        Button formButton = view.findViewById(R.id.form_button);
-        formButton.setText(getString(R.string.add_button));
-
-        EditText formMail = view.findViewById(R.id.form_mail);
-        formMail.setHint(getString(R.string.email_field));
+        mAddUserButton = view.findViewById(R.id.add_user_button);
+        mAddUserButton.setText(getString(R.string.add_button));
 
         return view;
+    }
+
+    private Task<String> addUser(String email, int eventId, String role) {
+        // Prepare parameters for the Firebase Cloud Function
+        Map<String, Object> data = new HashMap<>();
+        data.put("eventId", eventId);
+        data.put("userEmail", email);
+        data.put("role", role);
+        data.put("push", true);
+
+        return FirebaseFunctions.getInstance()
+                .getHttpsCallable("addUserToEvent")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        String result = (String) task.getResult().getData();
+                        return result;
+                    }
+                });
+    }
+
+    public void addUser(View v, Event ev) {
+        String email = mAddUserEmailField.getText().toString();
+        String role = mAddUserSpinner.getSelectedItem().toString().toLowerCase();
+        addUser(email, getId(), role)
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(Task<String> task) {
+                        Toast toast;
+                        if (task.isSuccessful()) {
+                            toast = Toast.makeText(getActivity(), "Successfully added user", Toast.LENGTH_SHORT);
+                        } else {
+                            toast = Toast.makeText(getActivity(), "Failed to add user", Toast.LENGTH_SHORT);
+                        }
+                        toast.show();
+                    }
+                });
     }
 }
