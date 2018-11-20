@@ -30,15 +30,15 @@ import java.util.List;
 public final class TicketingLoginActivity extends TicketingActivity {
     // UI references.*
     @BindView(R.id.ticketing_login_email)
-    private EditText mEmailView;
+    EditText mEmailView;
     @BindView(R.id.ticketing_login_password)
-    private EditText mPasswordView;
+    EditText mPasswordView;
     @BindView(R.id.ticketing_login_progress)
-    private View mProgressView;
+    View mProgressView;
     @BindView(R.id.ticketing_login_form)
-    private View mLoginFormView;
+    View mLoginFormView;
     @BindView(R.id.ticketing_login_toolbar)
-    private Toolbar toolbar;
+    Toolbar toolbar;
 
     public TicketingLoginActivity() {
     }

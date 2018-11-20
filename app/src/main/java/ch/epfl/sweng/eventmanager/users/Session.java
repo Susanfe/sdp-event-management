@@ -62,6 +62,7 @@ public final class Session {
         Map<Role, List<String>> roleToUidMap = ev.getPermissions();
 
         String currentUid = getCurrentUser().getUid();
+        // TODO handle null pointer exception
         return (roleToUidMap.containsKey(role) && roleToUidMap.get(role).contains(currentUid));
     }
 }

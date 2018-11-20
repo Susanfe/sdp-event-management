@@ -33,11 +33,11 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
     private static final String TAG = "ConfigurationPicker";
 
     @BindView(R.id.activity_ticketing_toolbar)
-    private Toolbar toolbar;
+    Toolbar toolbar;
     @BindView(R.id.recycler)
-    private RecyclerView mRecycler;
+    RecyclerView mRecycler;
     @BindView(R.id.swipe_refresher)
-    private SwipeRefreshLayout swipeRefreshLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private ConfigurationAdapter adapter;
 

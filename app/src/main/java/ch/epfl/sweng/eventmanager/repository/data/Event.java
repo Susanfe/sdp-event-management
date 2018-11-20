@@ -158,16 +158,13 @@ public final class Event {
 
         // Don't blow up if the event does not contain any permission data
         if (getUsers() == null) return result;
-        if (getUsers().keySet() == null) return result;
 
 
         // The keys of a Java Map are unique
         for (String rawRole : getUsers().keySet()) {
             Role role = Role.valueOf(rawRole.toUpperCase());
-            List<String> users = new ArrayList<>();
-            for (String uid : getUsers().get(rawRole).values()) {
-                users.add(uid);
-            }
+            // TODO handle null pointer exception
+            List<String> users = new ArrayList<>(getUsers().get(rawRole).values());
 
             result.put(role, users);
         }

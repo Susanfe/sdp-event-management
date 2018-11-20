@@ -18,7 +18,7 @@ public abstract class AbstractShowcaseFragment extends Fragment {
     protected EventInteractionModel model;
     protected View view;
 
-    AbstractShowcaseFragment(int resource) {
+    protected AbstractShowcaseFragment(int resource) {
         this.resource = resource;
     }
 
