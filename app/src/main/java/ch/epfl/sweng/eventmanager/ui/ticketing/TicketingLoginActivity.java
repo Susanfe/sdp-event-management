@@ -2,15 +2,21 @@ package ch.epfl.sweng.eventmanager.ui.ticketing;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.Toolbar;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
@@ -22,11 +28,17 @@ import java.util.List;
  * A login screen that offers login via email/password.
  */
 public final class TicketingLoginActivity extends TicketingActivity {
-    // UI references.
+    // UI references.*
+    @BindView(R.id.ticketing_login_email)
     private EditText mEmailView;
+    @BindView(R.id.ticketing_login_password)
     private EditText mPasswordView;
+    @BindView(R.id.ticketing_login_progress)
     private View mProgressView;
+    @BindView(R.id.ticketing_login_form)
     private View mLoginFormView;
+    @BindView(R.id.ticketing_login_toolbar)
+    private Toolbar toolbar;
 
     public TicketingLoginActivity() {
     }
@@ -34,15 +46,12 @@ public final class TicketingLoginActivity extends TicketingActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_ticketing_login);
+        toolbar.setTitle(R.string.ticketing_title_text);
 
         // Set up the login form.
-        mEmailView = findViewById(R.id.email);
-
-        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                 attemptLogin();
@@ -54,8 +63,13 @@ public final class TicketingLoginActivity extends TicketingActivity {
         Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(view1 -> attemptLogin());
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
+        View view = super.onCreateView(parent, name, context, attrs);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     private boolean checkFieldInvalid(EditText textView, Validator isValid) {

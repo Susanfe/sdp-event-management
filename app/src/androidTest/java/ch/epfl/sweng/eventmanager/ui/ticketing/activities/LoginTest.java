@@ -34,8 +34,8 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
     public void testValidLogin() {
         Assert.assertFalse(getTicketingService().isLoggedIn());
 
-        onView(withId(R.id.email)).perform(typeText(MockStacks.AUTHORIZED_USER), closeSoftKeyboard());
-        onView(withId(R.id.password)).perform(typeText(MockStacks.PASSWORD), closeSoftKeyboard());
+        onView(withId(R.id.ticketing_login_email)).perform(typeText(MockStacks.AUTHORIZED_USER), closeSoftKeyboard());
+        onView(withId(R.id.ticketing_login_password)).perform(typeText(MockStacks.PASSWORD), closeSoftKeyboard());
         onView(withId(R.id.email_sign_in_button)).perform(click());
 
         Intents.intended(Matchers.allOf(
@@ -57,8 +57,8 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
 
         Intents.assertNoUnverifiedIntents();
 
-        onView(withId(R.id.email)).perform(typeText("clearly_invalid_value"), closeSoftKeyboard());
-        onView(withId(R.id.password)).perform(typeText(MockStacks.PASSWORD), closeSoftKeyboard());
+        onView(withId(R.id.ticketing_login_email)).perform(typeText("clearly_invalid_value"), closeSoftKeyboard());
+        onView(withId(R.id.ticketing_login_password)).perform(typeText(MockStacks.PASSWORD), closeSoftKeyboard());
         onView(withId(R.id.email_sign_in_button)).perform(click());
 
         Intents.assertNoUnverifiedIntents();
@@ -72,8 +72,8 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
 
         getTicketingService().failNextWith(Collections.singletonList(new ApiResult.ApiError(ErrorCodes.NOT_FOUND.getCode())));
 
-        onView(withId(R.id.email)).perform(typeText(MockStacks.AUTHORIZED_USER), closeSoftKeyboard());
-        onView(withId(R.id.password)).perform(typeText(MockStacks.PASSWORD), closeSoftKeyboard());
+        onView(withId(R.id.ticketing_login_email)).perform(typeText(MockStacks.AUTHORIZED_USER), closeSoftKeyboard());
+        onView(withId(R.id.ticketing_login_password)).perform(typeText(MockStacks.PASSWORD), closeSoftKeyboard());
         onView(withId(R.id.email_sign_in_button)).perform(click());
 
         //onView(withText(Matchers.startsWith("Erreur de connexion"))).inRoot(new ToastMatcher()).check(matches(isDisplayed()));

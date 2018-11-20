@@ -82,6 +82,7 @@
     <string name="ticketing_scan_user">Buyer:</string>
     <string name="ticketing_scan_bought_product">Ticket details:</string>
     <string name="ticketing_requires_login">You have to be logged in to do that.</string>
+    <string name="ticketing_title_text">Login for Scanning Services</string>
     <string name="send_news_title">Create a news</string>
     <string name="send_news_title_field">Title</string>
     <string name="send_news_content">News content</string>
