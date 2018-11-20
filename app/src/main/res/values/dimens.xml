@@ -9,4 +9,6 @@
     <dimen name="list_item_spacing_half">8dp</dimen>
 
     <dimen name="event_picking_bottom_sheet_peek">56dp</dimen>
+    <dimen name="event_list_cardview_horizontal_margins">8dp</dimen>
+    <dimen name="event_list_cardview_vertical_margins">8dp</dimen>
 </resources>
