@@ -71,19 +71,25 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextView"
-            android:layout_width="167dp"
+        <EditText
+            android:id="@+id/form_mail"
+            android:layout_width="177dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="mail" />
+            android:ems="10"
+            android:inputType="textEmailAddress" />
+
+        <Spinner
+            android:id="@+id/form_spinner"
+            android:layout_width="68dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/form_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:layout_weight="1" />
 
     </LinearLayout>
 

@@ -41,6 +41,7 @@
     <string name="logout_button">Log out</string>
     <string name="account_button">My account</string>
     <string name="back_button">Back</string>
+    <string name="add_button">Add</string>
 
     <string name="main_nav_item_activity_event_showcase">Description</string>
     <string name="map_nav_item_activity_event_showcase">Map</string>
