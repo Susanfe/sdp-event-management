@@ -34,7 +34,7 @@ public class FirebaseFeedbackRepository implements FeedbackRepository {
     }
 
     @Override
-    public LiveData<Float> getTotalRating(int eventId) {
+    public LiveData<Float> getMeanRating(int eventId) {
         return Transformations.map(getRatings(eventId), this::getTotalRating);
     }
 
@@ -48,7 +48,7 @@ public class FirebaseFeedbackRepository implements FeedbackRepository {
     }
 
     @Override
-    public LiveData<Boolean> isRatingAlreadyPublished(int eventId, String deviceId) {
+    public LiveData<Boolean> ratingFromDeviceExists(int eventId, String deviceId) {
         LiveData<List<EventRating>> eventRatings = getRatings(eventId);
 
         return Transformations.map(eventRatings, ratings -> {

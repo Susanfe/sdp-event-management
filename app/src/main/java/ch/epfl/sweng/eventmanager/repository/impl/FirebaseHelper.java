@@ -16,8 +16,6 @@ import java.util.List;
  * @author Louis Vialar
  */
 public class FirebaseHelper {
-    private static final String TAG = "FirebaseHelper";
-
     public static <T> LiveData<List<T>> getList(DatabaseReference dbRef, Class<T> classOfT) {
         final MutableLiveData<List<T>> data = new MutableLiveData<>();
 

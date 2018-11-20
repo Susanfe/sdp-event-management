@@ -10,7 +10,7 @@ public interface FeedbackRepository {
 
     LiveData<List<EventRating>> getRatings(int eventId);
 
-    LiveData<Boolean> isRatingAlreadyPublished(int eventId, String deviceId);
+    LiveData<Boolean> ratingFromDeviceExists(int eventId, String deviceId);
 
-    LiveData<Float> getTotalRating(int eventId);
+    LiveData<Float> getMeanRating(int eventId);
 }
