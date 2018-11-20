@@ -42,11 +42,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupButtons() {
         mLoginButton = findViewById(R.id.login_button);
-        mLoginButton.setText(R.string.login_button);
         mLoginButton.setOnClickListener(view -> attemptLogin());
 
         mSignUpButton = findViewById(R.id.signup_button);
-        mSignUpButton.setText(R.string.signup_button);
         mSignUpButton.setOnClickListener(view -> openSignUpForm());
     }
 
