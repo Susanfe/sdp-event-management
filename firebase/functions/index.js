@@ -24,10 +24,14 @@ exports.addUserToEvent = functions.https.onCall((data, context) => {
   const currentUserUid = context.auth.uid;
   //const currentUserUid = "u0YmYQasWpNaNYZt4iXngV0aTxF3"; // Used locally for debug
 
+  // FIXME: improve robustness
   admin.database()
     .ref('/events/' + eventId + '/users/admin/')
     .once('value', snapshot => {
-      if (Object.values(snapshot.val()).includes(currentUserUid)) {
+      // Object.values() is not supported on NodeJS 6, which is used by Firebase
+      var eventAdmins = snapshot.val();
+      var allowedUids = Object.keys(eventAdmins).map((k) => eventAdmins[k]);
+      if (allowedUids.includes(currentUserUid)) {
         var users = admin.database().ref('/users/');
         users.orderByChild('email').equalTo(userEmail).limitToFirst(1).once('value', snapshot => {
           var match = snapshot.val();
