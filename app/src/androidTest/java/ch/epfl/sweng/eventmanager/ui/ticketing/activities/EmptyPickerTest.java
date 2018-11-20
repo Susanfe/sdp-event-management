@@ -35,7 +35,7 @@ public class EmptyPickerTest extends ActivityTest<TicketingConfigurationPickerAc
     @Test
     public void testDisplaysConfigs() {
 
-        RecyclerView recyclerView = mActivityRule.getActivity().findViewById(R.id.recylcer);
+        RecyclerView recyclerView = mActivityRule.getActivity().findViewById(R.id.recycler);
 
         Assert.assertEquals(0, recyclerView.getAdapter().getItemCount());
 
