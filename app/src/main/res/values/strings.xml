@@ -43,6 +43,9 @@
     <string name="back_button">Back</string>
     <string name="add_button">Add</string>
 
+    <string name="add_user_success">The user was added to this event</string>
+    <string name="add_user_failure">Could not add the user to this event</string>
+
     <string name="main_nav_item_activity_event_showcase">Description</string>
     <string name="map_nav_item_activity_event_showcase">Map</string>
     <string name="schedule_nav_item_activity_event_showcase">Schedule</string>

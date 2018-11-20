@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,10 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -29,7 +27,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcaseFragment;
 import ch.epfl.sweng.eventmanager.users.Role;
 
@@ -45,6 +42,7 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
     private EditText mAddUserEmailField;
     private Spinner mAddUserSpinner;
     private Button mAddUserButton;
+    private ProgressBar mAddUserProgressbar;
 
     public EventUserManagementFragment() {
         // Required empty public constructor
@@ -104,10 +102,62 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
         mAddUserButton = view.findViewById(R.id.add_user_button);
         mAddUserButton.setText(getString(R.string.add_button));
 
+        mAddUserProgressbar = view.findViewById(R.id.add_user_progress_bar);
+        setInProgressState(false);
+
         return view;
     }
 
-    private Task<String> addUser(String email, int eventId, String role) {
+    /**
+     * Set the AddUser form in a 'working' state.
+     * @param state true if a request is being processed, false otherwise
+     */
+    private void setInProgressState(boolean state) {
+        mAddUserButton.setEnabled(!state);
+        int visibility = View.INVISIBLE;
+        if (state) visibility = View.VISIBLE;
+        mAddUserProgressbar.setVisibility(visibility);
+    }
+
+    /**
+     * Callback used by the AddUser form to add an user to the current event at a given role.
+     * @param v
+     * @param ev
+     */
+    public void addUser(View v, Event ev) {
+        setInProgressState(true);
+        String email = mAddUserEmailField.getText().toString();
+        String role = mAddUserSpinner.getSelectedItem().toString().toLowerCase();
+        addUser(email, ev.getId(), role)
+                .addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                    @Override
+                    public void onComplete(Task<Boolean> task) {
+                        Toast toast;
+                        if (task.isSuccessful()) {
+                            toast = Toast.makeText(getActivity(),
+                                    getString(R.string.add_user_success), Toast.LENGTH_LONG);
+                        } else {
+                            toast = Toast.makeText(getActivity(),
+                                    getString(R.string.add_user_failure), Toast.LENGTH_LONG);
+                        }
+                        toast.show();
+                        setInProgressState(false);
+                    }
+                });
+    }
+
+    /**
+     * Calls a dedicated FireBase Cloud Function allowing an event's administrator to add an user to
+     * its event.
+     *
+     * FIXME: move out of this fragment?
+     *
+     * @param email email of the target user
+     * @param eventId target event
+     * @param role string representation role to be assigned to the target user
+     * @return the related task
+     */
+    private Task<Boolean> addUser(String email, int eventId, String role) {
         // Prepare parameters for the Firebase Cloud Function
         Map<String, Object> data = new HashMap<>();
         data.put("eventId", eventId);
@@ -118,32 +168,14 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
         return FirebaseFunctions.getInstance()
                 .getHttpsCallable("addUserToEvent")
                 .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                .continueWith(new Continuation<HttpsCallableResult, Boolean>() {
                     @Override
-                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                    public Boolean then(@NonNull Task<HttpsCallableResult> task) throws Exception {
                         // This continuation runs on either success or failure, but if the task
                         // has failed then getResult() will throw an Exception which will be
                         // propagated down.
-                        String result = (String) task.getResult().getData();
+                        Boolean result = (Boolean) task.getResult().getData();
                         return result;
-                    }
-                });
-    }
-
-    public void addUser(View v, Event ev) {
-        String email = mAddUserEmailField.getText().toString();
-        String role = mAddUserSpinner.getSelectedItem().toString().toLowerCase();
-        addUser(email, getId(), role)
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(Task<String> task) {
-                        Toast toast;
-                        if (task.isSuccessful()) {
-                            toast = Toast.makeText(getActivity(), "Successfully added user", Toast.LENGTH_SHORT);
-                        } else {
-                            toast = Toast.makeText(getActivity(), "Failed to add user", Toast.LENGTH_SHORT);
-                        }
-                        toast.show();
                     }
                 });
     }
