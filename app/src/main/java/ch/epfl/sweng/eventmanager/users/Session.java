@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.users;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 
@@ -18,8 +19,8 @@ public final class Session {
      * instantiated out of the emulator.
      */
     private static InMemorySession getSession() {
-       if (session == null) return new InMemoryFirebaseSession();
-       else return session;
+       if (session == null) session = new InMemoryFirebaseSession();
+       return session;
     }
 
     /**
@@ -57,11 +58,10 @@ public final class Session {
      */
     public static boolean isClearedFor(Role role, Event ev) {
         if (!isLoggedIn()) return false;
-        if (ev == null || ev.getUsers() == null) return false;
-        Map<String, List<String>> roleToUidMap = ev.getUsers();
+        if (ev == null || ev.getPermissions() == null) return false;
+        Map<Role, List<String>> roleToUidMap = ev.getPermissions();
 
         String currentUid = getCurrentUser().getUid();
-        String rawRole = role.toString().toLowerCase();
-        return (roleToUidMap.containsKey(rawRole) && roleToUidMap.get(rawRole).contains(currentUid));
+        return (roleToUidMap.containsKey(role) && roleToUidMap.get(role).contains(currentUid));
     }
 }
