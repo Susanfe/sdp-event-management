@@ -246,8 +246,8 @@ public class EventPickingActivity extends AppCompatActivity {
     void joinEvent(Event event) {
         this.model.joinEvent(event);
         View contextView = findViewById(R.id.event_picking_main_layout);
-        Snackbar.make(contextView, R.string.event_successfully_joined, Snackbar.LENGTH_SHORT).setAction(R.string.undo,
-                v -> {
+        Snackbar.make(contextView, R.string.event_successfully_joined, Snackbar.LENGTH_SHORT).setAction(R.string.undo
+                , v -> {
             unjoinEvent(event);
         }).show();
     }
