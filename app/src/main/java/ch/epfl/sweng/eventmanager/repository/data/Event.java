@@ -1,12 +1,10 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
+import ch.epfl.sweng.eventmanager.users.Role;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class holds the basic elements about an organized event.<br>
@@ -57,7 +55,7 @@ public final class Event {
     /**
      * A map from roles to a list of user UIDs.
      */
-    private Map<String, List<String>> users;
+    private Map<String, Map<String, String>> users;
 
     /**
      * The twitter account screen name
@@ -69,13 +67,13 @@ public final class Event {
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate,
                  EventOrganizer organizer, Bitmap image, EventLocation location,
-                 List<Spot> spotList, Map<String, List<String>> users, String twitterName) {
+                 List<Spot> spotList, Map<String, Map<String, String>> users, String twitterName) {
         this(id, name, description, beginDate, endDate, organizer, image, location, spotList, users, twitterName, null);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate,
                  EventOrganizer organizer, Bitmap image, EventLocation location,
-                 List<Spot> spotList, Map<String, List<String>> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
+                 List<Spot> spotList, Map<String, Map<String, String>> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
         this.ticketingConfiguration = ticketingConfiguration;
 
         if (beginDate.getTime() > endDate.getTime())
@@ -137,7 +135,44 @@ public final class Event {
 
     public List<Spot> getSpotList() { return spotList; }
 
-    public Map<String, List<String>> getUsers() { return users; }
+    /**
+     * Do not use, only public due to a limitation of our auto-matching with Firebase.
+     *
+     * @return firebase representation of user permissions.
+     */
+    public Map<String, Map<String, String>> getUsers() { return users; }
+
+    /**
+     * @return a map of Role permissions to User IDs
+     */
+    public Map<Role, List<String>> getPermissions() {
+        Map<Role, List<String>> result = new HashMap<>();
+
+        // Don't blow up if the event does not contain any permission data
+        if (getUsers() == null) return result;
+        if (getUsers().keySet() == null) return result;
+
+
+        // The keys of a Java Map are unique
+        for (String rawRole : getUsers().keySet()) {
+            Role role = Role.valueOf(rawRole.toUpperCase());
+            List<String> users = new ArrayList<>();
+            for (String uid : getUsers().get(rawRole).values()) {
+                users.add(uid);
+            }
+
+            result.put(role, users);
+        }
+
+        return result;
+    }
+
+    public Collection<String> getUsersForRole(Role role) {
+        Map<String, String> uidMap = getUsers().get(role.toString().toLowerCase());
+        if (uidMap == null) return new ArrayList<>();
+
+        return uidMap.values();
+    }
 
     public String getTwitterName() {
         return this.twitterName;

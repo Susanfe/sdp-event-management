@@ -30,11 +30,13 @@ import ch.epfl.sweng.eventmanager.ui.user.LoginActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.snackbar.Snackbar;
 import dagger.android.AndroidInjection;
 import jp.wasabeef.recyclerview.animators.LandingAnimator;
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator;
 
 import javax.inject.Inject;
+import java.lang.reflect.Method;
 
 public class EventPickingActivity extends AppCompatActivity {
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
@@ -245,5 +247,19 @@ public class EventPickingActivity extends AppCompatActivity {
 
     void joinEvent(Event event) {
         this.model.joinEvent(event);
+        View contextView = findViewById(R.id.event_picking_list_layout);
+        Snackbar.make(contextView, R.string.event_successfully_joined, Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, v -> {
+                        unjoinEvent(event);
+                }).show();
     }
+    void unjoinEvent(Event event) {
+        this.model.unjoinEvent(event);
+        View contextView = findViewById(R.id.event_picking_list_layout);
+        Snackbar.make(contextView, R.string.event_successfully_unjoined, Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, v -> {
+                    unjoinEvent(event);
+                }).show();
+    }
+
 }

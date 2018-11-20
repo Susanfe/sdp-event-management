@@ -82,7 +82,11 @@ public class EventPickingModel extends ViewModel {
         }
     }
 
-    public void joinEvent(Event event){
+    public void joinEvent(Event event) {
         joinedEventRepository.insert(new JoinedEvent(event));
+    }
+
+    public void unjoinEvent(Event event) {
+        joinedEventRepository.delete(new JoinedEvent(event));
     }
 }
