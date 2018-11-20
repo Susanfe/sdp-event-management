@@ -1,6 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.event.selection;
 
-import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -36,7 +35,6 @@ import jp.wasabeef.recyclerview.animators.LandingAnimator;
 import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator;
 
 import javax.inject.Inject;
-import java.lang.reflect.Method;
 
 public class EventPickingActivity extends AppCompatActivity {
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
@@ -248,18 +246,18 @@ public class EventPickingActivity extends AppCompatActivity {
     void joinEvent(Event event) {
         this.model.joinEvent(event);
         View contextView = findViewById(R.id.event_picking_list_layout);
-        Snackbar.make(contextView, R.string.event_successfully_joined, Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo, v -> {
-                        unjoinEvent(event);
-                }).show();
+        Snackbar.make(contextView, R.string.event_successfully_joined, Snackbar.LENGTH_LONG).setAction(R.string.undo,
+                v -> {
+            unjoinEvent(event);
+        }).show();
     }
+
     void unjoinEvent(Event event) {
         this.model.unjoinEvent(event);
         View contextView = findViewById(R.id.event_picking_list_layout);
-        Snackbar.make(contextView, R.string.event_successfully_unjoined, Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo, v -> {
-                    unjoinEvent(event);
-                }).show();
+        Snackbar.make(contextView, R.string.event_successfully_unjoined, Snackbar.LENGTH_LONG).setAction(R.string.undo, v -> {
+            unjoinEvent(event);
+        }).show();
     }
 
 }
