@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -39,8 +41,6 @@ import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.EventShowcaseActivity;
-import ch.epfl.sweng.eventmanager.ui.eventShowcase.models.ZoneModel;
 
 /**
  * Display the map and his features
@@ -82,8 +82,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
             scheduleViewModel = ViewModelProviders.of(requireActivity()).get(ScheduleViewModel.class);
         }
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.mapFragment);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
         if (mapFragment == null) {
             FragmentManager fragmentManager = getFragmentManager();
             // FIXME handle nullpointerexception

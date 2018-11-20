@@ -1,12 +1,8 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
-import android.arch.lifecycle.ViewModel;
-
+import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNewsFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
 import dagger.Binds;
 import dagger.Module;

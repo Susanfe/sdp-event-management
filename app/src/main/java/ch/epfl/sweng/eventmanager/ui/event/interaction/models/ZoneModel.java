@@ -1,9 +1,9 @@
-package ch.epfl.sweng.eventmanager.ui.eventShowcase.models;
+package ch.epfl.sweng.eventmanager.ui.event.interaction.models;
 
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
-import android.arch.lifecycle.LiveData;
 
 import javax.inject.Inject;
 import java.util.List;
