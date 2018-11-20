@@ -15,6 +15,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.FirebaseBackedUser;
+import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.users.Role;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
@@ -48,7 +50,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                 if (roleList == null) roleList = new ArrayList();
 
                 roleList.add(Role.valueOf(rawRole.toUpperCase()));
-                mUsers.put(uid, roleList);
+                User user = new FirebaseBackedUser(uid);
+                mUsers.put(user.getUid(), roleList);
             }
         }
     }

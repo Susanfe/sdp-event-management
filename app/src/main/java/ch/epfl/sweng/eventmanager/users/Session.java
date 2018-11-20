@@ -18,8 +18,8 @@ public final class Session {
      * instantiated out of the emulator.
      */
     private static InMemorySession getSession() {
-       if (session == null) return new InMemoryFirebaseSession();
-       else return session;
+       if (session == null) session = new InMemoryFirebaseSession();
+       return session;
     }
 
     /**
