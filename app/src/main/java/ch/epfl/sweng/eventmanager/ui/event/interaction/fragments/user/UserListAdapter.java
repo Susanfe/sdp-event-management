@@ -51,7 +51,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                 List roleList = mUsers.get(uid);
                 if (roleList == null) roleList = new ArrayList();
                 roleList.add(role);
-                mUsers.put(uid, roleList);
+
+                User user = new FirebaseBackedUser(uid);
+                // FIXME: fetch email instead of Uid once our FirebaseBackedUser suports it
+                mUsers.put(user.getUid(), roleList);
             }
         }
     }
