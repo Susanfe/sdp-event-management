@@ -45,6 +45,7 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticketing_configuration_picker);
+        ButterKnife.bind(this);
 
         toolbar.setTitle(R.string.pick_configuration);
 
@@ -63,13 +64,6 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
 
         // Setup refresh handler
         this.swipeRefreshLayout.setOnRefreshListener(this::fetchData);
-    }
-
-    @Override
-    public View onCreateView(View parent, String name, Context context, AttributeSet attrs) {
-        View view = super.onCreateView(parent, name, context, attrs);
-        ButterKnife.bind(this, view);
-        return view;
     }
 
     private void fetchData() {
@@ -150,7 +144,7 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
         }
     }
 
-    private static class ConfigurationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class ConfigurationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ScanConfiguration configuration;
         private TicketingConfigurationPickerActivity activity;
 

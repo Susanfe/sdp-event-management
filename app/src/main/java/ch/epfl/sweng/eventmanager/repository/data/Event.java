@@ -118,7 +118,7 @@ public final class Event {
         return new Date(beginDate);
     }
 
-    Date getEndDate() {
+    public Date getEndDate() {
         if (endDate <= 0) {
             return null;
         }
@@ -172,6 +172,7 @@ public final class Event {
         return result;
     }
 
+    // FIXME Use or delete method ?
     public Collection<String> getUsersForRole(Role role) {
        Map<String, String> uidMap = getUsers().get(role.toString().toLowerCase());
        if (uidMap == null) return new ArrayList<>();

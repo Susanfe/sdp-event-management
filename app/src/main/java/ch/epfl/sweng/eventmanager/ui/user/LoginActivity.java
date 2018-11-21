@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     Button mSignUpButton;
     @BindView(R.id.activity_login_progress_bar)
     ProgressBar mProgressBar;
-    @BindView(R.id.activity_login_progress_bar)
+    @BindView(R.id.activity_login_toolbar)
     Toolbar toolbar;
 
     private void setupFields() {
