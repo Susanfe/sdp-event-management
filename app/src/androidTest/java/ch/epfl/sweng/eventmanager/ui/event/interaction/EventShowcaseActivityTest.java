@@ -27,6 +27,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
+import static org.hamcrest.core.AllOf.allOf;
 
 @RunWith(AndroidJUnit4.class)
 public class EventShowcaseActivityTest {
@@ -141,6 +142,10 @@ public class EventShowcaseActivityTest {
 
         onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
                 RecyclerViewButtonClick.clickChildViewWithId(R.id.join_event_btn)));
+
+        onView(allOf(withId(R.id.snackbar_text), withText(R.string.event_successfully_joined))).check(matches(isDisplayed()));
+
+        onView(allOf(withText(R.string.undo))).perform(click());
 
         onView(withId(R.id.bottom_sheet_event_picking_text)).perform(click());
 
