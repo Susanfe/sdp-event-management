@@ -7,6 +7,7 @@ import ch.epfl.sweng.eventmanager.inject.ApplicationComponent;
 import ch.epfl.sweng.eventmanager.inject.ApplicationModule;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import ch.epfl.sweng.eventmanager.test.repository.MockRepositoriesModule;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragmentTest;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingModule;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
@@ -28,6 +29,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 public interface TestComponent extends ApplicationComponent {
     void inject(NewsFragmentTest test);
     void inject(ScanningTest test);
+    void inject(EventFeedbackFragmentTest test);
 
     @Component.Builder
     interface Builder extends ApplicationComponent.Builder {
