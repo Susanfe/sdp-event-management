@@ -83,6 +83,7 @@ public class EventShowcaseActivityTest {
     }
 
     private String getResourceString(int id) {
+        // FIXME use non deprecated methods over the following one
         Context targetContext = InstrumentationRegistry.getTargetContext();
         return targetContext.getResources().getString(id);
     }
