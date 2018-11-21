@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ch.epfl.sweng.eventmanager">
+          package="ch.epfl.sweng.eventmanager">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -8,7 +8,7 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
             android:name=".EventManagerApplication"
@@ -26,9 +26,7 @@
 
         <activity
                 android:name=".ui.SplashActivity"
-                android:theme="@style/AppTheme.Launcher" />
-
-        <activity android:name=".ui.event.selection.EventPickingActivity">
+                android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -43,35 +41,36 @@
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
+                   android:value="@string/google_maps_key"/>
         <activity
-            android:name=".ui.user.LoginActivity"
-            android:label="@string/title_activity_login" />
+                android:name=".ui.user.LoginActivity"
+                android:label="@string/title_activity_login"/>
 
         <activity android:name=".ui.user.SignUpActivity"
-            android:label="@string/title_activity_sign_up" />
+                  android:label="@string/title_activity_sign_up"/>
         <activity
-            android:name=".ui.user.DisplayAccountActivity"
-            android:label="@string/title_activity_account_display" />
+                android:name=".ui.user.DisplayAccountActivity"
+                android:label="@string/title_activity_account_display"/>
 
+        <activity android:name=".ui.event.selection.EventPickingActivity"/>
         <activity android:name=".ui.event.interaction.EventShowcaseActivity"
-          android:theme="@style/AppTheme.NoActionBar" />
+                  android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.ticketing.TicketingConfigurationPickerActivity"/>
         <activity android:name=".ui.ticketing.TicketingLoginActivity"/>
         <activity android:name=".ui.ticketing.TicketingScanActivity"/>
 
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="ch.epfl.sweng.eventmanager.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="ch.epfl.sweng.eventmanager.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
             <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_paths"/>
         </provider>
 
         <activity android:name=".ui.event.interaction.EventAdministrationActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+                  android:theme="@style/AppTheme.NoActionBar"/>
 
         <receiver android:name=".repository.impl.NotificationPublisher"/>
     </application>

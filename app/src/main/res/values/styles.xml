@@ -65,5 +65,10 @@
         <item name="android:background">@drawable/button_barbutton_checkbutton</item>
     </style>
 
+    <!--Borderless button -->
+    <style name="BorderlessButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/colorSecondary</item>
+    </style>
+
 
 </resources>
