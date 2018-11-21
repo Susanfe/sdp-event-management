@@ -60,7 +60,6 @@ public final class Session {
         if (!isLoggedIn()) return false;
         if (ev == null || ev.getPermissions() == null) return false;
         Map<Role, List<String>> roleToUidMap = ev.getPermissions();
-
         String currentUid = getCurrentUser().getUid();
         return (roleToUidMap.containsKey(role) && roleToUidMap.get(role).contains(currentUid));
     }
