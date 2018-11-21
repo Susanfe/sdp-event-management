@@ -9,7 +9,7 @@ import java.util.List;
  * @author Louis Vialar
  */
 public abstract class AbstractEventRepository<T, U extends GenericEventDAO<T, IdType>, IdType> extends AbstractRoomRepository<T, U> {
-    public AbstractEventRepository(U dao) {
+    AbstractEventRepository(U dao) {
         super(dao);
     }
 

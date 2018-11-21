@@ -1,12 +1,12 @@
 package ch.epfl.sweng.eventmanager.repository;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import androidx.annotation.Nullable;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.annotation.Nullable;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Defines a way to access LiveData synchronously. Allows to manipulate LiveData instantaneously.

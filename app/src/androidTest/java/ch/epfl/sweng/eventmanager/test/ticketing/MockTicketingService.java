@@ -1,5 +1,9 @@
 package ch.epfl.sweng.eventmanager.test.ticketing;
 
+import com.android.volley.RequestQueue;
+
+import java.util.List;
+
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
@@ -7,9 +11,6 @@ import ch.epfl.sweng.eventmanager.ticketing.TokenStorage;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
-import com.android.volley.RequestQueue;
-
-import java.util.List;
 
 /**
  * @author Louis Vialar

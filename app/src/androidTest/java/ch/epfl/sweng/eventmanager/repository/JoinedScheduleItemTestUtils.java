@@ -1,12 +1,12 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
-import ch.epfl.sweng.eventmanager.repository.room.Converters;
-import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
+import ch.epfl.sweng.eventmanager.repository.room.Converters;
+import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
 
 public class JoinedScheduleItemTestUtils extends AbstractTestUtils<JoinedScheduleItemDao, JoinedScheduleItem> {
 

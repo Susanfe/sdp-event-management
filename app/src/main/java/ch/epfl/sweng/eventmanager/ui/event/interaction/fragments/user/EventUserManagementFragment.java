@@ -49,13 +49,13 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
                 Log.e(TAG, "Got null model from parent activity");
             }
 
+            // TODO handle null pointer exception
             mUserListAdapter = new UserListAdapter(ev);
             mUserList.setAdapter(mUserListAdapter);
 
             // Set handler on addUser form
-            mAddUserButton.setOnClickListener(v -> addUser(v, ev));
+            mAddUserButton.setOnClickListener(v -> addUser(ev));
 
-            return;
         });
     }
 
@@ -85,13 +85,13 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
 
         mAddUserSpinner = view.findViewById(R.id.add_user_spinner);
         String[] roles = Role.asArrayOfString();
-        ArrayAdapter<String> addUserSpinnerAdapter = new ArrayAdapter<String>(getActivity(),
+        // TODO handle null pointer exception
+        ArrayAdapter<String> addUserSpinnerAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item, roles);
         addUserSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAddUserSpinner.setAdapter(addUserSpinnerAdapter);
 
         mAddUserButton = view.findViewById(R.id.add_user_button);
-        mAddUserButton.setText(getString(R.string.add_button));
 
         mAddUserProgressbar = view.findViewById(R.id.add_user_progress_bar);
         setInProgressState(false);
@@ -112,10 +112,9 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
 
     /**
      * Callback used by the AddUser form to add an user to the current event at a given role.
-     * @param v
-     * @param ev
+     * @param ev Event to which to add the user
      */
-    public void addUser(View v, Event ev) {
+    private void addUser(Event ev) {
         setInProgressState(true);
         String email = mAddUserEmailField.getText().toString();
         String role = mAddUserSpinner.getSelectedItem().toString().toLowerCase();

@@ -36,7 +36,7 @@ public abstract class AbstractScheduleFragment extends Fragment {
     protected abstract int getLayout();
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(getLayout(), container, false);

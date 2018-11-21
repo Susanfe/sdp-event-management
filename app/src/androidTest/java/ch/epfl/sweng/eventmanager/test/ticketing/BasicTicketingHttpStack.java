@@ -1,13 +1,18 @@
 package ch.epfl.sweng.eventmanager.test.ticketing;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import androidx.annotation.Nullable;
 import ch.epfl.sweng.eventmanager.ticketing.ErrorCodes;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.LoginResponse;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
-
-import java.util.*;
 
 /**
  * @author Louis Vialar
@@ -16,7 +21,7 @@ public class BasicTicketingHttpStack extends TicketingHttpStack {
     private final Set<String> invalidated = new HashSet<>();
     private final Map<String, ScanResult> validCodes = new HashMap<>();
 
-    public BasicTicketingHttpStack(Map<String, ScanResult> validCodes) {
+    BasicTicketingHttpStack(Map<String, ScanResult> validCodes) {
         this.validCodes.putAll(validCodes);
     }
 

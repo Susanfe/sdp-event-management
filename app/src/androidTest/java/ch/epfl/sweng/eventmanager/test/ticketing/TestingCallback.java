@@ -2,12 +2,14 @@ package ch.epfl.sweng.eventmanager.test.ticketing;
 
 import android.os.SystemClock;
 import android.util.Log;
-import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
-import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
+
 import org.junit.Assert;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
+import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 
 import static org.junit.Assert.assertTrue;
 
@@ -24,7 +26,7 @@ public class TestingCallback<T> implements TicketingService.ApiCallback<T> {
         return t -> {};
     }
 
-    public static interface Consumer<T> {
+    public interface Consumer<T> {
         void accept(T t);
     }
 
@@ -34,22 +36,18 @@ public class TestingCallback<T> implements TicketingService.ApiCallback<T> {
     }
 
     public static <T> TestingCallback<T> expectSuccess(Consumer<T> validateSuccess) {
-        return new TestingCallback<>(validateSuccess, s -> {
-            Assert.fail("Expected success but got error");
-        });
+        return new TestingCallback<>(validateSuccess, s -> Assert.fail("Expected success but got error"));
     }
 
     public static <T> TestingCallback<T> expectErrors(Consumer<List<ApiResult.ApiError>> validateErrors) {
-        return new TestingCallback<>(s -> {
-            Assert.fail("Expected error but got success");
-        }, validateErrors);
+        return new TestingCallback<>(s -> Assert.fail("Expected error but got success"), validateErrors);
     }
 
     public static <T> TestingCallback<T> alwaysFail() {
         return new TestingCallback<>(s -> Assert.fail("Expected nothing but got success"), s -> Assert.fail("Expected nothing but got error"));
     }
 
-    boolean isOk() {
+    private boolean isOk() {
         return ok.get();
     }
 

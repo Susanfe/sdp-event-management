@@ -1,14 +1,15 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 
+import org.hamcrest.Matchers;
+import org.junit.Assert;
+import org.junit.Test;
+
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.intent.matcher.IntentMatchers;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingLoginActivity;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;

@@ -29,7 +29,7 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     private static final float ZOOMLEVEL = 19.0f; //This goes up to 21
     private GoogleMap mMap;
     private ClusterManager<Spot> mClusterManager;
-    protected SpotsModel spotsModel;
+    private SpotsModel spotsModel;
 
 
     public EventMapFragment() {
@@ -49,26 +49,23 @@ public class EventMapFragment extends AbstractShowcaseFragment {
                 .findFragmentById(R.id.mapFragment);
         if (mapFragment == null) {
             FragmentManager fragmentManager = getFragmentManager();
+            // TODO handle null pointer exception
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             mapFragment = SupportMapFragment.newInstance();
             fragmentTransaction.replace(R.id.mapFragment, mapFragment).commit();
         }
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(googleMap -> {
-                mMap = googleMap;
-                if (mMap != null) {
-                    setUpMap();
-                    setUpClusterer();
-                }
-            });
-        }
-
-        TextView textView = (TextView) view.findViewById(R.id.text_test);
-        textView.setText("everything is ready");
+        mapFragment.getMapAsync(googleMap -> {
+            mMap = googleMap;
+            if (mMap != null) {
+                setUpMap();
+                setUpClusterer();
+            }
+        });
 
     }
 
     private void setUpMap() {
+        // FIXME handle nullpointerException
         model.getEvent().observe(getActivity(), event -> {
             if (event == null || event.getLocation() == null)
                 return;
@@ -87,6 +84,7 @@ public class EventMapFragment extends AbstractShowcaseFragment {
     }
 
     private void setUpClusterer() {
+        // FIXME handle nullPointerException
         mClusterManager = new ClusterManager<>(getActivity(), mMap);
 
         // Point the map's listeners at the listeners implemented by the cluster

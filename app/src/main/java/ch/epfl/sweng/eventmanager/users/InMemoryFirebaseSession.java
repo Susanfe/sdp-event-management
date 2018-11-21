@@ -31,7 +31,7 @@ public class InMemoryFirebaseSession implements InMemorySession {
     @Override
     public User getCurrentUser() {
         if (mAuth.getCurrentUser() == null) user = null;
-        else if (user == null || user.getUid() != mAuth.getCurrentUser().getUid()) {
+        else if (user == null || !user.getUid().equals(mAuth.getCurrentUser().getUid())) {
             user = new FirebaseBackedUser(mAuth.getCurrentUser());
         }
 

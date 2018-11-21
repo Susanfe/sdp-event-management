@@ -44,7 +44,7 @@ public class JoinedEvent {
         return uid;
     }
 
-    public void setUid(int uid) {
+    void setUid(int uid) {
         this.uid = uid;
     }
 

@@ -41,6 +41,7 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
 
+        // TODO handle null pointer exception
         this.addToCalendarButton = v.findViewById(R.id.addToCalendar);
         this.addToCalendarButton.setOnClickListener(v1 -> {
             this.writeEventsToCalendar(this.getScheduledItems().getValue());
@@ -63,7 +64,7 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
         return this.model.getJoinedScheduleItems();
     }
 
-    void writeEventsToCalendar(List<ScheduledItem> mySchedule) {
+    private void writeEventsToCalendar(List<ScheduledItem> mySchedule) {
         FileOutputStream outputStream;
 
         try {
@@ -94,6 +95,7 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
 
     private void openCalendar() {
         Intent openFile = new Intent(Intent.ACTION_VIEW);
+        // TODO handle null pointer exception from getContext and getFilesDir
         Uri uri = FileProvider.getUriForFile(getContext(), "ch.epfl.sweng.eventmanager.fileprovider",
                 new File(getContext().getFilesDir(), CALENDAR_FILE_NAME));
         openFile.setDataAndType(uri, "text/calendar");

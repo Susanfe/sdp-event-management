@@ -1,10 +1,5 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import ch.epfl.sweng.eventmanager.repository.NewsRepository;
-import ch.epfl.sweng.eventmanager.repository.data.News;
-import ch.epfl.sweng.eventmanager.test.ObservableList;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.twitter.sdk.android.core.models.Tweet;
@@ -13,6 +8,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import ch.epfl.sweng.eventmanager.repository.NewsRepository;
+import ch.epfl.sweng.eventmanager.repository.data.News;
+import ch.epfl.sweng.eventmanager.test.ObservableList;
 
 /**
  * @author Louis Vialar
@@ -26,7 +27,9 @@ public class MockNewsRepository implements NewsRepository {
             news.put(eventId, new ObservableList<>());
         }
 
-        System.err.println("Getting newslist for event " + eventId + ". Returning: " + Arrays.toString(news.get(eventId).getUnderlyingList().toArray()));
+        // TODO handle null exception
+        System.err.println("Getting newslist for event " + eventId + ". Returning: " +
+                Arrays.toString(news.get(eventId).getUnderlyingList().toArray()));
 
         return news.get(eventId);
     }

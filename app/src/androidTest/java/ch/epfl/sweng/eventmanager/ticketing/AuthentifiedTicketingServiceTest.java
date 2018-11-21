@@ -1,15 +1,23 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
-import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
-import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
-import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.*;
-import static org.junit.Assert.*;
+import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
+import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
+import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
+
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.AUTHORIZED_USER;
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.AUTH_BASIC_CONFIGURATION;
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.CLIENT;
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.PASSWORD;
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.PRODUCT;
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.UNAUTHORIZED_USER;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Louis Vialar
@@ -18,17 +26,17 @@ public class AuthentifiedTicketingServiceTest {
     private TicketingService service;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         service = TicketingHelper.getService(AUTH_BASIC_CONFIGURATION);
     }
 
     @Test
-    public void requiresLoginTest() throws Exception {
+    public void requiresLoginTest() {
         assertTrue(service.requiresLogin());
     }
 
     @Test
-    public void hasMultipleConfigurationsTest() throws Exception {
+    public void hasMultipleConfigurationsTest() {
         assertFalse(service.hasMultipleConfigurations());
     }
 

@@ -19,11 +19,11 @@ public class SessionTest {
 
     @Test
     public void testAuthentication() {
-        assert(Session.isLoggedIn() == false);
+        assert(!Session.isLoggedIn());
         Session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD, null, null);
-        assert(Session.isLoggedIn() == true);
+        assert(Session.isLoggedIn());
         Session.logout();
-        assert(Session.isLoggedIn() == false);
+        assert(!Session.isLoggedIn());
     }
 
     @Test
@@ -52,16 +52,16 @@ public class SessionTest {
                 null, null, null, spotList, unknownUserMapping, null);
 
         // The user is not logged in, supposed to fail cleanly
-        assert(Session.isClearedFor(Role.ADMIN, ev2) == false);
+        assert(!Session.isClearedFor(Role.ADMIN, ev2));
 
         // User sign in
         Session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD,null, null);
-        assert(Session.isLoggedIn() == true);
+        assert(Session.isLoggedIn());
 
         //
-        assert(Session.isClearedFor(Role.ADMIN, ev1) == false);
-        assert(Session.isClearedFor(Role.ADMIN, ev2) == true);
-        assert(Session.isClearedFor(Role.STAFF, ev2) == false);
-        assert(Session.isClearedFor(Role.ADMIN, ev3) == false);
+        assert(!Session.isClearedFor(Role.ADMIN, ev1));
+        assert(Session.isClearedFor(Role.ADMIN, ev2));
+        assert(!Session.isClearedFor(Role.STAFF, ev2));
+        assert(!Session.isClearedFor(Role.ADMIN, ev3));
     }
 }
