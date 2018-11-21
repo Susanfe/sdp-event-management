@@ -92,7 +92,6 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
         mAddUserSpinner.setAdapter(addUserSpinnerAdapter);
 
         mAddUserButton = view.findViewById(R.id.add_user_button);
-        mAddUserButton.setText(getString(R.string.add_button));
 
         mAddUserProgressbar = view.findViewById(R.id.add_user_progress_bar);
         setInProgressState(false);

@@ -59,7 +59,7 @@
             android:orientation="horizontal"
             android:id="@+id/main_fragment_button_bar">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/main_fragment_news"
                 style="@style/Button_barButton_left"
                 android:layout_width="0dp"
@@ -67,14 +67,14 @@
                 android:layout_weight="33"
                 android:text="@string/main_fragment_button_news"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/main_fragment_schedule"
                 style="@style/Button_barButton_middle"
                 android:layout_width="0dp" android:layout_height="wrap_content"
                 android:layout_weight="33"
                 android:text="@string/main_fragment_button_schedule"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/main_fragment_map"
                 style="@style/Button_barButton_right"
                 android:layout_width="0dp"
@@ -89,7 +89,7 @@
             android:layout_weight="20"
             android:orientation="horizontal">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/contact_form_go_button"
                     style="@style/Button_barButton_middle"
                     android:layout_width="0dp"

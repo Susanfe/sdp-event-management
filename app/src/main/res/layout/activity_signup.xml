@@ -82,7 +82,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signup_button"
             style="@style/Button_global"
             android:layout_width="match_parent"
