@@ -97,7 +97,7 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
 
-        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
         SystemClock.sleep(200);
 
@@ -122,7 +122,7 @@ public class EventShowcaseActivityTest {
         // Click on an item and capture start intent
         Intents.init();
 
-        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
 
         Intents.intended(Matchers.allOf(
                 IntentMatchers.hasComponent(EventShowcaseActivity.class.getName()),
