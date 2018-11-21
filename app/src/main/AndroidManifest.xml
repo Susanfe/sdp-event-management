@@ -8,7 +8,7 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
             android:name=".EventManagerApplication"
@@ -26,9 +26,7 @@
 
         <activity
                 android:name=".ui.SplashActivity"
-                android:theme="@style/AppTheme.Launcher" />
-
-        <activity android:name=".ui.event.selection.EventPickingActivity">
+                android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -42,36 +40,61 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
-        <activity
-            android:name=".ui.user.LoginActivity"
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="@string/google_maps_key"/>
+
+        <activity android:name=".ui.event.selection.EventPickingActivity"
+            android:launchMode="singleTop">
+
+            <!-- TODO Setup URI addressing for app indexing -->
+            <!-- Source stackoverflow answer https://stackoverflow.com/a/34368811-->
+            <intent-filter android:label="@string/filter_title_event_picking">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <!-- Accepts URIs that begin with "http://www.example.com/sdp” -->
+                <data android:scheme="http"
+                    android:host="www.example.com"
+                    android:pathPrefix="/sdp" />
+
+                <!-- note that the leading "/" is required for pathPrefix-->
+                <!-- Accepts URIs that begin with "example://sdp” -->
+                <data android:scheme="example"
+                    android:host="sdp" />
+            </intent-filter>
+            <!-- End of TODO-->
+
+        </activity>
+
+        <activity android:name=".ui.user.LoginActivity"
             android:label="@string/title_activity_login" />
 
         <activity android:name=".ui.user.SignUpActivity"
-            android:label="@string/title_activity_sign_up" />
+                  android:label="@string/title_activity_sign_up"/>
         <activity
-            android:name=".ui.user.DisplayAccountActivity"
-            android:label="@string/title_activity_account_display" />
+                android:name=".ui.user.DisplayAccountActivity"
+                android:label="@string/title_activity_account_display"/>
 
         <activity android:name=".ui.event.interaction.EventShowcaseActivity"
-          android:theme="@style/AppTheme.NoActionBar" />
+                  android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.ticketing.TicketingConfigurationPickerActivity"/>
         <activity android:name=".ui.ticketing.TicketingLoginActivity"/>
         <activity android:name=".ui.ticketing.TicketingScanActivity"/>
 
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="ch.epfl.sweng.eventmanager.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="ch.epfl.sweng.eventmanager.fileprovider"
+                android:exported="false"
+                android:grantUriPermissions="true">
             <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_paths"/>
         </provider>
 
         <activity android:name=".ui.event.interaction.EventAdministrationActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+                  android:theme="@style/AppTheme.NoActionBar"/>
 
         <receiver android:name=".repository.impl.NotificationPublisher"/>
     </application>

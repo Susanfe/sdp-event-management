@@ -51,7 +51,7 @@ public class SendNewsFragment extends AbstractShowcaseFragment {
 
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        ButterKnife.bind(this, view);
+        if (view != null) ButterKnife.bind(this, view);
 
         send.setOnClickListener(l -> {
             int id = getParentActivity().getEventID();
@@ -60,9 +60,8 @@ public class SendNewsFragment extends AbstractShowcaseFragment {
 
             send.setClickable(false);
 
-            repository.publishNews(id, news).addOnSuccessListener(e -> {
-                getParentActivity().changeFragment(new NewsFragment(), true);
-            }).addOnFailureListener(e -> {
+            repository.publishNews(id, news).addOnSuccessListener(e ->
+                    getParentActivity().changeFragment(new NewsFragment(), true)).addOnFailureListener(e -> {
                 Toast.makeText(getContext(), R.string.send_news_failed, Toast.LENGTH_LONG).show();
 
                 send.setClickable(true);

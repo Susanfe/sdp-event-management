@@ -1,15 +1,16 @@
 package ch.epfl.sweng.eventmanager.test.ticketing;
 
 import android.content.Context;
-import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
-import ch.epfl.sweng.eventmanager.ticketing.TicketingServiceManager;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.BaseHttpStack;
 import com.android.volley.toolbox.Volley;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
+import ch.epfl.sweng.eventmanager.ticketing.TicketingServiceManager;
 
 /**
  * @author Louis Vialar

@@ -3,8 +3,9 @@ package ch.epfl.sweng.eventmanager.ui.ticketing;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -17,12 +18,15 @@ import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.BeepManager;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
@@ -44,12 +48,18 @@ public final class TicketingScanActivity extends TicketingActivity {
 
     private BeepManager beepManager;
 
+    @BindView(R.id.barcodePreview)
+    TextView view;
+    @BindView(R.id.barcode_scanner)
+    DecoratedBarcodeView scanner;
+    @BindView(R.id.ticketing_scan_back_button)
+    AppCompatButton backButton;
+
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
             viewWrapper.pause();
             viewWrapper.setStatusText(result.getText());
-            TextView view = findViewById(R.id.barcodePreview);
             view.setText(R.string.loading_text);
 
             try {
@@ -163,8 +173,9 @@ public final class TicketingScanActivity extends TicketingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_ticketing_scan);
+        ButterKnife.bind(this);
+        backButton.setOnClickListener(this::goBack);
 
         Intent intent = getIntent();
         this.configId = intent.getIntExtra(SELECTED_CONFIG_ID, -1);
@@ -175,11 +186,12 @@ public final class TicketingScanActivity extends TicketingActivity {
     }
 
     private void initScan() {
-        viewWrapper.initialize(findViewById(R.id.barcode_scanner), this, callback);
+        viewWrapper.initialize(scanner, this, callback);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.

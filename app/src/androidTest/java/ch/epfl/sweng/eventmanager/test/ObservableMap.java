@@ -1,12 +1,12 @@
 package ch.epfl.sweng.eventmanager.test;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 /**
  * @author Louis Vialar
@@ -52,13 +52,14 @@ public class ObservableMap<K, V> {
     private MutableLiveData<V> getObserverFor(K key) {
         if (!observers.containsKey(key)) {
             observers.put(key, new MutableLiveData<>());
+            // TODO handle null pointer exception
             observers.get(key).postValue(map.get(key));
         }
 
         return observers.get(key);
     }
 
-    public void notifyChanged(K key) {
+    private void notifyChanged(K key) {
         valuesObserver.postValue(map.values());
 
         if (key != null) {
