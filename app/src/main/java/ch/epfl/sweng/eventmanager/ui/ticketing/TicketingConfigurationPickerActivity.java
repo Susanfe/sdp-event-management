@@ -152,14 +152,15 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
 
     private static class ConfigurationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ScanConfiguration configuration;
-        private TextView configName;
         private TicketingConfigurationPickerActivity activity;
+
+        @BindView(R.id.configuration)
+        TextView configName;
 
 
         ConfigurationViewHolder(View item, TicketingConfigurationPickerActivity activity) {
             super(item);
-
-            this.configName = item.findViewById(R.id.configuration);
+            ButterKnife.bind(this, item);
             this.activity = activity;
             item.setOnClickListener(this);
         }
