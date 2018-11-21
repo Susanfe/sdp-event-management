@@ -53,10 +53,7 @@ public class Spot implements ClusterItem {
 
     @Override
     public String getSnippet() {
-        if(scheduleList != null && scheduleList.size() != 0){
-            return spotType == null ? null : spotType.getName() + " - Click to see the schedule";
-        }
-        return spotType == null ? null : spotType.getName();
+        return spotType.getName();
     }
 
     @Override
