@@ -242,7 +242,7 @@ public class EventPickingActivity extends AppCompatActivity {
             case BottomSheetBehavior.STATE_EXPANDED:
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 break;
-            default :
+            default:
         }
     }
 
