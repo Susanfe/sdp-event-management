@@ -37,7 +37,6 @@ public class MultiFragmentActivity extends AppCompatActivity
      * Initialize the UI structure: toolbar and drawer.
      */
     protected void initializeSharedUI() {
-        mDrawerLayout = findViewById(R.id.drawer_layout);
         ButterKnife.bind(this);
 
         // Set toolbar as action bar
