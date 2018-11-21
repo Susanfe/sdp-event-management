@@ -8,4 +8,10 @@
     <dimen name="custom_marker_padding">2dp</dimen>
 
     <dimen name="button_edges_radius">25dp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
+
+    <dimen name="event_picking_bottom_sheet_peek">56dp</dimen>
+    <dimen name="event_list_cardview_horizontal_margins">8dp</dimen>
+    <dimen name="event_list_cardview_vertical_margins">8dp</dimen>
 </resources>

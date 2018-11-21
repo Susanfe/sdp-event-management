@@ -1,16 +1,9 @@
 package ch.epfl.sweng.eventmanager.ui.event.selection;
 
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,17 +11,30 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.user.LoginActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.snackbar.Snackbar;
 import dagger.android.AndroidInjection;
+import jp.wasabeef.recyclerview.animators.LandingAnimator;
+import jp.wasabeef.recyclerview.animators.OvershootInRightAnimator;
 
 import javax.inject.Inject;
-import java.util.Collections;
 
 public class EventPickingActivity extends AppCompatActivity {
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
@@ -36,60 +42,27 @@ public class EventPickingActivity extends AppCompatActivity {
     ViewModelFactory factory;
     @BindView(R.id.joined_help_text)
     TextView joinedHelpText;
-    @BindView(R.id.not_joined_help_text)
-    TextView notJoinedHelpText;
+    @BindView(R.id.bottom_sheet_event_picking_text)
+    TextView bottomSheetText;
     @BindView(R.id.help_text)
     TextView helpText;
+    @BindView(R.id.no_more_events)
+    TextView noMoreEventsText;
     @BindView(R.id.joined_events_list)
-    RecyclerView joinedEvents;
+    RecyclerView joinedEventsList;
     @BindView(R.id.not_joined_event_list)
     RecyclerView eventList;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.event_linear_layout)
     LinearLayout content;
+    @BindView(R.id.event_picking_list_layout)
+    LinearLayout layoutBottomSheet;
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
-
-    private void setupRecyclerView(RecyclerView view) {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        view.setLayoutManager(layoutManager);
-        // Set an empty list adapter
-        view.setAdapter(new EventListAdapter(Collections.emptyList()));
-    }
-
-    private void setUIVisibility(int joinedEvent, int eventList, int joinedHelpText,
-                               int notJoinedHelpText) {
-        this.joinedEvents.setVisibility(joinedEvent);
-        this.eventList.setVisibility(eventList);
-        this.joinedHelpText.setVisibility(joinedHelpText);
-        this.notJoinedHelpText.setVisibility(notJoinedHelpText);
-    }
-
-    private void setupObservers() {
-        this.model.getEventsPair().observe(this, list -> {
-            if (list == null) {
-                return;
-            }
-            eventList.setAdapter(new EventListAdapter(list.getOtherEvents()));
-            joinedEvents.setAdapter(new EventListAdapter(list.getJoinedEvents()));
-
-            //once data is loaded
-            helpText.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
-            content.setVisibility(View.VISIBLE);
-
-            if (!list.getJoinedEvents().isEmpty()) {
-                if (list.getOtherEvents().isEmpty()) {
-                    setUIVisibility(View.VISIBLE, View.GONE, View.VISIBLE, View.GONE);
-                } else {
-                    setUIVisibility(View.VISIBLE, View.VISIBLE, View.VISIBLE, View.VISIBLE);
-                }
-            } else {
-                setUIVisibility(View.GONE, View.VISIBLE, View.GONE, View.GONE);
-            }
-        });
-    }
+    private BottomSheetBehavior bottomSheetBehavior;
+    private EventListAdapter eventsAdapter;
+    private EventListAdapter joinedEventsAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,20 +72,58 @@ public class EventPickingActivity extends AppCompatActivity {
         this.model = ViewModelProviders.of(this, factory).get(EventPickingModel.class);
         this.model.init();
         ButterKnife.bind(this);
-        content.setVisibility(View.GONE);
-        Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
-        setSupportActionBar(toolbar);
         setupObservers();
 
-        // Event list
-        eventList.setHasFixedSize(true);
+        content.setVisibility(View.GONE);
+        layoutBottomSheet.setVisibility(View.GONE);
+        Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
+        setSupportActionBar(toolbar);
+
+        //BottomSheet
+        setupBottomSheet();
+
+        setupAdapters();
+    }
+
+    /**
+     * Setup lists layout and adapters
+     */
+    private void setupAdapters() {
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
-        notJoinedHelpText.setVisibility(View.GONE);
+        eventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.Event);
+        setupRecyclerView(eventList, eventsAdapter, new OvershootInRightAnimator());
+        joinedEventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.JoinedEvents);
+        setupRecyclerView(joinedEventsList, joinedEventsAdapter, new LandingAnimator());
+    }
 
-        // Event lists
-        setupRecyclerView(eventList);
-        setupRecyclerView(joinedEvents);
+
+    /**
+     * Setup bottom sheet and related behavior
+     */
+    private void setupBottomSheet() {
+        bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        break;
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        break;
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            }
+        });
     }
 
     private void openLoginOrAccountActivity() {
@@ -125,6 +136,45 @@ public class EventPickingActivity extends AppCompatActivity {
         Intent intent = new Intent(this, nextActivity);
         startActivity(intent);
     }
+
+    private void setupRecyclerView(RecyclerView view, EventListAdapter adapter, RecyclerView.ItemAnimator animator) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        view.setLayoutManager(layoutManager);
+        view.setAdapter(adapter);
+        view.setItemAnimator(animator);
+    }
+
+    private void setupObservers() {
+        this.model.getEventsPair().observe(this, list -> {
+            if (list == null) {
+                return;
+            }
+            eventsAdapter.update(list.getOtherEvents());
+            joinedEventsAdapter.update(list.getJoinedEvents());
+            progressBar.setVisibility(View.GONE);
+
+            //once data is loaded
+            helpText.setVisibility(View.VISIBLE);
+            layoutBottomSheet.setVisibility(View.VISIBLE);
+            content.setVisibility(View.VISIBLE);
+
+            if (list.getOtherEvents().isEmpty()) {
+                eventList.setVisibility(View.GONE);
+                noMoreEventsText.setVisibility(View.VISIBLE);
+            } else {
+                eventList.setVisibility(View.VISIBLE);
+                noMoreEventsText.setVisibility(View.GONE);
+            }
+            if (list.getJoinedEvents().isEmpty()) {
+                helpText.setText(getString(R.string.help_text_go_join_events));
+                joinedHelpText.setVisibility(View.GONE);
+            } else {
+                helpText.setText(getString(R.string.help_text_activity_event_picking));
+                joinedHelpText.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -162,6 +212,10 @@ public class EventPickingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            return;
+        }
         if (doubleBackToExitPressedOnce) {
             finish();
             return;
@@ -175,5 +229,30 @@ public class EventPickingActivity extends AppCompatActivity {
         toast.show();
 
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
+    }
+
+    @OnClick(R.id.bottom_sheet_event_picking_text)
+    void openOrCloseBottomSheet(View view) {
+        switch (bottomSheetBehavior.getState()) {
+            case BottomSheetBehavior.STATE_COLLAPSED:
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                break;
+            case BottomSheetBehavior.STATE_EXPANDED:
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                break;
+        }
+    }
+
+    void joinEvent(Event event) {
+        this.model.joinEvent(event);
+        View contextView = findViewById(R.id.event_picking_main_layout);
+        Snackbar.make(contextView, R.string.event_successfully_joined, Snackbar.LENGTH_SHORT).setAction(R.string.undo
+                , v -> unjoinEvent(event)).show();
+    }
+
+    private void unjoinEvent(Event event) {
+        this.model.unjoinEvent(event);
+        View contextView = findViewById(R.id.event_picking_main_layout);
+        Snackbar.make(contextView, R.string.event_successfully_unjoined, Snackbar.LENGTH_SHORT).show();
     }
 }
