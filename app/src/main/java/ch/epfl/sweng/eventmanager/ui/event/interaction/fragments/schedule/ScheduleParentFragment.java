@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import com.google.android.material.tabs.TabLayout;
 
@@ -82,6 +83,14 @@ public class ScheduleParentFragment extends Fragment {
                 if (savedInstanceState != null) {
                     int page = savedInstanceState.getInt("current_item");
                     viewPager.setCurrentItem(page);
+                }
+                Bundle args = getArguments();
+                if(args != null) {
+                    String room = getArguments().getString(EventMapFragment.TAB_NB_KEY, "");
+                    int cond = viewPagerAdapter.getTitlePage(room);
+                    if(cond != -1) {
+                        viewPager.postDelayed(() -> viewPager.setCurrentItem(cond), 100);
+                    }
                 }
             } else {
                 tabLayout.setVisibility(View.GONE);
