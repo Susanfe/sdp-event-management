@@ -16,7 +16,7 @@
             android:text="@string/not_joined_help_text_activity_event_picking"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:id="@+id/bottom_sheet_event_picking_text"
+            android:id="@+id/event_picking_bottom_sheet_text"
             android:gravity="center_vertical|center_horizontal"
             android:background="@color/colorPrimaryLight"
             android:textColor="@color/colorSecondary"

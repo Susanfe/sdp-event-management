@@ -40,11 +40,11 @@ public class EventPickingActivity extends AppCompatActivity {
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
     @Inject
     ViewModelFactory factory;
-    @BindView(R.id.joined_help_text)
+    @BindView(R.id.event_picking_joined_events_text)
     TextView joinedHelpText;
-    @BindView(R.id.bottom_sheet_event_picking_text)
+    @BindView(R.id.event_picking_bottom_sheet_text)
     TextView bottomSheetText;
-    @BindView(R.id.help_text)
+    @BindView(R.id.event_picking_help_text)
     TextView helpText;
     @BindView(R.id.no_more_events)
     TextView noMoreEventsText;
@@ -233,7 +233,7 @@ public class EventPickingActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
-    @OnClick(R.id.bottom_sheet_event_picking_text)
+    @OnClick(R.id.event_picking_bottom_sheet_text)
     void openOrCloseBottomSheet(View view) {
         switch (bottomSheetBehavior.getState()) {
             case BottomSheetBehavior.STATE_COLLAPSED:

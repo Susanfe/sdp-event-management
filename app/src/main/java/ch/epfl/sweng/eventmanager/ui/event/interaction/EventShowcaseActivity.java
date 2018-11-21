@@ -45,10 +45,11 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
-    private Fragment eventMainFragment;
-    private Fragment eventMapFragment;
-    private Fragment newsFragment;
-    private Fragment scheduleParentFragment;
+
+    public Fragment eventMainFragment;
+    public Fragment eventMapFragment;
+    public Fragment newsFragment;
+    public Fragment scheduleParentFragment;
 
     private int eventID;
 
