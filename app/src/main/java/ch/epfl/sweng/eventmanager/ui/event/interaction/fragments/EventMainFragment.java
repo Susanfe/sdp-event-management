@@ -9,6 +9,7 @@ import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
 import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
@@ -69,9 +70,11 @@ public class EventMainFragment extends AbstractShowcaseFragment {
                 if (!joinEventButton.isChecked()) {
                     this.model.joinEvent(ev);
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getContext()));
+                    NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
                 } else {
                     this.model.unjoinEvent(ev);
                     NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getContext()));
+                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
                 }
             });
         });
