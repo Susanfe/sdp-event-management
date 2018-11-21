@@ -19,9 +19,9 @@ import ch.epfl.sweng.eventmanager.users.Session;
 
 public class DisplayAccountActivity extends AppCompatActivity {
 
-    @BindView(R.id.main_text)
+    @BindView(R.id.display_account_main_text)
     TextView helpText;
-    @BindView(R.id.logout_btn)
+    @BindView(R.id.display_account_logout_button)
     Button logoutButton;
     @BindString(R.string.display_account_activity_logged_as)
     String logged_as;

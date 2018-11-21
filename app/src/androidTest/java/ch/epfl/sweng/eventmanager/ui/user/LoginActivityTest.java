@@ -80,10 +80,10 @@ public class LoginActivityTest {
             }
         }
 
-        onView(withId(R.id.main_text))
+        onView(withId(R.id.display_account_main_text))
                 .check(matches(withText(containsString(email))));
 
-        onView(withId(R.id.logout_btn))
+        onView(withId(R.id.display_account_logout_button))
                 .perform(click());
 
     }

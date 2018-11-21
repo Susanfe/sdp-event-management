@@ -23,7 +23,7 @@
         tools:context=".ui.userManager.DisplayAccountActivity">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/logout_btn"
+            android:id="@+id/display_account_logout_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
@@ -35,7 +35,7 @@
             android:text="@string/logout_button"/>
 
         <TextView
-            android:id="@+id/main_text"
+            android:id="@+id/display_account_main_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
