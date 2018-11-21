@@ -14,6 +14,7 @@ import java.util.Set;
 
 import ch.epfl.sweng.eventmanager.users.Role;
 
+
 /**
  * This class holds the basic elements about an organized event.<br>
  * This class might hold way more data in the future, depending on how the backend will be organized
@@ -176,7 +177,6 @@ public final class Event {
     public Collection<String> getUsersForRole(Role role) {
        Map<String, String> uidMap = getUsers().get(role.toString().toLowerCase());
        if (uidMap == null) return new ArrayList<>();
-
        return uidMap.values();
     }
 

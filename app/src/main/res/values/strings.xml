@@ -26,9 +26,13 @@
     <string name="password_match_error">The passwords do not match</string>
     <string name="generic_auth_error">Could not authenticate. Unknown error.</string>
     <string name="help_text_activity_event_picking">Please select an event to continue.</string>
+    <string name="help_text_go_join_events">Please go explore and join an event to continue !</string>
     <string name="joined_help_text_activity_event_picking">Events you joined:</string>
-    <string name="not_joined_help_text_activity_event_picking">Other events:</string>
+    <string name="not_joined_help_text_activity_event_picking">Click here to go explore events !</string>
     <string name="double_back_press_to_exit">Press once again to exit</string>
+    <string name="no_more_events_to_explore">Sorry, you\'ve already joined all the available events for now :\'( ! \n Please come back later !</string>
+    <string name="event_successfully_joined">Event successfully joined !</string>
+    <string name="event_successfully_unjoined">Event successfully unjoined !</string>
 
     <string name="successful_login_toast">Signed in</string>
     <string name="successful_registration_toast">Registered successfully</string>
@@ -43,8 +47,9 @@
     <string name="logout_button">Log out</string>
     <string name="account_button">My account</string>
     <string name="back_button">Back</string>
+    <string name="join_event_event_item_btn">Join Event</string>
+    <string name="goto_event_btn">Go to event</string>
     <string name="add_button">Add</string>
-
     <string name="add_user_success">The user was added to this event</string>
     <string name="add_user_failure">Could not add the user to this event</string>
 
@@ -111,4 +116,8 @@
     <string name="main_fragment_button_news">News</string>
     <string name="main_fragment_button_map">Map</string>
     <string name="main_fragment_button_schedule">Schedule</string>
+
+    <!-- Generic text -->
+    <string name="undo">Undo</string>
+
 </resources>

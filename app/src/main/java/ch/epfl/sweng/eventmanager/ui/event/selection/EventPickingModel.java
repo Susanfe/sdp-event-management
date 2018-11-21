@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -79,5 +80,13 @@ public class EventPickingModel extends ViewModel {
         List<Event> getOtherEvents() {
             return otherEvents;
         }
+    }
+
+    public void joinEvent(Event event) {
+        joinedEventRepository.insert(new JoinedEvent(event));
+    }
+
+    public void unjoinEvent(Event event) {
+        joinedEventRepository.delete(new JoinedEvent(event));
     }
 }
