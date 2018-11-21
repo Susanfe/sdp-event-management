@@ -55,21 +55,21 @@ public class LoginActivityTest {
         String password = "secret";
         SystemClock.sleep(1000);
 
-        onView(ViewMatchers.withId(R.id.email_field))
+        onView(ViewMatchers.withId(R.id.activity_login_email_field))
                 .perform(typeText(email))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
         SystemClock.sleep(1000);
 
-        onView(withId(R.id.login_button)).perform(click());
+        onView(withId(R.id.activity_login_login_button)).perform(click());
         SystemClock.sleep(1000);
 
         for (int i = 0; i < MAX_RETRY_COUNT; i++) {
             try {
                 SystemClock.sleep(1000);
-                onView(withId(R.id.sign_in_progress_bar))
+                onView(withId(R.id.activity_login_progress_bar))
                         .check(matches(isDisplayed()));
                 break;
             } catch (AssertionFailedError e) {
@@ -97,18 +97,18 @@ public class LoginActivityTest {
         String invalidCredentialError = "The password is invalid or the user does not have a password.";
 
 
-        onView(withId(R.id.email_field))
+        onView(withId(R.id.activity_login_email_field))
                 .perform(typeText(email))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.login_button)).perform(click());
+        onView(withId(R.id.activity_login_login_button)).perform(click());
 
         for (int i = 0; i < MAX_RETRY_COUNT; i++) {
             try {
                 SystemClock.sleep(1000);
-                onView(withId(R.id.sign_in_progress_bar))
+                onView(withId(R.id.activity_login_progress_bar))
                         .check(matches(isDisplayed()));
                 break;
             } catch (AssertionFailedError e) {
@@ -119,7 +119,7 @@ public class LoginActivityTest {
             }
         }
 
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_password_field))
                 .check(matches(hasErrorText(invalidCredentialError)));
     }
 
@@ -131,25 +131,25 @@ public class LoginActivityTest {
         String invalidEmailError = getResourceString(R.string.invalid_email_error);
 
         // Test empty password
-        onView(withId(R.id.email_field))
+        onView(withId(R.id.activity_login_email_field))
                 .perform(typeText(email))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.login_button)).perform(click());
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_login_button)).perform(click());
+        onView(withId(R.id.activity_login_password_field))
                 .check(matches(hasErrorText(emptyPasswordError)));
 
         // Test invalid email address
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.login_button)).perform(click());
-        onView(withId(R.id.email_field))
+        onView(withId(R.id.activity_login_login_button)).perform(click());
+        onView(withId(R.id.activity_login_email_field))
                 .check(matches(hasErrorText(invalidEmailError)));
     }
 
     @Test
     public void testOpenSignUpForm() {
-        onView(withId(R.id.signup_button))
+        onView(withId(R.id.activity_login_signup_button))
                 .perform(click());
 
         TestHelper.withToolbarTitle(getResourceString(R.string.title_activity_sign_up));

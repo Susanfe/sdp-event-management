@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Toolbar"
-        android:id="@+id/login_toolbar"/>
+        android:id="@+id/activity_login_toolbar"/>
 
     <ProgressBar
-        android:id="@+id/sign_in_progress_bar"
+        android:id="@+id/activity_login_progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                        android:id="@+id/email_field"
+                        android:id="@+id/activity_login_email_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                    android:id="@+id/password_field"
+                    android:id="@+id/activity_login_password_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeActionId="6"
@@ -65,7 +65,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/login_button"
+            android:id="@+id/activity_login_login_button"
             style="@style/Button_global"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             android:text="@string/login_button"/>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/signup_button"
+            android:id="@+id/activity_login_signup_button"
             style="@style/Button_global"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

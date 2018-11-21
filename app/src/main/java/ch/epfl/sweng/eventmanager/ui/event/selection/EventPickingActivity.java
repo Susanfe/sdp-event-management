@@ -136,7 +136,7 @@ public class EventPickingActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.login_button:
+            case R.id.activity_login_login_button:
                 openLoginOrAccountActivity();
                 break;
 
@@ -151,10 +151,10 @@ public class EventPickingActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (Session.isLoggedIn()) {
-            menu.findItem(R.id.login_button).setTitle(R.string.account_button);
+            menu.findItem(R.id.activity_login_login_button).setTitle(R.string.account_button);
             menu.findItem(R.id.logout_button).setVisible(true);
         } else {
-            menu.findItem(R.id.login_button).setTitle(R.string.login_button);
+            menu.findItem(R.id.activity_login_login_button).setTitle(R.string.login_button);
             menu.findItem(R.id.logout_button).setVisible(false);
         }
         return super.onPrepareOptionsMenu(menu);

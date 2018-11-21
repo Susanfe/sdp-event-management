@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 import com.google.android.gms.tasks.OnCompleteListener;
 
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.user.UserManagerHelper;
 import ch.epfl.sweng.eventmanager.users.Session;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -34,7 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
         setupFields();
         setupButtons();
 
-        mProgressBar = findViewById(R.id.sign_in_progress_bar);
+        mProgressBar = findViewById(R.id.activity_login_progress_bar);
         mProgressBar.setVisibility(View.INVISIBLE);
 
         Toolbar toolbar = findViewById(R.id.signup_toolbar);
@@ -42,10 +41,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void setupFields() {
-        mEmailView = findViewById(R.id.email_field);
+        mEmailView = findViewById(R.id.activity_login_email_field);
         mEmailView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mEmailView));
 
-        mPasswordView = findViewById(R.id.password_field);
+        mPasswordView = findViewById(R.id.activity_login_password_field);
         mPasswordView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mPasswordView));
 
         mPasswordConfirmationView = findViewById(R.id.password_confirmation_field);
@@ -55,7 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-        mSignUpButton = findViewById(R.id.signup_button);
+        mSignUpButton = findViewById(R.id.activity_login_signup_button);
         mSignUpButton.setOnClickListener(view -> attemptSignUp());
     }
 
