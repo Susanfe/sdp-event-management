@@ -5,7 +5,7 @@
         android:id="@+id/event_picking_list_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
+        android:background="@drawable/background_primary_color_rounded"
         android:orientation="vertical"
         app:behavior_hideable="false"
         app:behavior_peekHeight="@dimen/event_picking_bottom_sheet_peek"
@@ -18,7 +18,7 @@
             android:layout_height="56dp"
             android:id="@+id/event_picking_bottom_sheet_text"
             android:gravity="center_vertical|center_horizontal"
-            android:background="@color/colorPrimaryLight"
+            android:background="@drawable/shape_rounded_light"
             android:textColor="@color/colorSecondary"
             android:textStyle="bold"
             android:clickable="true"
@@ -28,7 +28,9 @@
             android:id="@+id/not_joined_event_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
