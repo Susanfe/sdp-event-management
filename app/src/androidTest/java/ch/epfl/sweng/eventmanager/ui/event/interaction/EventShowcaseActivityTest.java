@@ -145,6 +145,8 @@ public class EventShowcaseActivityTest {
 
         onView(allOf(withId(R.id.snackbar_text), withText(R.string.event_successfully_joined))).check(matches(isDisplayed()));
 
+        SystemClock.sleep(200);
+
         onView(allOf(withText(R.string.undo))).perform(click());
 
         onView(withId(R.id.bottom_sheet_event_picking_text)).perform(click());
