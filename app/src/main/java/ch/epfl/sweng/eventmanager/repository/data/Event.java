@@ -159,16 +159,13 @@ public final class Event {
 
         // Don't blow up if the event does not contain any permission data
         if (getUsers() == null) return result;
-        if (getUsers().keySet() == null) return result;
 
 
         // The keys of a Java Map are unique
         for (String rawRole : getUsers().keySet()) {
             Role role = Role.valueOf(rawRole.toUpperCase());
-            List<String> users = new ArrayList<>();
-            for (String uid : getUsers().get(rawRole).values()) {
-                users.add(uid);
-            }
+            // TODO handle null pointer exception
+            List<String> users = new ArrayList<>(getUsers().get(rawRole).values());
 
             result.put(role, users);
         }
@@ -176,6 +173,7 @@ public final class Event {
         return result;
     }
 
+    // FIXME Use or delete method ?
     public Collection<String> getUsersForRole(Role role) {
        Map<String, String> uidMap = getUsers().get(role.toString().toLowerCase());
        if (uidMap == null) return new ArrayList<>();
@@ -186,7 +184,7 @@ public final class Event {
         return this.twitterName;
     }
 
-    public String beginDateAsString() {
+    String beginDateAsString() {
         if (beginDate <= 0) {
             return null;
         }
@@ -194,7 +192,7 @@ public final class Event {
         return f.format(beginDate);
     }
 
-    public String endDateAsString(){
+    String endDateAsString(){
         if (endDate <= 0) {
             return null;
         }

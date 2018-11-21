@@ -85,8 +85,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        // FIXME Handle null veiw argument
-        ButterKnife.bind(this, view);
+        if (view != null) ButterKnife.bind(this, view);
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
         contactButton.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFormFragment(), true));

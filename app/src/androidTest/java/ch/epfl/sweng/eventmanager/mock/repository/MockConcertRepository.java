@@ -1,15 +1,15 @@
 package ch.epfl.sweng.eventmanager.mock.repository;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
-
-import javax.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import javax.inject.Inject;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
 public class MockConcertRepository {
     private static final String TAG = "ConcertRepository";

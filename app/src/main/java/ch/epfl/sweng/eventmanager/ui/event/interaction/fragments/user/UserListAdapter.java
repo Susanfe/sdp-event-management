@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,27 +27,28 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         @BindView(R.id.uid)
-        public TextView userUid;
+        TextView userUid;
         @BindView(R.id.role)
-        public TextView userRole;
+        TextView userRole;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public UserListAdapter(Event event) {
+    UserListAdapter(Event event) {
 
         // Build our internal User to Roles representation
         Map<Role, List<String>> raw = event.getPermissions();
 
         mUsers = new HashMap<>();
         for (Role role : raw.keySet()) {
+            // TODO handle null pointer exception
             for (String uid : raw.get(role)) {
                 List roleList = mUsers.get(uid);
                 if (roleList == null) roleList = new ArrayList();
@@ -61,21 +63,22 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
     // Create new views (invoked by the layout manager)
     @Override
-    public UserListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    @NonNull
+    public UserListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                          int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.user_list_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        List<String> index = new ArrayList<String>(mUsers.keySet());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        List<String> index = new ArrayList<>(mUsers.keySet());
         String uid = index.get(position);
         holder.userUid.setText(uid);
+        // TODO handle null pointer exception
         holder.userRole.setText(mUsers.get(uid).toString());
     }
 

@@ -196,6 +196,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case R.id.nav_scan:
+                // TODO Handle null pointer exception
                 startActivity(ticketingManager.start(model.getEvent().getValue(), this));
                 break;
 

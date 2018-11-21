@@ -18,7 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 
-public class UserManagerHelper {
+class UserManagerHelper {
     private UserManagerHelper() {
         // Used to block instantiation. Empty on purpose.
     }
@@ -26,7 +26,7 @@ public class UserManagerHelper {
     /**
      * When the next button is clicked on the keyboard, move to the next field.
      */
-    public static TextView.OnEditorActionListener nextButtonHandler(EditText field) {
+    static TextView.OnEditorActionListener nextButtonHandler(EditText field) {
         return (v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
                 field.requestFocus();
@@ -42,7 +42,7 @@ public class UserManagerHelper {
      * @param email address to validate
      * @return true if 'valid', false otherwise
      */
-    public static boolean isEmailValid(String email) {
+    private static boolean isEmailValid(String email) {
         // FIXME: run a proper regex on the given email.
         return email.contains("@");
     }
@@ -54,7 +54,7 @@ public class UserManagerHelper {
      * @param progressBar progress bar to disable or enable
      * @param displayed state of the 'in progress' view
      */
-    public static void showProgress(Button loginButton, ProgressBar progressBar, boolean displayed) {
+    static void showProgress(Button loginButton, ProgressBar progressBar, boolean displayed) {
         loginButton.setEnabled(!displayed);
         progressBar.setVisibility(displayed ? View.VISIBLE : View.INVISIBLE);
     }
@@ -68,8 +68,8 @@ public class UserManagerHelper {
      * @param passwordConfirmationView password confirmation text field, may be null
      * @return A pair containing the decided actions and the extracted values
      */
-    public static Pair<Pair<Boolean, EditText>, Pair<String, String>> validateForm
-            (Context context, EditText emailView, EditText passwordView, EditText passwordConfirmationView) {
+    static Pair<Pair<Boolean, EditText>, Pair<String, String>> validateForm
+    (Context context, EditText emailView, EditText passwordView, EditText passwordConfirmationView) {
 
         // Reset errors.
         emailView.setError(null);
@@ -104,10 +104,10 @@ public class UserManagerHelper {
             cancel = true;
         }
 
-        Pair<Boolean, EditText> state = new Pair(cancel, focusView);
-        Pair<String, String> values = new Pair(email, password);
+        Pair<Boolean, EditText> state = new Pair<>(cancel, (EditText) focusView);
+        Pair<String, String> values = new Pair<>(email, password);
 
-        return new Pair(state, values);
+        return new Pair<>(state, values);
     }
 
     /**
@@ -119,7 +119,7 @@ public class UserManagerHelper {
      * @param progressBar progress bar to disable when the auth process exits
      * @return the generated callback
      */
-    public static OnCompleteListener<AuthResult> getAuthOnCompleteListener(
+    static OnCompleteListener<AuthResult> getAuthOnCompleteListener(
             Context context, EditText passwordView, Button signUpButton, ProgressBar progressBar) {
         return task -> {
             if (task.isSuccessful()) {

@@ -32,7 +32,7 @@ public class EventTicketingConfigurationTest {
     public void testEquals() {
         EventTicketingConfiguration alternate = new EventTicketingConfiguration("login", "config", "scan");
 
-        assertTrue(configuration.equals(alternate));
+        assertEquals(configuration, alternate);
         assertEquals(configuration.hashCode(), alternate.hashCode());
     }
 }

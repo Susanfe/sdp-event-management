@@ -9,12 +9,12 @@ public class TicketingApiException extends Exception {
     private final ApiResult result;
     private final int code;
 
-    public TicketingApiException(ApiResult result, int code) {
+    TicketingApiException(ApiResult result, int code) {
         this.result = result;
         this.code = code;
     }
 
-    public ApiResult getResult() {
+    ApiResult getResult() {
         return result;
     }
 

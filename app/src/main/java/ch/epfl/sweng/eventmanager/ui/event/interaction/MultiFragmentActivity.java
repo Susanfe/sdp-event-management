@@ -37,7 +37,6 @@ public class MultiFragmentActivity extends AppCompatActivity
      * Initialize the UI structure: toolbar and drawer.
      */
     protected void initializeSharedUI() {
-        mDrawerLayout = findViewById(R.id.drawer_layout);
         ButterKnife.bind(this);
 
         // Set toolbar as action bar
@@ -47,7 +46,7 @@ public class MultiFragmentActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             ActionBar actionbar = getSupportActionBar();
             actionbar.setDisplayHomeAsUpEnabled(true);
-            actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionbar.setHomeAsUpIndicator(R.drawable.menu_customized_color);
         }
     }
 
@@ -103,8 +102,6 @@ public class MultiFragmentActivity extends AppCompatActivity
                 }
 
                 transaction.commit();
-            } else {
-                // custom effect if fragment is already instanciated
             }
         } catch (IllegalStateException exception) {
             Log.w(TAG,

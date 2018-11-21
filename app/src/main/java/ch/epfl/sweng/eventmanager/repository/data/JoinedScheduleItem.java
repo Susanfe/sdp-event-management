@@ -12,7 +12,7 @@ import java.util.UUID;
 public class JoinedScheduleItem {
 
 
-    public JoinedScheduleItem(UUID uid, int eventId) {
+    public JoinedScheduleItem(@NonNull UUID uid, int eventId) {
         this.uid = uid;
         this.eventId = eventId;
     }
@@ -27,12 +27,12 @@ public class JoinedScheduleItem {
 
 
     /* Getters and Setters */
-
+    @NonNull
     public UUID getUid() {
         return uid;
     }
 
-    public void setUid(UUID uid) {
+    void setUid(@NonNull UUID uid) {
         this.uid = uid;
     }
 
@@ -52,7 +52,7 @@ public class JoinedScheduleItem {
         JoinedScheduleItem that = (JoinedScheduleItem) o;
 
         if (eventId != that.eventId) return false;
-        return uid != null ? uid.equals(that.uid) : that.uid == null;
+        return uid.equals(that.uid);
     }
 }
 

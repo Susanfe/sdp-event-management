@@ -9,7 +9,7 @@ import dagger.Provides;
 @Module
 public class BarcodeViewManagerModule {
     @Provides
-    public BarcodeViewWrapper barcodeViewManager() {
+    BarcodeViewWrapper barcodeViewManager() {
         return new BarcodeViewWrapperImpl();
     }
 }

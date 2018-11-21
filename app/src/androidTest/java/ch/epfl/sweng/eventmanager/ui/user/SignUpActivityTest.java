@@ -1,15 +1,13 @@
 package ch.epfl.sweng.eventmanager.ui.user;
 
 import android.content.Context;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
+import androidx.test.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.TestHelper;
 import ch.epfl.sweng.eventmanager.users.Session;
@@ -21,9 +19,7 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-@RunWith(AndroidJUnit4.class)
 public class SignUpActivityTest {
 
     @Before
@@ -42,17 +38,17 @@ public class SignUpActivityTest {
         String passwordMatchError = getResourceString(R.string.password_match_error);
 
         // Test non-matching passwords
-        onView(withId(R.id.email_field))
+        onView(withId(R.id.activity_login_email_field))
                 .perform(typeText(email))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
         onView(withId(R.id.password_confirmation_field))
                 .perform(typeText("secret+typo"))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.signup_button)).perform(click());
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_signup_button)).perform(click());
+        onView(withId(R.id.activity_login_password_field))
                 .check(matches(hasErrorText(passwordMatchError)));
     }
 
@@ -61,28 +57,29 @@ public class SignUpActivityTest {
         String email = "al.pha@domain.tld";
         String password = "secret";
 
-        onView(withId(R.id.email_field))
+        onView(withId(R.id.activity_login_email_field))
                 .perform(typeText(email))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
         onView(withId(R.id.password_confirmation_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.signup_button)).perform(click());
+        onView(withId(R.id.activity_login_signup_button)).perform(click());
 
         // Nothing is going to happen since we use the DummyInMemorySession
         // Check that everything went fine with the lack of error messages
-        onView(withId(R.id.email_field))
+        onView(withId(R.id.activity_login_email_field))
                 .check(matches(TestHelper.hasNoErrorText()));
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_password_field))
                 .check(matches(TestHelper.hasNoErrorText()));
         onView(withId(R.id.password_confirmation_field))
                 .check(matches(TestHelper.hasNoErrorText()));
     }
 
     private String getResourceString(int id) {
+        // FIXME use non deprecated method instead of following one
         Context targetContext = InstrumentationRegistry.getTargetContext();
         return targetContext.getResources().getString(id);
     }

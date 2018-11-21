@@ -1,10 +1,10 @@
 package ch.epfl.sweng.eventmanager.test.ticketing;
 
+import javax.inject.Singleton;
+
 import ch.epfl.sweng.eventmanager.ticketing.TicketingServiceManager;
 import dagger.Module;
 import dagger.Provides;
-
-import javax.inject.Singleton;
 
 /**
  * @author Louis Vialar
