@@ -85,6 +85,12 @@ public class EventPickingActivity extends AppCompatActivity {
         setupAdapters();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
     /**
      * Setup lists layout and adapters
      */
