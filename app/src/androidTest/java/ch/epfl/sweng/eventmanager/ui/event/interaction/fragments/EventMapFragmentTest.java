@@ -29,7 +29,6 @@ public class EventMapFragmentTest {
                 .perform(DrawerActions.open());
 
         sleep(100);
-
         // Display Schedule Events
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_map));
