@@ -36,7 +36,7 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
 
         onView(withId(R.id.ticketing_login_email)).perform(typeText(MockStacks.AUTHORIZED_USER), closeSoftKeyboard());
         onView(withId(R.id.ticketing_login_password)).perform(typeText(MockStacks.PASSWORD), closeSoftKeyboard());
-        onView(withId(R.id.email_sign_in_button)).perform(click());
+        onView(withId(R.id.ticketing_login_sign_in_button)).perform(click());
 
         Intents.intended(Matchers.allOf(
                 IntentMatchers.hasComponent(TicketingConfigurationPickerActivity.class.getName()),
@@ -53,13 +53,13 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
     public void testInvalidLogin() {
         Assert.assertFalse(getTicketingService().isLoggedIn());
 
-        onView(withId(R.id.email_sign_in_button)).perform(click());
+        onView(withId(R.id.ticketing_login_sign_in_button)).perform(click());
 
         Intents.assertNoUnverifiedIntents();
 
         onView(withId(R.id.ticketing_login_email)).perform(typeText("clearly_invalid_value"), closeSoftKeyboard());
         onView(withId(R.id.ticketing_login_password)).perform(typeText(MockStacks.PASSWORD), closeSoftKeyboard());
-        onView(withId(R.id.email_sign_in_button)).perform(click());
+        onView(withId(R.id.ticketing_login_sign_in_button)).perform(click());
 
         Intents.assertNoUnverifiedIntents();
 
@@ -74,7 +74,7 @@ public class LoginTest extends ActivityTest<TicketingLoginActivity> {
 
         onView(withId(R.id.ticketing_login_email)).perform(typeText(MockStacks.AUTHORIZED_USER), closeSoftKeyboard());
         onView(withId(R.id.ticketing_login_password)).perform(typeText(MockStacks.PASSWORD), closeSoftKeyboard());
-        onView(withId(R.id.email_sign_in_button)).perform(click());
+        onView(withId(R.id.ticketing_login_sign_in_button)).perform(click());
 
         //onView(withText(Matchers.startsWith("Erreur de connexion"))).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
         Intents.assertNoUnverifiedIntents();

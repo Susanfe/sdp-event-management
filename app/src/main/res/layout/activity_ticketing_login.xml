@@ -67,7 +67,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/email_sign_in_button"
+                    android:id="@+id/ticketing_login_sign_in_button"
                     style="@style/Button_global"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

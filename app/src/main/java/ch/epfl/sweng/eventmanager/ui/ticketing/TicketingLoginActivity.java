@@ -2,12 +2,10 @@ package ch.epfl.sweng.eventmanager.ui.ticketing;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -39,6 +37,8 @@ public final class TicketingLoginActivity extends TicketingActivity {
     View mLoginFormView;
     @BindView(R.id.ticketing_login_toolbar)
     Toolbar toolbar;
+    @BindView(R.id.ticketing_login_sign_in_button)
+    Button mEmailSignInButton;
 
     public TicketingLoginActivity() {
     }
@@ -61,7 +61,6 @@ public final class TicketingLoginActivity extends TicketingActivity {
             return false;
         });
 
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(view1 -> attemptLogin());
 
     }
