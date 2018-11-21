@@ -105,4 +105,6 @@
     <string name="main_fragment_button_news">News</string>
     <string name="main_fragment_button_map">Map</string>
     <string name="main_fragment_button_schedule">Schedule</string>
+
+    <string name="click_to_see_schedule">Click to see schedule</string>
 </resources>

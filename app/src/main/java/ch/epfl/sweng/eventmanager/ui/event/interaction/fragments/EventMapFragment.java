@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
@@ -65,6 +67,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     protected SpotsModel spotsModel;
     protected ZoneModel zonesModel;
     protected ScheduleViewModel scheduleViewModel;
+    private Spot clickedClusterItem;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -148,22 +151,27 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         // FIXME handle nullpointerexception
         mClusterManager = new ClusterManager<>(getActivity(), mMap);
         mClusterManager.setOnClusterItemInfoWindowClickListener(this);
-        mMap.setOnMarkerClickListener(mClusterManager);
-        mMap.setOnInfoWindowClickListener(mClusterManager);
         mClusterManager.setRenderer(new SpotRenderer(getActivity()));
-
-        // Point the map's listeners at the listeners implemented by the cluster
-        // manager.
-        mMap.setOnCameraIdleListener(mClusterManager);
-        mMap.setOnMarkerClickListener(mClusterManager);
-
+        mClusterManager.setOnClusterItemClickListener(spot -> {
+            clickedClusterItem = spot;
+            return false;
+        });
+        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
         mClusterManager.setAnimation(true);
 
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mMap.setOnInfoWindowClickListener(mClusterManager);
+        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+        mMap.setOnCameraIdleListener(mClusterManager);
+
+        addItemToCluster();
+    }
+
+    private void addItemToCluster() {
         this.scheduleViewModel.getScheduledItems().observe(getActivity(), items -> this.spotsModel.getSpots().observe(getActivity(), spots -> {
             if (spots == null) {
                 return;
             }
-
             // 1. clear old spots
             mClusterManager.clearItems();
 
@@ -190,15 +198,15 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     }
 
     private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener = () -> {
-        Toast.makeText(getActivity(), "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false;
     };
 
-    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener = location -> {
-        Toast.makeText(getActivity(), "Current location:\n" + location, Toast.LENGTH_LONG).show();
-    };
+    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener = location ->
+        Toast.makeText(getActivity(), "" + location, Toast.LENGTH_LONG).show();
+
 
     private class SpotRenderer extends DefaultClusterRenderer<Spot> {
         // FIXME handlenullpointerexception
@@ -228,8 +236,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
 
         @Override
         protected void onBeforeClusterItemRendered(Spot spot, MarkerOptions markerOptions) {
-            // Draw a single person.
-            // Set the info window to show their name.
+            // Draw a single spot.
+            // Set the info window to show the description.
             mImageView.setImageBitmap(spot.getBitmap());
             Bitmap icon = mIconGenerator.makeIcon();
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(spot.getTitle());
@@ -244,6 +252,11 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
             int height = mDimension;
 
             for (Spot p : cluster.getItems()) {
+                // Draw at most 4 images on the same cluster
+                if(spotImages.size() == 4) {
+                    break;
+
+                }
                 Drawable drawable = new BitmapDrawable(p.getBitmap());
                 drawable.setBounds(0, 0, width, height);
                 spotImages.add(drawable);
@@ -268,11 +281,42 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         if(spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
             ScheduleParentFragment scheduleParentFragment = new ScheduleParentFragment();
             Bundle args = new Bundle();
-            args.putString(TAB_NB_KEY, spot.getTitle());
+            args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
             scheduleParentFragment.setArguments(args);
             // FIXME handle nullpointerexception
             ((EventShowcaseActivity)getActivity()).changeFragment(
                     scheduleParentFragment, true);
+        }
+    }
+
+    private class MyCustomAdapterForItems implements GoogleMap.InfoWindowAdapter {
+
+        private final View myContentsView;
+
+        MyCustomAdapterForItems() {
+            myContentsView = getLayoutInflater().inflate(R.layout.custom_info_window, null);
+        }
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            TextView tvTitle = myContentsView.findViewById(R.id.name);
+            TextView tvSnippet = myContentsView.findViewById(R.id.details);
+            TextView tvClickToSchedule = myContentsView.findViewById(R.id.scheduleClick);
+
+            if(clickedClusterItem.getScheduleList() != null && clickedClusterItem.getScheduleList().size() != 0) {
+                tvClickToSchedule.setVisibility(View.VISIBLE);
+                tvClickToSchedule.setText(getResources().getString(R.string.click_to_see_schedule));
+            } else {
+                tvClickToSchedule.setVisibility(View.GONE);
+            }
+            tvTitle.setText(clickedClusterItem.getTitle());
+            tvSnippet.setText(clickedClusterItem.getSnippet());
+
+            return myContentsView;
         }
     }
 }
