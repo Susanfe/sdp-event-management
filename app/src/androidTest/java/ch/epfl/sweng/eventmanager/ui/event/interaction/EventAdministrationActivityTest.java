@@ -2,13 +2,12 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
 import android.content.Intent;
 
-import androidx.test.espresso.contrib.DrawerActions;
-import androidx.test.espresso.contrib.NavigationViewActions;
-import androidx.test.rule.ActivityTestRule;
-
 import org.junit.Rule;
 import org.junit.Test;
 
+import androidx.test.espresso.contrib.DrawerActions;
+import androidx.test.espresso.contrib.NavigationViewActions;
+import androidx.test.rule.ActivityTestRule;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 

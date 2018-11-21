@@ -19,7 +19,6 @@ import androidx.test.espresso.contrib.NavigationViewActions;
 import androidx.test.espresso.intent.Intents;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
-
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 
 import static androidx.test.espresso.Espresso.onView;

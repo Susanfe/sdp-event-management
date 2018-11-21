@@ -3,7 +3,6 @@ package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 import android.os.SystemClock;
 import android.view.Gravity;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -24,7 +23,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * @author Louis Vialar

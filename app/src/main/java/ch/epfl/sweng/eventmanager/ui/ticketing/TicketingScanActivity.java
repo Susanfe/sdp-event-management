@@ -5,8 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.widget.AppCompatButton;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -53,6 +52,8 @@ public final class TicketingScanActivity extends TicketingActivity {
     TextView view;
     @BindView(R.id.barcode_scanner)
     DecoratedBarcodeView scanner;
+    @BindView(R.id.ticketing_scan_back_button)
+    AppCompatButton backButton;
 
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
@@ -174,6 +175,7 @@ public final class TicketingScanActivity extends TicketingActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticketing_scan);
         ButterKnife.bind(this);
+        backButton.setOnClickListener(this::goBack);
 
         Intent intent = getIntent();
         this.configId = intent.getIntExtra(SELECTED_CONFIG_ID, -1);

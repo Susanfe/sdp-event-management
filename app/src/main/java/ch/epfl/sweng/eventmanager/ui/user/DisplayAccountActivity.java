@@ -39,7 +39,7 @@ public class DisplayAccountActivity extends AppCompatActivity {
 
         // We assume the user is logged in when the activity is opened.
         helpText.setText(logged_as  + Session.getCurrentUser().getEmail());
-        logoutButton.setText(R.string.logout_button);
+        logoutButton.setOnClickListener(this::logoutThenRedirectToEventSelector);
     }
 
     public void logoutThenRedirectToEventSelector(View view) {
