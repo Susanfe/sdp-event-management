@@ -61,7 +61,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         ClusterManager.OnClusterItemInfoWindowClickListener<Spot>  {
 
     private static final String TAG = "EventMapFragment";
-    private static final float ZOOMLEVEL = 19.0f; //This goes up to 21
+    private static final float ZOOMLEVEL = 15.0f; //This goes up to 21
     public static final String TAB_NB_KEY = "ch.epfl.sweng.eventmanager.TAB_NB_KEY";
     private GoogleMap mMap;
 
