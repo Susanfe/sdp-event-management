@@ -13,8 +13,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.SignInButton;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -32,22 +30,22 @@ import ch.epfl.sweng.eventmanager.users.Role;
 public class EventUserManagementFragment extends AbstractShowcaseFragment {
     private static final String TAG = "UserManagement";
 
-    @BindView(R.id.user_list)
-    private RecyclerView mUserList;
     private UserListAdapter mUserListAdapter;
-    @BindView(R.id.add_user_mail_field)
-    private EditText mAddUserEmailField;
-    @BindView(R.id.add_user_spinner)
-    private Spinner mAddUserSpinner;
-    @BindView(R.id.add_user_button)
-    private Button mAddUserButton;
-    @BindView(R.id.add_user_progress_bar)
-    private ProgressBar mAddUserProgressbar;
+    @BindView(R.id.user_management_user_list)
+    RecyclerView mUserList;
+    @BindView(R.id.user_managament_user_mail_field)
+    EditText mAddUserEmailField;
+    @BindView(R.id.user_management_add_user_spinner)
+    Spinner mAddUserSpinner;
+    @BindView(R.id.user_management_add_user_button)
+    Button mAddUserButton;
+    @BindView(R.id.user_management_progress_bar)
+    ProgressBar mAddUserProgressbar;
     @BindView(R.id.user_management_help_text)
     TextView helpText;
-    @BindView(R.id.user_list_left_header)
+    @BindView(R.id.user_management_user_list_left_header)
     TextView leftHeader;
-    @BindView(R.id.user_list_right_header)
+    @BindView(R.id.user_management_user_list_right_header)
     TextView rightHeader;
 
     public EventUserManagementFragment() {
