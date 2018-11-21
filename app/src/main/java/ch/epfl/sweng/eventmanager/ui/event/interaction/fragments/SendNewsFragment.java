@@ -34,7 +34,7 @@ public class SendNewsFragment extends AbstractShowcaseFragment {
     @BindView(R.id.send)
     Button send;
 
-    SendNewsFragment() {
+    public SendNewsFragment() {
         super(R.layout.fragment_send_news);
     }
 

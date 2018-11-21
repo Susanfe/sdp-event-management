@@ -34,7 +34,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
     @BindView(R.id.contact_form_content)
     EditText content;
 
-    EventFormFragment() {
+    public EventFormFragment() {
         super(R.layout.fragment_event_form);
     }
 

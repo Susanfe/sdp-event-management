@@ -3,12 +3,12 @@
     <item
         android:title="@string/title_activity_login"
         android:id="@+id/activity_login_login_button"
-        android:showAsAction="never"/>
+        app:showAsAction="never" />
 
     <item
         android:title="@string/logout_button"
         android:id="@+id/logout_button"
         android:visible="false"
-        android:showAsAction="never" />
+        app:showAsAction="never" />
 
 </menu>
