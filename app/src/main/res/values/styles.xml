@@ -68,8 +68,26 @@
     </style>
 
     <!--Borderless button -->
-    <style name="BorderlessButtonStyle" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:textColor">@color/colorSecondary</item>
+    <style name="button_outlines_border" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/colorPrimaryDark</item>
+        <item name="android:background">@drawable/button_transparent_background_bottom_left</item>
+    </style>
+
+    <!-- Small version of borderless button -->
+    <style name="Button_small_outlines" parent="button_outlines_border">
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:padding">@dimen/button_light_padding</item>
+    </style>
+
+    <style name="cardView_rounded_outer" parent="Base.CardView">
+        <item name="cardBackgroundColor">@android:color/transparent</item>
+        <item name="cardCornerRadius">0dp</item>
+    </style>
+    
+    <style name="cardView_rounded_inner" parent="Base.CardView">
+        <item name="cardCornerRadius">@dimen/button_light_round_radius</item>
     </style>
 
 
