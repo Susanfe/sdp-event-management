@@ -43,7 +43,7 @@ public class EventPickingModel extends ViewModel {
     /**
      * Returns a pair of joined and not joined events
      */
-    public LiveData<EventsPair> getEventsPair() {
+    LiveData<EventsPair> getEventsPair() {
         LiveData<List<Integer>> joinedEvents = joinedEventRepository.findAllIds();
 
         return Transformations.switchMap(events, events -> {
@@ -68,25 +68,25 @@ public class EventPickingModel extends ViewModel {
         private final List<Event> joinedEvents;
         private final List<Event> otherEvents;
 
-        public EventsPair(List<Event> joinedEvents, List<Event> otherEvents) {
+        EventsPair(List<Event> joinedEvents, List<Event> otherEvents) {
             this.joinedEvents = Collections.unmodifiableList(joinedEvents);
             this.otherEvents = Collections.unmodifiableList(otherEvents);
         }
 
-        public List<Event> getJoinedEvents() {
+        List<Event> getJoinedEvents() {
             return joinedEvents;
         }
 
-        public List<Event> getOtherEvents() {
+        List<Event> getOtherEvents() {
             return otherEvents;
         }
     }
 
-    public void joinEvent(Event event) {
+    void joinEvent(Event event) {
         joinedEventRepository.insert(new JoinedEvent(event));
     }
 
-    public void unjoinEvent(Event event) {
+    void unjoinEvent(Event event) {
         joinedEventRepository.delete(new JoinedEvent(event));
     }
 }

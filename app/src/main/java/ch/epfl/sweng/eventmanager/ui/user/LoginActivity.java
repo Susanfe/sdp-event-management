@@ -12,6 +12,8 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.users.Session;
 import dagger.android.AndroidInjection;
@@ -24,31 +26,27 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
     // UI references.
-    private EditText mEmailView;
-    private EditText mPasswordView;
-    private Button mLoginButton;
-    private Button mSignUpButton;
-    private ProgressBar mProgressBar;
+    @BindView(R.id.activity_login_email_field)
+    EditText mEmailView;
+    @BindView(R.id.activity_login_password_field)
+    EditText mPasswordView;
+    @BindView(R.id.activity_login_login_button)
+    Button mLoginButton;
+    @BindView(R.id.activity_login_signup_button)
+    Button mSignUpButton;
+    @BindView(R.id.activity_login_progress_bar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.activity_login_toolbar)
+    Toolbar toolbar;
 
     private void setupFields() {
-        mEmailView = findViewById(R.id.email_field);
-        mEmailView.setHint(R.string.email_field);
         mEmailView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mEmailView));
-
-        mPasswordView = findViewById(R.id.password_field);
-        mPasswordView.setHint(R.string.password_field);
-
         // When the done button is clicked on the keyboard, try to login
         mPasswordView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mPasswordView));
     }
 
     private void setupButtons() {
-        mLoginButton = findViewById(R.id.login_button);
-        mLoginButton.setText(R.string.login_button);
         mLoginButton.setOnClickListener(view -> attemptLogin());
-
-        mSignUpButton = findViewById(R.id.signup_button);
-        mSignUpButton.setText(R.string.signup_button);
         mSignUpButton.setOnClickListener(view -> openSignUpForm());
     }
 
@@ -58,16 +56,13 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
 
         // Initialize UI
         setupFields();
         setupButtons();
-
-        mProgressBar = findViewById(R.id.sign_in_progress_bar);
-        mProgressBar.setVisibility(View.INVISIBLE);
-
-        Toolbar toolbar = findViewById(R.id.login_toolbar);
         setSupportActionBar(toolbar);
+        mProgressBar.setVisibility(View.INVISIBLE);
     }
 
     private void openSignUpForm() {
@@ -80,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                 = UserManagerHelper.validateForm(this, mEmailView, mPasswordView, null);
 
         // FIXME: Quite ugly, do we have a sexier way to return from UserManagerHelper.validateForm/3 ?
-        Boolean cancel = validatedForm.first.first;
+        boolean cancel = validatedForm.first.first;
         EditText focusView = validatedForm.first.second;
         String email = validatedForm.second.first;
         String password = validatedForm.second.second;

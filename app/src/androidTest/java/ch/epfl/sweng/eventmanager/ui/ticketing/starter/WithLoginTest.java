@@ -1,18 +1,18 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.starter;
 
-import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
-import ch.epfl.sweng.eventmanager.repository.data.EventOrganizer;
-import ch.epfl.sweng.eventmanager.repository.data.Position;
-import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
-import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingConfigurationPickerActivity;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingLoginActivity;
 import org.junit.After;
 import org.junit.Test;
 
 import java.util.Collections;
 import java.util.Date;
+
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
+import ch.epfl.sweng.eventmanager.repository.data.EventOrganizer;
+import ch.epfl.sweng.eventmanager.repository.data.Position;
+import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingConfigurationPickerActivity;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingLoginActivity;
 
 import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.AUTHORIZED_USER;
 import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.PASSWORD;

@@ -23,7 +23,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
      */
     private static final String MIME_DATA = "message/rfc822";
 
-    String email;
+    private String email;
 
     @BindView(R.id.contact_form_send_button)
     Button sendButton;

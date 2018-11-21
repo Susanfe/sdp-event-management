@@ -27,12 +27,12 @@ import java.util.List;
 public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Event> mEvents;
 
-    public void update(List<Event> events) {
+    void update(List<Event> events) {
         class EventDiffCallback extends DiffUtil.Callback {
             private final List<Event> oldEventList;
             private final List<Event> newEventList;
 
-            EventDiffCallback(List<Event> oldEventList, List<Event> newEventList) {
+            private EventDiffCallback(List<Event> oldEventList, List<Event> newEventList) {
                 this.oldEventList = oldEventList;
                 this.newEventList = newEventList;
             }
@@ -71,15 +71,15 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.itemType = itemType;
     }
 
-    public static EventListAdapter newInstance(ItemType itemType) {
+    static EventListAdapter newInstance(ItemType itemType) {
         List<Event> emptyList = new ArrayList<>();
-        EventListAdapter eventListAdapter = new EventListAdapter(emptyList,itemType);
-        return eventListAdapter;
+        return new EventListAdapter(emptyList,itemType);
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @NonNull
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh;
         switch (itemType) {
             case Event:
@@ -143,9 +143,9 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @BindView(R.id.event_thumbnail)
         ImageView eventThumbnail;
 
-        public JoinedEventViewHolder(View itemView) {
+        JoinedEventViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            ButterKnife.bind(this,itemView);
             itemView.setOnClickListener(this);
         }
 
@@ -156,7 +156,7 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
-    public class EventViewHolder extends RecyclerView.ViewHolder {
+    class EventViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.event_name)
         TextView eventNameTextView;
@@ -169,18 +169,18 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @BindView(R.id.join_event_btn)
         Button joinEvent;
 
-        public EventViewHolder(View itemView) {
+        EventViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         @OnClick(R.id.goto_event_btn)
-        public void onClickEventButton() {
+        void onClickEventButton() {
             goToEvent(itemView,getAdapterPosition());
         }
 
         @OnClick(R.id.join_event_btn)
-        public void onClickJoinButton() {
+        void onClickJoinButton() {
             Context context = itemView.getContext();
             ((EventPickingActivity) context).joinEvent(mEvents.get(getAdapterPosition()));
         }

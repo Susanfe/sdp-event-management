@@ -11,12 +11,12 @@
     <include layout="@layout/content_timeline" android:id="@+id/include"/>
 
     <TextView
-            android:text="@string/scheduled_items_empty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/scheduled_items_empty_tv"
-            android:gravity="center"
-            app:layout_anchorGravity="center_vertical|center_horizontal"
-            app:layout_anchor="@+id/include" android:visibility="gone"/>
+        android:text="@string/scheduled_items_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:id="@+id/scheduled_items_empty_tv"
+        android:gravity="center"
+        app:layout_anchorGravity="center_vertical|center_horizontal"
+        app:layout_anchor="@+id/include" android:visibility="gone"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

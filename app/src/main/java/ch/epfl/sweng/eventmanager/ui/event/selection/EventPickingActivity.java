@@ -117,6 +117,8 @@ public class EventPickingActivity extends AppCompatActivity {
                         break;
                     case BottomSheetBehavior.STATE_SETTLING:
                         break;
+                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                        break;
                 }
             }
 
@@ -186,7 +188,7 @@ public class EventPickingActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.login_button:
+            case R.id.activity_login_login_button:
                 openLoginOrAccountActivity();
                 break;
 
@@ -201,10 +203,10 @@ public class EventPickingActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (Session.isLoggedIn()) {
-            menu.findItem(R.id.login_button).setTitle(R.string.account_button);
+            menu.findItem(R.id.activity_login_login_button).setTitle(R.string.account_button);
             menu.findItem(R.id.logout_button).setVisible(true);
         } else {
-            menu.findItem(R.id.login_button).setTitle(R.string.login_button);
+            menu.findItem(R.id.activity_login_login_button).setTitle(R.string.login_button);
             menu.findItem(R.id.logout_button).setVisible(false);
         }
         return super.onPrepareOptionsMenu(menu);
@@ -240,6 +242,7 @@ public class EventPickingActivity extends AppCompatActivity {
             case BottomSheetBehavior.STATE_EXPANDED:
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 break;
+            default :
         }
     }
 
@@ -247,17 +250,12 @@ public class EventPickingActivity extends AppCompatActivity {
         this.model.joinEvent(event);
         View contextView = findViewById(R.id.event_picking_main_layout);
         Snackbar.make(contextView, R.string.event_successfully_joined, Snackbar.LENGTH_SHORT).setAction(R.string.undo
-                , v -> {
-            unjoinEvent(event);
-        }).show();
+                , v -> unjoinEvent(event)).show();
     }
 
-    void unjoinEvent(Event event) {
+    private void unjoinEvent(Event event) {
         this.model.unjoinEvent(event);
         View contextView = findViewById(R.id.event_picking_main_layout);
-        Snackbar.make(contextView, R.string.event_successfully_unjoined, Snackbar.LENGTH_SHORT).setAction(R.string.undo, v -> {
-            unjoinEvent(event);
-        }).show();
+        Snackbar.make(contextView, R.string.event_successfully_unjoined, Snackbar.LENGTH_SHORT).show();
     }
-
 }

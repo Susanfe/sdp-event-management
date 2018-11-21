@@ -11,13 +11,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.TestHelper;
 import ch.epfl.sweng.eventmanager.users.Session;
@@ -33,9 +31,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
 
-@RunWith(AndroidJUnit4.class)
 public class LoginActivityTest {
-    int MAX_RETRY_COUNT = 10;
+    private final int MAX_RETRY_COUNT = 10;
 
     @Before
     public void disableFirebaseAuth() {
@@ -58,21 +55,21 @@ public class LoginActivityTest {
         String password = "secret";
         SystemClock.sleep(1000);
 
-        onView(ViewMatchers.withId(R.id.email_field))
+        onView(ViewMatchers.withId(R.id.activity_login_email_field))
                 .perform(typeText(email))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
         SystemClock.sleep(1000);
 
-        onView(withId(R.id.login_button)).perform(click());
+        onView(withId(R.id.activity_login_login_button)).perform(click());
         SystemClock.sleep(1000);
 
         for (int i = 0; i < MAX_RETRY_COUNT; i++) {
             try {
                 SystemClock.sleep(1000);
-                onView(withId(R.id.sign_in_progress_bar))
+                onView(withId(R.id.activity_login_progress_bar))
                         .check(matches(isDisplayed()));
                 break;
             } catch (AssertionFailedError e) {
@@ -83,10 +80,10 @@ public class LoginActivityTest {
             }
         }
 
-        onView(withId(R.id.main_text))
+        onView(withId(R.id.display_account_main_text))
                 .check(matches(withText(containsString(email))));
 
-        onView(withId(R.id.logout_btn))
+        onView(withId(R.id.display_account_logout_button))
                 .perform(click());
 
     }
@@ -100,18 +97,18 @@ public class LoginActivityTest {
         String invalidCredentialError = "The password is invalid or the user does not have a password.";
 
 
-        onView(withId(R.id.email_field))
+        onView(withId(R.id.activity_login_email_field))
                 .perform(typeText(email))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.login_button)).perform(click());
+        onView(withId(R.id.activity_login_login_button)).perform(click());
 
         for (int i = 0; i < MAX_RETRY_COUNT; i++) {
             try {
                 SystemClock.sleep(1000);
-                onView(withId(R.id.sign_in_progress_bar))
+                onView(withId(R.id.activity_login_progress_bar))
                         .check(matches(isDisplayed()));
                 break;
             } catch (AssertionFailedError e) {
@@ -122,7 +119,7 @@ public class LoginActivityTest {
             }
         }
 
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_password_field))
                 .check(matches(hasErrorText(invalidCredentialError)));
     }
 
@@ -134,31 +131,32 @@ public class LoginActivityTest {
         String invalidEmailError = getResourceString(R.string.invalid_email_error);
 
         // Test empty password
-        onView(withId(R.id.email_field))
+        onView(withId(R.id.activity_login_email_field))
                 .perform(typeText(email))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.login_button)).perform(click());
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_login_button)).perform(click());
+        onView(withId(R.id.activity_login_password_field))
                 .check(matches(hasErrorText(emptyPasswordError)));
 
         // Test invalid email address
-        onView(withId(R.id.password_field))
+        onView(withId(R.id.activity_login_password_field))
                 .perform(typeText(password))
                 .perform(closeSoftKeyboard());
-        onView(withId(R.id.login_button)).perform(click());
-        onView(withId(R.id.email_field))
+        onView(withId(R.id.activity_login_login_button)).perform(click());
+        onView(withId(R.id.activity_login_email_field))
                 .check(matches(hasErrorText(invalidEmailError)));
     }
 
     @Test
     public void testOpenSignUpForm() {
-        onView(withId(R.id.signup_button))
+        onView(withId(R.id.activity_login_signup_button))
                 .perform(click());
 
         TestHelper.withToolbarTitle(getResourceString(R.string.title_activity_sign_up));
     }
 
     private String getResourceString(int id) {
+        // FIXME use non deprecated method instead of following one
         Context targetContext = InstrumentationRegistry.getTargetContext();
         return targetContext.getResources().getString(id);
     }

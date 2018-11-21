@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="ch.epfl.sweng.eventmanager">
+    package="ch.epfl.sweng.eventmanager">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -40,11 +40,36 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-        <meta-data android:name="com.google.android.geo.API_KEY"
-                   android:value="@string/google_maps_key"/>
-        <activity
-                android:name=".ui.user.LoginActivity"
-                android:label="@string/title_activity_login"/>
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="@string/google_maps_key"/>
+
+        <activity android:name=".ui.event.selection.EventPickingActivity"
+            android:launchMode="singleTop">
+
+            <!-- TODO Setup URI addressing for app indexing -->
+            <!-- Source stackoverflow answer https://stackoverflow.com/a/34368811-->
+            <intent-filter android:label="@string/filter_title_event_picking">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <!-- Accepts URIs that begin with "http://www.example.com/sdp” -->
+                <data android:scheme="http"
+                    android:host="www.example.com"
+                    android:pathPrefix="/sdp" />
+
+                <!-- note that the leading "/" is required for pathPrefix-->
+                <!-- Accepts URIs that begin with "example://sdp” -->
+                <data android:scheme="example"
+                    android:host="sdp" />
+            </intent-filter>
+            <!-- End of TODO-->
+
+        </activity>
+
+        <activity android:name=".ui.user.LoginActivity"
+            android:label="@string/title_activity_login" />
 
         <activity android:name=".ui.user.SignUpActivity"
                   android:label="@string/title_activity_sign_up"/>
@@ -52,7 +77,6 @@
                 android:name=".ui.user.DisplayAccountActivity"
                 android:label="@string/title_activity_account_display"/>
 
-        <activity android:name=".ui.event.selection.EventPickingActivity"/>
         <activity android:name=".ui.event.interaction.EventShowcaseActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.ticketing.TicketingConfigurationPickerActivity"/>

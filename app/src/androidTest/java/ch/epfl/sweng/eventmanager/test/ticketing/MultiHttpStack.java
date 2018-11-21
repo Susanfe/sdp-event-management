@@ -1,13 +1,19 @@
 package ch.epfl.sweng.eventmanager.test.ticketing;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import androidx.annotation.Nullable;
 import ch.epfl.sweng.eventmanager.ticketing.ErrorCodes;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.LoginResponse;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
-
-import java.util.*;
 
 /**
  * @author Louis Vialar
@@ -17,18 +23,17 @@ public class MultiHttpStack extends TicketingHttpStack {
     private final Map<Integer, ScanConfigurationStack> stackMap = new HashMap<>();
 
     public static class ScanConfigurationStack {
-        private static int id = 1;
         private Map<String, ScanResult> stack;
         private ScanConfiguration configuration;
 
-        public ScanConfigurationStack(Map<String, ScanResult> stack, ScanConfiguration configuration) {
+        ScanConfigurationStack(Map<String, ScanResult> stack, ScanConfiguration configuration) {
             this.stack = stack;
             this.configuration = configuration;
         }
 
-        public ScanConfigurationStack(String name, Map<String, ScanResult> stack) {
-            this(stack, new ScanConfiguration(id++, name));
-        }
+//        public ScanConfigurationStack(String name, Map<String, ScanResult> stack) {
+//            this(stack, new ScanConfiguration(id++, name));
+//        }
     }
 
     public MultiHttpStack(ScanConfigurationStack... stacks) {
@@ -37,7 +42,7 @@ public class MultiHttpStack extends TicketingHttpStack {
     }
 
     @Override
-    public LoginResponse generateLoginResponse(String userName, String password) throws TicketingApiException {
+    public LoginResponse generateLoginResponse(String userName, String password) {
         throw new UnsupportedOperationException();
     }
 
@@ -74,7 +79,7 @@ public class MultiHttpStack extends TicketingHttpStack {
     }
 
     @Override
-    public List<ScanConfiguration> generateConfigurations(@Nullable String authToken) throws TicketingApiException {
+    public List<ScanConfiguration> generateConfigurations(@Nullable String authToken) {
         List<ScanConfiguration> list = new ArrayList<>();
 
         for (ScanConfigurationStack stack : stackMap.values())

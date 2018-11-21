@@ -5,7 +5,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import android.content.Context;
-
+import ch.epfl.sweng.eventmanager.mock.repository.MockConcertRepository;
+import ch.epfl.sweng.eventmanager.repository.EventRepository;
+import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
+import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,13 +21,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import ch.epfl.sweng.eventmanager.mock.repository.MockConcertRepository;
-import ch.epfl.sweng.eventmanager.repository.EventRepository;
-import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
-import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 
@@ -93,19 +93,19 @@ public class ScheduleViewModelTest {
     @Test
     public void  buildJoinedScheduledItemsListOnNull() {
         ScheduleViewModel scheduleViewModel = new ScheduleViewModel(null,null);
-        assertEquals(null,scheduleViewModel.getJoinedScheduleItems());
+        assertNull(scheduleViewModel.getJoinedScheduleItems());
     }
 
     @Test
     public void getScheduleItemForRoomOnNull() {
         ScheduleViewModel scheduleViewModel = new ScheduleViewModel(null,null);
-        assertEquals(null,scheduleViewModel.getScheduleItemsByRoom());
+        assertNull(scheduleViewModel.getScheduleItemsByRoom());
     }
 
     @Test
     public void buildScheduleItemByRoomOnNull() {
         ScheduleViewModel scheduleViewModel = new ScheduleViewModel(null,null);
-        assertEquals(null,scheduleViewModel.getScheduleItemsByRoom());
+        assertNull(scheduleViewModel.getScheduleItemsByRoom());
     }
 
     @Test

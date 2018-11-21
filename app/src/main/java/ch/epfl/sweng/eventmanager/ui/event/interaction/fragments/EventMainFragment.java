@@ -9,6 +9,7 @@ import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
 import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
@@ -69,9 +70,11 @@ public class EventMainFragment extends AbstractShowcaseFragment {
                 if (!joinEventButton.isChecked()) {
                     this.model.joinEvent(ev);
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getContext()));
+                    NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
                 } else {
                     this.model.unjoinEvent(ev);
                     NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getContext()));
+                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
                 }
             });
         });
@@ -81,8 +84,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        // FIXME Handle null veiw argument
-        ButterKnife.bind(this, view);
+        if (view != null) ButterKnife.bind(this, view);
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
         contactButton.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFormFragment(), true));

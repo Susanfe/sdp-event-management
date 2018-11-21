@@ -1,9 +1,9 @@
 package ch.epfl.sweng.eventmanager.test;
 
-import androidx.lifecycle.MutableLiveData;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.lifecycle.MutableLiveData;
 
 /**
  * @author Louis Vialar
