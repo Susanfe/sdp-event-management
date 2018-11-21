@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.repository.data.Zone;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,4 +23,8 @@ public interface EventRepository {
     LiveData<List<Spot>> getSpots(int eventId);
 
     LiveData<List<ScheduledItem>> getScheduledItems(int eventId);
+
+    LiveData<List<Zone>> getZones(int eventId);
+
+    LiveData<Bitmap> getSpotImage(Spot spot);
 }

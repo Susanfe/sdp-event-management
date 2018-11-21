@@ -35,6 +35,7 @@ public class FirebaseCloudFunction {
                     // This continuation runs on either success or failure, but if the task
                     // has failed then getResult() will throw an Exception which will be
                     // propagated down.
+                    // TODO handle null pointer exception
                     Boolean result = (Boolean) task.getResult().getData();
                     return result;
                 });
