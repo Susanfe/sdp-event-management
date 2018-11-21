@@ -5,7 +5,18 @@ checks:
   method-lines:
     config:
       threshold: 35
-
+  argument-count:
+    config:
+      threshold: 8
+  return-statements:
+    config:
+      threshold: 8
+  similar-code:
+    config:
+      threshold: 80
+  identical-code:
+    config:
+      threshold: 60
 exclude_patterns:
   - "app/src/main/java/ch/epfl/sweng/eventmanager/repository/room/daos"
   - "app/src/main/java/ch/epfl/sweng/eventmanager/repository/impl"

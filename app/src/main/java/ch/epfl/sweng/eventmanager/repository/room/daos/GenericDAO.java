@@ -1,6 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.room.daos;
 
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 
 import java.util.List;
 

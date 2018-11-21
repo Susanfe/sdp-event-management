@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 
 import ch.epfl.sweng.eventmanager.repository.data.DummyUser;
 import ch.epfl.sweng.eventmanager.repository.data.User;
-import ch.epfl.sweng.eventmanager.ui.userManager.DisplayAccountActivity;
+import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
 
 /**
  * Dummy InMemorySession class, only used in tests.

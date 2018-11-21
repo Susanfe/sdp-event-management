@@ -1,19 +1,16 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import android.arch.lifecycle.LiveData;
-import android.content.Context;
+import androidx.lifecycle.LiveData;
+
 import android.os.AsyncTask;
-import android.widget.Toast;
-import ch.epfl.sweng.eventmanager.R;
+
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
-import com.twitter.sdk.android.core.Callback;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Singleton
 public class JoinedScheduleItemRepository extends AbstractEventRepository<JoinedScheduleItem, JoinedScheduleItemDao, UUID> {
