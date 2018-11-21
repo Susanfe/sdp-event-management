@@ -9,16 +9,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 
 public class DisplayAccountActivity extends AppCompatActivity {
 
+    @BindView(R.id.main_text)
+    TextView helpText;
+    @BindView(R.id.logout_btn)
+    Button logoutButton;
+    @BindString(R.string.display_account_activity_logged_as)
+    String logged_as;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_account);
+        ButterKnife.bind(this);
 
         if (getSupportActionBar() != null) {
             ActionBar actionbar = getSupportActionBar();
@@ -26,11 +38,7 @@ public class DisplayAccountActivity extends AppCompatActivity {
         }
 
         // We assume the user is logged in when the activity is opened.
-        TextView helpText = findViewById(R.id.main_text);
-        helpText.setText(getText(R.string.display_account_activity_logged_as)  + Session.getCurrentUser().getEmail());
-
-
-        Button logoutButton = findViewById(R.id.logout_btn);
+        helpText.setText(logged_as  + Session.getCurrentUser().getEmail());
         logoutButton.setText(R.string.logout_button);
     }
 
