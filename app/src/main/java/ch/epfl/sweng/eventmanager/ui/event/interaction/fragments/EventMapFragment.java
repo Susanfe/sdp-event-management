@@ -18,9 +18,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
@@ -54,7 +56,9 @@ import dagger.android.support.AndroidSupportInjection;
  * @author Robin Zbinden (274236)
  * @author Stanislas Jouven (260580)
  */
-public class EventMapFragment extends AbstractShowcaseFragment implements ClusterManager.OnClusterItemInfoWindowClickListener<Spot> {
+public class EventMapFragment extends AbstractShowcaseFragment implements
+        ClusterManager.OnClusterClickListener<Spot>,
+        ClusterManager.OnClusterItemInfoWindowClickListener<Spot>  {
 
     private static final String TAG = "EventMapFragment";
     private static final float ZOOMLEVEL = 19.0f; //This goes up to 21
@@ -124,7 +128,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
 
             EventLocation loc = event.getLocation();
             LatLng place = loc.getPosition().asLatLng();
-            mMap.addMarker(new MarkerOptions().position(place).title(loc.getName()));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, ZOOMLEVEL));
             mMap.getUiSettings().setCompassEnabled(true);
             mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -151,6 +154,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         // FIXME handle nullpointerexception
         mClusterManager = new ClusterManager<>(getActivity(), mMap);
         mClusterManager.setOnClusterItemInfoWindowClickListener(this);
+        mClusterManager.setOnClusterClickListener(this);
         mClusterManager.setRenderer(new SpotRenderer(getActivity()));
         mClusterManager.setOnClusterItemClickListener(spot -> {
             clickedClusterItem = spot;
@@ -207,6 +211,42 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     private GoogleMap.OnMyLocationClickListener onMyLocationClickListener = location ->
         Toast.makeText(getActivity(), "" + location, Toast.LENGTH_LONG).show();
 
+    @Override
+    public boolean onClusterClick(Cluster<Spot> cluster) {
+
+        // Zoom in the cluster. Need to create LatLngBounds and including all the cluster items
+        // inside of bounds, then animate to center of the bounds.
+
+        // Create the builder to collect all essential cluster items for the bounds.
+        LatLngBounds.Builder builder = LatLngBounds.builder();
+        for (ClusterItem item : cluster.getItems()) {
+            builder.include(item.getPosition());
+        }
+        // Get the LatLngBounds
+        final LatLngBounds bounds = builder.build();
+
+        // Animate camera to the bounds
+        try {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onClusterItemInfoWindowClick(Spot spot) {
+        if(spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
+            ScheduleParentFragment scheduleParentFragment = new ScheduleParentFragment();
+            Bundle args = new Bundle();
+            args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
+            scheduleParentFragment.setArguments(args);
+            // FIXME handle nullpointerexception
+            ((EventShowcaseActivity)getActivity()).changeFragment(
+                    scheduleParentFragment, true);
+        }
+    }
 
     private class SpotRenderer extends DefaultClusterRenderer<Spot> {
         // FIXME handlenullpointerexception
@@ -276,19 +316,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         }
     }
 
-    @Override
-    public void onClusterItemInfoWindowClick(Spot spot) {
-        if(spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
-            ScheduleParentFragment scheduleParentFragment = new ScheduleParentFragment();
-            Bundle args = new Bundle();
-            args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
-            scheduleParentFragment.setArguments(args);
-            // FIXME handle nullpointerexception
-            ((EventShowcaseActivity)getActivity()).changeFragment(
-                    scheduleParentFragment, true);
-        }
-    }
-
     private class MyCustomAdapterForItems implements GoogleMap.InfoWindowAdapter {
 
         private final View myContentsView;
@@ -318,5 +345,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
 
             return myContentsView;
         }
+
     }
 }
