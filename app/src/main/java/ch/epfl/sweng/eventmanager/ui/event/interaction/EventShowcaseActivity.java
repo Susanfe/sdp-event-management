@@ -48,9 +48,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private SpotsModel spotsModel;
     private ZoneModel zonesModel;
     private Fragment eventMainFragment;
-    private Fragment eventMapFragment;
-    private Fragment newsFragment;
-    private Fragment scheduleParentFragment;
+    public Fragment eventMapFragment;
+    public Fragment newsFragment;
+    public Fragment scheduleParentFragment;
 
     private int eventID;
 
