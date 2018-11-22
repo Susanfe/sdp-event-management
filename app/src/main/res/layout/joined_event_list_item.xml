@@ -22,35 +22,36 @@
                 android:layout_height="match_parent">
 
             <ImageView
-                    android:id="@+id/event_thumbnail"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_alignParentTop="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/event_default_cover"
-                    android:contentDescription="@string/event_thumbnail"/>
+                android:id="@+id/event_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/event_default_cover"
+                android:contentDescription="@string/event_thumbnail"/>
 
             <TextView
-                    android:id="@+id/event_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/event_thumbnail"
-                    android:maxLines="3"
-                    android:padding="8dp"
-                    android:text="@string/event_list_item_default_title"
-                    android:textStyle="bold"
-                    android:textSize="22sp" />
+                android:id="@+id/event_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/event_thumbnail"
+                android:maxLines="3"
+                android:padding="8dp"
+                android:text="@string/event_list_item_default_title"
+                android:textStyle="bold"
+                android:textSize="22sp" />
 
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/event_name"
-                    android:id="@+id/event_summary"
-                    android:maxLines="3"
-                    android:padding="8dp"
-                    android:text="@string/event_list_item_default_description"
-                    android:textColor="#666"
-                    android:textSize="14sp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/event_name"
+                android:id="@+id/event_summary"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:padding="8dp"
+                android:text="@string/event_list_item_default_description"
+                android:textColor="#666"
+                android:textSize="14sp" />
 
         </RelativeLayout>
 

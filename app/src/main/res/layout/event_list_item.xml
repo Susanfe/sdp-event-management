@@ -29,8 +29,10 @@
                 <ImageView
                     android:id="@+id/event_thumbnail"
                     android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:contentDescription="@string/event_thumbnail" />
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/event_thumbnail"
+                    android:scaleType="centerCrop"
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -43,7 +45,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/unjoined_events_cardview_horizontal_margins"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:text="@string/event_list_item_default_title"/>
+                        android:text="@string/event_list_item_default_title"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
 
                     <TextView
                         android:id="@+id/event_summary"
