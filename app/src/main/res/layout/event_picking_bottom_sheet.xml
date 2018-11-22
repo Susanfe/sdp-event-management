@@ -10,9 +10,13 @@
         app:behavior_hideable="false"
         app:behavior_peekHeight="@dimen/event_picking_bottom_sheet_peek"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        android:visibility="gone">
+        android:visibility="visible">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:text="@string/not_joined_help_text_activity_event_picking"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -22,7 +26,30 @@
             android:textColor="@color/colorSecondary"
             android:textStyle="bold"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:layout_centerInParent="true"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_arrow_drop_up_24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:id="@+id/event_picking_bottom_sheet_arrow_up"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_arrow_drop_down_24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:id="@+id/event_picking_bottom_sheet_arrow_down"
+            android:visibility="gone"
+            />
+
+    </RelativeLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/not_joined_event_list"

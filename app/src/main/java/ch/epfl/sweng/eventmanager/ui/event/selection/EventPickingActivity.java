@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -58,6 +59,11 @@ public class EventPickingActivity extends AppCompatActivity {
     LinearLayout content;
     @BindView(R.id.event_picking_list_layout)
     LinearLayout layoutBottomSheet;
+    @BindView(R.id.event_picking_bottom_sheet_arrow_up)
+    ImageView arrowUp;
+    @BindView(R.id.event_picking_bottom_sheet_arrow_down)
+    ImageView arrowDown;
+
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -116,8 +122,12 @@ public class EventPickingActivity extends AppCompatActivity {
                     case BottomSheetBehavior.STATE_HIDDEN:
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
+                        arrowUp.setVisibility(View.INVISIBLE);
+                        arrowDown.setVisibility(View.VISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_COLLAPSED:
+                        arrowUp.setVisibility(View.VISIBLE);
+                        arrowDown.setVisibility(View.INVISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                         break;
