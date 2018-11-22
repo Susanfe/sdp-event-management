@@ -25,6 +25,7 @@ import ch.epfl.sweng.eventmanager.test.repository.MockFeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -65,7 +66,6 @@ public class EventFeedbackFragmentTest {
         Intents.init();
 
         onView(withId(R.id.feedback_for_go_button)).perform(click());
-        Intents.intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
     }
 
     @Test
@@ -76,18 +76,8 @@ public class EventFeedbackFragmentTest {
         submitRating(description, rating);
     }
 
-    @Test public void submitFeedbackAndRetrieveTest() {
-        String description = "The event was great !";
-        Float rating = 3f;
-
-        submitRating(description, rating);
-
-        //Switch fragment to display the event main
-        onView(withId(R.id.drawer_layout))
-                .check(matches(isClosed(Gravity.LEFT)))
-                .perform(DrawerActions.open());
-        onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_main));
+    @After public void close(){
+        Intents.release();
     }
 
     private void submitRating(String content, Float rating) {
