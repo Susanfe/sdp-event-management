@@ -1,12 +1,12 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
+import javax.inject.Singleton;
+
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
 import dagger.Module;
 import dagger.Provides;
-
-import javax.inject.Singleton;
 
 /**
  * @author Louis Vialar

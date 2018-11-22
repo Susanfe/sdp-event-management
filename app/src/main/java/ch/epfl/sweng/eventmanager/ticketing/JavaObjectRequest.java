@@ -27,16 +27,16 @@ public class JavaObjectRequest<RepType> extends JsonRequest<RepType> {
         this.repType = type;
     }
 
-    public JavaObjectRequest(int method, String url, Response.Listener<RepType> listener, @Nullable Response.ErrorListener errorListener, Type repType) {
+    JavaObjectRequest(int method, String url, Response.Listener<RepType> listener, @Nullable Response.ErrorListener errorListener, Type repType) {
         this(method, url, null, listener, errorListener, repType);
     }
 
-    public static <T> JavaObjectRequest<T> withBody(int method, String url, JSONObject body, Response.Listener<T> listener, @Nullable Response.ErrorListener errorListener, Class<T> repTypeClass) {
+    static <T> JavaObjectRequest<T> withBody(int method, String url, JSONObject body, Response.Listener<T> listener, @Nullable Response.ErrorListener errorListener, Class<T> repTypeClass) {
         String strBody = body.toString();
-        return new JavaObjectRequest<T>(method, url, strBody, listener, errorListener, repTypeClass);
+        return new JavaObjectRequest<>(method, url, strBody, listener, errorListener, repTypeClass);
     }
 
-    public JavaObjectRequest<RepType> setAuthToken(String token) {
+    JavaObjectRequest<RepType> setAuthToken(String token) {
         this.token = token;
         return this;
     }
@@ -50,7 +50,7 @@ public class JavaObjectRequest<RepType> extends JsonRequest<RepType> {
     }
 
 
-    public static ApiResult parseVolleyError(VolleyError error) {
+    static ApiResult parseVolleyError(VolleyError error) {
         try {
             if (error == null || error.networkResponse == null || error.networkResponse.data == null)
                 return null;

@@ -45,71 +45,63 @@
                 app:layout_constraintVertical_bias="0.0"
                 android:visibility="invisible"
                 app:srcCompat="@android:color/white"/>
+
         <TextView
-                android:id="@+id/event_description"
-                android:layout_width="367dp"
-                android:layout_height="0dp"
-                android:layout_weight="35"
-                android:layout_margin="8dp"
-                android:text="@string/main_fragment_error_no_description"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_image"/>
+            android:id="@+id/event_description"
+            android:layout_width="367dp"
+            android:layout_height="0dp"
+            android:layout_weight="35"
+            android:layout_margin="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_image"/>
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="10"
-                android:layout_margin="8dp"
-                android:orientation="horizontal"
-                android:id="@+id/main_fragment_button_bar">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            android:id="@+id/main_fragment_button_bar">
 
-            <Button
-                    android:id="@+id/main_fragment_news"
-                    style="@style/Button_barButton_left"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="33"
-                    android:text="@string/main_fragment_button_news"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/main_fragment_news"
+                style="@style/Button_barButton_left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:text="@string/main_fragment_button_news"/>
 
-            <Button
-                    android:id="@+id/main_fragment_schedule"
-                    style="@style/Button_barButton_middle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="33"
-                    android:text="@string/main_fragment_button_schedule"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/main_fragment_schedule"
+                style="@style/Button_barButton_middle"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:text="@string/main_fragment_button_schedule"/>
 
-            <Button
-                    android:id="@+id/main_fragment_map"
-                    style="@style/Button_barButton_right"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="33"
-                    android:text="@string/main_fragment_button_map"/>
-
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/main_fragment_map"
+                style="@style/Button_barButton_right"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:text="@string/main_fragment_button_map"/>
         </LinearLayout>
 
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="20"
-                android:id="@+id/main_fragment_relative">
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentBottom="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:orientation="horizontal">
 
-                <Button
-                        android:id="@+id/contact_form_go_button"
-                        style="@style/Button_barButton_middle"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="50"
-                        android:text="@string/contact_form_main_go_button"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/contact_form_go_button"
+                    style="@style/Button_barButton_middle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:text="@string/contact_form_main_go_button"/>
 
                 <Button
                         android:id="@+id/feedback_for_go_button"
@@ -119,16 +111,15 @@
                         android:layout_weight="50"
                         android:text="Feedback"/>
                 <CheckedTextView
-                        android:id="@+id/join_event_button"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="50"
-                        android:text="@string/main_fragment_join_event"
-                        android:gravity="center"
-                        android:textAlignment="gravity"
-                        style="@style/Button_barButton_checkable"/>
+                    android:id="@+id/join_event_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:text="@string/main_fragment_join_event"
+                    android:gravity="center"
+                    android:textAlignment="gravity"
+                    style="@style/Button_barButton_checkable"/>
 
-            </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

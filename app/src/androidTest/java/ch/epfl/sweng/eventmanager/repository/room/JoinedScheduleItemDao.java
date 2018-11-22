@@ -1,22 +1,25 @@
 package ch.epfl.sweng.eventmanager.repository.room;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.test.runner.AndroidJUnit4;
-import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemTestUtils;
-import ch.epfl.sweng.eventmanager.repository.LiveDataTestUtil;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
-import org.junit.runner.RunWith;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemTestUtils;
+import ch.epfl.sweng.eventmanager.repository.LiveDataTestUtil;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-@RunWith(AndroidJUnit4.class)
 public class JoinedScheduleItemDao extends JoinedScheduleItemTestUtils {
 
     @Rule

@@ -26,6 +26,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionMo
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
 import ch.epfl.sweng.eventmanager.users.Role;
@@ -45,6 +46,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
+    private ZoneModel zonesModel;
     private Fragment eventMainFragment;
     private Fragment eventMapFragment;
     private Fragment newsFragment;
@@ -64,6 +66,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
         this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
         this.spotsModel.init(eventID);
+
+        this.zonesModel = ViewModelProviders.of(this, factory).get(ZoneModel.class);
+        this.zonesModel.init(eventID);
     }
 
     private void setupMenu() {
@@ -139,7 +144,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         setHighlightedItemInNavigationDrawer();
     }
 
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // set item as selected to persist highlight
         menuItem.setChecked(true);
@@ -192,6 +196,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case R.id.nav_scan:
+                // TODO Handle null pointer exception
                 startActivity(ticketingManager.start(model.getEvent().getValue(), this));
                 break;
 

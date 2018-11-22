@@ -37,7 +37,7 @@
             android:inputType="textMultiLine"
             android:layout_weight="70"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/contact_form_send_button"
             android:layout_width="match_parent"
             android:layout_height="0dp"

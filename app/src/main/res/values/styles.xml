@@ -30,8 +30,9 @@
     <style name="Toolbar">
         <item name="titleTextColor">@color/colorSecondary</item>
         <item name="android:background">@color/colorPrimary</item>
-        <item name="android:actionOverflowButtonStyle">@color/colorSecondary</item>
         <!-- Add font -->
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
     <!-- Custom overflow color-->
@@ -45,6 +46,7 @@
     <style name="Button_global">
         <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:background">@drawable/button_lateral_navigation</item>
+        <item name="android:layout_margin">8dp</item>
     </style>
 
     <!-- App buttonbar button style (see fragment_event_main) -->
@@ -63,6 +65,11 @@
     <style name="Button_barButton_checkable" parent="TextAppearance.MaterialComponents.Button">
         <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:background">@drawable/button_barbutton_checkbutton</item>
+    </style>
+
+    <!--Borderless button -->
+    <style name="BorderlessButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/colorSecondary</item>
     </style>
 
 

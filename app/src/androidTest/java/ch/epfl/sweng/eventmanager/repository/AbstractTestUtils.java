@@ -1,14 +1,16 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import androidx.room.Room;
 import android.content.Context;
-import androidx.test.InstrumentationRegistry;
-import ch.epfl.sweng.eventmanager.repository.room.AppDataBase;
-import ch.epfl.sweng.eventmanager.repository.room.daos.GenericDAO;
+
 import org.junit.After;
 import org.junit.Before;
 
 import java.util.List;
+
+import androidx.room.Room;
+import androidx.test.InstrumentationRegistry;
+import ch.epfl.sweng.eventmanager.repository.room.AppDataBase;
+import ch.epfl.sweng.eventmanager.repository.room.daos.GenericDAO;
 
 public abstract class AbstractTestUtils<Dao extends GenericDAO, E> extends LiveDataTestUtil {
     protected Dao dao;
@@ -18,6 +20,7 @@ public abstract class AbstractTestUtils<Dao extends GenericDAO, E> extends LiveD
 
     @Before
     public void createDb() {
+        // FIXME Find new non deprecated method
         Context context = InstrumentationRegistry.getContext();
         mDb = Room.inMemoryDatabaseBuilder(context, AppDataBase.class).allowMainThreadQueries().build();
         dao = getDao();

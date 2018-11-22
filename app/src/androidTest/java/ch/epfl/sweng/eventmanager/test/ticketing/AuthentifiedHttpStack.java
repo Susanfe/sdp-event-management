@@ -1,13 +1,17 @@
 package ch.epfl.sweng.eventmanager.test.ticketing;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import androidx.annotation.Nullable;
 import ch.epfl.sweng.eventmanager.ticketing.ErrorCodes;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.LoginResponse;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
-
-import java.util.*;
 
 /**
  * @author Louis Vialar
@@ -17,15 +21,17 @@ public class AuthentifiedHttpStack extends TicketingHttpStack {
     private Map<String, User> users = new HashMap<>();
     private Map<String, User> sessions = new HashMap<>();
 
-    public AuthentifiedHttpStack(TicketingHttpStack baseStack, Map<String, User> users) {
+    AuthentifiedHttpStack(TicketingHttpStack baseStack, Map<String, User> users) {
         this.baseStack = baseStack;
         this.users.putAll(users);
     }
 
     @Override
     public LoginResponse generateLoginResponse(String userName, String password) throws TicketingApiException {
+        // TODO Handle null exception
         if (users.containsKey(userName) && users.get(userName).password.equals(password)) {
             String token = UUID.randomUUID().toString();
+            // TODO handle null exception
             sessions.put(token, users.get(userName));
 
             return new LoginResponse(token);
@@ -38,6 +44,7 @@ public class AuthentifiedHttpStack extends TicketingHttpStack {
         if (authToken == null || !sessions.containsKey(authToken))
             throw new TicketingApiException(new ApiResult(Collections.singletonList(new ApiResult.ApiError(ErrorCodes.AUTH_MISSING.getCode()))), 401);
 
+        // TODO handle null exception
         if (!sessions.get(authToken).authorized)
             throw new TicketingApiException(new ApiResult(Collections.singletonList(new ApiResult.ApiError(ErrorCodes.PERMS_MISSING.getCode()))), 403);
 
@@ -61,7 +68,7 @@ public class AuthentifiedHttpStack extends TicketingHttpStack {
         private String password;
         private boolean authorized;
 
-        public User(String password, boolean authorized) {
+        User(String password, boolean authorized) {
             this.password = password;
             this.authorized = authorized;
         }

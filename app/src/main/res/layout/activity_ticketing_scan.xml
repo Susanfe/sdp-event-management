@@ -22,11 +22,12 @@
             android:id="@+id/buttonsLayout"
             android:layout_toLeftOf="@+id/centerHorizont" android:layout_toStartOf="@+id/centerHorizont">
 
-        <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/back_button"
-                android:onClick="goBack" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/back_button"
+            style="@style/Button_global"
+            android:id="@+id/ticketing_scan_back_button"/>
     </LinearLayout>
 
     <View

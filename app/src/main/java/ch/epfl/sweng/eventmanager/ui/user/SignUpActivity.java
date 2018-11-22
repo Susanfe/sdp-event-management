@@ -12,54 +12,46 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.user.UserManagerHelper;
 import ch.epfl.sweng.eventmanager.users.Session;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
 
     // UI references.
-    private EditText mEmailView;
-    private EditText mPasswordView;
-    private EditText mPasswordConfirmationView;
-    private Button mSignUpButton;
-    private ProgressBar mProgressBar;
+    @BindView(R.id.activity_login_email_field)
+    EditText mEmailView;
+    @BindView(R.id.activity_login_password_field)
+    EditText mPasswordView;
+    @BindView(R.id.password_confirmation_field)
+    EditText mPasswordConfirmationView;
+    @BindView(R.id.activity_login_signup_button)
+    Button mSignUpButton;
+    @BindView(R.id.activity_login_progress_bar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.signup_toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        ButterKnife.bind(this);
 
-        setupFields();
-        setupButtons();
+        setupFieldsAndButton();
 
-        mProgressBar = findViewById(R.id.sign_in_progress_bar);
         mProgressBar.setVisibility(View.INVISIBLE);
-
-        Toolbar toolbar = findViewById(R.id.signup_toolbar);
         setSupportActionBar(toolbar);
     }
 
-    private void setupFields() {
-        mEmailView = findViewById(R.id.email_field);
-        mEmailView.setHint(R.string.email_field);
+    private void setupFieldsAndButton() {
         mEmailView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mEmailView));
-
-        mPasswordView = findViewById(R.id.password_field);
-        mPasswordView.setHint(R.string.password_field);
         mPasswordView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mPasswordView));
-
-        mPasswordConfirmationView = findViewById(R.id.password_confirmation_field);
-        mPasswordConfirmationView.setHint(R.string.password_confirmation_field);
         mPasswordConfirmationView.setOnEditorActionListener(
                 UserManagerHelper.nextButtonHandler(mPasswordConfirmationView)
         );
-    }
-
-    private void setupButtons() {
-        mSignUpButton = findViewById(R.id.signup_button);
-        mSignUpButton.setText(R.string.signup_button);
         mSignUpButton.setOnClickListener(view -> attemptSignUp());
     }
 
@@ -68,7 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
                 = UserManagerHelper.validateForm(this, mEmailView, mPasswordView, mPasswordConfirmationView);
 
         // FIXME: Quite ugly, do we have a sexier way to return from UserManagerHelper.validateForm/3 ?
-        Boolean cancel = validatedForm.first.first;
+        boolean cancel = validatedForm.first.first;
         EditText focusView = validatedForm.first.second;
         String email = validatedForm.second.first;
         String password = validatedForm.second.second;

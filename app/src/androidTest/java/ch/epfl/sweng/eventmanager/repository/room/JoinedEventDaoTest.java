@@ -1,24 +1,27 @@
 package ch.epfl.sweng.eventmanager.repository.room;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.test.runner.AndroidJUnit4;
-import ch.epfl.sweng.eventmanager.repository.JoinedEventTestUtils;
-import ch.epfl.sweng.eventmanager.repository.LiveDataTestUtil;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
-import org.junit.runner.RunWith;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import static org.junit.Assert.*;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import ch.epfl.sweng.eventmanager.repository.JoinedEventTestUtils;
+import ch.epfl.sweng.eventmanager.repository.LiveDataTestUtil;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test Unit. Contains all tests linked to the Room Database.
  */
 
-@RunWith(AndroidJUnit4.class)
 public class JoinedEventDaoTest extends JoinedEventTestUtils {
 
     @Rule

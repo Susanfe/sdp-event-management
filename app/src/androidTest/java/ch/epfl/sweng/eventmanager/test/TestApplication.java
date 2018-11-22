@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.test;
 
 import ch.epfl.sweng.eventmanager.EventManagerApplication;
-import ch.epfl.sweng.eventmanager.inject.ApplicationComponent;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import ch.epfl.sweng.eventmanager.test.inject.DaggerTestComponent;
 import ch.epfl.sweng.eventmanager.test.inject.TestComponent;

@@ -12,7 +12,7 @@
 
     <color name="colorCheckEnabled">#2e7d32</color>
 
-    <color name="button_lateral_navigation">@color/colorPrimaryLight</color>
-    <color name="button_lateral_navigation_state_pressed">@color/colorPrimary</color>
+    <color name="button_lateral_navigation">@color/colorPrimary</color>
+    <color name="button_lateral_navigation_state_pressed">@color/colorPrimaryLight</color>
 
 </resources>
