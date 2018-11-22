@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/feedback_ratingBar"
                 android:layout_alignTop="@+id/event_main_content" android:layout_alignStart="@+id/event_main_content"
-                android:layout_alignLeft="@+id/event_main_content"/>
+                android:layout_alignLeft="@+id/event_main_content" android:numStars="5" android:isIndicator="false"/>
         <ImageView
                 android:id="@+id/event_image"
                 android:layout_width="match_parent"

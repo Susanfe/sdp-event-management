@@ -140,7 +140,6 @@ public class EventShowcaseActivityTest {
         pressBack();
     }
 
-    @Ignore
     @Test
     public void singleBackShouldNotExit() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
