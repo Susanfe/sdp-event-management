@@ -16,7 +16,7 @@ public class ObservableList<T> extends MutableLiveData<List<T>> {
         this.notifyChanged();
     }
 
-    public void notifyChanged() {
+    private void notifyChanged() {
         this.postValue(underlyingList);
     }
 

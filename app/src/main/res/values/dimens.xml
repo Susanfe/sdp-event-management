@@ -9,6 +9,10 @@
 
     <dimen name="button_light_padding">8dp</dimen>
 
+    <dimen name="custom_marker_size">100dp</dimen>
+    <dimen name="custom_marker_padding">2dp</dimen>
+
+    <dimen name="button_edges_radius">25dp</dimen>
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
 

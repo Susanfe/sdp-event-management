@@ -26,6 +26,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionMo
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
 import ch.epfl.sweng.eventmanager.users.Role;
@@ -45,11 +46,11 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
-
-    public Fragment eventMainFragment;
-    public Fragment eventMapFragment;
-    public Fragment newsFragment;
-    public Fragment scheduleParentFragment;
+    private ZoneModel zonesModel;
+    private Fragment eventMainFragment;
+    private Fragment eventMapFragment;
+    private Fragment newsFragment;
+    private Fragment scheduleParentFragment;
 
     private int eventID;
 
@@ -65,6 +66,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
         this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
         this.spotsModel.init(eventID);
+
+        this.zonesModel = ViewModelProviders.of(this, factory).get(ZoneModel.class);
+        this.zonesModel.init(eventID);
     }
 
     private void setupMenu() {
