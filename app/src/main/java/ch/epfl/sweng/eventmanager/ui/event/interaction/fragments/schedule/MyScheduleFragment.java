@@ -60,7 +60,7 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
         if (addToCalendarButton == null) return;
 
         if (items != null && items.size() > 0) addToCalendarButton.setVisibility(Button.VISIBLE);
-        else addToCalendarButton.setVisibility(Button.INVISIBLE);
+        else addToCalendarButton.setVisibility(Button.GONE);
     }
 
     @Override
