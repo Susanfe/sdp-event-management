@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,10 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import dagger.android.support.AndroidSupportInjection;
 import javax.inject.Inject;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class EventFeedbackFragment extends AbstractShowcaseFragment {
+    private static final String TAG = "EventFeedbackFragment";
     private static final String UNIQUE_ID_DEVICE = UUID.randomUUID().toString();
 
     @Inject
@@ -45,23 +48,25 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         ButterKnife.bind(this, view);
 
         model.getEvent().observe(this, ev -> {
+            AtomicReference<Boolean> ratingExists = new AtomicReference<>();
+            repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, ratingExists::set);
             sendButton.setOnClickListener(l -> {
                 EventRating newEventRating = new EventRating(UNIQUE_ID_DEVICE, rating.getRating(), description.getText().toString());
                 //TODO Use a unique identifier to restrict each device to one feedbackButton
-                repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, ratingExists -> {
-                    if (!ratingExists) {
-                        //Publish the rating and shows that feedbackButton has been published
+                    if (!ratingExists.get()) {
+                        Log.d(TAG, "rating doesn't exists");
+                        //Publish the rating and shows that feedback has been published
                         repository.publishRating(ev.getId(), newEventRating).addOnSuccessListener(aVoid -> {
                             Toast.makeText(getActivity(), R.string.event_feedback_submitted, Toast.LENGTH_SHORT).show();
                             // Returns to main showcase event screen
                             ((EventShowcaseActivity) getActivity()).changeFragment(new EventMainFragment(), true);
                         });
                     } else {
+                        Log.d(TAG, "Rating does exists");
                         Toast.makeText(getActivity(), R.string.event_feedback_already_submitted, Toast.LENGTH_SHORT).show();
                     }
                 });
             });
-        });
 
         return view;
     }
