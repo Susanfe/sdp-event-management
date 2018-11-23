@@ -1,38 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.event.interaction.fragments.schedule.ScheduleFragment"
-    android:layout_marginTop="?android:attr/actionBarSize">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.event.interaction.fragments.schedule.ScheduleFragment"
+        android:layout_marginTop="?android:attr/actionBarSize">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <include layout="@layout/content_timeline" android:id="@+id/include"/>
+    <include layout="@layout/content_timeline" android:id="@+id/include"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:text="@string/my_schedule_add_to_calendar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/addToCalendar"
-                android:layout_margin="16dp"
-                android:layout_gravity="center|bottom"
-                android:src="@drawable/ic_action_export"
-                android:visibility="gone"
-                style="@style/FloatingButtonStyle"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:text="@string/my_schedule_add_to_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/addToCalendar"
+            android:layout_margin="16dp"
+            android:layout_gravity="center|bottom"
+            android:src="@drawable/ic_action_export"
+            android:visibility="gone"
+            style="@style/FloatingButtonStyle"/>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <TextView
-        android:text="@string/scheduled_items_empty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scheduled_items_empty_tv"
-        android:gravity="center"
-        app:layout_anchorGravity="center_vertical|center_horizontal"
-        app:layout_anchor="@+id/include" android:visibility="gone"/>
+            android:text="@string/scheduled_items_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scheduled_items_empty_tv"
+            android:gravity="center"
+            app:layout_anchorGravity="center_vertical|center_horizontal"
+            app:layout_anchor="@+id/include" android:visibility="gone"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
