@@ -2,14 +2,12 @@ package ch.epfl.sweng.eventmanager.ui.user;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +22,7 @@ public class DisplayAccountActivity extends AppCompatActivity {
     @BindView(R.id.display_account_logout_button)
     Button logoutButton;
     @BindString(R.string.display_account_activity_logged_as)
-    String logged_as;
+    String loggedAs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +34,13 @@ public class DisplayAccountActivity extends AppCompatActivity {
             ActionBar actionbar = getSupportActionBar();
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
-
-        // We assume the user is logged in when the activity is opened.
-        helpText.setText(logged_as  + Session.getCurrentUser().getEmail());
-        logoutButton.setOnClickListener(this::logoutThenRedirectToEventSelector);
+            Session.getCurrentUser();
+            loggedAs = String.format("%s %s",loggedAs, Session.getCurrentUser().getEmail());
+            logoutButton.setOnClickListener(this::logoutThenRedirectToEventSelector);
+            helpText.setText(loggedAs);
     }
 
-    public void logoutThenRedirectToEventSelector(View view) {
+    private void logoutThenRedirectToEventSelector(View view) {
         Session.logout();
 
         Toast toast = Toast.makeText(
@@ -56,4 +54,8 @@ public class DisplayAccountActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
