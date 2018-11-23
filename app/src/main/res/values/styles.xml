@@ -68,18 +68,11 @@
         <item name="android:background">@drawable/button_barbutton_checkbutton</item>
     </style>
 
-    <!--Borderless button -->
-    <style name="button_outlines_border" parent="Base.Widget.AppCompat.Button.Borderless">
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textColorSecondary">@color/colorPrimaryDark</item>
-        <item name="android:background">@drawable/button_transparent_background_bottom_left</item>
-    </style>
-
-    <!-- Small version of borderless button -->
-    <style name="Button_small_outlines" parent="button_outlines_border">
-        <item name="android:minHeight">0dp</item>
-        <item name="android:minWidth">0dp</item>
-        <item name="android:padding">@dimen/default_small_padding</item>
+    <!-- -->
+    <style name="button_clickable_textview">
+        <item name="android:background">@drawable/button_transparent</item>
+        <item name="android:textColor">@drawable/text_clickable</item>
+        <item name="android:gravity">center</item>
     </style>
 
 
