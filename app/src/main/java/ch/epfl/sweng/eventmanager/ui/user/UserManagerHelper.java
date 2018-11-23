@@ -2,21 +2,15 @@ package ch.epfl.sweng.eventmanager.ui.user;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.core.util.Pair;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.auth.AuthResult;
-
+import android.widget.*;
+import androidx.core.util.Pair;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
 
 class UserManagerHelper {
     private UserManagerHelper() {
@@ -52,7 +46,7 @@ class UserManagerHelper {
      *
      * @param loginButton button to be disable or enable
      * @param progressBar progress bar to disable or enable
-     * @param displayed state of the 'in progress' view
+     * @param displayed   state of the 'in progress' view
      */
     static void showProgress(Button loginButton, ProgressBar progressBar, boolean displayed) {
         loginButton.setEnabled(!displayed);
@@ -62,14 +56,15 @@ class UserManagerHelper {
     /**
      * Validate the content of a sign in/up form.
      *
-     * @param context calling activity
-     * @param emailView email text field
-     * @param passwordView password text field
+     * @param context                  calling activity
+     * @param emailView                email text field
+     * @param passwordView             password text field
      * @param passwordConfirmationView password confirmation text field, may be null
      * @return A pair containing the decided actions and the extracted values
      */
-    static Pair<Pair<Boolean, EditText>, Pair<String, String>> validateForm
-    (Context context, EditText emailView, EditText passwordView, EditText passwordConfirmationView) {
+    static Pair<Pair<Boolean, EditText>, Pair<String, String>> validateForm(Context context, EditText emailView,
+                                                                            EditText passwordView,
+                                                                            EditText passwordConfirmationView) {
 
         // Reset errors.
         emailView.setError(null);
@@ -113,19 +108,16 @@ class UserManagerHelper {
     /**
      * Generate the callback to be executed when the authentication process exits.
      *
-     * @param context calling activity
+     * @param context      calling activity
      * @param passwordView password text field, used to set error messages
      * @param signUpButton button to re-enable when the auth process exits
-     * @param progressBar progress bar to disable when the auth process exits
+     * @param progressBar  progress bar to disable when the auth process exits
      * @return the generated callback
      */
-    static OnCompleteListener<AuthResult> getAuthOnCompleteListener(
-            Context context, EditText passwordView, Button signUpButton, ProgressBar progressBar) {
+    static OnCompleteListener<AuthResult> getAuthOnCompleteListener(Context context, EditText passwordView,
+                                                                    Button signUpButton, ProgressBar progressBar) {
         return task -> {
             if (task.isSuccessful()) {
-                Intent intent = new Intent(context, EventPickingActivity.class);
-                context.startActivity(intent);
-
                 String toastMessage = "";
                 if (context instanceof SignUpActivity) {
                     toastMessage = context.getString(R.string.successful_registration_toast);
@@ -135,6 +127,9 @@ class UserManagerHelper {
 
                 Toast toast = Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT);
                 toast.show();
+                Intent intent = new Intent(context, EventPickingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             } else {
                 Exception error = task.getException();
                 if (error != null) {
@@ -144,8 +139,7 @@ class UserManagerHelper {
                 }
                 passwordView.requestFocus();
             }
-
-            UserManagerHelper.showProgress(signUpButton, progressBar,false);
+            UserManagerHelper.showProgress(signUpButton, progressBar, false);
         };
     }
 }
