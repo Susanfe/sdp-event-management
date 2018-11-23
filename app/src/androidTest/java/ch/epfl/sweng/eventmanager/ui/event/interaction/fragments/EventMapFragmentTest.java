@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
@@ -28,10 +29,23 @@ public class EventMapFragmentTest {
                 .perform(DrawerActions.open());
 
         sleep(100);
-
         // Display Schedule Events
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_map));
+    }
+
+    @Test
+    public void eventMapTest() {
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open());
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_main));
+        sleep(800);
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open());
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_map));
+        sleep(800);
     }
 
     @After

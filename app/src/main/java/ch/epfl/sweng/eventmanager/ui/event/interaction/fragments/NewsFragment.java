@@ -24,6 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
@@ -56,6 +57,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
         if (view!=null) ButterKnife.bind(this, view);
 
+        // TODO handle null pointer exception
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
@@ -84,7 +86,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
         });
 
 
-        LiveData<String> twitterName = Transformations.map(super.model.getEvent(), event -> event.getTwitterName());
+        LiveData<String> twitterName = Transformations.map(super.model.getEvent(), Event::getTwitterName);
 
         this.model.getNews(twitterName).observe(this, news -> {
             if (news != null && news.size() > 0) {
