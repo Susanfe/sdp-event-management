@@ -31,7 +31,7 @@
         <item name="titleTextColor">@color/colorSecondary</item>
         <item name="android:background">@color/colorPrimary</item>
         <!-- Add font -->
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">?actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
     </style>
 

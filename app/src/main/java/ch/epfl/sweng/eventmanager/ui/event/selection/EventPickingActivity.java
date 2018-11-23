@@ -78,6 +78,8 @@ public class EventPickingActivity extends AppCompatActivity {
         layoutBottomSheet.setVisibility(View.GONE);
         Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setLogo(R.drawable.ic_launcher_foreground);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         //BottomSheet
         setupBottomSheet();
