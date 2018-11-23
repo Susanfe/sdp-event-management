@@ -5,19 +5,19 @@
     android:layout_height="match_parent"
     android:layout_marginTop="?attr/actionBarSize">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp"
         android:layout_margin="10dp">
 
-        <RatingBar
+        <androidx.appcompat.widget.AppCompatRatingBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/feedback_form_ratingBar"
                 android:numStars="5"/>
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/feedback_form_content"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -26,7 +26,7 @@
                 android:inputType="textMultiLine"
                 android:layout_weight="70"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/feedback_form_send_button"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -35,6 +35,6 @@
                 style="@style/Button_global"/>
 
 
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
