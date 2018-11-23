@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/tools"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:ignore="NamespaceTypo">
-
-    <androidx.cardview.widget.CardView
-            android:id="@+id/card_view"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="6dp">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/event_list_cardview_unjoinded_height"
+    android:layout_margin="@dimen/default_small_margin"
+    style="@style/cardView_rounded">
 
         <RelativeLayout
                 android:layout_width="match_parent"
@@ -34,12 +23,13 @@
                 android:id="@+id/event_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/event_thumbnail"
-                android:maxLines="3"
-                android:padding="8dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:padding="@dimen/default_small_padding"
                 android:text="@string/event_list_item_default_title"
-                android:textStyle="bold"
-                android:textSize="22sp" />
+                android:layout_below="@id/event_thumbnail"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -55,6 +45,5 @@
 
         </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+</androidx.cardview.widget.CardView>
 
-</LinearLayout>

@@ -19,10 +19,10 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:text="@string/not_joined_help_text_activity_event_picking"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/event_picking_bottom_sheet_peek"
             android:id="@+id/event_picking_bottom_sheet_text"
             android:gravity="center_vertical|center_horizontal"
-            android:background="@drawable/shape_rounded_light"
+            android:background="@drawable/background_primary_color_rounded"
             android:textColor="@color/colorSecondary"
             android:textStyle="bold"
             android:clickable="true"
@@ -62,13 +62,14 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
-            android:text="@string/no_more_events_to_explore"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/no_more_events"
-            android:gravity="center_vertical|center_horizontal"
-            android:visibility="gone"
-            android:layout_marginBottom="@dimen/list_item_spacing"
-            android:layout_marginTop="@dimen/list_item_spacing"/>
+        android:text="@string/no_more_events_to_explore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/no_more_events"
+        android:gravity="center_vertical|center_horizontal"
+        android:visibility="gone"
+        android:textColor="@color/colorSecondary"
+        android:layout_marginBottom="@dimen/list_item_spacing"
+        android:layout_marginTop="@dimen/list_item_spacing"/>
 
 </ch.epfl.sweng.eventmanager.ui.event.selection.ConstrainedLinearLayout>

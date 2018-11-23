@@ -2,15 +2,10 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/cardView_rounded_outer"
+    style="@style/cardView_rounded"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/unjoined_events_cardview_horizontal_margins">
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/cardView_rounded_inner">
+    android:layout_margin="@dimen/default_small_margin">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -43,7 +38,7 @@
                         android:id="@+id/event_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/unjoined_events_cardview_horizontal_margins"
+                        android:layout_margin="@dimen/default_small_margin"
                         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                         android:text="@string/event_list_item_default_title"
                         android:maxLines="1"
@@ -53,7 +48,7 @@
                         android:id="@+id/event_summary"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="@dimen/unjoined_events_cardview_horizontal_margins"
+                        android:layout_margin="@dimen/default_small_margin"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:text="@string/event_list_item_default_description"
                         android:ellipsize="end"
@@ -98,7 +93,5 @@
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.card.MaterialCardView>
 
 </androidx.cardview.widget.CardView>
