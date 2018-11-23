@@ -34,7 +34,6 @@ public class DisplayAccountActivity extends AppCompatActivity {
             ActionBar actionbar = getSupportActionBar();
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
-            Session.getCurrentUser();
             loggedAs = String.format("%s %s",loggedAs, Session.getCurrentUser().getEmail());
             logoutButton.setOnClickListener(this::logoutThenRedirectToEventSelector);
             helpText.setText(loggedAs);

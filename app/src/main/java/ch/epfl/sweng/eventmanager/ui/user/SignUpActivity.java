@@ -1,6 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.user;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +11,6 @@ import androidx.core.util.Pair;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import com.google.android.gms.tasks.OnCompleteListener;
 
@@ -69,10 +67,6 @@ public class SignUpActivity extends AppCompatActivity {
             OnCompleteListener callback = UserManagerHelper.getAuthOnCompleteListener(this, mPasswordView,
                     mSignUpButton, mProgressBar);
             Session.registerAndLogin(email, password, this, callback);
-            Intent intent = new Intent(this, EventPickingActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            this.startActivity(intent);
-            finish();
         }
     }
 }
