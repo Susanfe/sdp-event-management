@@ -1,17 +1,20 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule;
 
-import androidx.lifecycle.LiveData;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.core.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import androidx.core.content.FileProvider;
+import androidx.lifecycle.LiveData;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 
@@ -25,7 +28,8 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
     private static final String TAG = "MyScheduleFragment";
     private static final String CALENDAR_FILE_NAME = "myschedule.ics";
 
-    private Button addToCalendarButton;
+    @BindView(R.id.addToCalendar)
+    Button addToCalendarButton;
 
     @Override
     protected void setEmptyListTextView() {
@@ -40,15 +44,14 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
-
-        // TODO handle null pointer exception
-        this.addToCalendarButton = v.findViewById(R.id.addToCalendar);
-        this.addToCalendarButton.setOnClickListener(v1 -> {
-            this.writeEventsToCalendar(this.getScheduledItems().getValue());
-            this.openCalendar();
-        });
-
+        ButterKnife.bind(this,v);
         return v;
+    }
+
+    @OnClick(R.id.addToCalendar)
+     void setAddToCalendarButton(){
+        this.writeEventsToCalendar(this.getScheduledItems().getValue());
+        this.openCalendar();
     }
 
     @Override

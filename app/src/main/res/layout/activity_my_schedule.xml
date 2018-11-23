@@ -8,19 +8,22 @@
     tools:context=".ui.event.interaction.fragments.schedule.ScheduleFragment"
     android:layout_marginTop="?android:attr/actionBarSize">
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="vertical">
-        <androidx.appcompat.widget.AppCompatButton
-            android:text="@string/my_schedule_add_to_calendar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/addToCalendar"
-            android:layout_margin="8dp"
-            style="@style/Button_global"/>
 
         <include layout="@layout/content_timeline" android:id="@+id/include"/>
 
-    </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:text="@string/my_schedule_add_to_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/addToCalendar"
+                android:layout_margin="16dp"
+                android:layout_gravity="center|bottom"
+                android:src="@drawable/ic_action_export"
+                android:style="@style/FloatingButtonStyle"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <TextView
         android:text="@string/scheduled_items_empty"

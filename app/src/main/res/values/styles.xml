@@ -72,5 +72,10 @@
         <item name="android:textColor">@color/colorSecondary</item>
     </style>
 
+    <!--Floating button-->
+    <style name="FloatingButtonStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/colorSecondary</item>
+    </style>
+
 
 </resources>
