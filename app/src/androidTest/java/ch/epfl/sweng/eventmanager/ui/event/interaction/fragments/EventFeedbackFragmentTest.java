@@ -10,12 +10,14 @@ import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewAssertion;
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.runner.AndroidJUnitRunner;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.RecyclerViewButtonClick;
 import ch.epfl.sweng.eventmanager.ToastMatcher;
 import ch.epfl.sweng.eventmanager.repository.LiveDataTestUtil;
 import ch.epfl.sweng.eventmanager.repository.data.EventRating;
@@ -35,6 +37,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import java.util.List;
 
+import static android.os.SystemClock.sleep;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -53,41 +56,49 @@ import static org.junit.Assert.assertTrue;
 public class EventFeedbackFragmentTest {
     private static final Integer EVENT_ID = 1;
 
+    private static final String DESCRIPTION_1 = "The event was great !";
+    private static final String DESCRIPTION_2 = "The event was awful !";
+    private static final Float RATING_1 = 5f;
+    private static final Float RATING_2 = 0f;
+
     @Inject
     MockFeedbackRepository repository;
 
     @Rule
     public final EventTestRule<EventShowcaseActivity> mActivityRule =
-            new EventTestRule<>(EventShowcaseActivity.class, EVENT_ID);
+            new EventTestRule<>(EventShowcaseActivity.class);
 
     @Before
     public void setUp() {
         TestApplication.component.inject(this);
-        Intents.init();
-
         onView(withId(R.id.feedback_for_go_button)).perform(click());
     }
 
     @Test
     public void submitFeedbackTest() {
-        String description = "The event was great !";
-        Float rating = 3f;
+        submitRating(DESCRIPTION_1, RATING_1);
+        onView(withId(R.id.feedback_form_send_button)).perform(ViewActions.longClick());
+        onView(withText(R.string.event_feedback_submitted)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+    }
 
-        submitRating(description, rating);
+    @Test
+    public void submitFeedbackTwiceFailsTest() {
+        submitRating(DESCRIPTION_1, RATING_1);
+        submitRating(DESCRIPTION_2, RATING_2);
+        onView(withText(R.string.event_feedback_already_submitted)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
 
     @After public void close(){
-        Intents.release();
+        mActivityRule.finishActivity();
     }
 
     private void submitRating(String content, Float rating) {
         onView(withId(R.id.feedback_form_content)).perform(typeText(content), closeSoftKeyboard());
         onView(withId(R.id.feedback_form_ratingBar)).perform(new SetRating(rating));
-        onView(withId(R.id.feedback_form_send_button)).perform(click());
     }
 
     private final class SetRating implements ViewAction {
-        private float rating;
+        private final float rating;
 
         SetRating(float rating) {
             this.rating = rating;

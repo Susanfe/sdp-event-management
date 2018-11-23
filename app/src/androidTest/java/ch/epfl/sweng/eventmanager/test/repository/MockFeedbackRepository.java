@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
+import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
@@ -27,7 +28,7 @@ public class MockFeedbackRepository implements FeedbackRepository {
     public Task<Void> publishRating(int eventId, EventRating eventRating) {
         getOrCreateRating(eventId).add(eventRating);
 
-        return Tasks.call(() -> null);
+        return Tasks.forResult(null);
     }
 
     @Override
