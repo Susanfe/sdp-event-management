@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.button.MaterialButton;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,7 +30,7 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
     private static final String CALENDAR_FILE_NAME = "myschedule.ics";
 
     @BindView(R.id.addToCalendar)
-    FloatingActionButton addToCalendarButton;
+    MaterialButton addToCalendarButton;
 
     @Override
     protected void setEmptyListTextView() {
@@ -45,12 +45,12 @@ public class MyScheduleFragment extends AbstractScheduleFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this,v);
+        ButterKnife.bind(this, v);
         return v;
     }
 
     @OnClick(R.id.addToCalendar)
-     void setAddToCalendarButton(){
+    void setAddToCalendarButton() {
         this.writeEventsToCalendar(this.getScheduledItems().getValue());
         this.openCalendar();
     }
