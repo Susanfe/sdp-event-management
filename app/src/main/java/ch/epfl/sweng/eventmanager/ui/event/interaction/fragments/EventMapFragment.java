@@ -93,111 +93,121 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         if (spotsModel == null) {
             spotsModel = ViewModelProviders.of(requireActivity(), factory).get(SpotsModel.class);
         }
-
         if(zonesModel == null) {
             zonesModel = ViewModelProviders.of(requireActivity(), factory).get(ZoneModel.class);
         }
-
         if(scheduleViewModel == null) {
             scheduleViewModel = ViewModelProviders.of(requireActivity(), factory).get(ScheduleViewModel.class);
         }
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.mapFragment);
         if (mapFragment == null) {
             FragmentManager fragmentManager = getFragmentManager();
-            // FIXME handle nullpointerexception
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            mapFragment = SupportMapFragment.newInstance();
-            fragmentTransaction.replace(R.id.mapFragment, mapFragment).commit();
+            if (fragmentManager != null) {
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                mapFragment = SupportMapFragment.newInstance();
+                fragmentTransaction.replace(R.id.mapFragment, mapFragment).commit();
+            }
         }
         mapFragment.getMapAsync(googleMap -> {
             mMap = googleMap;
             if (mMap != null) {
                 setUpMap();
-                setUpClusterer();
+                setUpCluster();
                 setUpOverlay();
             }
         });
     }
 
-    private void setUpMap() {
-        // FIXME handle nullpointerException
-        model.getEvent().observe(getActivity(), event -> {
-            if (event == null || event.getLocation() == null)
-                return;
+    private void setUpMap(){
+        if(getActivity() != null) {
+            model.getEvent().observe(getActivity(), event -> {
+                if (event == null || event.getLocation() == null) {
+                    throw new NullPointerException("event is null");
+                }
 
-            EventLocation loc = event.getLocation();
-            LatLng place = loc.getPosition().asLatLng();
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, ZOOMLEVEL));
-            mMap.getUiSettings().setCompassEnabled(true);
-            mMap.getUiSettings().setZoomControlsEnabled(true);
-            mMap.getUiSettings().setMapToolbarEnabled(true);
-            enableMyLocationIfPermitted();
-            mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
-            mMap.setOnMyLocationClickListener(onMyLocationClickListener);
-        });
+                EventLocation loc = event.getLocation();
+                LatLng place = loc.getPosition().asLatLng();
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, ZOOMLEVEL));
+                mMap.getUiSettings().setCompassEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+                mMap.getUiSettings().setMapToolbarEnabled(true);
+                enableMyLocationIfPermitted();
+                mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
+                mMap.setOnMyLocationClickListener(onMyLocationClickListener);
+            });
+        }
     }
 
+    /**
+     * Set up the overlay that covers the map
+     */
     private void setUpOverlay() {
-        // FIXME handle nullpointerexception
-        this.zonesModel.getZone().observe(getActivity(), zones -> {
-            if(zones == null) {
-                return;
-            }
-            for(Zone z: zones) {
-                mMap.addPolygon(z.addPolygon());
-            }
-        });
+        if (getActivity() != null){
+            this.zonesModel.getZone().observe(getActivity(), zones -> {
+                if (zones != null) {
+                    for (Zone z : zones) {
+                        mMap.addPolygon(z.addPolygon());
+                    }
+                }
+            });
+        }
     }
 
-    private void setUpClusterer() {
-        // FIXME handle nullpointerexception
-        mClusterManager = new ClusterManager<>(getActivity(), mMap);
-        mClusterManager.setOnClusterItemInfoWindowClickListener(this);
-        mClusterManager.setOnClusterClickListener(this);
-        mClusterManager.setRenderer(new SpotRenderer(getActivity()));
-        mClusterManager.setOnClusterItemClickListener(spot -> {
-            clickedClusterItem = spot;
-            return false;
-        });
-        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
-        mClusterManager.setAnimation(true);
+    private void setUpCluster() {
+        if (getActivity() != null){
+            mClusterManager = new ClusterManager<>(getActivity(), mMap);
+            mClusterManager.setOnClusterItemInfoWindowClickListener(this);
+            mClusterManager.setOnClusterClickListener(this);
+            mClusterManager.setRenderer(new SpotRenderer(getActivity()));
+            mClusterManager.setOnClusterItemClickListener(spot -> {
+                clickedClusterItem = spot;
+                return false;
+            });
+            mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
+            mClusterManager.setAnimation(true);
 
-        mMap.setOnMarkerClickListener(mClusterManager);
-        mMap.setOnInfoWindowClickListener(mClusterManager);
-        mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
-        mMap.setOnCameraIdleListener(mClusterManager);
+            mMap.setOnMarkerClickListener(mClusterManager);
+            mMap.setOnInfoWindowClickListener(mClusterManager);
+            mMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+            mMap.setOnCameraIdleListener(mClusterManager);
 
-        addItemToCluster();
+            addItemToCluster();
+        }
     }
 
     private void addItemToCluster() {
-        this.scheduleViewModel.getScheduledItems().observe(getActivity(), items -> this.spotsModel.getSpots().observe(getActivity(), spots -> {
-            if (spots == null) {
-                return;
-            }
-            // 1. clear old spots
-            mClusterManager.clearItems();
+        if (getActivity() != null){
+            this.scheduleViewModel.getScheduledItems().observe(getActivity(), items ->
+                    this.spotsModel.getSpots().observe(getActivity(), spots -> {
+                        if (spots == null) {
+                            return;
+                        }
+                        // 1. clear old spots
+                        mClusterManager.clearItems();
 
-            // 2. Add new spots
-            for (Spot s : spots) {
-                s.setScheduleList(items);
-                mClusterManager.addItem(s);
-            }
-        }));
+                        // 2. Add new spots
+                        for (Spot s : spots) {
+                            s.setScheduleList(items);
+                            mClusterManager.addItem(s);
+                        }
+                    }));
+        }
     }
 
     private void enableMyLocationIfPermitted() {
-        // FIXME handle nullpointerexception
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_FINE_LOCATION},
-                    LOCATION_PERMISSION_REQUEST_CODE);
-        } else if (mMap != null) {
-            mMap.setMyLocationEnabled(true);
+        if (getActivity() != null){
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_FINE_LOCATION},
+                        LOCATION_PERMISSION_REQUEST_CODE);
+            } else if (mMap != null) {
+                mMap.setMyLocationEnabled(true);
+            }
         }
     }
 
@@ -237,19 +247,22 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
 
     @Override
     public void onClusterItemInfoWindowClick(Spot spot) {
-        if(spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
-            ScheduleParentFragment scheduleParentFragment = new ScheduleParentFragment();
-            Bundle args = new Bundle();
-            args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
-            scheduleParentFragment.setArguments(args);
-            // FIXME handle nullpointerexception
-            ((EventShowcaseActivity)getActivity()).changeFragment(
-                    scheduleParentFragment, true);
+        if (getActivity() != null && spot != null) {
+            if(spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
+                ScheduleParentFragment scheduleParentFragment = new ScheduleParentFragment();
+                Bundle args = new Bundle();
+                args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
+                scheduleParentFragment.setArguments(args);
+                ((EventShowcaseActivity)getActivity()).changeFragment(
+                        scheduleParentFragment, true);
+            }
         }
     }
 
+    /**
+     * how the markers and clusters are rendered
+     */
     private class SpotRenderer extends DefaultClusterRenderer<Spot> {
-        // FIXME handlenullpointerexception
         private final IconGenerator mIconGenerator = new IconGenerator(getActivity().getApplicationContext());
         private final IconGenerator mClusterIconGenerator = new IconGenerator(getActivity().getApplicationContext());
         private final ImageView mImageView;
@@ -257,8 +270,11 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         private final int mDimension;
 
         public SpotRenderer(Context context) {
-            // FIXME handle nullpointerexception
             super(getActivity(), mMap, mClusterManager);
+
+            if (context == null){
+                throw new NullPointerException("context is null");
+            }
 
             View multiProfile = getLayoutInflater().inflate(R.layout.custom_marker, null);
 
@@ -272,7 +288,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
             mImageView.setPadding(padding, padding, padding, padding);
             mIconGenerator.setContentView(mImageView);
         }
-
 
         @Override
         protected void onBeforeClusterItemRendered(Spot spot, MarkerOptions markerOptions) {
@@ -295,7 +310,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 // Draw at most 4 images on the same cluster
                 if(spotImages.size() == 4) {
                     break;
-
                 }
                 Drawable drawable = new BitmapDrawable(p.getBitmap());
                 drawable.setBounds(0, 0, width, height);
@@ -316,6 +330,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         }
     }
 
+    /**
+     * Adapter used to change the format of the snippets of the markers
+     */
     private class MyCustomAdapterForItems implements GoogleMap.InfoWindowAdapter {
 
         private final View myContentsView;
@@ -323,6 +340,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         MyCustomAdapterForItems() {
             myContentsView = getLayoutInflater().inflate(R.layout.custom_info_window, null);
         }
+
         @Override
         public View getInfoWindow(Marker marker) {
             return null;
