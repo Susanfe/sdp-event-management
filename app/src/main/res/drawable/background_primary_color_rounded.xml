@@ -2,10 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item >
         <shape android:shape="rectangle"  >
-            <corners android:topLeftRadius="@dimen/button_light_round_radius"
-                android:topRightRadius="@dimen/button_light_round_radius"/>
-            <stroke android:width="1dip" android:color="@color/colorPrimary"/>
-            <solid android:color="@color/colorPrimary"/>
+            <corners android:topLeftRadius="@dimen/default_light_round_edges_radius"
+                android:topRightRadius="@dimen/default_light_round_edges_radius"/>
+            <solid android:color="@color/colorPrimaryLight"/>
         </shape>
     </item>
 </selector>

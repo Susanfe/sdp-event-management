@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item >
         <shape android:shape="rectangle"  >
-            <corners android:radius="@dimen/button_light_round_radius"/>
+            <corners android:radius="@dimen/default_light_round_edges_radius"/>
             <stroke android:color="@color/colorPrimary" android:width="1dp"/>
         </shape>
     </item>
