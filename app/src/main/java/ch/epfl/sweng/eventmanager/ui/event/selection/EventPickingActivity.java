@@ -78,6 +78,8 @@ public class EventPickingActivity extends AppCompatActivity {
         layoutBottomSheet.setVisibility(View.GONE);
         Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setLogo(R.drawable.ic_launcher_foreground);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         //BottomSheet
         setupBottomSheet();
@@ -243,7 +245,7 @@ public class EventPickingActivity extends AppCompatActivity {
             case BottomSheetBehavior.STATE_EXPANDED:
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 break;
-            default :
+            default:
         }
     }
 
