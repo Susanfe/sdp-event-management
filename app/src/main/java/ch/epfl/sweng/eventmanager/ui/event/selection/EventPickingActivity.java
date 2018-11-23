@@ -138,6 +138,7 @@ public class EventPickingActivity extends AppCompatActivity {
             nextActivity = LoginActivity.class;
         }
         Intent intent = new Intent(this, nextActivity);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

@@ -1,15 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.util.Log;
-
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import androidx.annotation.NonNull;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.*;
 
 public final class FirebaseBackedUser implements User {
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
