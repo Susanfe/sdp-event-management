@@ -124,5 +124,6 @@
 
     <!-- Generic text -->
     <string name="undo">Undo</string>
+    <string name="feedback_form_main_go_button">Feedback</string>
 
 </resources>
