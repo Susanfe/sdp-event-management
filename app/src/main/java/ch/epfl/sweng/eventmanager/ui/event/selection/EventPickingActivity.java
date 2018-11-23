@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -56,13 +58,17 @@ public class EventPickingActivity extends AppCompatActivity {
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.event_linear_layout)
-    LinearLayout content;
+    CoordinatorLayout content;
     @BindView(R.id.event_picking_list_layout)
     LinearLayout layoutBottomSheet;
     @BindView(R.id.event_picking_bottom_sheet_arrow_up)
     ImageView arrowUp;
     @BindView(R.id.event_picking_bottom_sheet_arrow_down)
     ImageView arrowDown;
+    @BindView(R.id.event_picking_darken_background)
+    FrameLayout darken_background;
+    @BindView(R.id.event_picking_toolbar)
+    Toolbar toolbar;
 
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
@@ -82,7 +88,6 @@ public class EventPickingActivity extends AppCompatActivity {
 
         content.setVisibility(View.GONE);
         layoutBottomSheet.setVisibility(View.GONE);
-        Toolbar toolbar = findViewById(R.id.event_picking_toolbar);
         setSupportActionBar(toolbar);
 
         //BottomSheet
@@ -124,14 +129,17 @@ public class EventPickingActivity extends AppCompatActivity {
                     case BottomSheetBehavior.STATE_EXPANDED:
                         arrowUp.setVisibility(View.INVISIBLE);
                         arrowDown.setVisibility(View.VISIBLE);
+                        darken_background.setVisibility(View.VISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_COLLAPSED:
                         arrowUp.setVisibility(View.VISIBLE);
                         arrowDown.setVisibility(View.INVISIBLE);
+                        darken_background.setVisibility(View.INVISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                         break;
                     case BottomSheetBehavior.STATE_SETTLING:
+                        darken_background.setVisibility(View.VISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_HALF_EXPANDED:
                         break;
@@ -174,6 +182,7 @@ public class EventPickingActivity extends AppCompatActivity {
             //once data is loaded
             helpText.setVisibility(View.VISIBLE);
             layoutBottomSheet.setVisibility(View.VISIBLE);
+            layoutBottomSheet.setAlpha(0.95f);
             content.setVisibility(View.VISIBLE);
 
             if (list.getOtherEvents().isEmpty()) {
