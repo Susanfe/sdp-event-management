@@ -11,14 +11,14 @@ import static org.junit.Assert.assertTrue;
 
 public class SpotTest {
 
-    private Spot spot1 = new Spot("satelitte", SpotType.BAR, 46.520433, 6.567822);
-    private Spot spot2 = new Spot("satelitte", SpotType.INFORMATION, 46.520433, 6.567822);
-    private Spot spot3 = new Spot("satelitte", SpotType.WC, 46.520433, 6.567822);
-    private Spot spot4 = new Spot("satelitte", SpotType.NURSERY, 46.520433, 6.567822);
-    private Spot spot5 = new Spot("satelitte", SpotType.ATM, 46.520433, 6.567822);
-    private Spot spot6 = new Spot("satelitte", SpotType.ROOM, 46.520433, 6.567822);
-    private Spot spot7 = new Spot("satelitte", SpotType.SCENE, 46.520433, 6.567822);
-    private Spot spot8 = new Spot("satelitte", SpotType.STAND, 46.520433, 6.567822);
+    private Spot spot1 = new Spot("satelitte", SpotType.BAR, 46.520433, 6.567822, null);
+    private Spot spot2 = new Spot("satelitte", SpotType.INFORMATION, 46.520433, 6.567822, null);
+    private Spot spot3 = new Spot("satelitte", SpotType.WC, 46.520433, 6.567822, null);
+    private Spot spot4 = new Spot("satelitte", SpotType.NURSERY, 46.520433, 6.567822, null);
+    private Spot spot5 = new Spot("satelitte", SpotType.ATM, 46.520433, 6.567822, null);
+    private Spot spot6 = new Spot("satelitte", SpotType.ROOM, 46.520433, 6.567822, null);
+    private Spot spot7 = new Spot("satelitte", SpotType.SCENE, 46.520433, 6.567822, null);
+    private Spot spot8 = new Spot("satelitte", SpotType.STAND, 46.520433, 6.567822, null);
 
 
     @Test
@@ -64,6 +64,11 @@ public class SpotTest {
     @Test
     public void getPositionWork() {
         assertTrue(spot1.getPosition().latitude == 46.520433 && spot1.getPosition().longitude == 6.567822);
+    }
+
+    @Test
+    public void getSpotTypeWork() {
+        assertEquals(spot1.getSpotType(), SpotType.BAR);
     }
 
 }

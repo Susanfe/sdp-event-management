@@ -17,7 +17,7 @@
     <!-- Launcher theme. Sets the main window background to the splash_screen drawable -->
     <style name="AppTheme.Launcher" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
@@ -31,7 +31,7 @@
         <item name="titleTextColor">@color/colorSecondary</item>
         <item name="android:background">@color/colorPrimary</item>
         <!-- Add font -->
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">?actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
     </style>
 

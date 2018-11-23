@@ -43,7 +43,7 @@ public class ScheduleViewModel extends ViewModel {
         this.scheduleItemsByRoom = buildScheduleItemByRoom();
     }
 
-    LiveData<List<ScheduledItem>> getScheduledItems() {
+    public LiveData<List<ScheduledItem>> getScheduledItems() {
         return scheduledItems;
     }
 
