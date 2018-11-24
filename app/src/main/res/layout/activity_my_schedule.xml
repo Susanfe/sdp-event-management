@@ -18,7 +18,6 @@
             android:layout_height="wrap_content" android:id="@+id/addToCalendar"
             android:layout_margin="16dp"
             android:layout_gravity="center|bottom"
-            android:src="@drawable/ic_action_export"
             android:visibility="gone"
             android:backgroundTint="@color/colorSecondary"
             app:cornerRadius="56dp"/>
