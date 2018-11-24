@@ -2,10 +2,8 @@ package ch.epfl.sweng.eventmanager.ui.ticketing;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -13,18 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.zxing.ResultPoint;
-import com.google.zxing.client.android.BeepManager;
-import com.journeyapps.barcodescanner.BarcodeCallback;
-import com.journeyapps.barcodescanner.BarcodeResult;
-import com.journeyapps.barcodescanner.DecoratedBarcodeView;
-
-import java.util.List;
-import java.util.Map;
-
-import javax.inject.Inject;
-
+import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -32,6 +19,15 @@ import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
+import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.BeepManager;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+
+import javax.inject.Inject;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Source: https://github.com/journeyapps/zxing-android-embedded/blob/master/sample/src/main/java/example/zxing/ContinuousCaptureActivity.java
@@ -42,6 +38,7 @@ public final class TicketingScanActivity extends TicketingActivity {
     public static final String SELECTED_CONFIG_ID = "ch.epfl.sweng.SELECTED_CONFIG_ID";
     private static final String TAG = "TicketingScanActivity";
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 42; // Magic value
+    private static final int OVERLAY_DELAY = 2000;
     @Inject
     BarcodeViewWrapper viewWrapper;
     private int configId = -1;
@@ -52,14 +49,15 @@ public final class TicketingScanActivity extends TicketingActivity {
     TextView view;
     @BindView(R.id.barcode_scanner)
     DecoratedBarcodeView scanner;
-    @BindView(R.id.ticketing_scan_back_button)
-    AppCompatButton backButton;
+    @BindView(R.id.scan_result_overlay)
+    View overlay;
 
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
             viewWrapper.pause();
             viewWrapper.setStatusText(result.getText());
+            view.setTextColor(Color.BLACK);
             view.setText(R.string.loading_text);
 
             try {
@@ -68,11 +66,9 @@ public final class TicketingScanActivity extends TicketingActivity {
                     public void onSuccess(ScanResult data) {
                         beepManager.playBeepSoundAndVibrate();
 
-                        view.setText(buildHtml(data));
+                        setScanResult(buildHtml(data),true);
 
                         viewWrapper.setStatusText("");
-                        Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_success, Toast.LENGTH_SHORT).show();
-
                         viewWrapper.resume();
                     }
 
@@ -80,11 +76,9 @@ public final class TicketingScanActivity extends TicketingActivity {
                     public void onFailure(List<ApiResult.ApiError> errors) {
                         beepManager.playBeepSoundAndVibrate();
 
-                        view.setText(buildHtmlForError(errors));
+                        setScanResult(buildHtmlForError(errors),false);
 
                         viewWrapper.setStatusText("");
-                        Toast.makeText(TicketingScanActivity.this, R.string.ticketing_scan_failure, Toast.LENGTH_SHORT).show();
-
                         viewWrapper.resume();
                     }
                 });
@@ -102,6 +96,20 @@ public final class TicketingScanActivity extends TicketingActivity {
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
         }
     };
+
+    private void setScanResult(Spanned text, Boolean success) {
+        int color;
+        if (success) {
+            color = Color.GREEN;
+        } else {
+            color = Color.RED;
+        }
+        view.setText(text);
+        view.setTextColor(color);
+        overlay.setBackgroundColor(color);
+        overlay.setVisibility(View.VISIBLE);
+        overlay.postDelayed(() -> overlay.setVisibility(View.INVISIBLE), OVERLAY_DELAY);
+    }
 
     private void appendSuccessData(ScanResult data, StringBuilder html) {
         if (data.getUser() != null) {
@@ -175,7 +183,6 @@ public final class TicketingScanActivity extends TicketingActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticketing_scan);
         ButterKnife.bind(this);
-        backButton.setOnClickListener(this::goBack);
 
         Intent intent = getIntent();
         this.configId = intent.getIntExtra(SELECTED_CONFIG_ID, -1);
@@ -187,6 +194,7 @@ public final class TicketingScanActivity extends TicketingActivity {
 
     private void initScan() {
         viewWrapper.initialize(scanner, this, callback);
+
     }
 
     @Override
@@ -228,9 +236,9 @@ public final class TicketingScanActivity extends TicketingActivity {
         return viewWrapper.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-    public void goBack(View view) {
+    @Override
+    public void onBackPressed() {
         viewWrapper.pause();
-
-        startActivity(this.backToShowcase());
+        super.onBackPressed();
     }
 }
