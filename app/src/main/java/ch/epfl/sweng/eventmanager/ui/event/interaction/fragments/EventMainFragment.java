@@ -93,22 +93,20 @@ public class EventMainFragment extends AbstractShowcaseFragment {
         showcaseActivity = getParentActivity();
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
-        contactButton.setOnClickListener(v -> changeFromMainFragment(new EventFormFragment(), null));
+        contactButton.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.FORM, true));
 
-        news.setOnClickListener(v -> changeFromMainFragment(new NewsFragment(), showcaseActivity.newsFragment));
+        news.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.NEWS, true));
 
-        map.setOnClickListener(v -> changeFromMainFragment(new EventMapFragment(), showcaseActivity.eventMapFragment));
+        map.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.MAP, true));
 
-        schedule.setOnClickListener(v -> changeFromMainFragment(new ScheduleParentFragment(), showcaseActivity.scheduleParentFragment));
+        schedule.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.SCHEDULE, true));
 
         return view;
 
     }
 
-    private void changeFromMainFragment(Fragment fragment, Fragment savedFragment){
-        if (savedFragment == null) {
-            savedFragment = fragment;
-        }
-        showcaseActivity.changeFragment(savedFragment, true);
-    }
 }

@@ -38,7 +38,7 @@
     <!-- Custom overflow color-->
     <style name="Toolbar.OverFlow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/colorSecondary</item>
-        <item name="android:src">@drawable/ic_person_24dp</item>
+        <item name="srcCompat">@drawable/ic_person_24dp</item>
     </style>
 
     <!-- ############################### BUTTON UI #############################################-->
