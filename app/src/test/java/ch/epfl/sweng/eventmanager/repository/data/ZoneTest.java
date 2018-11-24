@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ZoneTest {
-    List<Position> positions = new ArrayList<>();
+    private List<Position> positions = new ArrayList<>();
     private Zone zone1;
 
     @Before
@@ -24,8 +24,8 @@ public class ZoneTest {
 
     @Test
     public void getPositionsWork() {
-        assertTrue(zone1.getPositions().get(0).getLatitude() == 0);
-        assertTrue(zone1.getPositions().get(0).getLongitude() == 0);
+        assertEquals(0, zone1.getPositions().get(0).getLatitude(), 0.0);
+        assertEquals(0, zone1.getPositions().get(0).getLongitude(), 0.0);
     }
 
     @Test

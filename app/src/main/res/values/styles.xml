@@ -1,4 +1,4 @@
-<resources>
+<resources >
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -38,6 +38,7 @@
     <!-- Custom overflow color-->
     <style name="Toolbar.OverFlow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/colorSecondary</item>
+        <item name="srcCompat">@drawable/ic_person_24dp</item>
     </style>
 
     <!-- ############################### BUTTON UI #############################################-->
@@ -67,15 +68,27 @@
         <item name="android:background">@drawable/button_barbutton_checkbutton</item>
     </style>
 
-    <!--Borderless button -->
-    <style name="BorderlessButtonStyle" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:textColor">@color/colorSecondary</item>
+    <!-- -->
+    <style name="button_clickable_textview">
+        <item name="android:background">@drawable/button_transparent</item>
+        <item name="android:textColor">@drawable/text_clickable</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <!--Floating button-->
     <style name="FloatingButtonStyle" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="backgroundTint">@color/colorSecondary</item>
     </style>
+
+
+    <!-- ############################# CARDVIEW UI ############################################-->
+    <style name="cardView_rounded" parent="Base.CardView">
+        <item name="cardCornerRadius">@dimen/default_light_round_edges_radius</item>
+        <item name="android:shape">ring</item>
+        <item name="android:thicknessRatio">1.9</item>
+    </style>
+
+    <!-- -->
 
 
 </resources>
