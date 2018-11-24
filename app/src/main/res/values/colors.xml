@@ -10,9 +10,17 @@
     <color name="colorSecondaryText">#000000</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="light_gray">#C0C0C0</color>
     <color name="colorCheckEnabled">#2e7d32</color>
 
     <color name="button_lateral_navigation">@color/colorPrimary</color>
     <color name="button_lateral_navigation_state_pressed">@color/colorPrimaryLight</color>
+
+    <color name="button_lateral_transparent_bckg">@color/light_gray</color>
+    <color name="button_lateral_transparent_bckg_state_pressed">@color/light_gray</color>
+
+    <color name="text_normal">@color/colorPrimary</color>
+    <color name="text_pressed">@color/colorSecondary</color>
+
 
 </resources>
