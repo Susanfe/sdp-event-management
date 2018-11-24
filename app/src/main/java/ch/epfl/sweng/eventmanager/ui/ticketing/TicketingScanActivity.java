@@ -30,7 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Source: https://github.com/journeyapps/zxing-android-embedded/blob/master/sample/src/main/java/example/zxing/ContinuousCaptureActivity.java
+ * Source: https://github.com/journeyapps/zxing-android-embedded/blob/master/sample/src/main/java/example/zxing
+ * /ContinuousCaptureActivity.java
  *
  * @author Louis Vialar
  */
@@ -41,17 +42,14 @@ public final class TicketingScanActivity extends TicketingActivity {
     private static final int OVERLAY_DELAY = 2000;
     @Inject
     BarcodeViewWrapper viewWrapper;
-    private int configId = -1;
-
-    private BeepManager beepManager;
-
     @BindView(R.id.barcodePreview)
     TextView view;
     @BindView(R.id.barcode_scanner)
     DecoratedBarcodeView scanner;
     @BindView(R.id.scan_result_overlay)
     View overlay;
-
+    private int configId = -1;
+    private BeepManager beepManager;
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
@@ -66,7 +64,7 @@ public final class TicketingScanActivity extends TicketingActivity {
                     public void onSuccess(ScanResult data) {
                         beepManager.playBeepSoundAndVibrate();
 
-                        setScanResult(buildHtml(data),true);
+                        setScanResult(buildHtml(data), true);
 
                         viewWrapper.setStatusText("");
                         viewWrapper.resume();
@@ -76,7 +74,7 @@ public final class TicketingScanActivity extends TicketingActivity {
                     public void onFailure(List<ApiResult.ApiError> errors) {
                         beepManager.playBeepSoundAndVibrate();
 
-                        setScanResult(buildHtmlForError(errors),false);
+                        setScanResult(buildHtmlForError(errors), false);
 
                         viewWrapper.setStatusText("");
                         viewWrapper.resume();
@@ -113,26 +111,19 @@ public final class TicketingScanActivity extends TicketingActivity {
 
     private void appendSuccessData(ScanResult data, StringBuilder html) {
         if (data.getUser() != null) {
-            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_user)).append("</i>")
-                    .append(" ").append(data.getUser().getFirstname())
-                    .append(" ").append(data.getUser().getLastname())
-                    .append(" (").append(data.getUser().getEmail()).append(")");
+            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_user)).append("</i>").append(" ").append(data.getUser().getFirstname()).append(" ").append(data.getUser().getLastname()).append(" (").append(data.getUser().getEmail()).append(")");
         }
 
         if (data.getProduct() != null) {
-            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>")
-                    .append(" ").append(data.getProduct().getName())
-                    .append(" (<i>").append(data.getProduct().getDescription())
-                    .append("</i>)");
+            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append(
+                    "</i>").append(" ").append(data.getProduct().getName()).append(" (<i>").append(data.getProduct().getDescription()).append("</i>)");
         } else if (data.getProducts() != null) {
-            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append("</i>");
+            html.append("<br><i>").append(getResources().getString(R.string.ticketing_scan_bought_product)).append(
+                    "</i>");
             html.append("<ul>");
 
             for (Map.Entry<ScanResult.Product, Integer> p : data.getProducts().entrySet()) {
-                html.append("<li>").append(p.getValue())
-                        .append(" * ").append(p.getKey().getName())
-                        .append(": ").append(p.getKey().getDescription())
-                        .append("</li>");
+                html.append("<li>").append(p.getValue()).append(" * ").append(p.getKey().getName()).append(": ").append(p.getKey().getDescription()).append("</li>");
             }
 
             html.append("</ul>");
@@ -143,9 +134,7 @@ public final class TicketingScanActivity extends TicketingActivity {
         if (data.isSuccess()) {
             StringBuilder html = new StringBuilder();
 
-            html.append("<b color='green'>")
-                    .append(getResources().getString(R.string.ticketing_scan_success))
-                    .append("</b>");
+            html.append("<b color='green'>").append(getResources().getString(R.string.ticketing_scan_success)).append("</b>");
 
 
             appendSuccessData(data, html);
@@ -159,9 +148,8 @@ public final class TicketingScanActivity extends TicketingActivity {
     private Spanned buildHtmlForError(List<ApiResult.ApiError> errors) {
         StringBuilder html = new StringBuilder();
 
-        html.append("<b color='red'>")
-                .append(getResources().getString(R.string.ticketing_scan_failure))
-                .append("</b><br>");
+        html.append("<b color='red'>").append(getResources().getString(R.string.ticketing_scan_failure)).append("</b" +
+                "><br>");
 
         if (errors.size() == 1 && errors.get(0).getMessages().size() == 1) {
             html.append(errors.get(0).getMessages().get(0));                        // TODO: proper error handling
@@ -219,8 +207,7 @@ public final class TicketingScanActivity extends TicketingActivity {
     protected void onResume() {
         super.onResume();
 
-        if (!viewWrapper.isReady())
-            initScan();
+        if (!viewWrapper.isReady()) initScan();
         viewWrapper.resume();
     }
 
