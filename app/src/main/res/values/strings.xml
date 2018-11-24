@@ -122,5 +122,6 @@
 
     <!-- Generic text -->
     <string name="undo">Undo</string>
+    <string name="welcome">Welcome!</string>
 
 </resources>

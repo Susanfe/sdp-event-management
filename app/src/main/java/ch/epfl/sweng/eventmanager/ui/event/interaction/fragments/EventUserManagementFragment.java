@@ -23,7 +23,6 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
         model.getEvent().observe(this, ev -> {
             if (ev == null) {
                 Log.e(TAG, "Got null model from parent activity");
-                return;
             }
         });
     }
