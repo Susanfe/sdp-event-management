@@ -178,11 +178,11 @@ public final class TicketingScanActivity extends TicketingActivity {
         initScan();
 
         beepManager = new BeepManager(this);
+        beepManager.setVibrateEnabled(true);
     }
 
     private void initScan() {
         viewWrapper.initialize(scanner, this, callback);
-
     }
 
     @Override
