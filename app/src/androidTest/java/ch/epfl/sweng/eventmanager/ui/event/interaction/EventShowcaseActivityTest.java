@@ -78,7 +78,7 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
 
         String help_text = getResourceString(R.string.help_text_go_join_events);
-        onView(withId(R.id.help_text)).check(matches(withText(help_text)));
+        onView(withId(R.id.event_picking_help_text)).check(matches(withText(help_text)));
 
     }
 
@@ -97,7 +97,7 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
 
-        onView(withId(R.id.bottom_sheet_event_picking_text)).perform(click());
+        onView(withId(R.id.event_picking_bottom_sheet_text)).perform(click());
         SystemClock.sleep(300);
         onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
                 RecyclerViewButtonClick.clickChildViewWithId(R.id.goto_event_btn)));
@@ -125,7 +125,7 @@ public class EventShowcaseActivityTest {
         // Click on an item and capture start intent
         Intents.init();
 
-        onView(withId(R.id.bottom_sheet_event_picking_text)).perform(click());
+        onView(withId(R.id.event_picking_bottom_sheet_text)).perform(click());
 
         onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
                 RecyclerViewButtonClick.clickChildViewWithId(R.id.goto_event_btn)));
@@ -147,7 +147,7 @@ public class EventShowcaseActivityTest {
 
         SystemClock.sleep(200);
 
-        onView(withId(R.id.bottom_sheet_event_picking_text)).perform(click());
+        onView(withId(R.id.event_picking_bottom_sheet_text)).perform(click());
 
         onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
                 RecyclerViewButtonClick.clickChildViewWithId(R.id.join_event_btn)));
@@ -158,7 +158,7 @@ public class EventShowcaseActivityTest {
 
         onView(allOf(withText(R.string.undo))).perform(click());
 
-        onView(withId(R.id.bottom_sheet_event_picking_text)).perform(click());
+        onView(withId(R.id.event_picking_bottom_sheet_text)).perform(click());
 
         onView(withId(R.id.joined_events_list)).check(matches(isDisplayed()));
 

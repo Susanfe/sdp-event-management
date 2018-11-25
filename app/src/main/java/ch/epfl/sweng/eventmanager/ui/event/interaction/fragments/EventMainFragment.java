@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -38,6 +40,8 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     ImageView eventImage;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
+    private EventShowcaseActivity showcaseActivity;
 
     public EventMainFragment() {
         // Required empty public constructor
@@ -84,20 +88,25 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-
         if (view != null) ButterKnife.bind(this, view);
 
+        showcaseActivity = getParentActivity();
+
         // FIXME Handle NullPointerExceptions from the ChangeFragment
-        contactButton.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFormFragment(), true));
+        contactButton.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.FORM, true));
 
-        news.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new NewsFragment(), true));
+        news.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.NEWS, true));
 
-        map.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventMapFragment(),
-                true));
+        map.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.MAP, true));
 
-        schedule.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new ScheduleParentFragment(), true));
+        schedule.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.SCHEDULE, true));
 
         return view;
 
     }
+
 }
