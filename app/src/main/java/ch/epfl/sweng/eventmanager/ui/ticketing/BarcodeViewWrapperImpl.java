@@ -5,12 +5,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.view.KeyEvent;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.OnLifecycleEvent;
 import com.google.zxing.BarcodeFormat;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
@@ -32,14 +28,6 @@ public class BarcodeViewWrapperImpl implements BarcodeViewWrapper {
     public void initialize(DecoratedBarcodeView v, TicketingScanActivity activity, BarcodeCallback callback) {
         this.callback = callback;
         this.view = v;
-
-        activity.getLifecycle().addObserver(new LifecycleObserver() {
-            @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-            public void onStop() {
-                view.pause();
-                view = null;
-            }
-        });
 
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {

@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingServiceManager;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
-import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
@@ -43,13 +41,6 @@ public abstract class TicketingActivity extends AppCompatActivity {
         Intent openIntent = new Intent(this, next);
         openIntent.putExtra(SELECTED_EVENT_ID, eventId);
         openIntent.putExtra(TICKETING_CONFIGURATION, configuration);
-        return openIntent;
-    }
-
-    Intent backToShowcase() {
-        Intent openIntent = new Intent(this, EventShowcaseActivity.class);
-        openIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventId);
-        openIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return openIntent;
     }
 
