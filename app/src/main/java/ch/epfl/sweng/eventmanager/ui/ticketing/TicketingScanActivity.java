@@ -16,11 +16,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
+import ch.epfl.sweng.eventmanager.ticketing.SoundAlertManager;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
 import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
 import com.google.zxing.ResultPoint;
-import com.google.zxing.client.android.BeepManager;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
@@ -49,7 +49,7 @@ public final class TicketingScanActivity extends TicketingActivity {
     @BindView(R.id.scan_result_overlay)
     View overlay;
     private int configId = -1;
-    private BeepManager beepManager;
+    private SoundAlertManager soundAlertManager;
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
@@ -62,7 +62,7 @@ public final class TicketingScanActivity extends TicketingActivity {
                 service.scan(configId, result.getText(), new TicketingService.ApiCallback<ScanResult>() {
                     @Override
                     public void onSuccess(ScanResult data) {
-                        beepManager.playBeepSoundAndVibrate();
+                        soundAlertManager.success();
 
                         setScanResult(buildHtml(data), true);
 
@@ -72,7 +72,7 @@ public final class TicketingScanActivity extends TicketingActivity {
 
                     @Override
                     public void onFailure(List<ApiResult.ApiError> errors) {
-                        beepManager.playBeepSoundAndVibrate();
+                        soundAlertManager.failure();
 
                         setScanResult(buildHtmlForError(errors), false);
 
@@ -179,6 +179,8 @@ public final class TicketingScanActivity extends TicketingActivity {
 
         //beepManager = new BeepManager(this);
         //beepManager.setVibrateEnabled(true);
+
+        soundAlertManager = new SoundAlertManager(this);
     }
 
     private void initScan() {

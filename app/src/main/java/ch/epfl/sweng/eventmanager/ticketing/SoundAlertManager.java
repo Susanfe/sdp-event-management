@@ -21,8 +21,8 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
     private static final String TAG = SoundAlertManager.class.getSimpleName();
 
     private static final float BEEP_VOLUME = 0.10f;
-    private static final long VIBRATE_DURATION_ONSUCCESS = 50L;
-    private static final long VIBRATE_DURATION_ONFAILURE = 200L;
+    private static final long VIBRATE_DURATION_ONSUCCESS = 200L;
+    private static final long VIBRATE_DURATION_ONFAILURE = 800L;
 
     private MediaPlayer successMediaPlayer;
     private MediaPlayer failureMediaPlayer;
