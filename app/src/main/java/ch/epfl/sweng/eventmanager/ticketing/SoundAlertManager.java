@@ -21,8 +21,8 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
     private static final String TAG = SoundAlertManager.class.getSimpleName();
 
     private static final float BEEP_VOLUME = 0.10f;
-    private static final long VIBRATE_DURATION_ONSUCCESS = 200L;
-    private static final long VIBRATE_DURATION_ONFAILURE = 800L;
+    private static final long VIBRATE_DURATION_ONSUCCESS = 100;
+    private static final long[] VIBRATE_DURATION_ONFAILURE = {0, 100, 50, 100};
     private final Context context;
     private final Vibrator vibrator;
     private MediaPlayer successMediaPlayer;
@@ -88,6 +88,6 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
 
     public synchronized void failure() {
         failureMediaPlayer.start();
-        vibrator.vibrate(VIBRATE_DURATION_ONFAILURE);
+        vibrator.vibrate(VIBRATE_DURATION_ONFAILURE,-1);
     }
 }
