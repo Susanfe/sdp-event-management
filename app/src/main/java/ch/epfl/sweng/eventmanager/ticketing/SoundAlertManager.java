@@ -13,7 +13,7 @@ import java.io.Closeable;
 import java.io.IOException;
 
 /**
- * This class manages sounds and vibrations.
+ * This class manages sounds and vibrations
  * Inspired from https://github.com/zxing/zxing/blob/master/android/src/com/google/zxing/client/android/BeepManager.java
  */
 public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable {
@@ -27,12 +27,17 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
     private final Vibrator vibrator;
     private MediaPlayer successMediaPlayer;
     private MediaPlayer failureMediaPlayer;
+    private boolean sound;
+    private boolean vibrate;
 
     public SoundAlertManager(Activity activity) {
         activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         this.context = activity.getApplicationContext();
         initMediaPlayer(activity);
-        vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
+        this.vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
+        //TODO : Add this to preference pane
+        this.sound = true;
+        this.vibrate = true;
     }
 
     private void initMediaPlayer(Context context) {
@@ -82,12 +87,20 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
     }
 
     public synchronized void success() {
-        successMediaPlayer.start();
-        vibrator.vibrate(VIBRATE_DURATION_ONSUCCESS);
+        if(sound) {
+            successMediaPlayer.start();
+        }
+        if(vibrate) {
+            vibrator.vibrate(VIBRATE_DURATION_ONSUCCESS);
+        }
     }
 
     public synchronized void failure() {
-        failureMediaPlayer.start();
-        vibrator.vibrate(VIBRATE_DURATION_ONFAILURE,-1);
+        if(sound) {
+            failureMediaPlayer.start();
+        }
+        if(vibrate) {
+            vibrator.vibrate(VIBRATE_DURATION_ONFAILURE, -1);
+        }
     }
 }
