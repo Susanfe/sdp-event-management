@@ -212,7 +212,6 @@ public final class TicketingScanActivity extends TicketingActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
         viewWrapper.pause();
     }
 

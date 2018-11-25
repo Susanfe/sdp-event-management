@@ -29,11 +29,8 @@ public class BarcodeViewWrapperImpl implements BarcodeViewWrapper {
         this.callback = callback;
         this.view = v;
 
-        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity,
-                    new String[]{Manifest.permission.CAMERA},
-                    PERM_REQUEST_ID);
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, PERM_REQUEST_ID);
         } else {
             view.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(Arrays.asList(BarcodeFormat.values())));
             view.initializeFromIntent(new Intent());
@@ -58,14 +55,12 @@ public class BarcodeViewWrapperImpl implements BarcodeViewWrapper {
 
     @Override
     public void setStatusText(String text) {
-        if (view != null)
-            view.setStatusText(text);
+        if (view != null) view.setStatusText(text);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (view != null)
-            return view.onKeyDown(keyCode, event);
+        if (view != null) return view.onKeyDown(keyCode, event);
         return false;
     }
 }
