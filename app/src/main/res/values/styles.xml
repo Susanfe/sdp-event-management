@@ -88,7 +88,8 @@
     </style>
 
     <style name="Button_account_widget">
-        <item name="android:background">@drawable/ic_account_circle_24dp</item>
+        <item name="srcCompat">@drawable/ic_account_circle_24dp</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
 

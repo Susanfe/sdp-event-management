@@ -4,7 +4,7 @@
         <shape android:shape="rectangle"  >
             <corners android:topLeftRadius="@dimen/default_light_round_edges_radius"
                 android:topRightRadius="@dimen/default_light_round_edges_radius"/>
-            <solid android:color="@color/colorPrimaryLight"/>
+            <solid android:color="@android:color/black"/>
         </shape>
     </item>
 </selector>

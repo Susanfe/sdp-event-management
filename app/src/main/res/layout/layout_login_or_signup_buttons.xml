@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.circularreveal.CircularRevealRelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" 
+<com.google.android.material.circularreveal.CircularRevealRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorSecondary"
-    android:visibility="gone">
+    android:visibility="gone"
+    android:id="@+id/layout_login_or_signup">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -15,23 +16,23 @@
         android:id="@+id/layout_login_signup_not_logged"
         >
 
-        <androidx.appcompat.widget.AppCompatButton
+        <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login_button"
             style="@style/Button_big_button_global"
-            android:drawableLeft="@drawable/ic_person_24dp"
+            app:drawableStartCompat="@drawable/ic_person_24dp"
             android:drawablePadding="@dimen/default_small_padding"
-            android:drawableStart="@drawable/ic_person_24dp" />
+            android:id="@+id/layout_login_signup_login_button"/>
 
-        <androidx.appcompat.widget.AppCompatButton
+        <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/signup_button"
             style="@style/Button_big_button_global"
-            android:drawableLeft="@drawable/ic_person_add_24dp"
+            app:drawableStartCompat="@drawable/ic_person_add_24dp"
             android:drawablePadding="@dimen/default_small_padding"
-            android:drawableStart="@drawable/ic_person_add_24dp" />
+            android:id="@+id/layout_login_signup_signup_button"/>
 
     </LinearLayout>
 
@@ -46,23 +47,23 @@
         android:gravity="center"
         >
 
-        <androidx.appcompat.widget.AppCompatButton
+        <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/account_button"
             style="@style/Button_big_button_global"
-            android:drawableLeft="@drawable/ic_person_24dp"
+            app:drawableStartCompat="@drawable/ic_person_24dp"
             android:drawablePadding="@dimen/default_small_padding"
-            android:drawableStart="@drawable/ic_person_24dp" />
+            android:id="@+id/layout_login_signup_account_button"/>
 
-        <androidx.appcompat.widget.AppCompatButton
+        <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/logout_button"
             style="@style/Button_big_button_global"
-            android:drawableLeft="@drawable/ic_person_outline_24dp"
+            app:drawableStartCompat="@drawable/ic_person_outline_24dp"
             android:drawablePadding="@dimen/default_small_padding"
-            android:drawableStart="@drawable/ic_person_outline_24dp" />
+            android:id="@+id/layout_login_signup_logout_button"/>
 
     </LinearLayout>
 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>

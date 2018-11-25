@@ -69,7 +69,6 @@
                                 android:layout_width="45dp"
                                 android:layout_height="45dp"
                                 app:srcCompat="@drawable/ic_launcher_foreground"
-                                android:layout_marginLeft="@dimen/default_medium_margin"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 android:id="@+id/event_picking_logo"
@@ -87,14 +86,13 @@
                                 android:id="@+id/event_picking_welcome_text"
                                 />
 
-                            <androidx.appcompat.widget.AppCompatButton
+                            <androidx.appcompat.widget.AppCompatImageButton
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
                                 style="@style/Button_account_widget"
-                                android:layout_marginRight="@dimen/default_medium_margin"
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                android:id="@+id/event_picking_login_signup"
+                                android:id="@+id/event_picking_login_account"
                                 android:layout_marginEnd="@dimen/default_medium_margin"
                                 />
 
