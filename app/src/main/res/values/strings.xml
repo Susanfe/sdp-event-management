@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Event Manager</string>
-    
+
     <string name="filter_title_event_picking">Filter for app indexing and URI</string>
 
     <string name="scheduled_item_no_artist">Unknown artist</string>
@@ -111,13 +111,17 @@
 
     <string name="event_list_item_default_title">Event name</string>
     <string name="event_list_item_default_description">This is a quick summary of the event</string>
+    <string name="contentDescription_custom_drawer">ImageView holding the custom marker image</string>
 
     <string name="main_fragment_image_contentDescription">Image representing the event</string>
     <string name="main_fragment_button_news">News</string>
     <string name="main_fragment_button_map">Map</string>
     <string name="main_fragment_button_schedule">Schedule</string>
 
+    <string name="click_to_see_schedule">Click to see schedule</string>
+
     <!-- Generic text -->
     <string name="undo">Undo</string>
+    <string name="welcome">Welcome!</string>
 
 </resources>
