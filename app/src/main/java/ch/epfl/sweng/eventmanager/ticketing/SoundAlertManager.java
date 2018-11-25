@@ -23,11 +23,10 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
     private static final float BEEP_VOLUME = 0.10f;
     private static final long VIBRATE_DURATION_ONSUCCESS = 200L;
     private static final long VIBRATE_DURATION_ONFAILURE = 800L;
-
-    private MediaPlayer successMediaPlayer;
-    private MediaPlayer failureMediaPlayer;
     private final Context context;
     private final Vibrator vibrator;
+    private MediaPlayer successMediaPlayer;
+    private MediaPlayer failureMediaPlayer;
 
     public SoundAlertManager(Activity activity) {
         activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -38,7 +37,7 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
 
     private void initMediaPlayer(Context context) {
         successMediaPlayer = buildMediaPlayer(context, R.raw.scan_ok);
-        failureMediaPlayer = buildMediaPlayer(context,R.raw.scan_error);
+        failureMediaPlayer = buildMediaPlayer(context, R.raw.scan_error);
     }
 
     private MediaPlayer buildMediaPlayer(Context activity, int sound) {
@@ -61,7 +60,7 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
     @Override
     public synchronized boolean onError(MediaPlayer mp, int what, int extra) {
         if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
-            ((Activity)context).finish();
+            ((Activity) context).finish();
         } else {
             // possibly media player error, so release and recreate
             close();
@@ -76,7 +75,7 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
             successMediaPlayer.release();
             successMediaPlayer = null;
         }
-        if(failureMediaPlayer != null) {
+        if (failureMediaPlayer != null) {
             failureMediaPlayer.release();
             failureMediaPlayer = null;
         }

@@ -148,8 +148,7 @@ public final class TicketingScanActivity extends TicketingActivity {
     private Spanned buildHtmlForError(List<ApiResult.ApiError> errors) {
         StringBuilder html = new StringBuilder();
 
-        html.append("<b color='red'>").append(getResources().getString(R.string.ticketing_scan_failure)).append("</b" +
-                "><br>");
+        html.append("<b color='red'>").append(getResources().getString(R.string.ticketing_scan_failure)).append("</b" + "><br>");
 
         if (errors.size() == 1 && errors.get(0).getMessages().size() == 1) {
             html.append(errors.get(0).getMessages().get(0));                        // TODO: proper error handling
@@ -176,9 +175,6 @@ public final class TicketingScanActivity extends TicketingActivity {
         this.configId = intent.getIntExtra(SELECTED_CONFIG_ID, -1);
 
         initScan();
-
-        //beepManager = new BeepManager(this);
-        //beepManager.setVibrateEnabled(true);
 
         soundAlertManager = new SoundAlertManager(this);
     }
