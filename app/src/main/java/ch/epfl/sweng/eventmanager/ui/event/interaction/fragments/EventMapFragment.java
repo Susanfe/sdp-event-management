@@ -277,7 +277,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
             }
 
             View multiProfile = getLayoutInflater().inflate(R.layout.custom_marker, null);
-
             mClusterIconGenerator.setContentView(multiProfile);
             mClusterImageView = multiProfile.findViewById(R.id.image);
 
