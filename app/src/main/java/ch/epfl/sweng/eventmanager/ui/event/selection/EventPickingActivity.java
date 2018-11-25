@@ -245,7 +245,7 @@ public class EventPickingActivity extends AppCompatActivity {
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.event_picking_login_account:
-                revealCircular();
+                revealCircular(false);
                 break;
             case R.id.layout_login_signup_login_button:
                 openLoginOrAccountActivity();
@@ -260,7 +260,7 @@ public class EventPickingActivity extends AppCompatActivity {
                 Session.logout();
                 loggedUI.setVisibility(View.GONE);
                 notLoggedUi.setVisibility(View.VISIBLE);
-                hideCircular();
+                revealCircular(true);
                 break;
 
             case R.id.layout_login_signup_account_button:
@@ -277,7 +277,9 @@ public class EventPickingActivity extends AppCompatActivity {
      * Depending on Android's version on the device, the method launches an animation to reveal the
      * account/signin layout
      */
-    public void revealCircular(){
+    public void revealCircular(boolean inverse){
+        int viewState = inverse ? View.GONE : View.VISIBLE;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             int x = loginAccountButton.getRight();
             int y = loginAccountButton.getTop();
@@ -285,47 +287,35 @@ public class EventPickingActivity extends AppCompatActivity {
             int startRadius = 0;
             int endRadius = (int) Math.hypot(mainLayout.getWidth(), mainLayout.getHeight());
 
-            Animator anim = ViewAnimationUtils.createCircularReveal(loginAccountUI, x, y, startRadius, endRadius);
+            Animator anim;
 
-            loginAccountUI.setVisibility(View.VISIBLE);
-            anim.start();
-        } else {
-            loginAccountUI.setVisibility(View.VISIBLE);
-        }
-    }
+            // We want to reveal the layout
+            if (inverse) {
+                anim = ViewAnimationUtils.createCircularReveal(loginAccountUI, x, y, endRadius, startRadius);
+                anim.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        loginAccountUI.setVisibility(View.GONE);
+                    }
 
-    /**
-     * Same as revealCircular but to hide it.
-     */
-    public void hideCircular(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int x = loginAccountButton.getRight();
-            int y = loginAccountButton.getTop();
+                    // Non redefined methods
+                    @Override
+                    public void onAnimationStart(Animator animation) {}
+                    @Override
+                    public void onAnimationCancel(Animator animation) {}
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {}
+                    // -----
 
-            int startRadius = (int) Math.hypot(mainLayout.getWidth(), mainLayout.getHeight());
-            int endRadius = 0;
-
-            Animator anim = ViewAnimationUtils.createCircularReveal(loginAccountUI, x, y, startRadius, endRadius);
-
-            anim.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    loginAccountUI.setVisibility(View.GONE);
-                }
-
-                // Non redefined mmethods
-                @Override
-                public void onAnimationStart(Animator animation) {}
-                @Override
-                public void onAnimationCancel(Animator animation) {}
-                @Override
-                public void onAnimationRepeat(Animator animation) {}
-                // -----
-            });
+                });
+            } else { // We want to hide the layout
+                anim = ViewAnimationUtils.createCircularReveal(loginAccountUI, x, y, startRadius, endRadius);
+                loginAccountUI.setVisibility(viewState);
+            }
 
             anim.start();
         } else {
-            loginAccountUI.setVisibility(View.GONE);
+            loginAccountUI.setVisibility(viewState);
         }
     }
 
@@ -350,7 +340,7 @@ public class EventPickingActivity extends AppCompatActivity {
             return;
         }
         if (loginAccountUI.getVisibility()==View.VISIBLE){
-            hideCircular();
+            revealCircular(true);
             return;
         }
         if (doubleBackToExitPressedOnce) {
