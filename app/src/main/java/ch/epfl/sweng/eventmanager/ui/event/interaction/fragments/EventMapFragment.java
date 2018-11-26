@@ -188,10 +188,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                         mClusterManager.clearItems();
 
                         // 2. Add new spots
-                        for (Spot s : spots) {
-                            s.setScheduleList(items);
-                            mClusterManager.addItem(s);
-                        }
+                        mClusterManager.addItems(spots);
                     }));
         }
     }
