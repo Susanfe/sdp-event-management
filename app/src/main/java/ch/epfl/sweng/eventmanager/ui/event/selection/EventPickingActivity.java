@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -78,6 +78,8 @@ public class EventPickingActivity extends AppCompatActivity {
     CoordinatorLayout mainLayout;
     @BindView(R.id.event_picking_login_account) // Account/Login button
     ImageButton loginAccountButton;
+    @BindView(R.id.event_picking_under_empty_list)
+    AppCompatImageView empty_joined_list_image;
 
     // Login/Signup layout components
     @BindView(R.id.layout_login_signup_logged) // Logged UI
@@ -222,9 +224,11 @@ public class EventPickingActivity extends AppCompatActivity {
                 noMoreEventsText.setVisibility(View.GONE);
             }
             if (list.getJoinedEvents().isEmpty()) {
+                empty_joined_list_image.setVisibility(View.VISIBLE);
                 helpText.setText(getString(R.string.help_text_go_join_events));
                 joinedHelpText.setVisibility(View.GONE);
             } else {
+                empty_joined_list_image.setVisibility(View.GONE);
                 helpText.setText(getString(R.string.help_text_activity_event_picking));
                 joinedHelpText.setVisibility(View.VISIBLE);
             }

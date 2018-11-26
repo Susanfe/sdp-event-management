@@ -7,22 +7,22 @@ import android.os.Build;
 import android.util.AttributeSet;
 
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import ch.epfl.sweng.eventmanager.R;
 
 /**
- * Custom button view that enables the use of VectorDrawables unsupported by native SDK
+ * Custom Text view that enables the use of VectorDrawables unsupported by native SDK
  * Taken from stackoverflow answer 40250753
  */
-public class CustomButtonView extends AppCompatButton {
-    public CustomButtonView(Context context) {
+public class CustomTextView extends AppCompatTextView {
+    public CustomTextView(Context context) {
         super(context);
     }
-    public CustomButtonView(Context context, AttributeSet attrs) {
+    public CustomTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAttrs(context, attrs);
     }
-    public CustomButtonView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initAttrs(context, attrs);
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CustomButtonView">
+    <declare-styleable name="CustomView">
         <attr name="drawableStartCompat" format="reference"/>
         <attr name="drawableEndCompat" format="reference"/>
         <attr name="drawableTopCompat" format="reference"/>
