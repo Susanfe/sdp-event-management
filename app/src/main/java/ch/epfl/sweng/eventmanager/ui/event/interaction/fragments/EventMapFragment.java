@@ -84,11 +84,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     public void onCreate(Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         if (spotsModel == null) {
             spotsModel = ViewModelProviders.of(requireActivity(), factory).get(SpotsModel.class);
@@ -118,6 +113,11 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 setUpOverlay();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void setUpMap(){
