@@ -2,12 +2,9 @@ package ch.epfl.sweng.eventmanager.ui.event.selection;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.Button;
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListUpdateCallback;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;

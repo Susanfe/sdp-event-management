@@ -22,3 +22,4 @@ exclude_patterns:
   - "app/src/main/java/ch/epfl/sweng/eventmanager/repository/impl"
   - "app/src/androidTest/"
   - "app/src/test/"
+  - "app/src/main/java/ch/epfl/sweng/eventmanager/ui/event/interaction/fragments/EventMapFragment.java"
