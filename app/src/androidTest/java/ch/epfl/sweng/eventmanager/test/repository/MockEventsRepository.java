@@ -16,7 +16,6 @@ import androidx.lifecycle.LiveData;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
-import ch.epfl.sweng.eventmanager.repository.data.EventOrganizer;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
@@ -48,7 +47,7 @@ public class MockEventsRepository implements EventRepository {
     private final ObservableMap<Integer, List<Zone>> zones = new ObservableMap<>();
 
     {
-        EventOrganizer orga = new EventOrganizer(1, "Some Organizer 1", "Orga Description", null, "events@epfl.ch");
+        String orgaEmail = "events@not-really-epfl.ch";
         // Init events
 
         TypeToken<List<Spot>> spotsToken = new TypeToken<List<Spot>>() {
@@ -111,19 +110,19 @@ public class MockEventsRepository implements EventRepository {
         usersMap.put("admin", userUids);
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact",
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact",
                 CONFIG_BY_EVENT.get(1)));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapnImpact",
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapnImpact",
                 CONFIG_BY_EVENT.get(2)));
 
         addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
-                orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapanImpact",
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapanImpact",
                 CONFIG_BY_EVENT.get(3)));
 
         addZone(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact"), new Gson().fromJson(jsonZone, zonesToken.getType()));
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact"), new Gson().fromJson(jsonZone, zonesToken.getType()));
 
         List<ScheduledItem> items;
         String jsonSchedule = "[ {\n" +

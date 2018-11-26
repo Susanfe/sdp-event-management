@@ -34,14 +34,14 @@ public class EventTest {
                     Calendar.HOUR_OF_DAY, 12,
                     Calendar.MINUTE, 0,
                     Calendar.SECOND, 0).build().getTime();
-    private final EventOrganizer orga1 =
-            new EventOrganizer(1, "Orga1", "Organizer 1", null, null);
-    private final EventOrganizer orga2 =
-            new EventOrganizer(2, "Orga2", "Organizer 2", null, null);
+
+    private final String orgaEmail1 = "fancyemail1@epfl.ch";
+    private final String orgaEmail2 = "fancyemail2@google.com";
+
     private final Event ev1 = new Event(1, "Event1", "Event Description 1",
-            start, end,  orga1, null, null, spotList, null, null);
+            start, end,  orgaEmail1, null, null, spotList, null, null);
     private final Event ev2 = new Event(2, "Event2", "Event Description 2",
-            start, end, orga2, null, l1, spotList, null, null);
+            start, end, orgaEmail2, null, l1, spotList, null, null);
 
     @Test
     public void getIdTest() {
@@ -69,14 +69,14 @@ public class EventTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getWrongDateTest(){
-        final Event falseDate = new Event(1, "Event1", "Event Description 1", end, start,  orga1,
+        new Event(1, "Event1", "Event Description 1", end, start, orgaEmail1,
                 null, null, spotList, null, null);
     }
 
     @Test
     public void getOrganizerTest() {
-        assertEquals(orga1, ev1.getOrganizer());
-        assertEquals(orga2, ev2.getOrganizer());
+        assertEquals(orgaEmail1, ev1.getOrganizerEmail());
+        assertEquals(orgaEmail2, ev2.getOrganizerEmail());
     }
 
     @Test

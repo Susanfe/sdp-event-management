@@ -47,7 +47,7 @@ public final class Event {
     /**
      * The entity organizing this event
      */
-    private EventOrganizer organizer;
+    private String organizerEmail;
     /**
      * An image representing the event, may be null
      */
@@ -75,13 +75,13 @@ public final class Event {
 
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 EventOrganizer organizer, Bitmap image, EventLocation location,
+                 String organizerEmail, Bitmap image, EventLocation location,
                  List<Spot> spotList, Map<String, Map<String, String>> users, String twitterName) {
-        this(id, name, description, beginDate, endDate, organizer, image, location, spotList, users, twitterName, null);
+        this(id, name, description, beginDate, endDate, organizerEmail, image, location, spotList, users, twitterName, null);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 EventOrganizer organizer, Bitmap image, EventLocation location,
+                 String organizerEmail, Bitmap image, EventLocation location,
                  List<Spot> spotList, Map<String, Map<String, String>> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
         this.ticketingConfiguration = ticketingConfiguration;
 
@@ -93,7 +93,7 @@ public final class Event {
         this.beginDate = beginDate.getTime();
         this.endDate = endDate.getTime();
         this.description = description;
-        this.organizer = organizer;
+        this.organizerEmail = organizerEmail;
         this.image = image;
         this.location = location;
         this.spotList = new ArrayList<>(spotList);
@@ -130,8 +130,8 @@ public final class Event {
         return description;
     }
 
-    public EventOrganizer getOrganizer() {
-        return organizer;
+    public String getOrganizerEmail() {
+        return organizerEmail;
     }
 
     public Bitmap getImage() {
