@@ -1,6 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.users.Role;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
-    private Map<String, List<Role>> mUsers;
+    private Map<String, Role> mUsers;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -48,13 +47,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         mUsers = new HashMap<>();
         for (Role role : raw.keySet()) {
             for (String uid : raw.get(role)) {
-                List roleList = mUsers.get(uid);
-                if (roleList == null) roleList = new ArrayList();
-                roleList.add(role);
-
                 User user = new FirebaseBackedUser(uid);
                 // FIXME: fetch email instead of Uid once our FirebaseBackedUser suports it
-                mUsers.put(user.getUid(), roleList);
+                mUsers.put(user.getUid(), role);
             }
         }
     }
