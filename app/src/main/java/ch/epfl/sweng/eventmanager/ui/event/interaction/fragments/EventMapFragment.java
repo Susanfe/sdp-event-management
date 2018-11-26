@@ -180,7 +180,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     }
 
     /**
-     * add all spots of the event into the cluster manager
+     * add all spots of the event into the cluster mana
      */
     private void addItemToCluster() {
         if (getActivity() != null){
@@ -195,10 +195,11 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                         // 2. Add new spots
                         for (Spot s : spots) {
                             s.setScheduleList(items);
-                            mClusterManager.addItem(s);
                         }
+                        mClusterManager.addItems(spots);
                         mClusterManager.cluster();
                     }));
+
         }
     }
 
@@ -253,14 +254,18 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     public void onClusterItemInfoWindowClick(Spot spot) {
         if (getActivity() != null && spot != null) {
             if(spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
-                ScheduleParentFragment scheduleParentFragment = new ScheduleParentFragment();
-                Bundle args = new Bundle();
-                args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
-                scheduleParentFragment.setArguments(args);
-                ((EventShowcaseActivity)getActivity()).changeFragment(
-                        scheduleParentFragment, true);
+                goToSchedule();
             }
         }
+    }
+
+    private void goToSchedule() {
+        ScheduleParentFragment scheduleParentFragment = new ScheduleParentFragment();
+        Bundle args = new Bundle();
+        args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
+        scheduleParentFragment.setArguments(args);
+        ((EventShowcaseActivity)getActivity()).changeFragment(
+                scheduleParentFragment, true);
     }
 
     /**
