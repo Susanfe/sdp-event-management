@@ -14,8 +14,10 @@
 
         <androidx.appcompat.widget.AppCompatRatingBar
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/feedback_form_ratingBar"
-                android:numStars="5"/>
+                android:layout_height="wrap_content"
+                android:id="@+id/feedback_form_ratingBar"
+                android:numStars="5"
+                android:stepSize="0.25"/>
 
         <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/feedback_form_content"
