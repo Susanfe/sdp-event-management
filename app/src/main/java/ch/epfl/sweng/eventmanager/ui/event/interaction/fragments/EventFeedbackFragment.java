@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,18 +14,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ch.epfl.sweng.eventmanager.EventManagerApplication;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.repository.data.EventRating;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import dagger.android.support.AndroidSupportInjection;
+
 import javax.inject.Inject;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class EventFeedbackFragment extends AbstractShowcaseFragment {
     private static final String TAG = "EventFeedbackFragment";
-    private static final String UNIQUE_ID_DEVICE = UUID.randomUUID().toString();
+    private String UNIQUE_ID_DEVICE;
 
     @Inject
     protected FeedbackRepository repository;
@@ -52,21 +55,20 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
             repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, ratingExists::set);
             sendButton.setOnClickListener(l -> {
                 EventRating newEventRating = new EventRating(UNIQUE_ID_DEVICE, rating.getRating(), description.getText().toString());
-                //TODO Use a unique identifier to restrict each device to one feedbackButton
-                    if (!ratingExists.get()) {
-                        Log.d(TAG, "rating doesn't exists");
-                        //Publish the rating and shows that feedback has been published
-                        repository.publishRating(ev.getId(), newEventRating).addOnSuccessListener(aVoid -> {
-                            Toast.makeText(getActivity(), R.string.event_feedback_submitted, Toast.LENGTH_SHORT).show();
-                            // Returns to main showcase event screen
-                            ((EventShowcaseActivity) getActivity()).changeFragment(new EventMainFragment(), true);
-                        });
-                    } else {
-                        Log.d(TAG, "Rating does exists");
-                        Toast.makeText(getActivity(), R.string.event_feedback_already_submitted, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                //TODO Use a unique identifier to restrict each device to one feedback
+                if (ratingExists.get() == null) ;
+                else if (!ratingExists.get()) {
+                    //Publish the rating and shows that feedback has been published
+                    repository.publishRating(ev.getId(), newEventRating).addOnSuccessListener(aVoid -> {
+                        Toast.makeText(getActivity(), R.string.event_feedback_submitted, Toast.LENGTH_SHORT).show();
+                        // Returns to main showcase event screen
+                        ((EventShowcaseActivity) getActivity()).changeFragment(new EventMainFragment(), true);
+                    });
+                } else {
+                    Toast.makeText(getActivity(), R.string.event_feedback_already_submitted, Toast.LENGTH_SHORT).show();
+                }
             });
+        });
 
         return view;
     }
@@ -74,6 +76,7 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
     @Override
     public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);
+        UNIQUE_ID_DEVICE = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         super.onAttach(context);
     }
 }

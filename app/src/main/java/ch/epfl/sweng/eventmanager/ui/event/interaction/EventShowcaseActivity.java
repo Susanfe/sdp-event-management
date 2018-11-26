@@ -17,10 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
@@ -193,6 +190,10 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                     scheduleParentFragment = new ScheduleParentFragment();
                 }
                 changeFragment(scheduleParentFragment, true);
+                break;
+
+            case R.id.nav_feedback:
+                changeFragment(new EventFeedbackFragment(), true);
                 break;
 
             case R.id.nav_scan:
