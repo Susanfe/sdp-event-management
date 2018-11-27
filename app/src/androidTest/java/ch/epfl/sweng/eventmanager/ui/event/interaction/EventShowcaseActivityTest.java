@@ -94,23 +94,6 @@ public class EventShowcaseActivityTest {
 
     @Test
     public void joinEventTest() {
-        onView(withId(R.id.drawer_layout))
-                .check(matches(isClosed(Gravity.LEFT)))
-                .perform(DrawerActions.open());
-
-        onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
-
-        onView(withId(R.id.event_picking_bottom_sheet_text)).perform(click());
-        SystemClock.sleep(300);
-        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
-                RecyclerViewButtonClick.clickChildViewWithId(R.id.goto_event_btn)));
-
-        SystemClock.sleep(800);
-
-        onView(withId(R.id.join_event_button))
-                .perform(click());
-
         onView(withId(R.id.join_event_button))
                 .perform(click());
     }
