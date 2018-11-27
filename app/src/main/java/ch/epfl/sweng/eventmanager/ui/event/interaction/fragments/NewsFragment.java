@@ -39,8 +39,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
     RecyclerView recyclerView;
     @BindView(R.id.news_empty_tv)
     TextView emptyListTextView;
-    @BindView(R.id.news_create_button)
-    Button newsCreateButton;
     private NewsAdapter newsAdapter;
 
     public NewsFragment() {
@@ -57,10 +55,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
-        newsCreateButton.setOnClickListener(v -> {
-            getParentActivity().changeFragment(new SendNewsFragment(), true);
-        });
-
         newsAdapter = new NewsAdapter();
         recyclerView.setAdapter(newsAdapter);
 
@@ -74,15 +68,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
         if (model == null) {
             model = ViewModelProviders.of(requireActivity()).get(NewsViewModel.class);
         }
-
-        super.model.getEvent().observe(this, ev -> {
-            if (Session.isClearedFor(Role.ADMIN, ev)) {
-                newsCreateButton.setVisibility(View.VISIBLE);
-            } else {
-                newsCreateButton.setVisibility(View.GONE);
-            }
-        });
-
 
         LiveData<String> twitterName = Transformations.map(super.model.getEvent(), event -> event.getTwitterName());
 

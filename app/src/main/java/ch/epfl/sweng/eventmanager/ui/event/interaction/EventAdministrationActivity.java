@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNewsFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
@@ -79,6 +80,10 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
 
             case R.id.nav_schedule :
                 changeFragment(new ScheduleParentFragment(), true);
+                break;
+
+            case R.id.nav_send_news :
+                changeFragment(new SendNewsFragment(), true);
                 break;
         }
 

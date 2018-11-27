@@ -1,44 +1,52 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment"
-        android:layout_marginTop="?android:attr/actionBarSize">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="?android:attr/actionBarSize"
+    android:layout_marginRight="8dp"
+    tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment">
 
     <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <TextView
-                android:text="@string/send_news_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/textView" android:textStyle="bold"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_anchorGravity="center_horizontal"
-                app:layout_anchor="@id/title"
-        />
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/send_news_title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_anchor="@id/title"
+            app:layout_anchorGravity="center_horizontal" />
+
         <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:ems="10"
-                android:id="@+id/title"
-                android:hint="@string/send_news_title_field"/>
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/send_news_title_field"
+            android:inputType="text" />
+
         <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:id="@+id/content" android:hint="@string/send_news_content"/>
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/send_news_content"
+            android:inputType="textMultiLine" />
+
         <Button
-                android:text="@string/send_news_send_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_anchorGravity="center_horizontal"
-                android:id="@+id/send"/>
+            android:id="@+id/send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/send_news_send_button"
+            app:layout_anchorGravity="center_horizontal" />
     </LinearLayout>
 
 
