@@ -31,6 +31,8 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
+import java.io.Serializable;
+
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
 
@@ -128,8 +130,13 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             // Set displayed fragment only when no other fragment where previously inflated.
             if (savedInstanceState == null) {
-                eventMainFragment = new EventMainFragment();
-                changeFragment(eventMainFragment, true);
+                String fragment = intent.getStringExtra("fragment");
+                if (fragment!= null && fragment.equals("feedback"))
+                    changeFragment(new EventFeedbackFragment(), true);
+                else {
+                    eventMainFragment = new EventMainFragment();
+                    changeFragment(eventMainFragment, true);
+                }
             }
         }
 
@@ -197,12 +204,13 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     /**
      * Prepares the call to changeFragment by verifying if an existing fragment was stored and can
      * be reused.
-     * @param type type of the fragment to switch to
+     *
+     * @param type            type of the fragment to switch to
      * @param saveToBackstack save the fragment in the backstack to access it later on
      */
     public void callChangeFragment(FragmentType type, boolean saveToBackstack) {
         if (type == null) type = FragmentType.MAIN;
-        switch(type) {
+        switch (type) {
             case MAIN:
                 if (eventMainFragment == null)
                     eventMainFragment = new EventMainFragment();
@@ -286,7 +294,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         return eventID;
     }
 
-    public enum FragmentType{
+    public enum FragmentType {
         MAIN, MAP, SCHEDULE, NEWS, FORM
     }
 }
