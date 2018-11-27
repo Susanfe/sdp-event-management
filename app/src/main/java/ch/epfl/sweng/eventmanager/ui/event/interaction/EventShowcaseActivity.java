@@ -50,8 +50,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private Fragment newsFragment;
     private Fragment scheduleParentFragment;
 
-    private int eventID;
-
     private void initModels() {
         this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
         this.model.init(eventID);
@@ -246,9 +244,5 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     @Override
     public void setTitle(CharSequence title) {
         toolbar.setTitle(title);
-    }
-
-    public int getEventID() {
-        return eventID;
     }
 }

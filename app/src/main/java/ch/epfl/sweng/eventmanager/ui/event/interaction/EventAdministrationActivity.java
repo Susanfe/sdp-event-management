@@ -25,7 +25,6 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
     ViewModelFactory factory;
 
     private EventInteractionModel model;
-    private int eventID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
