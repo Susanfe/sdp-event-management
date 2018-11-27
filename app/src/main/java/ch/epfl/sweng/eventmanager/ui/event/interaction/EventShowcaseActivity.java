@@ -24,8 +24,8 @@ import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
-
 import javax.inject.Inject;
+import java.io.Serializable;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
@@ -125,8 +125,13 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             // Set displayed fragment only when no other fragment where previously inflated.
             if (savedInstanceState == null) {
-                eventMainFragment = new EventMainFragment();
-                changeFragment(eventMainFragment, true);
+                String fragment = intent.getStringExtra("fragment");
+                if (fragment!= null && fragment.equals("feedback"))
+                    changeFragment(new EventFeedbackFragment(), true);
+                else {
+                    eventMainFragment = new EventMainFragment();
+                    changeFragment(eventMainFragment, true);
+                }
             }
         }
 
@@ -176,6 +181,10 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             case R.id.nav_schedule:
                 callChangeFragment(FragmentType.SCHEDULE, true);
+                break;
+
+            case R.id.nav_feedback:
+                changeFragment(new EventFeedbackFragment(), true);
                 break;
 
             case R.id.nav_scan:

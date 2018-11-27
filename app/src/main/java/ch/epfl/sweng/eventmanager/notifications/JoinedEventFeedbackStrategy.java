@@ -30,6 +30,6 @@ public class JoinedEventFeedbackStrategy extends NotificationStrategy<Event> {
 
     private Notification getNotificationFromEvent(Event event) {
         //TODO make the notification on click action send the user to the feedback fragment
-        return NotificationBuilder.getNotificationFromItem(context, titleText + event.getName(), "");
+        return NotificationBuilder.getNotificationFromItem(context, titleText + event.getName(), "", event.getId());
     }
 }
