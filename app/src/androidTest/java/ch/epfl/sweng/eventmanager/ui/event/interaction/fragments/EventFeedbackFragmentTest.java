@@ -72,20 +72,25 @@ public class EventFeedbackFragmentTest {
 
     @Test
     public void submitFeedbackTest() {
+        repository.cleanRatings();
         onView(withId(R.id.feedback_for_go_button)).check(matches(isClickable())).perform(click());
         submitRating(DESCRIPTION_1, RATING_1);
-        onView(withId(R.id.feedback_form_send_button)).perform(ViewActions.click());
         onView(withText(R.string.event_feedback_submitted)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
 
     @Test
     public void submitFeedbackTwiceFailsTest() {
+        repository.cleanRatings();
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_feedback));
         submitRating(DESCRIPTION_1, RATING_1);
+
+        onView(withId(R.id.feedback_for_go_button)).check(matches(isClickable())).perform(click());
+
         submitRating(DESCRIPTION_2, RATING_2);
+
         onView(withText(R.string.event_feedback_already_submitted)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
 
@@ -96,6 +101,7 @@ public class EventFeedbackFragmentTest {
     private void submitRating(String content, Float rating) {
         onView(withId(R.id.feedback_form_content)).perform(typeText(content), closeSoftKeyboard());
         onView(withId(R.id.feedback_form_ratingBar)).perform(new SetRating(rating));
+        onView(withId(R.id.feedback_form_send_button)).perform(ViewActions.click());
     }
 
     private final class SetRating implements ViewAction {

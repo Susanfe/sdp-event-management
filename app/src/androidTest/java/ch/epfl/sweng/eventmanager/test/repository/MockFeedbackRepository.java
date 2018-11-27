@@ -24,6 +24,10 @@ public class MockFeedbackRepository implements FeedbackRepository {
         return ratings.get(eventId);
     }
 
+    public void cleanRatings(){
+        ratings = new HashMap<>();
+    }
+
     @Override
     public Task<Void> publishRating(int eventId, EventRating eventRating) {
         getOrCreateRating(eventId).add(eventRating);
