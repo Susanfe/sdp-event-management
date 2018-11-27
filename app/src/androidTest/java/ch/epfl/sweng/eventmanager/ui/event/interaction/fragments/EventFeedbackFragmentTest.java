@@ -71,7 +71,6 @@ public class EventFeedbackFragmentTest {
         onView(withId(R.id.feedback_for_go_button)).check(matches(isClickable())).perform(click());
     }
 
-    @Ignore
     @Test
     public void submitFeedbackTest() {
         submitRating(DESCRIPTION_1, RATING_1);
