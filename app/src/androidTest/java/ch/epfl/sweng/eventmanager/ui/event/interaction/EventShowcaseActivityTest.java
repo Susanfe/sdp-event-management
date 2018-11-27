@@ -1,9 +1,11 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
+import android.Manifest;
 import android.content.Context;
 import android.os.SystemClock;
 import android.view.Gravity;
 
+import androidx.test.rule.GrantPermissionRule;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
@@ -36,6 +38,8 @@ import static org.hamcrest.CoreMatchers.allOf;
 public class EventShowcaseActivityTest {
     @Rule
     public final EventTestRule<EventShowcaseActivity> mActivityRule = new EventTestRule<>(EventShowcaseActivity.class);
+
+    @Rule public GrantPermissionRule permissionRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
 
     @After
     public void remove() {
