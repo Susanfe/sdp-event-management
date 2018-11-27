@@ -78,19 +78,6 @@ public class EventTest {
     }
 
     @Test
-    public void getSpotsTest() {
-        assertTrue(ev1.getSpotList().isEmpty());
-        ev1.getSpotList().add(new Spot("Spot 1", SpotType.ROOM, 10, 10, null));
-        // FIXME Encapsulation issue to do so ?
-        assertEquals(1, ev1.getSpotList().size());
-
-        spotList.add(new Spot("PMU", SpotType.BAR, 10, 10, null));
-        Event fake1 = new Event(-1, "Fake1", null, new Date(0), new Date(0),
-                null, null, null, null, null);
-        assertEquals(1, fake1.getSpotList().size());
-    }
-
-    @Test
     public void getLocationTest() {
         assertNull(ev1.getLocation());
         EventLocation fake1 = new EventLocation(l1.getName(), l1.getPosition());
