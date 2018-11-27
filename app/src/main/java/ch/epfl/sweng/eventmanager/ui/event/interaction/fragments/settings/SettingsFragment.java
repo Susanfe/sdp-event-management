@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui;
+package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.settings;
 
 import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;

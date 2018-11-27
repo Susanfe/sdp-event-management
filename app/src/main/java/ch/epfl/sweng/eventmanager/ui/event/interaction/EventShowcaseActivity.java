@@ -14,9 +14,9 @@ import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ui.SettingsFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.settings.SettingsActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
@@ -43,7 +43,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private Fragment eventMainFragment;
     private Fragment newsFragment;
     private Fragment scheduleParentFragment;
-    private Fragment settingsFragment;
 
     private int eventID;
 
@@ -65,7 +64,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     }
 
     private void setupMenu() {
-        LiveData<EventTicketingConfiguration> data = Transformations.map(model.getEvent(), Event::getTicketingConfiguration);
+        LiveData<EventTicketingConfiguration> data = Transformations.map(model.getEvent(),
+                Event::getTicketingConfiguration);
         data.observe(this, d -> {
             MenuItem item = navigationView.getMenu().findItem(R.id.nav_scan);
             if (d != null) {
@@ -182,10 +182,11 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 startActivity(ticketingManager.start(model.getEvent().getValue(), this));
                 break;
 
-            case R.id.nav_preferences :
-                callChangeFragment(FragmentType.SETTINGS,true);
+            case R.id.nav_settings:
+                Intent intent = new Intent(this,SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 break;
-
         }
 
         return true;
@@ -194,15 +195,15 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     /**
      * Prepares the call to changeFragment by verifying if an existing fragment was stored and can
      * be reused.
-     * @param type type of the fragment to switch to
+     *
+     * @param type            type of the fragment to switch to
      * @param saveToBackstack save the fragment in the backstack to access it later on
      */
     public void callChangeFragment(FragmentType type, boolean saveToBackstack) {
         if (type == null) type = FragmentType.MAIN;
-        switch(type) {
+        switch (type) {
             case MAIN:
-                if (eventMainFragment == null)
-                    eventMainFragment = new EventMainFragment();
+                if (eventMainFragment == null) eventMainFragment = new EventMainFragment();
                 changeFragment(eventMainFragment, saveToBackstack);
                 break;
 
@@ -211,8 +212,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case SCHEDULE:
-                if (scheduleParentFragment == null)
-                    scheduleParentFragment = new ScheduleParentFragment();
+                if (scheduleParentFragment == null) scheduleParentFragment = new ScheduleParentFragment();
                 changeFragment(scheduleParentFragment, saveToBackstack);
                 break;
 
@@ -221,18 +221,12 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case NEWS:
-                if (newsFragment == null)
-                    newsFragment = new NewsFragment();
+                if (newsFragment == null) newsFragment = new NewsFragment();
                 changeFragment(newsFragment, saveToBackstack);
-                break;
-
-            case SETTINGS:
-                if(settingsFragment == null)
-                    settingsFragment = new SettingsFragment();
-                changeFragment(settingsFragment,saveToBackstack);
                 break;
             default:
                 changeFragment(new EventMainFragment(), saveToBackstack);
+                break;
         }
     }
 
@@ -264,7 +258,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     public void onBackPressed() {
         Fragment fragment = getCurrentFragment();
         if (fragment instanceof EventTicketFragment || fragment instanceof EventMapFragment || fragment instanceof ScheduleParentFragment || fragment instanceof NewsFragment) {
-            changeFragment(new EventMainFragment(), true);
+            callChangeFragment(FragmentType.MAIN, true);
         } else {
             int fragments = getSupportFragmentManager().getBackStackEntryCount();
             if (fragments == 1) {
@@ -288,7 +282,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         return eventID;
     }
 
-    public enum FragmentType{
-        MAIN, MAP, SCHEDULE, NEWS, FORM, SETTINGS
+    public enum FragmentType {
+        MAIN, MAP, SCHEDULE, NEWS, FORM
     }
 }

@@ -36,7 +36,7 @@
             android:id="@+id/nav_pick_event"
             android:title="@string/pick_event_nav_item_activity_event_showcase"/>
         <item
-            android:id="@+id/nav_preferences"
+            android:id="@+id/nav_settings"
             android:title="@string/settings"/>
     </group>
 
