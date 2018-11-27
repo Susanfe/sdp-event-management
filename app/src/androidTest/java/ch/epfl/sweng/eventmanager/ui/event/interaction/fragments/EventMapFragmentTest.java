@@ -30,7 +30,7 @@ public class EventMapFragmentTest {
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_map));
     }
-    @Ignore
+
     @Test
     public void eventMapTest() {
         onView(withId(R.id.drawer_layout))
