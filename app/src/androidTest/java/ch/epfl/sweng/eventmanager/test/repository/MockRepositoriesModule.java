@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.test.repository;
 import javax.inject.Singleton;
 
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
+import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
 import dagger.Module;
 import dagger.Provides;
@@ -37,5 +38,11 @@ public class MockRepositoriesModule {
         return repository;
     }
 
+    @Provides
+    @Singleton
+    public FeedbackRepository providesFeedbackRepository(MockFeedbackRepository repository) {return repository; }
 
+    @Provides
+    @Singleton
+    public MockFeedbackRepository providesMockFeedbackRepository() {return new MockFeedbackRepository();}
 }

@@ -17,11 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFormFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
@@ -34,6 +30,8 @@ import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
+
+import java.io.Serializable;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
@@ -132,8 +130,13 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             // Set displayed fragment only when no other fragment where previously inflated.
             if (savedInstanceState == null) {
-                eventMainFragment = new EventMainFragment();
-                changeFragment(eventMainFragment, true);
+                String fragment = intent.getStringExtra("fragment");
+                if (fragment!= null && fragment.equals("feedback"))
+                    changeFragment(new EventFeedbackFragment(), true);
+                else {
+                    eventMainFragment = new EventMainFragment();
+                    changeFragment(eventMainFragment, true);
+                }
             }
         }
 
@@ -184,6 +187,10 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 callChangeFragment(FragmentType.SCHEDULE, true);
                 break;
 
+            case R.id.nav_feedback:
+                changeFragment(new EventFeedbackFragment(), true);
+                break;
+
             case R.id.nav_scan:
                 // TODO Handle null pointer exception
                 startActivity(ticketingManager.start(model.getEvent().getValue(), this));
@@ -197,12 +204,13 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     /**
      * Prepares the call to changeFragment by verifying if an existing fragment was stored and can
      * be reused.
-     * @param type type of the fragment to switch to
+     *
+     * @param type            type of the fragment to switch to
      * @param saveToBackstack save the fragment in the backstack to access it later on
      */
     public void callChangeFragment(FragmentType type, boolean saveToBackstack) {
         if (type == null) type = FragmentType.MAIN;
-        switch(type) {
+        switch (type) {
             case MAIN:
                 if (eventMainFragment == null)
                     eventMainFragment = new EventMainFragment();
@@ -286,7 +294,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         return eventID;
     }
 
-    public enum FragmentType{
+    public enum FragmentType {
         MAIN, MAP, SCHEDULE, NEWS, FORM
     }
 }
