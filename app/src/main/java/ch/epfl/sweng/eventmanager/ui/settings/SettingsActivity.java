@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.settings;
+package ch.epfl.sweng.eventmanager.ui.settings;
 
 import android.os.Bundle;
 import android.view.MenuItem;

@@ -1,10 +1,17 @@
 package ch.epfl.sweng.eventmanager.ui;
 
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.NoActivityResumedException;
 import androidx.test.rule.ActivityTestRule;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.settings.SettingsActivity;
+import ch.epfl.sweng.eventmanager.ui.settings.SettingsActivity;
 import org.junit.Rule;
 import org.junit.Test;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static junit.framework.TestCase.fail;
 
 public class SettingsActivityTest {
     @Rule
@@ -12,15 +19,16 @@ public class SettingsActivityTest {
             new ActivityTestRule<>(SettingsActivity.class);
 
     @Test
-    public void testSettings() {
-        String soundKey = mActivityRule.getActivity().getString(R.string.key_ticket_scanning_sounds);
-        String vibrationKey = mActivityRule.getActivity().getString(R.string.key_ticket_scanning_vibrations);
-/*        // Check if is displayed
-        onData(allOf(is(instanceOf(Preference.class)), withKey(soundKey))).check(matches(isDisplayed()));
-        // Perform click
-        onData(allOf(is(instanceOf(Preference.class)), withKey(soundKey))).onChildView(withClassName(is(Switch.class.getName()))).perform(click());
+    public void testBackPress() {
+        try {
+            Espresso.pressBack();
+            fail("Should have thrown NoActivityResumedException");
+        } catch (NoActivityResumedException expected) {
+        }
+    }
 
-        onData(allOf(is(instanceOf(Preference.class)), withKey(vibrationKey))).check(matches(isDisplayed()));
-        onData(allOf(is(instanceOf(Preference.class)), withKey(vibrationKey))).onChildView(withClassName(is(Switch.class.getName()))).perform(click());*/
+    @Test()
+    public void testUpArrow() {
+            onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
     }
 }

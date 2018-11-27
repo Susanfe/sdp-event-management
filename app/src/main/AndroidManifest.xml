@@ -107,7 +107,7 @@
 
         <receiver android:name=".repository.impl.NotificationPublisher"/>
 
-        <activity android:name=".ui.event.interaction.fragments.settings.SettingsActivity"
+        <activity android:name=".ui.settings.SettingsActivity"
                   android:label="Settings"
                   android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         />
