@@ -43,19 +43,32 @@ public class EventTest {
 
     @Test
     public void getIdTest() {
-        assertEquals(1, ev1.getId());
         assertEquals(2, ev2.getId());
+
+        ev1.setId(200);
+        assertEquals(200, ev1.getId());
+        ev1.setId(1);
+        assertEquals(1, ev1.getId());
     }
 
     @Test
     public void getNameTest() {
+        ev1.setName("Event100");
+        assertEquals("Event100", ev1.getName());
+        ev1.setName("Event1");
         assertEquals("Event1", ev1.getName());
+
+
         assertEquals("Event2", ev2.getName());
     }
 
     @Test
     public void getDescriptionTest() {
+        ev1.setDescription("Event Description 100");
+        assertEquals("Event Description 100", ev1.getDescription());
+        ev1.setDescription("Event Description 1");
         assertEquals("Event Description 1", ev1.getDescription());
+
         assertEquals("Event Description 2", ev2.getDescription());
     }
 
@@ -63,6 +76,18 @@ public class EventTest {
     public void getDateTest(){
         assertEquals(ev1.getBeginDate(), start);
         assertEquals(ev1.getEndDate(), end);
+
+        ev2.setBeginDate(end.getTime());
+        assertEquals(ev2.getBeginDate(), end);
+        ev2.setBeginDate(start.getTime());
+        assertEquals(ev2.getBeginDate(), start);
+
+
+        ev2.setEndDate(start.getTime());
+        assertEquals(ev2.getEndDate(), start);
+        ev2.setEndDate(end.getTime());
+        assertEquals(ev2.getEndDate(), end);
+
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -73,7 +98,12 @@ public class EventTest {
 
     @Test
     public void getOrganizerTest() {
+        ev1.setOrganizerEmail("random email");
+        assertEquals("random email", ev1.getOrganizerEmail());
+        ev1.setOrganizerEmail(orgaEmail1);
         assertEquals(orgaEmail1, ev1.getOrganizerEmail());
+
+
         assertEquals(orgaEmail2, ev2.getOrganizerEmail());
     }
 
@@ -82,6 +112,9 @@ public class EventTest {
         assertNull(ev1.getLocation());
         EventLocation fake1 = new EventLocation(l1.getName(), l1.getPosition());
         assertEquals(fake1, ev2.getLocation());
+
+        ev1.setLocation(fake1);
+        assertEquals(fake1, ev1.getLocation());
     }
 
     @Test

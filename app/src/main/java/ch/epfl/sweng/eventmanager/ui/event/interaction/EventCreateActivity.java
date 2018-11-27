@@ -87,16 +87,22 @@ public class EventCreateActivity extends AppCompatActivity {
         this.loading = false;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
+    private Task<Event> prepareCreationTask() {
+        if (eventID <= 0) {
+            // Create the event and set the user admin of his event
+            Map<String, Map<String, String>> users = new HashMap<>();
+            users.put("admin", new HashMap<>());
+            users.get("admin").put("originalOwner", Session.getCurrentUser().getUid());
 
-        super.onCreate(savedInstanceState);
+            event.setUsers(users);
 
-        setContentView(R.layout.activity_event_create);
-        ButterKnife.bind(this);
+            return repository.createEvent(event);
+        } else {
+            return repository.updateEvent(event);
+        }
+    }
 
-        // Setup button
+    private void setupButton() {
         this.sendButton.setOnClickListener(v -> {
             if (loading) {
                 return; // The button should not be displayed anyway
@@ -106,21 +112,7 @@ public class EventCreateActivity extends AppCompatActivity {
 
             populateEvent(); // Update the event object
 
-            Task<Event> task;
-            if (eventID <= 0) {
-                // Create the event and set the user admin of his event
-                Map<String, Map<String, String>> users = new HashMap<>();
-                users.put("admin", new HashMap<>());
-                users.get("admin").put("originalOwner", Session.getCurrentUser().getUid());
-
-                event.setUsers(users);
-
-                task = repository.createEvent(event);
-            } else {
-                task = repository.updateEvent(event);
-            }
-
-            task.addOnSuccessListener(event -> {
+            prepareCreationTask().addOnSuccessListener(event -> {
                 // Start event administration activity
                 if (eventID <= 0) {
                     Toast.makeText(this, R.string.create_event_success, Toast.LENGTH_LONG).show();
@@ -140,6 +132,19 @@ public class EventCreateActivity extends AppCompatActivity {
                 this.sendButton.setEnabled(true);
             });
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_event_create);
+        ButterKnife.bind(this);
+
+        // Setup button
+        this.setupButton();
 
         // Fetch event from passed ID
         Intent intent = getIntent();
