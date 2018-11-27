@@ -2,6 +2,8 @@ package ch.epfl.sweng.eventmanager.test.repository;
 
 import android.graphics.Bitmap;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -30,6 +32,7 @@ import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
  */
 public class MockEventsRepository implements EventRepository {
     public static final Map<Integer, EventTicketingConfiguration> CONFIG_BY_EVENT;
+    private static int CURRENT_EVENT_ID = 1000;
 
     static {
         Map<Integer, EventTicketingConfiguration> configurationMap = new HashMap<>();
@@ -212,5 +215,17 @@ public class MockEventsRepository implements EventRepository {
     @Override
     public LiveData<Bitmap> getSpotImage(Spot spot) {
         return null;
+    }
+
+    @Override
+    public Task<Void> createEvent(Event event) {
+        event.setId(CURRENT_EVENT_ID++);
+        return updateEvent(event);
+    }
+
+    @Override
+    public Task<Void> updateEvent(Event event) {
+        events.put(event.getId(), event);
+        return Tasks.call(() -> null);
     }
 }

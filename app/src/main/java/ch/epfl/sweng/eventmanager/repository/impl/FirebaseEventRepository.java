@@ -14,14 +14,17 @@ import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author Louis Vialar
@@ -29,6 +32,15 @@ import java.util.List;
 @Singleton
 public class FirebaseEventRepository implements EventRepository {
     private static String TAG = "EventRepository";
+    private static final Random randGen = new SecureRandom();
+
+    /**
+     * This method generates an ID for a new event.
+     * We assume that 31 bits of entropy is enough to avoid most collisions (probability = 4.6566129e-10)
+     */
+    private static int generateEventId() {
+        return randGen.nextInt(Integer.MAX_VALUE);
+    }
 
     @Inject
     FirebaseEventRepository() {
@@ -144,5 +156,18 @@ public class FirebaseEventRepository implements EventRepository {
         StorageReference spotImageReference = imagesRef.child(getImageName(spot));
 
         return FirebaseHelper.getImage(spotImageReference);
+    }
+
+    @Override
+    public Task<Void> createEvent(Event event) {
+        event.setId(generateEventId());
+        return updateEvent(event);
+    }
+
+    @Override
+    public Task<Void> updateEvent(Event event) {
+        FirebaseDatabase fdB = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = fdB.getReference("events").child(String.valueOf(event.getId()));
+        return dbRef.setValue(event);
     }
 }
