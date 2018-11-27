@@ -117,11 +117,15 @@
     <string name="main_fragment_button_news">News</string>
     <string name="main_fragment_button_map">Map</string>
     <string name="main_fragment_button_schedule">Schedule</string>
+    <string name="event_feedback_submitted">Your feedback has been submitted !</string>
+    <string name="event_feedback_already_submitted">Your feedback has already been submitted !</string>
 
     <string name="click_to_see_schedule">Click to see schedule</string>
 
     <!-- Generic text -->
     <string name="undo">Undo</string>
-    <string name="welcome">Welcome!</string>
+    <string name="welcome">Welcome !</string>
+    <string name="feedback_form_main_go_button">Feedback</string>
+    <string name="feedback_nav">Feedback</string>
 
 </resources>

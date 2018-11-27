@@ -1,9 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;

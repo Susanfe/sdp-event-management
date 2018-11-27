@@ -26,6 +26,7 @@ import java.util.List;
 @Singleton
 public class FirebaseNewsRepository implements NewsRepository {
     private static final String TAG = "FirebaseNewsRepository";
+    private static final String FIREBASE_REF = "news";
 
     @Inject
     public FirebaseNewsRepository() {
@@ -33,18 +34,13 @@ public class FirebaseNewsRepository implements NewsRepository {
 
     @Override
     public Task<Void> publishNews(int eventId, News news) {
-        DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                .getReference("news")
-                .child("event_" + eventId)
-                .push(); // Create a new key in the list
-
-        return dbRef.setValue(news);
+        return FirebaseHelper.publishElement(eventId, FIREBASE_REF, news);
     }
 
     @Override
     public LiveData<List<News>> getNews(int eventId) {
         DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                .getReference("news")
+                .getReference(FIREBASE_REF)
                 .child("event_" + eventId);
 
         return FirebaseHelper.getList(dbRef, News.class);

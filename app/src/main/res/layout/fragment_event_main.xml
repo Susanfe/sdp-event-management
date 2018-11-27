@@ -21,24 +21,33 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
             android:orientation="vertical"
-            android:id="@+id/event_main_content">
+            android:id="@+id/event_main_content" android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" android:layout_alignParentLeft="true">
 
+        <androidx.appcompat.widget.AppCompatRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/feedback_ratingBar"
+                android:numStars="5"
+                android:stepSize="0.25"
+                android:isIndicator="true"/>
         <ImageView
-            android:id="@+id/event_image"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="35"
-            android:layout_margin="8dp"
-            android:contentDescription="@string/main_fragment_image_contentDescription"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@android:color/white"/>
+                android:id="@+id/event_image"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="35"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/main_fragment_image_contentDescription"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                android:visibility="invisible"
+                app:srcCompat="@android:color/white"/>
 
         <TextView
             android:id="@+id/event_description"
@@ -97,6 +106,13 @@
                     android:layout_weight="50"
                     android:text="@string/contact_form_main_go_button"/>
 
+                <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/feedback_for_go_button"
+                        style="@style/Button_barButton_middle"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="50"
+                        android:text="@string/feedback_form_main_go_button"/>
                 <CheckedTextView
                     android:id="@+id/join_event_button"
                     android:layout_width="0dp"
