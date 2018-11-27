@@ -6,9 +6,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -17,23 +14,18 @@ import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFormFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
+import ch.epfl.sweng.eventmanager.ui.SettingsFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
+
+import javax.inject.Inject;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
@@ -51,6 +43,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private Fragment eventMainFragment;
     private Fragment newsFragment;
     private Fragment scheduleParentFragment;
+    private Fragment settingsFragment;
 
     private int eventID;
 
@@ -189,6 +182,10 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 startActivity(ticketingManager.start(model.getEvent().getValue(), this));
                 break;
 
+            case R.id.nav_preferences :
+                callChangeFragment(FragmentType.SETTINGS,true);
+                break;
+
         }
 
         return true;
@@ -229,6 +226,11 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 changeFragment(newsFragment, saveToBackstack);
                 break;
 
+            case SETTINGS:
+                if(settingsFragment == null)
+                    settingsFragment = new SettingsFragment();
+                changeFragment(settingsFragment,saveToBackstack);
+                break;
             default:
                 changeFragment(new EventMainFragment(), saveToBackstack);
         }
@@ -287,6 +289,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     }
 
     public enum FragmentType{
-        MAIN, MAP, SCHEDULE, NEWS, FORM
+        MAIN, MAP, SCHEDULE, NEWS, FORM, SETTINGS
     }
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/ticket_scanning">
+
+        <SwitchPreference
+            android:key="@string/key_ticket_scanning_sounds"
+            android:title="@string/ticket_scanning_sound_switch_title"
+            android:defaultValue="true"
+        />
+
+        <SwitchPreference
+                android:key="@string/key_ticket_scanning_vibrations"
+                android:title="@string/ticket_scanning_vibrations_switch_title"
+                android:defaultValue="true"
+        />
+    </PreferenceCategory>
+
+</PreferenceScreen>
