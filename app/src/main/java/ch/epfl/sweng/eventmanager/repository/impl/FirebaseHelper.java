@@ -11,6 +11,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,6 @@ public class FirebaseHelper {
 
     public static <T> LiveData<List<T>> getList(DatabaseReference dbRef, Class<T> classOfT, Mapper<T> mapper) {
         final MutableLiveData<List<T>> data = new MutableLiveData<>();
-
 
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -73,5 +74,14 @@ public class FirebaseHelper {
             Mapper<T> self = this;
             return (in, snap) -> next.map(self.map(in, snap), snap);
         }
+    }
+
+    public static <T> Task<Void> publishElement(int eventId, String ref, T elem){
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(ref)
+                .child("event_" + eventId)
+                .push(); // Create a new key in the list
+
+        return dbRef.setValue(elem);
     }
 }

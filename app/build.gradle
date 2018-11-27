@@ -138,7 +138,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'test
             '**/*_*Factory.class',
             '**/*_Impl*.class',
             '**/*_*ViewBinding*.class',
-            '**/repository/impl/*.class'
+            '**/repository/impl/*.class',
+            '**/ui/event/interaction/fragments/EventMapFragment.class'
     ]
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/javac/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"

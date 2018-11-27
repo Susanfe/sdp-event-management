@@ -75,6 +75,11 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <!--Floating button-->
+    <style name="FloatingButtonStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/colorSecondary</item>
+    </style>
+
 
     <!-- ############################# CARDVIEW UI ############################################-->
     <style name="cardView_rounded" parent="Base.CardView">
