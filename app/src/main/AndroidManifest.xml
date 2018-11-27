@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ch.epfl.sweng.eventmanager">
+          package="ch.epfl.sweng.eventmanager">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -10,18 +10,19 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
     <application
             android:name=".EventManagerApplication"
-            android:theme="@style/AppTheme"
             android:allowBackup="true"
-            android:hardwareAccelerated="true"
             android:fullBackupContent="true"
+            android:hardwareAccelerated="true"
             android:icon="@mipmap/ic_launcher"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:logo="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:supportsRtl="true">
+            android:logo="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
         <uses-library
                 android:name="org.apache.http.legacy"
                 android:required="false"/>
@@ -31,6 +32,7 @@
                 android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -46,41 +48,45 @@
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_maps_key"/>
 
-        <activity android:name=".ui.event.selection.EventPickingActivity"
-            android:launchMode="singleTop">
+        <activity
+                android:name=".ui.event.selection.EventPickingActivity"
+                android:launchMode="singleTop">
 
             <!-- TODO Setup URI addressing for app indexing -->
-            <!-- Source stackoverflow answer https://stackoverflow.com/a/34368811-->
+            <!-- Source stackoverflow answer https://stackoverflow.com/a/34368811 -->
             <intent-filter android:label="@string/filter_title_event_picking">
                 <action android:name="android.intent.action.VIEW"/>
+
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
 
                 <!-- Accepts URIs that begin with "http://www.example.com/sdp” -->
-                <data android:scheme="http"
-                    android:host="www.example.com"
-                    android:pathPrefix="/sdp" />
+                <data
+                        android:host="www.example.com"
+                        android:pathPrefix="/sdp"
+                        android:scheme="http"/>
 
-                <!-- note that the leading "/" is required for pathPrefix-->
+                <!-- note that the leading "/" is required for pathPrefix -->
                 <!-- Accepts URIs that begin with "example://sdp” -->
-                <data android:scheme="example"
-                    android:host="sdp" />
+                <data
+                        android:host="sdp"
+                        android:scheme="example"/>
             </intent-filter>
-            <!-- End of TODO-->
+            <!-- End of TODO -->
 
         </activity>
-
-        <activity android:name=".ui.user.LoginActivity"
-            android:label="@string/title_activity_login" />
-
-        <activity android:name=".ui.user.SignUpActivity"
-                  android:label="@string/title_activity_sign_up"/>
+        <activity
+                android:name=".ui.user.LoginActivity"
+                android:label="@string/title_activity_login"/>
+        <activity
+                android:name=".ui.user.SignUpActivity"
+                android:label="@string/title_activity_sign_up"/>
         <activity
                 android:name=".ui.user.DisplayAccountActivity"
                 android:label="@string/title_activity_account_display"/>
-
-        <activity android:name=".ui.event.interaction.EventShowcaseActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+                android:name=".ui.event.interaction.EventShowcaseActivity"
+                android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".ui.ticketing.TicketingConfigurationPickerActivity"/>
         <activity android:name=".ui.ticketing.TicketingLoginActivity"/>
         <activity android:name=".ui.ticketing.TicketingScanActivity"/>
@@ -95,10 +101,16 @@
                     android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity android:name=".ui.event.interaction.EventAdministrationActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+                android:name=".ui.event.interaction.EventAdministrationActivity"
+                android:theme="@style/AppTheme.NoActionBar"/>
 
         <receiver android:name=".repository.impl.NotificationPublisher"/>
+
+        <activity android:name=".ui.settings.SettingsActivity"
+                  android:label="Settings"
+                  android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+        />
     </application>
 
 </manifest>
