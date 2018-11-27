@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.event.selection;
 
 import android.app.Activity;
+import android.os.SystemClock;
 
 import org.junit.After;
 import org.junit.Before;
@@ -34,9 +35,8 @@ public class EventPickingActivityTest {
     public final EventTestRule<EventPickingActivity> mActivityRule = new EventTestRule<>(EventPickingActivity.class);
 
     @Before
-    public void setLogoutState() {
+    public void setUpDummy() {
         Session.enforceDummySessions();
-        Session.logout();
     }
 
     @After
@@ -47,12 +47,10 @@ public class EventPickingActivityTest {
     @Test
     public void testLoginFeature() {
         Session.logout();
+        pressBack();
+
         onView(withId(R.id.event_picking_login_account)).perform(click());
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        SystemClock.sleep(1000);
         assertLoggedUIstate(ViewMatchers.Visibility.GONE);
         assertNotLoggedUIstate(ViewMatchers.Visibility.VISIBLE);
 
@@ -62,15 +60,10 @@ public class EventPickingActivityTest {
     @Test
     public void testLogoutFeature() {
         Session.login(email, password, getActivityInstance(), task -> {});
-
         pressBack();
 
         onView(withId(R.id.event_picking_login_account)).perform(click());
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        SystemClock.sleep(1000);
         assertLoggedUIstate(ViewMatchers.Visibility.VISIBLE);
         assertNotLoggedUIstate(ViewMatchers.Visibility.GONE);
 
