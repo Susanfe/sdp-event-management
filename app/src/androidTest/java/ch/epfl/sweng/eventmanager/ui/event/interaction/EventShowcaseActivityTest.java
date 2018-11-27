@@ -106,7 +106,7 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
                 RecyclerViewButtonClick.clickChildViewWithId(R.id.goto_event_btn)));
 
-        SystemClock.sleep(200);
+        SystemClock.sleep(800);
 
         onView(withId(R.id.join_event_button))
                 .perform(click());

@@ -41,7 +41,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - if [ -n "$VIEW_AVD_LOGS" ] ; then adb logcat *:I & LOGCAT_PID=$!; fi
-  - travis_retry ./gradlew build connectedCheck jacocoTestReport
+  - ./gradlew build connectedCheck jacocoTestReport
   - if [ -n "$LOGCAT_PID" ] ; then kill $LOGCAT_PID; fi
 after_script:
   # Report test coverage to Code Climate
