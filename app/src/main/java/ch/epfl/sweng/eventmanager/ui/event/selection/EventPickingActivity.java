@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -375,16 +376,33 @@ public class EventPickingActivity extends AppCompatActivity {
         }
     }
 
-    void joinEvent(Event event) {
-        this.model.joinEvent(event);
-        View contextView = findViewById(R.id.event_picking_main_layout);
-        Snackbar.make(contextView, R.string.event_successfully_joined, Snackbar.LENGTH_SHORT).setAction(R.string.undo
-                , v -> unjoinEvent(event)).show();
-    }
+    /**
+     * Sets the state of the Event to joined or unjoined according to the boolean. True means join
+     * and false means unjoin
+     * @param event event to join or unjoin
+     * @param join desired state of the event
+     */
+    void joinOrUnjoinEvent(Event event, boolean join) {
+        Snackbar bar;
 
-    private void unjoinEvent(Event event) {
-        this.model.unjoinEvent(event);
-        View contextView = findViewById(R.id.event_picking_main_layout);
-        Snackbar.make(contextView, R.string.event_successfully_unjoined, Snackbar.LENGTH_SHORT).show();
+        if (join) {
+            this.model.joinEvent(event);
+            bar = Snackbar.make(mainLayout, R.string.event_successfully_joined, Snackbar.LENGTH_SHORT).setAction(R.string.undo
+                    , v -> joinOrUnjoinEvent(event, false));
+        } else {
+            this.model.unjoinEvent(event);
+            bar = Snackbar.make(mainLayout, R.string.event_successfully_unjoined, Snackbar.LENGTH_SHORT);
+        }
+
+        Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) bar.getView();
+        layout.setBackgroundResource(R.color.colorSecondary);
+
+        TextView text = layout.findViewById(com.google.android.material.R.id.snackbar_text);
+        text.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        Button button = layout.findViewById(com.google.android.material.R.id.snackbar_action);
+        button.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        bar.show();
     }
 }
