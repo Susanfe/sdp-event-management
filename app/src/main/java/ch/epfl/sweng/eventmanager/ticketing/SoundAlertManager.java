@@ -37,7 +37,6 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
         this.context = activity.getApplicationContext();
         initMediaPlayer(activity);
         this.vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
-        //TODO : Add this to preference pane
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         this.sound = preferences.getBoolean(context.getString(R.string.key_ticket_scanning_sounds),true);
         this.vibrate = preferences.getBoolean(context.getString(R.string.key_ticket_scanning_vibrations),true);
