@@ -46,6 +46,7 @@ public class EventPickingActivityTest {
 
     @Test
     public void testLoginFeature() {
+        Session.logout();
         onView(withId(R.id.event_picking_login_account)).perform(click());
         try {
             Thread.sleep(1000);
