@@ -1,9 +1,11 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
+import android.Manifest;
 import android.content.Context;
 import android.os.SystemClock;
 import android.view.Gravity;
 
+import androidx.test.rule.GrantPermissionRule;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
@@ -36,6 +38,8 @@ import static org.hamcrest.CoreMatchers.allOf;
 public class EventShowcaseActivityTest {
     @Rule
     public final EventTestRule<EventShowcaseActivity> mActivityRule = new EventTestRule<>(EventShowcaseActivity.class);
+
+    @Rule public GrantPermissionRule permissionRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
 
     @After
     public void remove() {
@@ -90,23 +94,6 @@ public class EventShowcaseActivityTest {
 
     @Test
     public void joinEventTest() {
-        onView(withId(R.id.drawer_layout))
-                .check(matches(isClosed(Gravity.LEFT)))
-                .perform(DrawerActions.open());
-
-        onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_pick_event));
-
-        onView(withId(R.id.event_picking_bottom_sheet_text)).perform(click());
-        SystemClock.sleep(300);
-        onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
-                RecyclerViewButtonClick.clickChildViewWithId(R.id.goto_event_btn)));
-
-        SystemClock.sleep(200);
-
-        onView(withId(R.id.join_event_button))
-                .perform(click());
-
         onView(withId(R.id.join_event_button))
                 .perform(click());
     }

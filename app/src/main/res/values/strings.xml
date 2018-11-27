@@ -30,7 +30,9 @@
     <string name="joined_help_text_activity_event_picking">Events you joined:</string>
     <string name="not_joined_help_text_activity_event_picking">Click here to go explore events !</string>
     <string name="double_back_press_to_exit">Press once again to exit</string>
-    <string name="no_more_events_to_explore">Sorry, you\'ve already joined all the available events for now :\'( ! \n Please come back later !</string>
+    <string name="no_more_events_to_explore">Sorry, you\'ve already joined all the available events for now :\'( ! \n
+        Please come back later !
+    </string>
     <string name="event_successfully_joined">Event successfully joined !</string>
     <string name="event_successfully_unjoined">Event successfully unjoined !</string>
 
@@ -63,7 +65,8 @@
     <string name="showcase_nav_item_activity_event">Public area</string>
 
     <string name="user_management_help_text">This page allows you to add and remove roles specific
-        to this event.</string>
+        to this event.
+    </string>
     <string name="user_list_left_header">User</string>
     <string name="user_list_right_header">Roles</string>
 
@@ -124,8 +127,24 @@
 
     <!-- Generic text -->
     <string name="undo">Undo</string>
-    <string name="welcome">Welcome !</string>
+    <string name="welcome">Welcome!</string>
+    <string name="create_form_hint_name">Name of the event</string>
+    <string name="create_form_hint_description">Description of the event</string>
+    <string name="create_form_hint_email">Email of the event organizer</string>
+    <string name="create_form_hint_twitter_handle">(Optional) Event twitter handle</string>
+    <string name="create_event_title">Create Event</string>
+    <string name="edit_nav_item_activity_event">Event edition</string>
+    <string name="create_event_canceled">Operation was unexpectedly cancelled.</string>
+    <string name="create_event_error">An error occured:</string>
+    <string name="create_event_success">The event has been created!</string>
+    <string name="create_event_update_success">The event has been updated!</string>
     <string name="feedback_form_main_go_button">Feedback</string>
     <string name="feedback_nav">Feedback</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="ticket_scanning">Ticket scanning</string>
+    <string name="ticket_scanning_vibrations_switch_title">Vibrations</string>
+    <string name="ticket_scanning_sound_switch_title">Sound</string>
 
 </resources>

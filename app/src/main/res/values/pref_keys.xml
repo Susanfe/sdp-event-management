@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
+
+    <string name="key_ticket_scanning_vibrations">ticket_scanning_vibrations</string>
+    <string name="key_ticket_scanning_sounds">ticket_scanning_sounds</string>
+
+</resources>
