@@ -101,9 +101,10 @@
                     android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity
-                android:name=".ui.event.interaction.EventAdministrationActivity"
-                android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.event.interaction.EventAdministrationActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.event.interaction.EventCreateActivity"/>
+
 
         <receiver android:name=".repository.impl.NotificationPublisher"/>
 

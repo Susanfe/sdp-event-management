@@ -8,6 +8,9 @@ checks:
   argument-count:
     config:
       threshold: 8
+  method-count:
+    config:
+      threshold: 40 # Data classes can have a lot of getter/setters
   return-statements:
     config:
       threshold: 8
