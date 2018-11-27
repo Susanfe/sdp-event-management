@@ -32,6 +32,7 @@ import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
  */
 public class MockEventsRepository implements EventRepository {
     public static final Map<Integer, EventTicketingConfiguration> CONFIG_BY_EVENT;
+    public static final String EVENT_EMAIL = "events@not-really-epfl.ch";
     private static int CURRENT_EVENT_ID = 1000;
 
     static {
@@ -50,7 +51,7 @@ public class MockEventsRepository implements EventRepository {
     private final ObservableMap<Integer, List<Zone>> zones = new ObservableMap<>();
 
     {
-        String orgaEmail = "events@not-really-epfl.ch";
+        String orgaEmail = EVENT_EMAIL;
         // Init events
 
         TypeToken<List<Spot>> spotsToken = new TypeToken<List<Spot>>() {
