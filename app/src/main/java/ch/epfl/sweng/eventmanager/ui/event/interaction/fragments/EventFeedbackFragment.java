@@ -50,9 +50,20 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, view);
 
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         model.getEvent().observe(this, ev -> {
+
             AtomicReference<Boolean> ratingExists = new AtomicReference<>();
-            repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, ratingExists::set);
+            repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, v -> {
+                ratingExists.set(v);
+                Log.i(TAG, "Got rating data " + v);
+            });
             sendButton.setOnClickListener(l -> {
                 EventRating newEventRating = new EventRating(UNIQUE_ID_DEVICE, rating.getRating(), description.getText().toString());
                 //TODO Use a unique identifier to restrict each device to one feedback
@@ -69,8 +80,6 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
                 }
             });
         });
-
-        return view;
     }
 
     @Override

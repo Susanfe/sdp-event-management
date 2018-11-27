@@ -40,11 +40,13 @@ public class MockFeedbackRepository implements FeedbackRepository {
     public LiveData<Boolean> ratingFromDeviceExists(int eventId, String deviceId) {
         List<EventRating> eventRatings = getOrCreateRating(eventId).getUnderlyingList();
         MutableLiveData<Boolean> value = new MutableLiveData<>();
+        value.setValue(false);
 
         for (EventRating eventRating : eventRatings)
-            if (eventRating.getDeviceId().equals(deviceId))
+            if (eventRating.getDeviceId().equals(deviceId)) {
                 value.setValue(true);
-            else value.setValue(false);
+                break;
+            }
 
         return value;
     }

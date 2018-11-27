@@ -68,19 +68,22 @@ public class EventFeedbackFragmentTest {
     @Before
     public void setUp() {
         TestApplication.component.inject(this);
-        onView(withId(R.id.feedback_for_go_button)).check(matches(isClickable())).perform(click());
     }
 
     @Test
     public void submitFeedbackTest() {
+        onView(withId(R.id.feedback_for_go_button)).check(matches(isClickable())).perform(click());
         submitRating(DESCRIPTION_1, RATING_1);
         onView(withId(R.id.feedback_form_send_button)).perform(ViewActions.click());
-     //   onView(withText(R.string.event_feedback_submitted)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        onView(withText(R.string.event_feedback_submitted)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
 
-    @Ignore
     @Test
     public void submitFeedbackTwiceFailsTest() {
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open());
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_feedback));
         submitRating(DESCRIPTION_1, RATING_1);
         submitRating(DESCRIPTION_2, RATING_2);
         onView(withText(R.string.event_feedback_already_submitted)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
