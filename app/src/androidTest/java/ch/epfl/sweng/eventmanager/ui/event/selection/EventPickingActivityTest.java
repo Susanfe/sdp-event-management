@@ -34,7 +34,7 @@ public class EventPickingActivityTest {
     public final EventTestRule<EventPickingActivity> mActivityRule = new EventTestRule<>(EventPickingActivity.class);
 
     @Before
-    public void disableFirebaseAuth() {
+    public void setLogoutState() {
         Session.enforceDummySessions();
         Session.logout();
     }
@@ -76,6 +76,10 @@ public class EventPickingActivityTest {
         pressBack();
     }
 
+    /**
+     * Method that tests the UI state {VISIBLE, GONE} of logged version of the login UI
+     * @param state {VISIBLE, GONE} state
+     */
     private void assertLoggedUIstate(ViewMatchers.Visibility state) {
         onView(withId(R.id.layout_login_signup_logged)).check(ViewAssertions.matches(
                 withEffectiveVisibility(state)));
@@ -87,6 +91,10 @@ public class EventPickingActivityTest {
                 withEffectiveVisibility(state)));
     }
 
+    /**
+     * Method that tests the UI state {VISIBLE, GONE} of not logged version of the login UI
+     * @param state {VISIBLE, GONE} state
+     */
     private void assertNotLoggedUIstate(ViewMatchers.Visibility state) {
         onView(withId(R.id.layout_login_signup_not_logged)).check(ViewAssertions.matches(
                 withEffectiveVisibility(state)));
@@ -98,6 +106,11 @@ public class EventPickingActivityTest {
                 withEffectiveVisibility(state)));
     }
 
+    /**
+     * Method that get the Activity instance under test
+     * Taken from https://qathread.blogspot.com/2014/09/discovering-espresso-for-android-how-to.html
+     * @return
+     */
     private Activity getActivityInstance(){
         getInstrumentation().runOnMainSync(() -> {
             Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance().getActivitiesInStage(RESUMED);
