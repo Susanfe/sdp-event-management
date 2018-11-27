@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.test.repository;
 
 import android.graphics.Bitmap;
 
+import ch.epfl.sweng.eventmanager.repository.data.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,11 +26,15 @@ import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.test.ObservableMap;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
 import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.*;
 
 /**
  * @author Louis Vialar
  */
-public class MockEventsRepository implements EventRepository {
+public class MockEventsRepository {
     public static final Map<Integer, EventTicketingConfiguration> CONFIG_BY_EVENT;
 
     static {
@@ -112,7 +117,7 @@ public class MockEventsRepository implements EventRepository {
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact",
-                CONFIG_BY_EVENT.get(1)));
+                CONFIG_BY_EVENT.get(1)), new Gson().fromJson(jsonZone, zonesToken.getType()));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapnImpact",
@@ -121,9 +126,6 @@ public class MockEventsRepository implements EventRepository {
         addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
                 orga, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapanImpact",
                 CONFIG_BY_EVENT.get(3)));
-
-        addZone(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orga, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact"), new Gson().fromJson(jsonZone, zonesToken.getType()));
 
         List<ScheduledItem> items;
         String jsonSchedule = "[ {\n" +
@@ -160,8 +162,6 @@ public class MockEventsRepository implements EventRepository {
                 "} ]\n";
 
 
-
-
         TypeToken<List<ScheduledItem>> scheduleToken = new TypeToken<List<ScheduledItem>>() {
         };
         items = new Gson().fromJson(jsonSchedule, scheduleToken.getType());
@@ -175,43 +175,9 @@ public class MockEventsRepository implements EventRepository {
         eventImages.put(event.getId(), event.getImage());
     }
 
-    private void addZone(Event event, List<Zone> list) {
+    private void addEvent(Event event, List<Zone> list) {
+        addEvent(event);
         zones.put(event.getId(), list);
     }
 
-
-    @Override
-    public LiveData<Collection<Event>> getEvents() {
-        return events.values();
-    }
-
-    @Override
-    public LiveData<Event> getEvent(int eventId) {
-        return events.get(eventId);
-    }
-
-    @Override
-    public LiveData<Bitmap> getEventImage(Event event) {
-        return eventImages.get(event.getId());
-    }
-
-    @Override
-    public LiveData<List<Spot>> getSpots(int eventId) {
-        return spots.get(eventId);
-    }
-
-    @Override
-    public LiveData<List<ScheduledItem>> getScheduledItems(int eventId) {
-        return scheduledItems.get(eventId);
-    }
-
-    @Override
-    public LiveData<List<Zone>> getZones(int eventId) {
-        return zones.get(eventId);
-    }
-
-    @Override
-    public LiveData<Bitmap> getSpotImage(Spot spot) {
-        return null;
-    }
 }

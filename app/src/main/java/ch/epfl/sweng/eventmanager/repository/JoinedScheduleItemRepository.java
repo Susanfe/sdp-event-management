@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Singleton
-public class JoinedScheduleItemRepository extends AbstractEventRepository<JoinedScheduleItem, JoinedScheduleItemDao, UUID> {
+public final class JoinedScheduleItemRepository extends AbstractEventRepository<JoinedScheduleItem, JoinedScheduleItemDao, UUID> {
     @Inject
     public JoinedScheduleItemRepository(JoinedScheduleItemDao joinedScheduleItemDao) {
         super(joinedScheduleItemDao);
