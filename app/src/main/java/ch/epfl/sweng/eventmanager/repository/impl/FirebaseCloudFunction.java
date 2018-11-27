@@ -42,4 +42,36 @@ public class FirebaseCloudFunction {
                     }
                 });
     }
+
+    /**
+     * Calls a dedicated FireBase Cloud Function allowing an event administrator to remove a role
+     * from an user on its event.
+     *
+     * @param uidKey key of the uid of the user to be removed
+     * @param eventId target event
+     * @param role string representation of the role to be removed
+     * @return the related task
+     */
+    public static Task<Boolean> removeUserFromEvent(String uidKey, int eventId, String role) {
+        // Prepare parameters for the Firebase Cloud Function
+        Map<String, Object> data = new HashMap<>();
+        data.put("eventId", eventId);
+        data.put("userUidKey", uidKey);
+        data.put("role", role);
+        data.put("push", true);
+
+        return FirebaseFunctions.getInstance()
+                .getHttpsCallable("removeUserFromEvent")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, Boolean>() {
+                    @Override
+                    public Boolean then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        Boolean result = (Boolean) task.getResult().getData();
+                        return result;
+                    }
+                });
+    }
 }

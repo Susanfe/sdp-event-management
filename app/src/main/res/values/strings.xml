@@ -50,6 +50,8 @@
     <string name="add_button">Add</string>
     <string name="add_user_success">The user was added to this event</string>
     <string name="add_user_failure">Could not add the user to this event</string>
+    <string name="remove_user_success">The user/role was removed from this event</string>
+    <string name="remove_user_failure">Could not remove the user/role from this event</string>
 
     <string name="main_nav_item_activity_event_showcase">Description</string>
     <string name="map_nav_item_activity_event_showcase">Map</string>
@@ -102,7 +104,6 @@
 
     <!-- Accessibility text -->
     <string name="event_thumbnail">Event thumbnail</string>
-
 
     <string name="main_fragment_image_contentDescription">Image representing the event</string>
     <string name="main_fragment_error_no_description">Could not load event description.</string>

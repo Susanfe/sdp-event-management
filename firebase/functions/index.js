@@ -53,3 +53,30 @@ exports.addUserToEvent = functions.https.onCall((data, context) => {
       }
     })
 })
+
+exports.removeUserFromEvent = functions.https.onCall((data, context) => {
+  // Extract parameters from client
+  const eventId = data.eventId;
+  const entryKey = data.userUidKey;
+  const role = data.role;
+
+  // Auhtenticated user
+  const currentUserUid = context.auth.uid;
+  //const currentUserUid = "u0YmYQasWpNaNYZt4iXngV0aTxF3"; // Used locally for debug
+
+  // FIXME: improve robustness
+  admin.database()
+    .ref('/events/' + eventId + '/users/admin/')
+    .once('value', snapshot => {
+      // Object.values() is not supported on NodeJS 6, which is used by Firebase
+      var eventAdmins = snapshot.val();
+      var allowedUids = Object.keys(eventAdmins).map((k) => eventAdmins[k]);
+      if (allowedUids.includes(currentUserUid)) {
+        var ref = admin.database().ref('/events/' + eventId + '/users/' + role + '/' + entryKey);
+        return ref.set(null); // Delete entry
+      } else {
+        console.log('Current user ' + currentUserUid + ' is not allowed to write event ' + eventId);
+        return false;
+      }
+    })
+})

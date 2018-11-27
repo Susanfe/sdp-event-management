@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.core.util.Pair;
 import ch.epfl.sweng.eventmanager.users.Role;
 
 
@@ -156,18 +157,35 @@ public final class Event {
      */
     public Map<Role, List<String>> getPermissions() {
         Map<Role, List<String>> result = new HashMap<>();
+        Map<Role, List<Pair<String, String>>> intermediateRepresentation = getStructuredPermissions();
+
+        // This implementation is quite inefficient since it loops again on all the permissions
+        // (which was already done in getStructuredPermission)
+        // FIXME: refactor the two methods
+        for (Role role: intermediateRepresentation.keySet()) {
+            List<String> uidList = new ArrayList<>();
+            for (Pair<String, String> pair: intermediateRepresentation.get(role)) {
+               uidList.add(pair.second);
+            }
+            result.put(role, uidList);
+        }
+
+        return result;
+    }
+
+    public Map<Role, List<Pair<String, String>>> getStructuredPermissions() {
+        Map<Role, List<Pair<String, String>>> result = new HashMap<>();
 
         // Don't blow up if the event does not contain any permission data
         if (getUsers() == null) return result;
         if (getUsers().keySet() == null) return result;
 
-
         // The keys of a Java Map are unique
         for (String rawRole : getUsers().keySet()) {
             Role role = Role.valueOf(rawRole.toUpperCase());
-            List<String> users = new ArrayList<>();
-            for (String uid : getUsers().get(rawRole).values()) {
-                users.add(uid);
+            List<Pair<String, String>> users = new ArrayList<>();
+            for (String key : getUsers().get(rawRole).keySet()) {
+                users.add(new Pair(key, getUsers().get(rawRole).get(key)));
             }
 
             result.put(role, users);

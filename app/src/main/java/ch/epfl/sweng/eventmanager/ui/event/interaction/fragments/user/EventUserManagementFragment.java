@@ -49,11 +49,11 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
                 Log.e(TAG, "Got null model from parent activity");
             }
 
-            mUserListAdapter = new UserListAdapter(ev);
+            mUserListAdapter = new UserListAdapter(this, ev);
             mUserList.setAdapter(mUserListAdapter);
 
             // Set handler on addUser form
-            mAddUserButton.setOnClickListener(v -> addUser(v, ev));
+            mAddUserButton.setOnClickListener(v -> addUser(ev));
 
             return;
         });
@@ -94,17 +94,18 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
         mAddUserButton.setText(getString(R.string.add_button));
 
         mAddUserProgressbar = view.findViewById(R.id.add_user_progress_bar);
-        setInProgressState(false);
+        setInProgressState(mAddUserButton, false);
 
         return view;
     }
 
     /**
      * Set the AddUser form in a 'working' state.
+     * @param button button to disable, or null
      * @param state true if a request is being processed, false otherwise
      */
-    private void setInProgressState(boolean state) {
-        mAddUserButton.setEnabled(!state);
+    private void setInProgressState(Button button, boolean state) {
+        button.setEnabled(!state);
         int visibility = View.INVISIBLE;
         if (state) visibility = View.VISIBLE;
         mAddUserProgressbar.setVisibility(visibility);
@@ -112,11 +113,10 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
 
     /**
      * Callback used by the AddUser form to add an user to the current event at a given role.
-     * @param v
      * @param ev
      */
-    public void addUser(View v, Event ev) {
-        setInProgressState(true);
+    public void addUser(Event ev) {
+        setInProgressState(mAddUserButton, true);
         String email = mAddUserEmailField.getText().toString();
         String role = mAddUserSpinner.getSelectedItem().toString().toLowerCase();
         FirebaseCloudFunction.addUserToEvent(email, ev.getId(), role)
@@ -125,7 +125,26 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
                     if (task.isSuccessful()) toastText = getString(R.string.add_user_success);
                     else toastText = getString(R.string.add_user_failure);
                     Toast.makeText(getActivity(), toastText, Toast.LENGTH_LONG).show();
-                    setInProgressState(false);
+                    setInProgressState(mAddUserButton, false);
+                });
+    }
+
+    /**
+     * Callback used to remove an user from the current event at a given role.
+     * @param v
+     * @param ev
+     */
+    protected void removeUser(View v, Event ev, String uidKey, Role role) {
+        Button removeButton = v.findViewById(R.id.remove_button);
+        setInProgressState(removeButton, true);
+
+        FirebaseCloudFunction.removeUserFromEvent(uidKey, ev.getId(), role.toString().toLowerCase())
+                .addOnCompleteListener(task -> {
+                    String toastText;
+                    if (task.isSuccessful()) toastText = getString(R.string.remove_user_success);
+                    else toastText = getString(R.string.remove_user_failure);
+                    Toast.makeText(getActivity(), toastText, Toast.LENGTH_LONG).show();
+                    setInProgressState(removeButton, false);
                 });
     }
 }
