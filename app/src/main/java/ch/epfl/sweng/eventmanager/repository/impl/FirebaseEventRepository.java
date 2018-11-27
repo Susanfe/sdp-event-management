@@ -1,19 +1,17 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import androidx.annotation.NonNull;
-import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
-
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
 import com.google.firebase.storage.FirebaseStorage;
@@ -57,7 +55,7 @@ public class FirebaseEventRepository implements EventRepository {
         }), list -> {
             MediatorLiveData<List<Event>> events = new MediatorLiveData<>();
             List<Event> eventList = new ArrayList<>();
-            for (Event event: list){
+            for (Event event : list) {
                 events.addSource(getEventImage(event), img -> {
                     event.setImage(img);
                     eventList.add(event);
@@ -124,7 +122,7 @@ public class FirebaseEventRepository implements EventRepository {
         return Transformations.switchMap(FirebaseHelper.getList(dbRef, Spot.class), list -> {
             MediatorLiveData<List<Spot>> events = new MediatorLiveData<>();
             List<Spot> spotList = new ArrayList<>();
-            for (Spot spot: list){
+            for (Spot spot : list) {
                 events.addSource(getSpotImage(spot), img -> {
                     spot.setImage(img);
                     spotList.add(spot);
@@ -159,15 +157,18 @@ public class FirebaseEventRepository implements EventRepository {
     }
 
     @Override
-    public Task<Void> createEvent(Event event) {
+    public Task<Event> createEvent(Event event) {
         event.setId(generateEventId());
         return updateEvent(event);
     }
 
     @Override
-    public Task<Void> updateEvent(Event event) {
+    public Task<Event> updateEvent(Event event) {
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = fdB.getReference("events").child(String.valueOf(event.getId()));
-        return dbRef.setValue(event);
+        return dbRef.setValue(event).continueWith((v) -> {
+            v.getResult(); // Forward exceptions
+            return event;
+        });
     }
 }

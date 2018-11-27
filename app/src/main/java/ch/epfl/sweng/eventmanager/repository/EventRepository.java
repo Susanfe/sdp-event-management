@@ -29,11 +29,11 @@ public interface EventRepository {
 
     LiveData<Bitmap> getSpotImage(Spot spot);
 
-    Task<Void> createEvent(Event event);
+    Task<Event> createEvent(Event event);
 
     /**
      * Updates an event, using the internal eventId of the event to figure out which event to update
      * @param event the event to update
      */
-    Task<Void> updateEvent(Event event);
+    Task<Event> updateEvent(Event event);
 }

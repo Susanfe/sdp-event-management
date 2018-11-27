@@ -218,14 +218,14 @@ public class MockEventsRepository implements EventRepository {
     }
 
     @Override
-    public Task<Void> createEvent(Event event) {
+    public Task<Event> createEvent(Event event) {
         event.setId(CURRENT_EVENT_ID++);
         return updateEvent(event);
     }
 
     @Override
-    public Task<Void> updateEvent(Event event) {
+    public Task<Event> updateEvent(Event event) {
         events.put(event.getId(), event);
-        return Tasks.call(() -> null);
+        return Tasks.call(() -> event);
     }
 }

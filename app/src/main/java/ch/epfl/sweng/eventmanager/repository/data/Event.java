@@ -212,5 +212,45 @@ public final class Event {
         this.id = id;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setBeginDate(long beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public void setEndDate(long endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setOrganizerEmail(String organizerEmail) {
+        this.organizerEmail = organizerEmail;
+    }
+
+    public void setLocation(EventLocation location) {
+        this.location = location;
+    }
+
+    public void setSpotList(List<Spot> spotList) {
+        this.spotList = spotList;
+    }
+
+    public void setUsers(Map<String, Map<String, String>> users) {
+        this.users = users;
+    }
+
+    public void setTwitterName(String twitterName) {
+        this.twitterName = twitterName;
+    }
+
+    public void setTicketingConfiguration(EventTicketingConfiguration ticketingConfiguration) {
+        this.ticketingConfiguration = ticketingConfiguration;
+    }
+
     // TODO put setters ??
 }
