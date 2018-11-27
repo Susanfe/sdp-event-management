@@ -20,6 +20,10 @@ import java.util.List;
  */
 public class FirebaseHelper {
     public static <T> LiveData<List<T>> getList(DatabaseReference dbRef, Class<T> classOfT) {
+        return getList(dbRef, classOfT, Mapper.unit());
+    }
+
+    public static <T> LiveData<List<T>> getList(DatabaseReference dbRef, Class<T> classOfT, Mapper<T> mapper) {
         final MutableLiveData<List<T>> data = new MutableLiveData<>();
 
 
@@ -29,7 +33,7 @@ public class FirebaseHelper {
                 List<T> events = new ArrayList<>();
 
                 for (DataSnapshot child : dataSnapshot.getChildren())
-                    events.add(child.getValue(classOfT));
+                    events.add(mapper.map(child.getValue(classOfT), child));
 
                 data.postValue(events);
             }
@@ -53,5 +57,18 @@ public class FirebaseHelper {
             img.setValue(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
         }).addOnFailureListener(exception -> Log.w("FirebaseHelper", "Could not load image " + img.toString()));
         return img;
+    }
+
+    public static interface Mapper<T> {
+        static <T> Mapper<T> unit() {
+            return (in, snapshot) -> in;
+        }
+
+        T map(T value, DataSnapshot snapshot);
+
+        default Mapper<T> andThen(Mapper<T> next) {
+            Mapper<T> self = this;
+            return (in, snap) -> next.map(self.map(in, snap), snap);
+        }
     }
 }

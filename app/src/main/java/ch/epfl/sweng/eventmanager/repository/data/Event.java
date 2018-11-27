@@ -208,5 +208,9 @@ public final class Event {
         return ticketingConfiguration;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     // TODO put setters ??
 }

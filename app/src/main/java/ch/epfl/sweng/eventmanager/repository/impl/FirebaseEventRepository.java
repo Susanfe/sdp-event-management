@@ -39,7 +39,10 @@ public class FirebaseEventRepository implements EventRepository {
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = fdB.getReference("events");
 
-        return Transformations.switchMap(FirebaseHelper.getList(dbRef, Event.class), list -> {
+        return Transformations.switchMap(FirebaseHelper.getList(dbRef, Event.class, (event, ref) -> {
+            event.setId(Integer.parseInt(ref.getKey()));
+            return event;
+        }), list -> {
             MediatorLiveData<List<Event>> events = new MediatorLiveData<>();
             List<Event> eventList = new ArrayList<>();
             for (Event event: list){
