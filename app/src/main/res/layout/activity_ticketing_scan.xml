@@ -1,6 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
     <!-- https://github.com/journeyapps/zxing-android-embedded/blob/master/sample/src/main/res/layout/continuous_scan.xml -->
     <!-- TODO: adapt and move strings -->
@@ -8,42 +8,25 @@
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
             android:id="@+id/barcode_scanner"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_above="@+id/buttonsLayout"
-            android:layout_alignParentTop="true">
+            android:layout_height="match_parent">
 
     </com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/buttonsLayout"
-            android:layout_toLeftOf="@+id/centerHorizont" android:layout_toStartOf="@+id/centerHorizont">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/back_button"
-            style="@style/Button_global"
-            android:id="@+id/ticketing_scan_back_button"/>
-    </LinearLayout>
-
-    <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/centerHorizont" />
 
     <TextView
+            android:id="@+id/barcodePreview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/centerHorizont"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/buttonsLayout"
-            android:id="@+id/barcodePreview" android:layout_toEndOf="@id/centerHorizont"
-            android:layout_alignParentEnd="true"/>
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="50dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="20sp"/>
 
-</RelativeLayout>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.2"
+            android:visibility="invisible"
+            android:id="@+id/scan_result_overlay"/>
+
+</FrameLayout>
