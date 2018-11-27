@@ -1,5 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
+import android.Manifest;
+import androidx.test.rule.GrantPermissionRule;
 import org.junit.*;
 
 import androidx.test.espresso.contrib.DrawerActions;
@@ -13,6 +15,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 public class EventMapFragmentTest {
+    @Rule public GrantPermissionRule permissionRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
 
     @Rule
     public final EventTestRule<EventShowcaseActivity> mActivityRule =

@@ -54,7 +54,7 @@ public class JoinedEventTest {
     public void testCopyConstructor() {
         List<Spot> spotList = new ArrayList<>();
         Event ev = new Event(1, "Event 1", "Descr 1", new Date(0), new Date(0),
-                null, null, null, spotList, null, null);
+                null, null, null, null, null);
         JoinedEvent copy = new JoinedEvent(ev);
 
         assertEquals(1, copy.getUid());

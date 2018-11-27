@@ -50,6 +50,9 @@ public abstract class EventInteractionModule {
     abstract EventShowcaseActivity contributeEventShowcaseActivityInjector();
 
     @ContributesAndroidInjector
+    abstract EventCreateActivity contributeEventCreateActivityInjector();
+
+    @ContributesAndroidInjector
     abstract SendNewsFragment contributeSendNewsFragmentInjector();
 
     @ContributesAndroidInjector
