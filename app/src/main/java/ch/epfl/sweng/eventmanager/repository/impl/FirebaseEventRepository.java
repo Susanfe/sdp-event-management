@@ -88,16 +88,8 @@ public class FirebaseEventRepository implements EventRepository {
     public LiveData<Bitmap> getEventImage(Event event) {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
         StorageReference eventLogoReference = imagesRef.child(getImageName(event));
-        final MutableLiveData<Bitmap> img = new MutableLiveData<>();
 
-        final long ONE_MEGABYTE = 1024 * 1024;
-        eventLogoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inMutable = true;
-            Log.d(TAG, "Image is loaded");
-            img.setValue(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
-        }).addOnFailureListener(exception -> Log.w(TAG, "Could not load " + event.getName() + " image"));
-        return img;
+        return FirebaseHelper.getImage(eventLogoReference);
     }
 
     private <T> LiveData<List<T>> getElems(int eventId, String basePath, Class<T> classOfT) {
@@ -147,15 +139,7 @@ public class FirebaseEventRepository implements EventRepository {
     public LiveData<Bitmap> getSpotImage(Spot spot) {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("spots-pictures");
         StorageReference spotImageReference = imagesRef.child(getImageName(spot));
-        final MutableLiveData<Bitmap> img = new MutableLiveData<>();
 
-        final long ONE_MEGABYTE = 1024 * 1024;
-        spotImageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inMutable = true;
-            Log.d(TAG, "Image is loaded");
-            img.setValue(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
-        }).addOnFailureListener(exception -> Log.w(TAG, "Could not load " + spot.getTitle() + " image"));
-        return img;
+        return FirebaseHelper.getImage(spotImageReference);
     }
 }
