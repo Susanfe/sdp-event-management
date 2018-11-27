@@ -109,12 +109,8 @@
 
         <activity android:name=".ui.event.interaction.fragments.settings.SettingsActivity"
                   android:label="Settings"
-                  android:theme="@style/AppTheme"
-                  android:parentActivityName=".ui.event.interaction.EventShowcaseActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".ui.event.interaction.EventShowcaseActivity"/>
-        </activity>
+                  android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+        />
     </application>
 
 </manifest>

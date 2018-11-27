@@ -156,6 +156,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
                 adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
                 startActivity(adminIntent);
+                break;
 
             case R.id.nav_main:
                 callChangeFragment(FragmentType.MAIN, true);
@@ -184,7 +185,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             case R.id.nav_settings:
                 Intent intent = new Intent(this,SettingsActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
         }
