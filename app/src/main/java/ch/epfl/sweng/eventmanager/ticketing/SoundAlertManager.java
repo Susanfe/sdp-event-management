@@ -2,10 +2,12 @@ package ch.epfl.sweng.eventmanager.ticketing;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.R;
 
@@ -36,8 +38,9 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
         initMediaPlayer(activity);
         this.vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
         //TODO : Add this to preference pane
-        this.sound = true;
-        this.vibrate = true;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        this.sound = preferences.getBoolean(context.getString(R.string.key_ticket_scanning_sounds),true);
+        this.vibrate = preferences.getBoolean(context.getString(R.string.key_ticket_scanning_vibrations),true);
     }
 
     private void initMediaPlayer(Context context) {
