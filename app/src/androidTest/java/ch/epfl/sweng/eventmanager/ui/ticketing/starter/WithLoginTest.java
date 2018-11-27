@@ -36,7 +36,7 @@ public class WithLoginTest extends StarterTest {
     public void testTicketingManagerOnEventWithNoConfig() {
         ticketingManager.start(
                 new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
-                        null, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), Collections.emptyMap(), "JapanImpact",
+                        null, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyMap(), "JapanImpact",
                         null), mActivityRule.getActivity()
         );
     }

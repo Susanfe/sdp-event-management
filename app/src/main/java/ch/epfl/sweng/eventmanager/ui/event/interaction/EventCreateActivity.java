@@ -29,6 +29,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import dagger.android.AndroidInjection;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";
 
@@ -66,10 +69,16 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     private void populateEvent() {
-        this.event.setName(this.name.getText().toString());
-        this.event.setOrganizerEmail(this.email.getText().toString());
-        this.event.setTwitterName(this.twitter.getText().toString());
-        this.event.setDescription(this.description.getText().toString());
+        this.event.setName(getFieldValue(this.name));
+        this.event.setOrganizerEmail(getFieldValue(this.email));
+        this.event.setTwitterName(getFieldValue(this.twitter));
+        this.event.setDescription(getFieldValue(this.description));
+    }
+
+    private String getFieldValue(EditText field) {
+        String s = field.getText().toString();
+
+        return s.isEmpty() ? null : s;
     }
 
     private void finishLoading() {
@@ -99,12 +108,14 @@ public class EventCreateActivity extends AppCompatActivity {
 
             Task<Event> task;
             if (eventID <= 0) {
-                // Create the event, then set the user admin of his event
-                task = repository.createEvent(event)
-                        .continueWithTask(ev -> FirebaseCloudFunction
-                                .addUserToEvent(Session.getCurrentUser().getEmail(), ev.getResult().getId(), "admin")
-                                .continueWith(b -> ev.getResult())
-                );
+                // Create the event and set the user admin of his event
+                Map<String, Map<String, String>> users = new HashMap<>();
+                users.put("admin", new HashMap<>());
+                users.get("admin").put("originalOwner", Session.getCurrentUser().getUid());
+
+                event.setUsers(users);
+
+                task = repository.createEvent(event);
             } else {
                 task = repository.updateEvent(event);
             }

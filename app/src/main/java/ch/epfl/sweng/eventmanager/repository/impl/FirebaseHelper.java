@@ -55,7 +55,10 @@ public class FirebaseHelper {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inMutable = true;
             img.setValue(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
-        }).addOnFailureListener(exception -> Log.w("FirebaseHelper", "Could not load image " + img.toString()));
+        }).addOnFailureListener(exception -> {
+            Log.w("FirebaseHelper", "Could not load image " + img.toString());
+            img.setValue(null);
+        });
         return img;
     }
 

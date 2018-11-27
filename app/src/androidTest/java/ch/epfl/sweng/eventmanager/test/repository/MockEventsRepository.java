@@ -113,19 +113,19 @@ public class MockEventsRepository implements EventRepository {
         usersMap.put("admin", userUids);
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact",
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact",
                 CONFIG_BY_EVENT.get(1)));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapnImpact",
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapnImpact",
                 CONFIG_BY_EVENT.get(2)));
 
         addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyList(), usersMap, "JapanImpact",
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact",
                 CONFIG_BY_EVENT.get(3)));
 
-        addZone(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), new Gson().fromJson(jsonSpots, spotsToken.getType()), usersMap, "JapanImpact"), new Gson().fromJson(jsonZone, zonesToken.getType()));
+        addZones(1, new Gson().fromJson(jsonZone, zonesToken.getType()));
+        addSpots(1, new Gson().fromJson(jsonSpots, spotsToken.getType()));
 
         List<ScheduledItem> items;
         String jsonSchedule = "[ {\n" +
@@ -173,12 +173,15 @@ public class MockEventsRepository implements EventRepository {
 
     private void addEvent(Event event) {
         events.put(event.getId(), event);
-        spots.put(event.getId(), event.getSpotList());
         eventImages.put(event.getId(), event.getImage());
     }
 
-    private void addZone(Event event, List<Zone> list) {
-        zones.put(event.getId(), list);
+    private void addZones(int event, List<Zone> list) {
+        zones.put(event, list);
+    }
+
+    private void addSpots(int event, List<Spot> list) {
+        spots.put(event, list);
     }
 
 

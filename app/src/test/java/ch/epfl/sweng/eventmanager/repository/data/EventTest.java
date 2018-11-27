@@ -1,9 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
@@ -39,9 +37,9 @@ public class EventTest {
     private final String orgaEmail2 = "fancyemail2@google.com";
 
     private final Event ev1 = new Event(1, "Event1", "Event Description 1",
-            start, end,  orgaEmail1, null, null, spotList, null, null);
+            start, end,  orgaEmail1, null, null, null, null);
     private final Event ev2 = new Event(2, "Event2", "Event Description 2",
-            start, end, orgaEmail2, null, l1, spotList, null, null);
+            start, end, orgaEmail2, null, l1, null, null);
 
     @Test
     public void getIdTest() {
@@ -70,7 +68,7 @@ public class EventTest {
     @Test(expected = IllegalArgumentException.class)
     public void getWrongDateTest(){
         new Event(1, "Event1", "Event Description 1", end, start, orgaEmail1,
-                null, null, spotList, null, null);
+                null, null, null, null);
     }
 
     @Test
@@ -88,7 +86,7 @@ public class EventTest {
 
         spotList.add(new Spot("PMU", SpotType.BAR, 10, 10, null));
         Event fake1 = new Event(-1, "Fake1", null, new Date(0), new Date(0),
-                null, null, null, spotList, null, null);
+                null, null, null, null, null);
         assertEquals(1, fake1.getSpotList().size());
     }
 

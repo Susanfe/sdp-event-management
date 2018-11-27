@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,9 +9,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ch.epfl.sweng.eventmanager.users.Role;
+import com.google.firebase.database.Exclude;
 
 
 /**
@@ -56,10 +55,6 @@ public final class Event {
      * The location of the event
      */
     private EventLocation location;
-    /**
-     * A particular place into the event
-     */
-    private List<Spot> spotList;
 
     /**
      * A map from roles to a list of user UIDs.
@@ -76,13 +71,13 @@ public final class Event {
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate,
                  String organizerEmail, Bitmap image, EventLocation location,
-                 List<Spot> spotList, Map<String, Map<String, String>> users, String twitterName) {
-        this(id, name, description, beginDate, endDate, organizerEmail, image, location, spotList, users, twitterName, null);
+                 Map<String, Map<String, String>> users, String twitterName) {
+        this(id, name, description, beginDate, endDate, organizerEmail, image, location, users, twitterName, null);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate,
                  String organizerEmail, Bitmap image, EventLocation location,
-                 List<Spot> spotList, Map<String, Map<String, String>> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
+                 Map<String, Map<String, String>> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
         this.ticketingConfiguration = ticketingConfiguration;
 
         if (beginDate.getTime() > endDate.getTime())
@@ -96,7 +91,6 @@ public final class Event {
         this.organizerEmail = organizerEmail;
         this.image = image;
         this.location = location;
-        this.spotList = new ArrayList<>(spotList);
         this.users = users;
         this.twitterName = twitterName;
     }
@@ -134,6 +128,7 @@ public final class Event {
         return organizerEmail;
     }
 
+    @Exclude
     public Bitmap getImage() {
         return image;
     }
@@ -141,8 +136,6 @@ public final class Event {
     public EventLocation getLocation() {
         return location;
     }
-
-    public List<Spot> getSpotList() { return spotList; }
 
     /**
      * Do not use, only public due to a limitation of our auto-matching with Firebase.
@@ -154,6 +147,7 @@ public final class Event {
     /**
      * @return a map of Role permissions to User IDs
      */
+    @Exclude
     public Map<Role, List<String>> getPermissions() {
         Map<Role, List<String>> result = new HashMap<>();
 
@@ -234,10 +228,6 @@ public final class Event {
 
     public void setLocation(EventLocation location) {
         this.location = location;
-    }
-
-    public void setSpotList(List<Spot> spotList) {
-        this.spotList = spotList;
     }
 
     public void setUsers(Map<String, Map<String, String>> users) {
