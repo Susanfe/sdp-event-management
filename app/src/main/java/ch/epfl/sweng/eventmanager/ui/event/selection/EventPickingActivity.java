@@ -263,6 +263,8 @@ public class EventPickingActivity extends AppCompatActivity {
 
             case R.id.layout_login_signup_logout_button:
                 Session.logout();
+                loggedUI.setVisibility(View.GONE);
+                notLoggedUi.setVisibility(View.VISIBLE);
                 revealCircular(true);
                 break;
 
