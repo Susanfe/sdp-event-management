@@ -50,7 +50,7 @@ public class EventPickingActivityTest {
         pressBack();
 
         onView(withId(R.id.event_picking_login_account)).perform(click());
-        SystemClock.sleep(1000);
+        SystemClock.sleep(3000);
         assertLoggedUIstate(ViewMatchers.Visibility.GONE);
         assertNotLoggedUIstate(ViewMatchers.Visibility.VISIBLE);
 
@@ -63,7 +63,7 @@ public class EventPickingActivityTest {
         pressBack();
 
         onView(withId(R.id.event_picking_login_account)).perform(click());
-        SystemClock.sleep(1000);
+        SystemClock.sleep(3000);
         assertLoggedUIstate(ViewMatchers.Visibility.VISIBLE);
         assertNotLoggedUIstate(ViewMatchers.Visibility.GONE);
 
