@@ -43,11 +43,6 @@ script:
   - if [ -n "$VIEW_AVD_LOGS" ] ; then adb logcat *:I & LOGCAT_PID=$!; fi
   - ./gradlew build connectedCheck jacocoTestReport
   - if [ -n "$LOGCAT_PID" ] ; then kill $LOGCAT_PID; fi
-deploy:
-  provider: testfairy
-  api-key: "b89410efc8c54441f0cdf912940d4c0bd61837f9"
-  app-file: Path to the app file (APK/IPA)
-  video: true
 after_script:
   # Report test coverage to Code Climate
   - export JACOCO_SOURCE_PATH=app/src/main/java/
