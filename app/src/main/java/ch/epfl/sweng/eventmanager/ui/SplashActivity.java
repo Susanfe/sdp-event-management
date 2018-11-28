@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.testfairy.TestFairy;
-
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 
 /**
@@ -18,7 +16,6 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        TestFairy.begin(this, "b89410efc8c54441f0cdf912940d4c0bd61837f9");
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

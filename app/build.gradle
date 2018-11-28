@@ -102,7 +102,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.23.0'
     testImplementation "androidx.arch.core:core-testing:2.0.0"
-    implementation 'testfairy:testfairy-android-sdk:1.+@aar'
 
     androidTestAnnotationProcessor 'com.google.dagger:dagger-android-processor:2.19'
     androidTestAnnotationProcessor 'com.google.dagger:dagger-compiler:2.19'
