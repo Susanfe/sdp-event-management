@@ -27,6 +27,8 @@
     <dimen name="event_picking_bottom_sheet_peek">48dp</dimen>
     <dimen name="event_list_cardview_unjoinded_height">200dp</dimen>
 
+    <!-- Useless for now as we NEED to use wrap_content because if the description is too
+            long we don't have any other user-accessible view to read the whole description -->
     <dimen name="ite_timeline_description_height">28dp</dimen>
 
     <dimen name="default_big_toolbar_height">150dp</dimen>
