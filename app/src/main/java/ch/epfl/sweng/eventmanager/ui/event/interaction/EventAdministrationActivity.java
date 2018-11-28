@@ -11,10 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNewsFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -25,6 +26,7 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
     ViewModelFactory factory;
 
     private EventInteractionModel model;
+    private NewsViewModel newsModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,10 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
             // Set default administration fragment
             changeFragment(new EventUserManagementFragment(), true);
         }
+
+        // Initialize News model
+        this.newsModel = ViewModelProviders.of(this, factory).get(NewsViewModel.class);
+        this.newsModel.init(eventID);
 
         // Handle drawer events
         navigationView.setNavigationItemSelectedListener(this);

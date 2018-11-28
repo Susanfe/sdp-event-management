@@ -1,16 +1,9 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.twitter.sdk.android.core.models.Tweet;
@@ -20,14 +13,18 @@ import com.twitter.sdk.android.tweetui.CompactTweetView;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
-import ch.epfl.sweng.eventmanager.users.Role;
-import ch.epfl.sweng.eventmanager.users.Session;
 
 /**
  * Display an event's news feed.
