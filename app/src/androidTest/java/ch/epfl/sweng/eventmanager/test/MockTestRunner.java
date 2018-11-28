@@ -5,12 +5,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.StrictMode;
 
+import androidx.multidex.MultiDex;
 import androidx.test.runner.AndroidJUnitRunner;
 
 public class MockTestRunner extends AndroidJUnitRunner {
 
     @Override
     public void onCreate(Bundle arguments) {
+        // Enables testing with Multidex app (stackoverflow answer 35214158)
+        MultiDex.install(getTargetContext());
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
         super.onCreate(arguments);
     }
