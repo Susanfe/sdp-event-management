@@ -24,6 +24,7 @@ With *our app* the event will become **your** event.
 
 ## New Version
 
-Hi ! You may not know it already but *Tiket* is your best friend as it will guide you through all your future events. To do so, *Tiket* has a fully interactive map, with all the important locations, including you ! Moreover, the map is linked to a customizable schedule, where you can save every activity you want to attend and export it to your own private calendar ! *Tiket* also allows you to keep in touch with the event through a news feed, and you can always contact event organizers for more informations. *Tiket* was also designed for managing the event, and event organizers can login to access features such as ticket scanning, new publishing and much more. Finally, everyone can discover events and share on *Tiket*!
+You may not know it already, but **Gatsbi** is your best friend because it assists you in all your events. To do so, **Gatsbi** has a fully interactive map, with all the important locations, including you ! Moreover, the map is linked to a customizable schedule, where you can save every activity you want to attend and export it to your own private calendar ! **Gatsbi** also allows you to keep in touch with the event through a news feed, and you can always contact event organizers or leave feedback. 
+**Gatsbi** was also designed for managing the event, and event organizers can login to manage their convention through a special feature that permits the editing of every info ! During the event, organizers and staff can also access ticket scanning to easily control the come-and-gos. And don't forget it: everyone can discover events and share on **Gatsbi**! 
 
-*n.b : Please comment and review !* :+1: *wherever there is TIKET written, this must be replaced by the app name.*
+*n.b : Please comment and review !* :+1:
