@@ -19,13 +19,14 @@ public abstract class AbstractShowcaseFragment extends Fragment {
     protected EventInteractionModel model;
     protected View view;
 
-    public AbstractShowcaseFragment(int resource) {
+    protected AbstractShowcaseFragment(int resource) {
         this.resource = resource;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TODO handle null exception
         model = ViewModelProviders.of(getActivity()).get(EventInteractionModel.class);
     }
 
@@ -41,6 +42,7 @@ public abstract class AbstractShowcaseFragment extends Fragment {
         super.onResume();
 
         if (model == null) {
+            // TODO Handle null exception
             model = ViewModelProviders.of(getActivity()).get(EventInteractionModel.class);
         }
     }

@@ -1,42 +1,35 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment"
-        android:layout_marginTop="?android:attr/actionBarSize">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment"
+    android:layout_marginTop="?attr/actionBarSize">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/news_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="10dp"
+            tools:listitem="@layout/item_news" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/news_empty_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:text="@string/news_empty"
+        android:visibility="gone"
+        app:layout_anchor="@+id/news_relative_layout"
+        app:layout_anchorGravity="center_vertical|center_horizontal" />
 
-        <RelativeLayout
-            android:id="@+id/news_relative_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:padding="10dp"
-                tools:listitem="@layout/item_news" />
-
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/news_empty_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/news_empty"
-            android:visibility="gone"
-            app:layout_anchor="@+id/news_relative_layout"
-            app:layout_anchorGravity="center_vertical|center_horizontal" />
-
-    </LinearLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

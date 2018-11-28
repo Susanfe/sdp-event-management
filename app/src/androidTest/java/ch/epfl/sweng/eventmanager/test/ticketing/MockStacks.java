@@ -1,13 +1,13 @@
 package ch.epfl.sweng.eventmanager.test.ticketing;
 
-import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
-import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
+import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
+import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
 
 /**
  * @author Louis Vialar

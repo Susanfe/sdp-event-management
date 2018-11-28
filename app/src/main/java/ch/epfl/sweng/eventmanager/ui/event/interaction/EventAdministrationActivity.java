@@ -90,6 +90,12 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
             case R.id.nav_send_news :
                 changeFragment(new SendNewsFragment(), true);
                 break;
+
+            case R.id.nav_edit_event :
+                Intent editIntent = new Intent(this, EventCreateActivity.class);
+                editIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
+                startActivity(editIntent);
+                break;
         }
 
         return true;

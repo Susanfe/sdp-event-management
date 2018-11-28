@@ -1,25 +1,38 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.CheckedTextView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
 import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
+import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
+import dagger.android.support.AndroidSupportInjection;
 
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
  */
 public class EventMainFragment extends AbstractShowcaseFragment {
     private static final String TAG = "EventMainFragment";
+
+    @Inject
+    protected FeedbackRepository feedbackRepository;
 
     @BindView(R.id.contact_form_go_button)
     Button contactButton;
@@ -29,6 +42,10 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     Button schedule;
     @BindView(R.id.main_fragment_map)
     Button map;
+    @BindView(R.id.feedback_for_go_button)
+    Button feedbackButton;
+    @BindView(R.id.feedback_ratingBar)
+    RatingBar feedbackBar;
     @BindView(R.id.join_event_button)
     CheckedTextView joinEventButton;
     @BindView(R.id.event_description)
@@ -37,6 +54,8 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     ImageView eventImage;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
+    private EventShowcaseActivity showcaseActivity;
 
     public EventMainFragment() {
         // Required empty public constructor
@@ -64,6 +83,12 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             eventImage.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 
+            feedbackBar.setIsIndicator(true);
+            feedbackRepository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
+
+            // Binds the 'joined event' switch to the database
+            CheckedTextView joinEventButton = view.findViewById(R.id.join_event_button);
+
             // State of the switch depends on if the user joined the event
             this.model.isJoined(ev).observe(this, joinEventButton::setChecked);
             joinEventButton.setOnClickListener(v -> {
@@ -83,21 +108,32 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        if (view != null) ButterKnife.bind(this, view);
 
-        // FIXME Handle null veiw argument
-        ButterKnife.bind(this, view);
+        showcaseActivity = (EventShowcaseActivity) getParentActivity();
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
-        contactButton.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFormFragment(), true));
+        contactButton.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.FORM, true));
 
-        news.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new NewsFragment(), true));
+        news.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.NEWS, true));
 
-        map.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventMapFragment(),
-                true));
+        map.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.MAP, true));
 
-        schedule.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new ScheduleParentFragment(), true));
+        schedule.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+                EventShowcaseActivity.FragmentType.SCHEDULE, true));
+
+        feedbackButton.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFeedbackFragment(), true));
 
         return view;
-
     }
+
+    @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
+    }
+
 }

@@ -1,15 +1,12 @@
 package ch.epfl.sweng.eventmanager.users;
 
 import android.app.Activity;
-import android.util.Log;
-
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 
 import java.util.List;
 import java.util.Map;
-
-import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.data.User;
 
 public final class Session {
     private static InMemorySession session;
@@ -19,8 +16,10 @@ public final class Session {
      * instantiated out of the emulator.
      */
     private static InMemorySession getSession() {
-       if (session == null) session = new InMemoryFirebaseSession();
-       return session;
+        if (session == null) {
+            session = new InMemoryFirebaseSession();
+        }
+        return session;
     }
 
     /**
@@ -31,11 +30,11 @@ public final class Session {
     }
 
     public static User getCurrentUser() {
-       return getSession().getCurrentUser();
+        return getSession().getCurrentUser();
     }
 
     public static boolean isLoggedIn() {
-       return getSession().isLoggedIn();
+        return getSession().isLoggedIn();
     }
 
     public static void login(String email, String password, Activity context, OnCompleteListener callback) {
@@ -52,8 +51,9 @@ public final class Session {
 
     /**
      * Check whether the current session is allowed to access an event given a clearance level.
+     *
      * @param role requested clearance
-     * @param ev event to be accessed
+     * @param ev   event to be accessed
      * @return true is the user is cleared, false otherwise
      */
     public static boolean isClearedFor(Role role, Event ev) {
@@ -61,6 +61,7 @@ public final class Session {
         if (ev == null || ev.getPermissions() == null) return false;
         Map<Role, List<String>> roleToUidMap = ev.getPermissions();
         String currentUid = getCurrentUser().getUid();
+        // TODO handle null pointer exception
         return (roleToUidMap.containsKey(role) && roleToUidMap.get(role).contains(currentUid));
     }
 }

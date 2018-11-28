@@ -1,14 +1,15 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 
-import androidx.test.espresso.intent.Intents;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Test;
+
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.intent.Intents;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.ticketing.MultiHttpStack;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingConfigurationPickerActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingTestRule;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
 
 public class EmptyPickerTest extends ActivityTest<TicketingConfigurationPickerActivity> {
 
@@ -34,7 +35,7 @@ public class EmptyPickerTest extends ActivityTest<TicketingConfigurationPickerAc
     @Test
     public void testDisplaysConfigs() {
 
-        RecyclerView recyclerView = mActivityRule.getActivity().findViewById(R.id.recylcer);
+        RecyclerView recyclerView = mActivityRule.getActivity().findViewById(R.id.recycler);
 
         Assert.assertEquals(0, recyclerView.getAdapter().getItemCount());
 

@@ -1,9 +1,9 @@
 package ch.epfl.sweng.eventmanager.test;
 
-import androidx.lifecycle.MutableLiveData;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.lifecycle.MutableLiveData;
 
 /**
  * @author Louis Vialar
@@ -16,7 +16,7 @@ public class ObservableList<T> extends MutableLiveData<List<T>> {
         this.notifyChanged();
     }
 
-    public void notifyChanged() {
+    private void notifyChanged() {
         this.postValue(underlyingList);
     }
 

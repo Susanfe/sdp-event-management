@@ -29,6 +29,7 @@ public final class TicketingManager {
         Intent openIntent = new Intent(context, TicketingActivity.getNextActivityForState(service));
         openIntent.putExtra(TicketingActivity.SELECTED_EVENT_ID, event.getId());
         openIntent.putExtra(TicketingActivity.TICKETING_CONFIGURATION, event.getTicketingConfiguration());
+        openIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return openIntent;
     }
 }

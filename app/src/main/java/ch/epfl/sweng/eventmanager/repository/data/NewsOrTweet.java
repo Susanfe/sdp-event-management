@@ -66,6 +66,7 @@ public class NewsOrTweet implements Comparable<NewsOrTweet> {
     }
 
     @Override
+    @NonNull
     public String toString() {
         return "NewsOrTweet{" +
                 "news=" + news +

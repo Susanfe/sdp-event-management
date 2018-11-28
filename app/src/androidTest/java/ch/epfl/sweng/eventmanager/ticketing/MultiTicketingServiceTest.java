@@ -1,16 +1,19 @@
 package ch.epfl.sweng.eventmanager.ticketing;
 
-import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
-import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
-import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
-import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
-import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.*;
+import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
+import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
+import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
+import ch.epfl.sweng.eventmanager.ticketing.data.ScanConfiguration;
+import ch.epfl.sweng.eventmanager.ticketing.data.ScanResult;
+
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.CLIENT;
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.CONFIGS;
+import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.PRODUCT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -21,12 +24,12 @@ public class MultiTicketingServiceTest {
     private TicketingService service;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         service = TicketingHelper.getService(MockStacks.MULTI_CONFIGURATION);
     }
 
     @Test
-    public void hasMultipleConfigurationsTest() throws Exception {
+    public void hasMultipleConfigurationsTest() {
         assertTrue(service.hasMultipleConfigurations());
     }
 
@@ -71,7 +74,7 @@ public class MultiTicketingServiceTest {
     }
 
     @Test
-    public void isLoggedInTest() throws Exception {
+    public void isLoggedInTest() {
         assertTrue(service.isLoggedIn());
     }
 

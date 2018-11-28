@@ -1,32 +1,24 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.activities;
 
 import android.Manifest;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
-import androidx.test.espresso.NoMatchingViewException;
-import androidx.test.espresso.intent.Intents;
-import androidx.test.rule.GrantPermissionRule;
-import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
-import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingScanActivity;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingTestRule;
+
 import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
-import com.journeyapps.barcodescanner.*;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
+
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 
 import java.lang.reflect.Field;
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.rule.GrantPermissionRule;
+import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
+import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingScanActivity;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingTestRule;
 
 public abstract class BaseScanningActivityTest extends ScanningTest {
 
@@ -45,7 +37,7 @@ public abstract class BaseScanningActivityTest extends ScanningTest {
         Intents.release();
     }
 
-    public BaseScanningActivityTest(int eventId) {
+    BaseScanningActivityTest(int eventId) {
         super(eventId);
     }
 
@@ -67,7 +59,7 @@ public abstract class BaseScanningActivityTest extends ScanningTest {
         return getField(mActivityRule.getActivity(), "callback");
     }
 
-    protected void sendScanSuccess(String code) {
+    void sendScanSuccess(String code) {
         BarcodeResult barcodeResult =
                 new BarcodeResult(new Result(code, code.getBytes(), code.getBytes().length, new ResultPoint[0], null, System.currentTimeMillis()), null);
 

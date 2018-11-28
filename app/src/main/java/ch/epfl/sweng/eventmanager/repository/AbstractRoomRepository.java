@@ -12,11 +12,11 @@ import java.util.List;
 public abstract class AbstractRoomRepository<T, U extends GenericDAO<T>> {
     protected U dao;
 
-    public AbstractRoomRepository(U dao) {
+    AbstractRoomRepository(U dao) {
         this.dao = dao;
     }
 
-    public LiveData<List<T>> findAll(){
+    LiveData<List<T>> findAll(){
         return dao.getAll();
     }
 

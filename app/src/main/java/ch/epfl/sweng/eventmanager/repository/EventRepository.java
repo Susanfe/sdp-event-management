@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.repository.data.Zone;
+import com.google.android.gms.tasks.Task;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,4 +24,16 @@ public interface EventRepository {
     LiveData<List<Spot>> getSpots(int eventId);
 
     LiveData<List<ScheduledItem>> getScheduledItems(int eventId);
+
+    LiveData<List<Zone>> getZones(int eventId);
+
+    LiveData<Bitmap> getSpotImage(Spot spot);
+
+    Task<Event> createEvent(Event event);
+
+    /**
+     * Updates an event, using the internal eventId of the event to figure out which event to update
+     * @param event the event to update
+     */
+    Task<Event> updateEvent(Event event);
 }

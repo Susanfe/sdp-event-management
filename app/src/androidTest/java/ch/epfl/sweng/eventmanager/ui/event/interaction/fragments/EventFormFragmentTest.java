@@ -5,28 +5,31 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.intent.matcher.IntentMatchers;
-import androidx.test.runner.AndroidJUnit4;
-import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.test.EventTestRule;
+import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
+import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.intent.matcher.IntentMatchers;
+import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
+
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.*;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.isInternal;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
+import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
+import static androidx.test.espresso.matcher.ViewMatchers.isClickable;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.not;
 
-@RunWith(AndroidJUnit4.class)
 public class EventFormFragmentTest {
 
     @Rule
@@ -77,7 +80,7 @@ public class EventFormFragmentTest {
                 IntentMatchers.hasExtra(Matchers.is(Intent.EXTRA_INTENT), Matchers.allOf(
                         IntentMatchers.hasType("message/rfc822"), //email MIME data
                         // TODO: mock event to test email address
-                        IntentMatchers.hasExtra(Intent.EXTRA_EMAIL  , new String[] {"events@epfl.ch"}),
+                        IntentMatchers.hasExtra(Intent.EXTRA_EMAIL  , new String[] {MockEventsRepository.EVENT_EMAIL}),
                         IntentMatchers.hasExtra(Intent.EXTRA_SUBJECT, target + " : " + title),
                         IntentMatchers.hasExtra(Intent.EXTRA_TEXT, content)
                 ))

@@ -63,6 +63,7 @@ public class NewsFragmentTest {
     private void createNews() {
         SystemClock.sleep(500);
 
+
         onView(withId(R.id.title)).perform(typeText(newsTitle), closeSoftKeyboard());
         onView(withId(R.id.content)).perform(typeText(newsContent), closeSoftKeyboard());
         onView(withId(R.id.send)).perform(ViewActions.click());

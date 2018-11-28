@@ -36,7 +36,7 @@ public class MyScheduleFragmentTest {
     private ScheduledItem c3 = new ScheduledItem(when, mj, pop, des, dur, uuid, type, location);
 
     @Test
-    public void writeCalendarTest() throws Exception {
+    public void writeCalendarTest() {
         MyScheduleFragment fragment = new MyScheduleFragment();
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();

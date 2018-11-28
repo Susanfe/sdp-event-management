@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,14 +9,10 @@
     tools:context=".ui.event.interaction.fragments.user.EventUserManagementFragment">
 
     <TextView
-        android:id="@+id/help_text"
+        android:id="@+id/user_management_help_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_margin="16dp"
         android:padding="16dp" />
 
     <LinearLayout
@@ -28,29 +23,32 @@
         android:paddingRight="16dp">
 
         <EditText
-            android:id="@+id/add_user_mail_field"
+            android:id="@+id/user_managament_user_mail_field"
             android:layout_width="177dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:hint="@string/email_field"/>
 
         <Spinner
-            android:id="@+id/add_user_spinner"
+            android:id="@+id/user_management_add_user_spinner"
             android:layout_width="68dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/add_user_button"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/user_management_add_user_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            style="@style/Button_global"
+            android:text="@string/add_button"/>
 
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/add_user_progress_bar"
+        android:id="@+id/user_management_progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,13 +67,13 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/user_list_left_header"
+            android:id="@+id/user_management_user_list_left_header"
             android:layout_width="216dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/user_list_right_header"
+            android:id="@+id/user_management_user_list_right_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
@@ -91,7 +89,7 @@
         android:background="?android:attr/listDivider" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/user_list"
+        android:id="@+id/user_management_user_list"
         android:layout_width="match_parent"
         android:layout_height="325dp"
         android:layout_marginStart="16dp"

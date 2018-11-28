@@ -22,9 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
+import ch.epfl.sweng.eventmanager.users.Role;
+import ch.epfl.sweng.eventmanager.users.Session;
 
 /**
  * Display an event's news feed.
@@ -48,7 +51,9 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        ButterKnife.bind(this, view);
+        if (view!=null) ButterKnife.bind(this, view);
+
+        // TODO handle null pointer exception
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
@@ -66,7 +71,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
             model = ViewModelProviders.of(requireActivity()).get(NewsViewModel.class);
         }
 
-        LiveData<String> twitterName = Transformations.map(super.model.getEvent(), event -> event.getTwitterName());
+        LiveData<String> twitterName = Transformations.map(super.model.getEvent(), Event::getTwitterName);
 
         this.model.getNews(twitterName).observe(this, news -> {
             if (news != null && news.size() > 0) {
@@ -92,13 +97,14 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
         private List<NewsOrTweet> news;
 
-        public NewsAdapter() {
+        NewsAdapter() {
             this.news = Collections.emptyList();
         }
 
         // Create new views (invoked by the layout manager)
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
+        @NonNull
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                           int viewType) {
 
             if (viewType == NewsOrTweet.TYPE_TWEET) {
@@ -115,7 +121,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
         // Replace the contents of a view (invoked by the layout manager)
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof NewsViewHolder)
                 ((NewsViewHolder) holder).bind(news.get(position).getNews());
             else if (holder instanceof TweetViewHolder)
@@ -141,13 +147,13 @@ public class NewsFragment extends AbstractShowcaseFragment {
             this.notifyDataSetChanged();
         }
 
-        protected static final class TweetViewHolder extends RecyclerView.ViewHolder {
-            public TweetViewHolder(CompactTweetView itemView) {
+        static final class TweetViewHolder extends RecyclerView.ViewHolder {
+            TweetViewHolder(CompactTweetView itemView) {
                 super(itemView);
             }
         }
 
-        protected static final class NewsViewHolder extends RecyclerView.ViewHolder {
+        static final class NewsViewHolder extends RecyclerView.ViewHolder {
             @BindView(R.id.text_news_content)
             TextView content;
             @BindView(R.id.text_news_date)

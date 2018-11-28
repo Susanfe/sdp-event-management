@@ -1,11 +1,15 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
 import androidx.lifecycle.ViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNewsFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
 import dagger.Binds;
 import dagger.Module;
@@ -37,13 +41,29 @@ public abstract class EventInteractionModule {
     @ViewModelKey(SpotsModel.class)
     abstract ViewModel provideSpotsViewModel(SpotsModel spotsModel);
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(ZoneModel.class)
+    abstract ViewModel provideZonesViewModel(ZoneModel zonesModel);
+
     @ContributesAndroidInjector
     abstract EventShowcaseActivity contributeEventShowcaseActivityInjector();
+
+    @ContributesAndroidInjector
+    abstract EventCreateActivity contributeEventCreateActivityInjector();
 
     @ContributesAndroidInjector
     abstract SendNewsFragment contributeSendNewsFragmentInjector();
 
     @ContributesAndroidInjector
-    abstract EventAdministrationActivity contributeEventAdminsitrationActivityInjector();
-}
+    abstract EventMapFragment contributeEventMapFragmentInjector();
 
+    @ContributesAndroidInjector
+    abstract EventAdministrationActivity contributeEventAdminsitrationActivityInjector();
+
+    @ContributesAndroidInjector
+    abstract EventFeedbackFragment contributeEventFeedbackFragmentInjector();
+
+    @ContributesAndroidInjector
+    abstract EventMainFragment contributeEventMainFragmentInjector();
+}

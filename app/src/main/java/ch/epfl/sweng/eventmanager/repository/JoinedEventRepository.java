@@ -15,7 +15,7 @@ public class JoinedEventRepository extends AbstractEventRepository<JoinedEvent, 
         super(joinedEventDao);
     }
 
-    public LiveData<JoinedEvent> findByName(String name){
+    LiveData<JoinedEvent> findByName(String name){
         return dao.findByName(name);
     }
 

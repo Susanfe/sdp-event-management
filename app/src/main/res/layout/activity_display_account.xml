@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     tools:context=".ui.user.DisplayAccountActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -21,23 +22,33 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         tools:context=".ui.userManager.DisplayAccountActivity">
 
-        <Button
-            android:id="@+id/logout_btn"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/display_account_logout_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:onClick="logoutThenRedirectToEventSelector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            style="@style/Button_global"/>
+            style="@style/Button_global"
+            android:text="@string/logout_button"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/display_account_create_event_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            style="@style/Button_global"
+            android:text="@string/create_event_title"/>
 
         <TextView
-            android:id="@+id/main_text"
+            android:id="@+id/display_account_main_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="TextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>

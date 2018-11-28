@@ -1,8 +1,9 @@
 package ch.epfl.sweng.eventmanager.ui;
 
-import androidx.test.rule.ActivityTestRule;
 import org.junit.Rule;
 import org.junit.Test;
+
+import androidx.test.rule.ActivityTestRule;
 
 public class SplashActivityTest {
 

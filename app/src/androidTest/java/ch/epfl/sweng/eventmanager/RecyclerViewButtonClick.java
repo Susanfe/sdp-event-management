@@ -1,9 +1,11 @@
 package ch.epfl.sweng.eventmanager;
 
 import android.view.View;
+
+import org.hamcrest.Matcher;
+
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
-import org.hamcrest.Matcher;
 
 public class RecyclerViewButtonClick {
 
