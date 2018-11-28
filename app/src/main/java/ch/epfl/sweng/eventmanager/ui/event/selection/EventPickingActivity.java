@@ -263,8 +263,6 @@ public class EventPickingActivity extends AppCompatActivity {
 
             case R.id.layout_login_signup_logout_button:
                 Session.logout();
-                loggedUI.setVisibility(View.GONE);
-                notLoggedUi.setVisibility(View.VISIBLE);
                 revealCircular(true);
                 break;
 
@@ -294,7 +292,7 @@ public class EventPickingActivity extends AppCompatActivity {
 
             Animator anim;
 
-            // We want to reveal the layout
+            // We want to hide the layout
             if (inverse) {
                 anim = ViewAnimationUtils.createCircularReveal(loginAccountUI, x, y, endRadius, startRadius);
                 anim.addListener(new Animator.AnimatorListener() {
@@ -313,7 +311,7 @@ public class EventPickingActivity extends AppCompatActivity {
                     // -----
 
                 });
-            } else { // We want to hide the layout
+            } else { // We want to reveal the layout
                 anim = ViewAnimationUtils.createCircularReveal(loginAccountUI, x, y, startRadius, endRadius);
                 loginAccountUI.setVisibility(viewState);
             }
