@@ -5,6 +5,7 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 
+import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
@@ -79,7 +80,7 @@ public class EventFormFragmentTest {
                 IntentMatchers.hasExtra(Matchers.is(Intent.EXTRA_INTENT), Matchers.allOf(
                         IntentMatchers.hasType("message/rfc822"), //email MIME data
                         // TODO: mock event to test email address
-                        IntentMatchers.hasExtra(Intent.EXTRA_EMAIL  , new String[] {"events@epfl.ch"}),
+                        IntentMatchers.hasExtra(Intent.EXTRA_EMAIL  , new String[] {MockEventsRepository.EVENT_EMAIL}),
                         IntentMatchers.hasExtra(Intent.EXTRA_SUBJECT, target + " : " + title),
                         IntentMatchers.hasExtra(Intent.EXTRA_TEXT, content)
                 ))
