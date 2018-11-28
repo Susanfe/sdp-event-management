@@ -6,7 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.event.selection.EventPickingActivity"
-        android:orientation="vertical"
         android:id="@+id/event_picking_main_layout">
 
     <ProgressBar
@@ -17,7 +16,11 @@
             android:layout_gravity="center"
     />
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -25,42 +28,93 @@
             android:layout_height="match_parent"
             tools:context=".ui.eventSelector.EventPickingActivity"
             android:id="@+id/event_linear_layout"
-            android:orientation="vertical">
-
-        <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Toolbar"
-                android:id="@+id/event_picking_toolbar"/>
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-            <TextView
-                    android:id="@+id/help_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" android:text="@string/help_text_activity_event_picking"
-                    android:textStyle="bold" android:gravity="center_horizontal" android:textSize="18sp"/>
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/joined_help_text"
-                    android:text="@string/joined_help_text_activity_event_picking" android:textStyle="italic"
-                    android:gravity="center_vertical|center_horizontal"/>
+            android:background="@color/colorPrimary">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/joined_events_list"
+                android:layout_marginLeft="@dimen/default_small_margin"
+                android:layout_marginRight="@dimen/default_small_margin"
+                android:paddingBottom="@dimen/event_picking_bottom_sheet_peek"
+                android:clipToPadding="false"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/joined_events_list"
-                    android:layout_margin="8dp"
-                    android:paddingBottom="@dimen/event_picking_bottom_sheet_peek">
-            </androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
-    </LinearLayout>
+                    app:contentScrim="?attr/colorPrimary"
+                    app:expandedTitleGravity="top"
+                    app:layout_scrollFlags="scroll|enterAlways|snap">
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/default_big_toolbar_height"
+                        app:layout_collapseMode="pin"
+                        style="@style/Toolbar"
+                        android:id="@+id/event_picking_toolbar"
+                        app:title="@string/welcome"
+                        app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/welcome"
+                                android:textColor="@color/colorSecondary"
+                                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"/>
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                style="@style/Toolbar">
+                                <TextView
+                                    android:id="@+id/event_picking_help_text"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    android:text="@string/help_text_activity_event_picking"
+                                    android:textStyle="bold"
+                                    android:gravity="center_horizontal"
+                                    android:textSize="18sp"
+                                    android:textColor="@color/colorSecondary"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/event_picking_joined_events_text"
+                                    android:text="@string/joined_help_text_activity_event_picking"
+                                    android:textStyle="italic"
+                                    android:gravity="center_horizontal"
+                                    android:textColor="@color/colorSecondary"
+                                    android:paddingBottom="@dimen/default_small_padding"/>
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </androidx.appcompat.widget.Toolbar>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/black"
+            android:alpha="0.5"
+            android:visibility="gone"
+            android:id="@+id/event_picking_darken_background"
+            />
+
+    </RelativeLayout>
     <include layout="@layout/event_picking_bottom_sheet"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

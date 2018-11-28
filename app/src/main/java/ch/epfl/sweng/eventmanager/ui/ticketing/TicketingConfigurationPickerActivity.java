@@ -4,17 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ticketing.NotAuthenticatedException;
 import ch.epfl.sweng.eventmanager.ticketing.TicketingService;
@@ -27,20 +32,22 @@ import java.util.List;
 public final class TicketingConfigurationPickerActivity extends TicketingActivity {
     private static final String TAG = "ConfigurationPicker";
 
-    private ScrollView mPickerView;
-    private RecyclerView mRecycler;
-    private TextView mTitle;
+    @BindView(R.id.activity_ticketing_toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.recycler)
+    RecyclerView mRecycler;
+    @BindView(R.id.swipe_refresher)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     private ConfigurationAdapter adapter;
-    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ticketing_configuration_picker);
+        ButterKnife.bind(this);
 
-        this.mRecycler = findViewById(R.id.recylcer);
-        this.mTitle = findViewById(R.id.pick_config);
-        this.swipeRefreshLayout = findViewById(R.id.swipe_refresher);
+        toolbar.setTitle(R.string.pick_configuration);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecycler.setLayoutManager(layoutManager);
@@ -66,7 +73,6 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
                 public void onSuccess(List<ScanConfiguration> data) {
                     adapter.setConfigurations(data);
                     swipeRefreshLayout.setRefreshing(false);
-                    mTitle.setText(getResources().getString(R.string.pick_configuration));
 
                 }
 
@@ -75,7 +81,9 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
                     // TODO: parse errors
 
                     swipeRefreshLayout.setRefreshing(false);
-                    mTitle.setText(getResources().getString(R.string.loading_failed, errors.get(0).getMessages().get(0)));
+                    Toast.makeText(TicketingConfigurationPickerActivity.this,
+                            getResources().getString(R.string.loading_failed, errors.get(0).getMessages().get(0)),
+                            Toast.LENGTH_LONG).show();
                 }
             });
         } catch (NotAuthenticatedException e) {
@@ -136,15 +144,17 @@ public final class TicketingConfigurationPickerActivity extends TicketingActivit
         }
     }
 
-    private static class ConfigurationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    static class ConfigurationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ScanConfiguration configuration;
-        private TextView configName;
         private TicketingConfigurationPickerActivity activity;
 
-        public ConfigurationViewHolder(View item, TicketingConfigurationPickerActivity activity) {
-            super(item);
+        @BindView(R.id.configuration)
+        TextView configName;
 
-            this.configName = item.findViewById(R.id.configuration);
+
+        ConfigurationViewHolder(View item, TicketingConfigurationPickerActivity activity) {
+            super(item);
+            ButterKnife.bind(this, item);
             this.activity = activity;
             item.setOnClickListener(this);
         }

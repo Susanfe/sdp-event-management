@@ -6,9 +6,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -17,21 +14,18 @@ import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.settings.SettingsActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
+import javax.inject.Inject;
+import java.io.Serializable;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
@@ -45,8 +39,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
+    private ZoneModel zonesModel;
     private Fragment eventMainFragment;
-    private Fragment eventMapFragment;
     private Fragment newsFragment;
     private Fragment scheduleParentFragment;
 
@@ -64,10 +58,14 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
         this.spotsModel = ViewModelProviders.of(this, factory).get(SpotsModel.class);
         this.spotsModel.init(eventID);
+
+        this.zonesModel = ViewModelProviders.of(this, factory).get(ZoneModel.class);
+        this.zonesModel.init(eventID);
     }
 
     private void setupMenu() {
-        LiveData<EventTicketingConfiguration> data = Transformations.map(model.getEvent(), Event::getTicketingConfiguration);
+        LiveData<EventTicketingConfiguration> data = Transformations.map(model.getEvent(),
+                Event::getTicketingConfiguration);
         data.observe(this, d -> {
             MenuItem item = navigationView.getMenu().findItem(R.id.nav_scan);
             if (d != null) {
@@ -127,8 +125,13 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             // Set displayed fragment only when no other fragment where previously inflated.
             if (savedInstanceState == null) {
-                eventMainFragment = new EventMainFragment();
-                changeFragment(eventMainFragment, true);
+                String fragment = intent.getStringExtra("fragment");
+                if (fragment!= null && fragment.equals("feedback"))
+                    changeFragment(new EventFeedbackFragment(), true);
+                else {
+                    eventMainFragment = new EventMainFragment();
+                    changeFragment(eventMainFragment, true);
+                }
             }
         }
 
@@ -158,46 +161,82 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
                 adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
                 startActivity(adminIntent);
+                break;
 
             case R.id.nav_main:
-                if (eventMainFragment == null) {
-                    eventMainFragment = new EventMainFragment();
-                }
-                changeFragment(new EventMainFragment(), true);
+                callChangeFragment(FragmentType.MAIN, true);
                 break;
 
             case R.id.nav_map:
-                if (eventMapFragment == null) {
-                    eventMapFragment = new EventMapFragment();
-                }
-                changeFragment(eventMapFragment, true);
+                callChangeFragment(FragmentType.MAP, true);
                 break;
 
             case R.id.nav_tickets:
-                changeFragment(new EventMapFragment(), true);
+                callChangeFragment(null, true);
                 break;
 
             case R.id.nav_news:
-                if (newsFragment == null) {
-                    newsFragment = new NewsFragment();
-                }
-                changeFragment(newsFragment, true);
+                callChangeFragment(FragmentType.NEWS, true);
                 break;
 
             case R.id.nav_schedule:
-                if (scheduleParentFragment == null) {
-                    scheduleParentFragment = new ScheduleParentFragment();
-                }
-                changeFragment(scheduleParentFragment, true);
+                callChangeFragment(FragmentType.SCHEDULE, true);
+                break;
+
+            case R.id.nav_feedback:
+                changeFragment(new EventFeedbackFragment(), true);
                 break;
 
             case R.id.nav_scan:
+                // TODO Handle null pointer exception
                 startActivity(ticketingManager.start(model.getEvent().getValue(), this));
                 break;
 
+            case R.id.nav_settings:
+                Intent intent = new Intent(this,SettingsActivity.class);
+                startActivity(intent);
+                break;
         }
 
         return true;
+    }
+
+    /**
+     * Prepares the call to changeFragment by verifying if an existing fragment was stored and can
+     * be reused.
+     *
+     * @param type            type of the fragment to switch to
+     * @param saveToBackstack save the fragment in the backstack to access it later on
+     */
+    public void callChangeFragment(FragmentType type, boolean saveToBackstack) {
+        if (type == null) type = FragmentType.MAIN;
+        switch (type) {
+            case MAIN:
+                if (eventMainFragment == null) eventMainFragment = new EventMainFragment();
+                changeFragment(eventMainFragment, saveToBackstack);
+                break;
+
+            case MAP:
+                changeFragment(new EventMapFragment(), saveToBackstack);
+                break;
+
+            case SCHEDULE:
+                if (scheduleParentFragment == null) scheduleParentFragment = new ScheduleParentFragment();
+                changeFragment(scheduleParentFragment, saveToBackstack);
+                break;
+
+            case FORM:
+                changeFragment(new EventFormFragment(), saveToBackstack);
+                break;
+
+            case NEWS:
+                if (newsFragment == null) newsFragment = new NewsFragment();
+                changeFragment(newsFragment, saveToBackstack);
+                break;
+            default:
+                changeFragment(new EventMainFragment(), saveToBackstack);
+                break;
+        }
     }
 
     /**
@@ -228,7 +267,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     public void onBackPressed() {
         Fragment fragment = getCurrentFragment();
         if (fragment instanceof EventTicketFragment || fragment instanceof EventMapFragment || fragment instanceof ScheduleParentFragment || fragment instanceof NewsFragment) {
-            changeFragment(new EventMainFragment(), true);
+            callChangeFragment(FragmentType.MAIN, true);
         } else {
             int fragments = getSupportFragmentManager().getBackStackEntryCount();
             if (fragments == 1) {
@@ -250,5 +289,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
     public int getEventID() {
         return eventID;
+    }
+
+    public enum FragmentType {
+        MAIN, MAP, SCHEDULE, NEWS, FORM
     }
 }

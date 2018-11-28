@@ -1,4 +1,4 @@
-<resources>
+<resources >
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -17,7 +17,7 @@
     <!-- Launcher theme. Sets the main window background to the splash_screen drawable -->
     <style name="AppTheme.Launcher" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
@@ -30,13 +30,15 @@
     <style name="Toolbar">
         <item name="titleTextColor">@color/colorSecondary</item>
         <item name="android:background">@color/colorPrimary</item>
-        <item name="android:actionOverflowButtonStyle">@color/colorSecondary</item>
         <!-- Add font -->
+        <item name="android:layout_height">?actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
     <!-- Custom overflow color-->
     <style name="Toolbar.OverFlow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/colorSecondary</item>
+        <item name="srcCompat">@drawable/ic_person_24dp</item>
     </style>
 
     <!-- ############################### BUTTON UI #############################################-->
@@ -45,6 +47,7 @@
     <style name="Button_global">
         <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:background">@drawable/button_lateral_navigation</item>
+        <item name="android:layout_margin">8dp</item>
     </style>
 
     <!-- App buttonbar button style (see fragment_event_main) -->
@@ -65,10 +68,27 @@
         <item name="android:background">@drawable/button_barbutton_checkbutton</item>
     </style>
 
-    <!--Borderless button -->
-    <style name="BorderlessButtonStyle" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:textColor">@color/colorSecondary</item>
+    <!-- -->
+    <style name="button_clickable_textview">
+        <item name="android:background">@drawable/button_transparent</item>
+        <item name="android:textColor">@drawable/text_clickable</item>
+        <item name="android:gravity">center</item>
     </style>
+
+    <!--Floating button-->
+    <style name="FloatingButtonStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/colorSecondary</item>
+    </style>
+
+
+    <!-- ############################# CARDVIEW UI ############################################-->
+    <style name="cardView_rounded" parent="Base.CardView">
+        <item name="cardCornerRadius">@dimen/default_light_round_edges_radius</item>
+        <item name="android:shape">ring</item>
+        <item name="android:thicknessRatio">1.9</item>
+    </style>
+
+    <!-- -->
 
 
 </resources>

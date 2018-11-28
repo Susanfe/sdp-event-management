@@ -95,18 +95,16 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
             holder.mTimelineView.setMarker(ContextCompat.getDrawable(context, R.drawable.ic_marker), ContextCompat.getColor(context, R.color.colorPrimary));
         }
 
-        holder.setOnToggle(() -> {
-            model.toggleMySchedule(scheduledItem.getId(), wasAdded -> {
+        holder.setOnToggle(() -> model.toggleMySchedule(scheduledItem.getId(), wasAdded -> {
 
-                if (wasAdded) {
-                    Toast.makeText(context, R.string.timeline_view_added_to_own_schedule, Toast.LENGTH_SHORT).show();
-                    NotificationScheduler.scheduleNotification(scheduledItem, new JoinedScheduledItemStrategy(context));
-                } else {
-                    Toast.makeText(context, R.string.timeline_view_removed_from_own_schedule, Toast.LENGTH_SHORT).show();
-                    NotificationScheduler.unscheduleNotification(scheduledItem, new JoinedScheduledItemStrategy(context));
-                }
-            });
-        });
+            if (wasAdded) {
+                Toast.makeText(context, R.string.timeline_view_added_to_own_schedule, Toast.LENGTH_SHORT).show();
+                NotificationScheduler.scheduleNotification(scheduledItem, new JoinedScheduledItemStrategy(context));
+            } else {
+                Toast.makeText(context, R.string.timeline_view_removed_from_own_schedule, Toast.LENGTH_SHORT).show();
+                NotificationScheduler.unscheduleNotification(scheduledItem, new JoinedScheduledItemStrategy(context));
+            }
+        }));
     }
 
     @Override

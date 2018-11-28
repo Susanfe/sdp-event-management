@@ -1,24 +1,26 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.test.runner.AndroidJUnit4;
-import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
-import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.Assert.*;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Louis Vialar
  */
-@RunWith(AndroidJUnit4.class)
 public class JoinedEventRepositoryTest extends JoinedEventTestUtils {
     @Rule
     public TestRule testRule = new InstantTaskExecutorRule();

@@ -15,7 +15,7 @@ public class TokenStorage {
     private int eventId;
     private String token;
 
-    public TokenStorage(int eventId, SharedPreferences preferences) {
+    TokenStorage(int eventId, SharedPreferences preferences) {
         this.eventId = eventId;
         this.preferences = preferences;
 
@@ -62,13 +62,13 @@ public class TokenStorage {
         writeTokenToPreferences();
     }
 
-    public void setToken(String token) {
+    void setToken(String token) {
         this.token = token;
 
         writeTokenToPreferences();
     }
 
-    public String getToken() {
+    String getToken() {
         return token;
     }
 }

@@ -23,7 +23,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
      */
     private static final String MIME_DATA = "message/rfc822";
 
-    String email;
+    private String email;
 
     @BindView(R.id.contact_form_send_button)
     Button sendButton;
@@ -53,7 +53,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
         super.onResume();
 
         model.getEvent().observe(this, ev -> {
-            email = ev.getOrganizer().getEmail();
+            email = ev.getOrganizerEmail();
             // TODO handle NullPointerException
 
             name.setOnEditorActionListener((v, actionId, event) -> checkIfNext(actionId));

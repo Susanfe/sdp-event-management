@@ -10,7 +10,7 @@ import com.android.volley.RequestQueue;
  */
 public abstract class TicketingServiceManager {
     private static final String PREFERENCE_KEY = "saved_login_tokens";
-    protected final SparseArray<TicketingService> services = new SparseArray<TicketingService>();
+    protected final SparseArray<TicketingService> services = new SparseArray<>();
 
     protected abstract RequestQueue getRequestQueue(Context context);
 

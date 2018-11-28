@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.core.util.Pair;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,16 +30,16 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         @BindView(R.id.uid)
-        public TextView userUid;
+        TextView userUid;
         @BindView(R.id.role)
         public TextView userRole;
         @BindView(R.id.remove_button)
         public Button removeButton;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
         }
@@ -54,6 +55,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
         mUsers = new HashMap<>();
         for (Role role : raw.keySet()) {
+            // TODO handle null pointer exception
             for (Pair<String, String> pair : raw.get(role)) { // Pair of key to uid
                 User user = new FirebaseBackedUser(pair.second);
                 // FIXME: fetch email instead of Uid once our FirebaseBackedUser suports it
@@ -64,19 +66,19 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
     // Create new views (invoked by the layout manager)
     @Override
-    public UserListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    @NonNull
+    public UserListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                          int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.user_list_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        List<String> index = new ArrayList<String>(mUsers.keySet());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        List<String> index = new ArrayList<>(mUsers.keySet());
         String uid = index.get(position);
         holder.userUid.setText(uid);
         holder.userRole.setText(mUsers.get(uid).second.toString());

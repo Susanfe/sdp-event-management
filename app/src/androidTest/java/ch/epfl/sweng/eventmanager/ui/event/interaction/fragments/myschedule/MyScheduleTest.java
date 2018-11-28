@@ -13,12 +13,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.runner.AndroidJUnit4;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
@@ -38,13 +36,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.AllOf.allOf;
 
-@RunWith(AndroidJUnit4.class)
 public class MyScheduleTest {
     @Rule
     public final EventTestRule<EventShowcaseActivity> mActivityRule =
             new EventTestRule<>(EventShowcaseActivity.class);
 
-    public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
+    private static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
         return new TypeSafeMatcher<View>() {
             int currentIndex = 0;
 
@@ -103,7 +100,7 @@ public class MyScheduleTest {
         SystemClock.sleep(200);
 
         onView(allOf(isDisplayed(), withIndex(withId(R.id.text_timeline_description), 0))).perform(longClick());
-        onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click()).check(matches(isCompletelyDisplayed()));;
+        onView(allOf(isDisplayed(), withText("My Schedule"))).perform(click()).check(matches(isCompletelyDisplayed()));
 
         SystemClock.sleep(1000);
 

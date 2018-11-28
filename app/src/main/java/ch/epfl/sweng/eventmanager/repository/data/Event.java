@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,10 +9,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import androidx.core.util.Pair;
 import ch.epfl.sweng.eventmanager.users.Role;
+import com.google.firebase.database.Exclude;
 
 
 /**
@@ -48,7 +47,7 @@ public final class Event {
     /**
      * The entity organizing this event
      */
-    private EventOrganizer organizer;
+    private String organizerEmail;
     /**
      * An image representing the event, may be null
      */
@@ -57,10 +56,6 @@ public final class Event {
      * The location of the event
      */
     private EventLocation location;
-    /**
-     * A particular place into the event
-     */
-    private List<Spot> spotList;
 
     /**
      * A map from roles to a list of user UIDs.
@@ -76,14 +71,14 @@ public final class Event {
 
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 EventOrganizer organizer, Bitmap image, EventLocation location,
-                 List<Spot> spotList, Map<String, Map<String, String>> users, String twitterName) {
-        this(id, name, description, beginDate, endDate, organizer, image, location, spotList, users, twitterName, null);
+                 String organizerEmail, Bitmap image, EventLocation location,
+                 Map<String, Map<String, String>> users, String twitterName) {
+        this(id, name, description, beginDate, endDate, organizerEmail, image, location, users, twitterName, null);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 EventOrganizer organizer, Bitmap image, EventLocation location,
-                 List<Spot> spotList, Map<String, Map<String, String>> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
+                 String organizerEmail, Bitmap image, EventLocation location,
+                 Map<String, Map<String, String>> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
         this.ticketingConfiguration = ticketingConfiguration;
 
         if (beginDate.getTime() > endDate.getTime())
@@ -94,10 +89,9 @@ public final class Event {
         this.beginDate = beginDate.getTime();
         this.endDate = endDate.getTime();
         this.description = description;
-        this.organizer = organizer;
+        this.organizerEmail = organizerEmail;
         this.image = image;
         this.location = location;
-        this.spotList = new ArrayList<>(spotList);
         this.users = users;
         this.twitterName = twitterName;
     }
@@ -131,10 +125,11 @@ public final class Event {
         return description;
     }
 
-    public EventOrganizer getOrganizer() {
-        return organizer;
+    public String getOrganizerEmail() {
+        return organizerEmail;
     }
 
+    @Exclude
     public Bitmap getImage() {
         return image;
     }
@@ -142,8 +137,6 @@ public final class Event {
     public EventLocation getLocation() {
         return location;
     }
-
-    public List<Spot> getSpotList() { return spotList; }
 
     /**
      * Do not use, only public due to a limitation of our auto-matching with Firebase.
@@ -155,6 +148,7 @@ public final class Event {
     /**
      * @return a map of Role permissions to User IDs
      */
+    @Exclude
     public Map<Role, List<String>> getPermissions() {
         Map<Role, List<String>> result = new HashMap<>();
         Map<Role, List<Pair<String, String>>> intermediateRepresentation = getStructuredPermissions();
@@ -178,7 +172,6 @@ public final class Event {
 
         // Don't blow up if the event does not contain any permission data
         if (getUsers() == null) return result;
-        if (getUsers().keySet() == null) return result;
 
         // The keys of a Java Map are unique
         for (String rawRole : getUsers().keySet()) {
@@ -194,6 +187,7 @@ public final class Event {
         return result;
     }
 
+    // FIXME Use or delete method ?
     public Collection<String> getUsersForRole(Role role) {
        Map<String, String> uidMap = getUsers().get(role.toString().toLowerCase());
        if (uidMap == null) return new ArrayList<>();
@@ -204,7 +198,7 @@ public final class Event {
         return this.twitterName;
     }
 
-    public String beginDateAsString() {
+    String beginDateAsString() {
         if (beginDate <= 0) {
             return null;
         }
@@ -212,7 +206,7 @@ public final class Event {
         return f.format(beginDate);
     }
 
-    public String endDateAsString(){
+    String endDateAsString(){
         if (endDate <= 0) {
             return null;
         }
@@ -226,6 +220,46 @@ public final class Event {
 
     public EventTicketingConfiguration getTicketingConfiguration() {
         return ticketingConfiguration;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setBeginDate(long beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public void setEndDate(long endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setOrganizerEmail(String organizerEmail) {
+        this.organizerEmail = organizerEmail;
+    }
+
+    public void setLocation(EventLocation location) {
+        this.location = location;
+    }
+
+    public void setUsers(Map<String, Map<String, String>> users) {
+        this.users = users;
+    }
+
+    public void setTwitterName(String twitterName) {
+        this.twitterName = twitterName;
+    }
+
+    public void setTicketingConfiguration(EventTicketingConfiguration ticketingConfiguration) {
+        this.ticketingConfiguration = ticketingConfiguration;
     }
 
     // TODO put setters ??

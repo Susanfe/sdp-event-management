@@ -1,13 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.util.Log;
-
+import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.*;
 
 public final class FirebaseBackedUser implements User {
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -23,6 +18,7 @@ public final class FirebaseBackedUser implements User {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if (dataSnapshot.getValue() != null) {
+                    // TODO handle null pointer exception
                     if (dataSnapshot.getKey().equals("email")) {
                         email = (String) dataSnapshot.getValue();
                     } else if (dataSnapshot.getKey().equals("displayName")) {
@@ -32,22 +28,22 @@ public final class FirebaseBackedUser implements User {
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
                 this.onChildAdded(dataSnapshot, s);
             }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 // Ignored
             }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {
                 // Ignored
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Ignored
             }
         });
