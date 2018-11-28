@@ -27,6 +27,9 @@
                 android:title="@string/scan_nav_item_activity_event_showcase"
                 android:visible="false"
         />
+        <item android:id="@+id/nav_feedback"
+              android:title="@string/feedback_nav"
+        />
     </group>
 
     <group android:checkableBehavior="single"
@@ -35,6 +38,9 @@
         <item
             android:id="@+id/nav_pick_event"
             android:title="@string/pick_event_nav_item_activity_event_showcase"/>
+        <item
+            android:id="@+id/nav_settings"
+            android:title="@string/settings"/>
     </group>
 
 </menu>

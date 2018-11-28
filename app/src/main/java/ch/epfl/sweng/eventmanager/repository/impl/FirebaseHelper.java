@@ -1,5 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.annotation.NonNull;
@@ -8,6 +10,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +22,11 @@ import java.util.List;
  */
 public class FirebaseHelper {
     public static <T> LiveData<List<T>> getList(DatabaseReference dbRef, Class<T> classOfT) {
-        final MutableLiveData<List<T>> data = new MutableLiveData<>();
+        return getList(dbRef, classOfT, Mapper.unit());
+    }
 
+    public static <T> LiveData<List<T>> getList(DatabaseReference dbRef, Class<T> classOfT, Mapper<T> mapper) {
+        final MutableLiveData<List<T>> data = new MutableLiveData<>();
 
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -26,7 +34,7 @@ public class FirebaseHelper {
                 List<T> events = new ArrayList<>();
 
                 for (DataSnapshot child : dataSnapshot.getChildren())
-                    events.add(child.getValue(classOfT));
+                    events.add(mapper.map(child.getValue(classOfT), child));
 
                 data.postValue(events);
             }
@@ -38,5 +46,42 @@ public class FirebaseHelper {
         });
 
         return data;
+    }
+
+    public static LiveData<Bitmap> getImage(StorageReference ref) {
+        final MutableLiveData<Bitmap> img = new MutableLiveData<>();
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inMutable = true;
+            img.setValue(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
+        }).addOnFailureListener(exception -> {
+            Log.w("FirebaseHelper", "Could not load image " + img.toString());
+            img.setValue(null);
+        });
+        return img;
+    }
+
+    public static interface Mapper<T> {
+        static <T> Mapper<T> unit() {
+            return (in, snapshot) -> in;
+        }
+
+        T map(T value, DataSnapshot snapshot);
+
+        default Mapper<T> andThen(Mapper<T> next) {
+            Mapper<T> self = this;
+            return (in, snap) -> next.map(self.map(in, snap), snap);
+        }
+    }
+
+    public static <T> Task<Void> publishElement(int eventId, String ref, T elem){
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(ref)
+                .child("event_" + eventId)
+                .push(); // Create a new key in the list
+
+        return dbRef.setValue(elem);
     }
 }

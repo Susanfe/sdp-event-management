@@ -12,6 +12,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventCreateActivity;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 
@@ -21,6 +22,8 @@ public class DisplayAccountActivity extends AppCompatActivity {
     TextView helpText;
     @BindView(R.id.display_account_logout_button)
     Button logoutButton;
+    @BindView(R.id.display_account_create_event_button)
+    Button createButton;
     @BindString(R.string.display_account_activity_logged_as)
     String loggedAs;
 
@@ -36,6 +39,7 @@ public class DisplayAccountActivity extends AppCompatActivity {
         }
             loggedAs = String.format("%s %s",loggedAs, Session.getCurrentUser().getEmail());
             logoutButton.setOnClickListener(this::logoutThenRedirectToEventSelector);
+            createButton.setOnClickListener(this::redirectToEventCreator);
             helpText.setText(loggedAs);
     }
 
@@ -49,6 +53,12 @@ public class DisplayAccountActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this,EventPickingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void redirectToEventCreator(View view) {
+        Intent intent = new Intent(this, EventCreateActivity.class);
         startActivity(intent);
         finish();
     }
