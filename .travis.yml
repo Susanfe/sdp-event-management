@@ -46,7 +46,7 @@ script:
 deploy:
   provider: testfairy
   api-key: "b89410efc8c54441f0cdf912940d4c0bd61837f9"
-  app-file: app/build/outputs/apk/release/app-release-unsigned.apk
+  app-file: Path to the app file (APK/IPA)
   video: true
 after_script:
   # Report test coverage to Code Climate
