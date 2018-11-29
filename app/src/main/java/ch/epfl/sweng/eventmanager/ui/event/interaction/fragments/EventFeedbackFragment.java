@@ -7,14 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RatingBar;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ch.epfl.sweng.eventmanager.EventManagerApplication;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.repository.data.EventRating;
@@ -22,7 +19,8 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
-import java.util.UUID;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class EventFeedbackFragment extends AbstractShowcaseFragment {
@@ -38,6 +36,10 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
     EditText description;
     @BindView(R.id.feedback_form_ratingBar)
     RatingBar rating;
+    @BindView(R.id.feedback_recycler_view)
+    RecyclerView recyclerView;
+
+    private RatingsAdapter ratingsAdapter = new RatingsAdapter();;
 
     public EventFeedbackFragment() {
         super(R.layout.fragment_event_feedback);
@@ -49,6 +51,8 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
 
         View view = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, view);
+
+        recyclerView.setAdapter(ratingsAdapter);
 
         return view;
     }
@@ -79,6 +83,16 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
                     Toast.makeText(getActivity(), R.string.event_feedback_already_submitted, Toast.LENGTH_SHORT).show();
                 }
             });
+
+            repository.getRatings(ev.getId()).observe(this, ratings -> {
+                if (ratings != null && ratings.size() > 0) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    ratingsAdapter.setContent(ratings);
+                } else {
+                    recyclerView.setVisibility(View.GONE);
+                    ratingsAdapter.setContent(Collections.emptyList());
+                }
+            });
         });
     }
 
@@ -88,4 +102,56 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         UNIQUE_ID_DEVICE = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         super.onAttach(context);
     }
+
+    public class RatingsAdapter extends RecyclerView.Adapter<RatingsAdapter.RatingViewHolder> {
+        private List<EventRating> ratingList;
+
+        RatingsAdapter(){
+            ratingList = Collections.emptyList();
+        }
+
+        @NonNull
+        @Override
+        public RatingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            // create a new view
+            TextView v = (TextView) LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_feedback, parent, false);
+
+            return new RatingViewHolder(v);
+        }
+
+        public void setContent(List<EventRating> ratings){
+            this.ratingList = ratings;
+
+            this.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RatingViewHolder holder, int position) {
+            holder.bind(ratingList.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return ratingList.size();
+        }
+
+        final class RatingViewHolder extends RecyclerView.ViewHolder {
+            @BindView(R.id.item_feedback_rating)
+            RatingBar rating;
+            @BindView(R.id.item_feedback_description)
+            TextView comment;
+
+            RatingViewHolder(View v){
+                super(v);
+                ButterKnife.bind(this, v);
+            }
+
+            public void bind(EventRating rating){
+                this.rating.setRating(rating.getRating());
+                this.comment.setText(rating.getDescription());
+            }
+        }
+    }
+
 }

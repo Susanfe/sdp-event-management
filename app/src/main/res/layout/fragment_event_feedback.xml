@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="?attr/actionBarSize">
-
-    <androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_margin="10dp">
+        android:layout_marginTop="?attr/actionBarSize">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_margin="10dp">
 
         <androidx.appcompat.widget.AppCompatRatingBar
                 android:layout_width="wrap_content"
@@ -39,5 +39,15 @@
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/feedback_relative_layout">
+        <androidx.recyclerview.widget.RecyclerView android:layout_width="wrap_content"
+                                                   android:layout_height="wrap_content"
+                                                    android:id="@+id/feedback_recycler_view">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
