@@ -1,17 +1,11 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import ch.epfl.sweng.eventmanager.users.Role;
 import com.google.firebase.database.Exclude;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -106,14 +100,20 @@ public final class Event {
         return name;
     }
 
-    public Date getBeginDate() {
+    public long getBeginDate() { return beginDate; }
+
+    public long getEndDate() {return endDate;};
+
+    @Exclude
+    public Date getBeginDateAsDate() {
         if (beginDate <= 0) {
             return null;
         }
         return new Date(beginDate);
     }
 
-    public Date getEndDate() {
+    @Exclude
+    public Date getEndDateAsDate() {
         if (endDate <= 0) {
             return null;
         }

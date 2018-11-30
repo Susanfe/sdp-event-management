@@ -63,8 +63,8 @@ public class EventCreateActivity extends AppCompatActivity {
         this.email.setText(event.getOrganizerEmail(), TextView.BufferType.EDITABLE);
         this.twitter.setText(event.getTwitterName(), TextView.BufferType.EDITABLE);
         this.description.setText(event.getDescription(), TextView.BufferType.EDITABLE);
-        this.beginDate.setText(formatDate(event.getBeginDate()));
-        this.endDate.setText(formatDate(event.getEndDate()));
+        this.beginDate.setText(formatDate(event.getBeginDateAsDate()));
+        this.endDate.setText(formatDate(event.getBeginDateAsDate()));
     }
 
     private void populateEvent() {
