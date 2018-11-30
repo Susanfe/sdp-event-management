@@ -1,36 +1,29 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-
-import javax.inject.Inject;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import dagger.android.AndroidInjection;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.inject.Inject;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";
@@ -45,6 +38,10 @@ public class EventCreateActivity extends AppCompatActivity {
     Button sendButton;
     @BindView(R.id.create_form_name)
     EditText name;
+    @BindView(R.id.create_form_begin_date)
+    EditText beginDate;
+    @BindView(R.id.create_form_end_date)
+    EditText endDate;
     @BindView(R.id.create_form_email)
     EditText email;
     @BindView(R.id.create_form_twitter_handle)
@@ -66,6 +63,8 @@ public class EventCreateActivity extends AppCompatActivity {
         this.email.setText(event.getOrganizerEmail(), TextView.BufferType.EDITABLE);
         this.twitter.setText(event.getTwitterName(), TextView.BufferType.EDITABLE);
         this.description.setText(event.getDescription(), TextView.BufferType.EDITABLE);
+        this.beginDate.setText(formatDate(event.getBeginDate()));
+        this.endDate.setText(formatDate(event.getEndDate()));
     }
 
     private void populateEvent() {
@@ -73,6 +72,27 @@ public class EventCreateActivity extends AppCompatActivity {
         this.event.setOrganizerEmail(getFieldValue(this.email));
         this.event.setTwitterName(getFieldValue(this.twitter));
         this.event.setDescription(getFieldValue(this.description));
+        this.event.setBeginDate(getDateValue(this.beginDate));
+        this.event.setEndDate(getDateValue(this.endDate));
+    }
+
+    private String formatDate(Date date) {
+        String format = "dd/MM/yyyy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
+        return dateFormat.format(date);
+    }
+
+    private long getDateValue(EditText editText) {
+        String format = "dd/MM/yyyy";
+        long date = 0L;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
+        try {
+            date = dateFormat.parse(editText.getText().toString()).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.i(TAG, "unable to parse date");
+        }
+        return date;
     }
 
     private String getFieldValue(EditText field) {
@@ -132,6 +152,31 @@ public class EventCreateActivity extends AppCompatActivity {
                 this.sendButton.setEnabled(true);
             });
         });
+    }
+
+    @OnClick(R.id.create_form_begin_date)
+    void onClickBeginDate() {
+        pickDateDialog(beginDate, System.currentTimeMillis() - 1000);
+    }
+
+    @OnClick(R.id.create_form_end_date)
+    void onClickEndDate() {
+        pickDateDialog(endDate, getDateValue(beginDate));
+    }
+
+    private void pickDateDialog(EditText dateField, long minDate) {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener date = (view, year, month, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            dateField.setText(formatDate(calendar.getTime()));
+        };
+       DatePickerDialog datePickerDialog = new DatePickerDialog(EventCreateActivity.this, date, calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+       datePickerDialog.getDatePicker().setMinDate(minDate);
+       datePickerDialog.show();
+
     }
 
     @Override
