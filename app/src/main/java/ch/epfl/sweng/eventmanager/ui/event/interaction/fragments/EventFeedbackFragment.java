@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,6 +20,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -39,7 +41,7 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
     @BindView(R.id.feedback_recycler_view)
     RecyclerView recyclerView;
 
-    private RatingsAdapter ratingsAdapter = new RatingsAdapter();;
+    private RatingsAdapter ratingsAdapter = new RatingsAdapter();
 
     public EventFeedbackFragment() {
         super(R.layout.fragment_event_feedback);
@@ -53,6 +55,7 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         ButterKnife.bind(this, view);
 
         recyclerView.setAdapter(ratingsAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return view;
     }
@@ -64,12 +67,16 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         model.getEvent().observe(this, ev -> {
 
             AtomicReference<Boolean> ratingExists = new AtomicReference<>();
-            repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, v -> {
-                ratingExists.set(v);
-                Log.i(TAG, "Got rating data " + v);
-            });
+            repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, ratingExists::set);
+
+            if (ratingExists.get() != null && !ratingExists.get()) {
+                sendButton.setVisibility(View.INVISIBLE);
+                description.setVisibility(View.INVISIBLE);
+                rating.setVisibility(View.INVISIBLE);
+            }
+
             sendButton.setOnClickListener(l -> {
-                EventRating newEventRating = new EventRating(UNIQUE_ID_DEVICE, rating.getRating(), description.getText().toString());
+                EventRating newEventRating = new EventRating(UNIQUE_ID_DEVICE, rating.getRating(), description.getText().toString(), System.currentTimeMillis());
                 //TODO Use a unique identifier to restrict each device to one feedback
                 if (ratingExists.get() == null) ;
                 else if (!ratingExists.get()) {
@@ -103,32 +110,28 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         super.onAttach(context);
     }
 
-    public class RatingsAdapter extends RecyclerView.Adapter<RatingsAdapter.RatingViewHolder> {
-        private List<EventRating> ratingList;
-
-        RatingsAdapter(){
-            ratingList = Collections.emptyList();
-        }
+    public class RatingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        private List<EventRating> ratingList = Collections.emptyList();
 
         @NonNull
         @Override
         public RatingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             // create a new view
-            TextView v = (TextView) LayoutInflater.from(parent.getContext())
+            View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_feedback, parent, false);
 
             return new RatingViewHolder(v);
         }
 
-        public void setContent(List<EventRating> ratings){
+        public void setContent(List<EventRating> ratings) {
             this.ratingList = ratings;
-
             this.notifyDataSetChanged();
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RatingViewHolder holder, int position) {
-            holder.bind(ratingList.get(position));
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            if (holder instanceof RatingsAdapter.RatingViewHolder)
+                ((RatingsAdapter.RatingViewHolder) holder).bind(ratingList.get(position));
         }
 
         @Override
@@ -141,15 +144,18 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
             RatingBar rating;
             @BindView(R.id.item_feedback_description)
             TextView comment;
+            @BindView(R.id.item_feedback_date)
+            TextView date;
 
-            RatingViewHolder(View v){
+            RatingViewHolder(View v) {
                 super(v);
                 ButterKnife.bind(this, v);
             }
 
-            public void bind(EventRating rating){
+            public void bind(EventRating rating) {
                 this.rating.setRating(rating.getRating());
                 this.comment.setText(rating.getDescription());
+                this.date.setText(rating.getDate().toString());
             }
         }
     }

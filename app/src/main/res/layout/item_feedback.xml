@@ -1,33 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+>
 
     <androidx.cardview.widget.CardView android:layout_width="match_parent"
-                                       android:layout_height="match_parent">
+                                       android:layout_height="wrap_content"
+                                       android:layout_marginTop="15dp"
+                                       android:layout_marginBottom="15dp"
+                                       android:layout_marginLeft="10dp"
+                                       android:layout_marginStart="10dp"
+                                       android:layout_gravity="center_vertical"
+                                       app:cardElevation="1dp"
+                                       app:contentPadding="15dp">
 
-        <androidx.appcompat.widget.LinearLayoutCompat android:layout_width="match_parent"
-                                                      android:layout_height="match_parent"
-                                                      android:layout_gravity="center"
-                                                      android:gravity="start"
-                                                      android:orientation="vertical">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:gravity="start"
+                      android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatRatingBar android:layout_width="match_parent"
-                                                          android:layout_height="match_parent"
-                                                          android:isIndicator="true"
-                                                          android:numStars="5"
-                                                          style="@style/Widget.AppCompat.RatingBar.Small"
-            android:id="@+id/item_feedback_rating"/>
+            <RatingBar android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:isIndicator="true"
+                       android:numStars="5"
+                       style="@style/Widget.AppCompat.RatingBar.Small"
+                       android:id="@+id/item_feedback_rating"/>
 
-            <androidx.appcompat.widget.AppCompatTextView android:layout_width="match_parent"
-                                                         android:layout_height="match_parent"
-                                                         android:id="@+id/item_feedback_description"
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/item_feedback_date"
+            />
+
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/item_feedback_description"
             >
 
-            </androidx.appcompat.widget.AppCompatTextView>
+            </TextView>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>
