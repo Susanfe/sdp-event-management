@@ -3,7 +3,6 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -32,19 +30,15 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
     @Inject
     protected FeedbackRepository repository;
 
-    @BindView(R.id.feedback_form_send_button)
-    Button sendButton;
-    @BindView(R.id.feedback_form_content)
-    EditText description;
-    @BindView(R.id.feedback_form_ratingBar)
-    RatingBar rating;
+    @BindView(R.id.feedback_submit_feedback)
+    Button submitFeedback;
     @BindView(R.id.feedback_recycler_view)
     RecyclerView recyclerView;
 
     private RatingsAdapter ratingsAdapter = new RatingsAdapter();
 
     public EventFeedbackFragment() {
-        super(R.layout.fragment_event_feedback);
+        super(R.layout.fragment_display_feedback);
     }
 
     @Override
@@ -69,27 +63,9 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
             AtomicReference<Boolean> ratingExists = new AtomicReference<>();
             repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, ratingExists::set);
 
-            if (ratingExists.get() != null && !ratingExists.get()) {
-                sendButton.setVisibility(View.INVISIBLE);
-                description.setVisibility(View.INVISIBLE);
-                rating.setVisibility(View.INVISIBLE);
+            if (ratingExists.get() != null && ratingExists.get()){
+                submitFeedback.setVisibility(View.INVISIBLE);
             }
-
-            sendButton.setOnClickListener(l -> {
-                EventRating newEventRating = new EventRating(UNIQUE_ID_DEVICE, rating.getRating(), description.getText().toString(), System.currentTimeMillis());
-                //TODO Use a unique identifier to restrict each device to one feedback
-                if (ratingExists.get() == null) ;
-                else if (!ratingExists.get()) {
-                    //Publish the rating and shows that feedback has been published
-                    repository.publishRating(ev.getId(), newEventRating).addOnSuccessListener(aVoid -> {
-                        Toast.makeText(getActivity(), R.string.event_feedback_submitted, Toast.LENGTH_SHORT).show();
-                        // Returns to main showcase event screen
-                        ((EventShowcaseActivity) getActivity()).changeFragment(new EventMainFragment(), true);
-                    });
-                } else {
-                    Toast.makeText(getActivity(), R.string.event_feedback_already_submitted, Toast.LENGTH_SHORT).show();
-                }
-            });
 
             repository.getRatings(ev.getId()).observe(this, ratings -> {
                 if (ratings != null && ratings.size() > 0) {
@@ -101,6 +77,8 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
                 }
             });
         });
+
+        submitFeedback.setOnClickListener(l -> ((EventShowcaseActivity) getActivity()).changeFragment(new SubmitFeedbackFragment(), true));
     }
 
     @Override
