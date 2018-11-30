@@ -122,6 +122,11 @@ public class EventCreateActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.create_form_send_button)
+    public void onClickSendButton() {
+        setupButton();
+    }
+
     private void setupButton() {
         this.sendButton.setOnClickListener(v -> {
             if (loading) {
@@ -172,10 +177,10 @@ public class EventCreateActivity extends AppCompatActivity {
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             dateField.setText(formatDate(calendar.getTime()));
         };
-       DatePickerDialog datePickerDialog = new DatePickerDialog(EventCreateActivity.this, date, calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-       datePickerDialog.getDatePicker().setMinDate(minDate);
-       datePickerDialog.show();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(EventCreateActivity.this, date,
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMinDate(minDate);
+        datePickerDialog.show();
 
     }
 
@@ -186,10 +191,8 @@ public class EventCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_event_create);
-        ButterKnife.bind(this);
 
-        // Setup button
-        this.setupButton();
+        ButterKnife.bind(this);
 
         // Fetch event from passed ID
         Intent intent = getIntent();
