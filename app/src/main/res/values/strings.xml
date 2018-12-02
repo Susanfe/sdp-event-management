@@ -135,11 +135,13 @@
     <string name="create_event_title">Create Event</string>
     <string name="edit_nav_item_activity_event">Event edition</string>
     <string name="create_event_canceled">Operation was unexpectedly cancelled.</string>
-    <string name="create_event_error">An error occured:</string>
+    <string name="create_event_error">An error occurred:</string>
     <string name="create_event_success">The event has been created!</string>
     <string name="create_event_update_success">The event has been updated!</string>
     <string name="feedback_form_main_go_button">Feedback</string>
     <string name="feedback_nav">Feedback</string>
+
+    <string name="simple_edit_text">Edit</string>
 
     <!-- Settings -->
     <string name="settings">Settings</string>

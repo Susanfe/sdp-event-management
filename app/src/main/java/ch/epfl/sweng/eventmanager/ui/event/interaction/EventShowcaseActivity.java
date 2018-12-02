@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -258,6 +259,12 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
      */
     private Fragment getCurrentFragment() {
         return getSupportFragmentManager().findFragmentById(R.id.content_frame);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_map_edition, menu);
+        return true;
     }
 
     /**
