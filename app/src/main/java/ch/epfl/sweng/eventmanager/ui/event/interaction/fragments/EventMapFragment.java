@@ -72,6 +72,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     protected ZoneModel zonesModel;
     protected ScheduleViewModel scheduleViewModel;
     private Spot clickedClusterItem;
+    SupportMapFragment mapFragment;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -95,7 +96,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
             scheduleViewModel = ViewModelProviders.of(requireActivity(), factory).get(ScheduleViewModel.class);
         }
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+        mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapFragment);
         if (mapFragment == null) {
             FragmentManager fragmentManager = getFragmentManager();
@@ -105,6 +106,11 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 fragmentTransaction.replace(R.id.mapFragment, mapFragment).commit();
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         mapFragment.getMapAsync(googleMap -> {
             mMap = googleMap;
             if (mMap != null) {
@@ -113,11 +119,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 setUpOverlay();
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     private void setUpMap(){

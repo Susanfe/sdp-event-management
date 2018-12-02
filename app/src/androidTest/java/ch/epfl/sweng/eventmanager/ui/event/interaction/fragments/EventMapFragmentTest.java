@@ -34,6 +34,7 @@ public class EventMapFragmentTest {
                 .perform(NavigationViewActions.navigateTo(R.id.nav_map));
     }
 
+    @Ignore("not increasing test coverage")
     @Test
     public void eventMapTest() {
         onView(withId(R.id.drawer_layout))
