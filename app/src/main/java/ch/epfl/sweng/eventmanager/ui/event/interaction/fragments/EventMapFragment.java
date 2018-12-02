@@ -141,9 +141,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         }
     }
 
-    /**
-     * Set up the overlay that covers the map
-     */
     private void setUpOverlay() {
         if (getActivity() != null){
             this.zonesModel.getZone().observe(getActivity(), zones -> {
@@ -155,9 +152,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
             });
         }
     }
-    /**
-     * Set up the cluster manager
-     */
+
     private void setUpCluster() {
         if (getActivity() != null){
             mClusterManager = new ClusterManager<>(getActivity(), mMap);
@@ -180,9 +175,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         }
     }
 
-    /**
-     * add all spots of the event into the cluster mana
-     */
     private void addItemToCluster() {
         if (getActivity() != null){
             this.scheduleViewModel.getScheduledItems().observe(getActivity(), items ->
