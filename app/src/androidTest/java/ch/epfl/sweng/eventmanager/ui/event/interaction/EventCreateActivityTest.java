@@ -16,6 +16,8 @@ import org.hamcrest.Matchers;
 import org.junit.*;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
+import java.util.Date;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.*;
@@ -70,8 +72,10 @@ public class EventCreateActivityTest {
 
                 Assert.assertEquals("you@test.com", e.getOrganizerEmail());
                 Assert.assertEquals("Event Test 1 description", e.getDescription());
-                Assert.assertEquals(1543618800000L,e.getBeginDate());
-                Assert.assertEquals(1543878000000L,e.getEndDate());
+                Date beginDate = java.sql.Date.valueOf(LocalDate.of(2018, 12, 1).toString());
+                Date endDate = java.sql.Date.valueOf(LocalDate.of(2018, 12, 4).toString());
+                Assert.assertEquals(beginDate.getTime(), e.getBeginDate());
+                Assert.assertEquals(endDate.getTime(), e.getEndDate());
                 Assert.assertNull(e.getTwitterName());
             }
         }
