@@ -122,11 +122,6 @@ public class EventCreateActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.create_form_send_button)
-    public void onClickSendButton() {
-        setupButton();
-    }
-
     private void setupButton() {
         this.sendButton.setOnClickListener(v -> {
             if (loading) {
@@ -193,6 +188,7 @@ public class EventCreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_create);
 
         ButterKnife.bind(this);
+        this.setupButton();
 
         // Fetch event from passed ID
         Intent intent = getIntent();
