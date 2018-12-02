@@ -37,6 +37,7 @@ public class EventPickingActivityTest {
     @Before
     public void setUpDummy() {
         Session.enforceDummySessions();
+        Session.logout();
     }
 
     @After
@@ -46,13 +47,16 @@ public class EventPickingActivityTest {
 
     @Test
     public void testLoginFeature() {
-        Session.logout();
-        pressBack();
-
+        if (Session.isLoggedIn()) {
+            onView(withId(R.id.event_picking_login_account)).perform(click());
+            onView(withId(R.id.layout_login_signup_logout_button)).perform(click());
+            SystemClock.sleep(1000);
+        }
         onView(withId(R.id.event_picking_login_account)).perform(click());
-        SystemClock.sleep(3000);
-        assertLoggedUIstate(ViewMatchers.Visibility.GONE);
+        SystemClock.sleep(1000);
+
         assertNotLoggedUIstate(ViewMatchers.Visibility.VISIBLE);
+        assertLoggedUIstate(ViewMatchers.Visibility.GONE);
 
         pressBack();
     }
@@ -63,7 +67,7 @@ public class EventPickingActivityTest {
         pressBack();
 
         onView(withId(R.id.event_picking_login_account)).perform(click());
-        SystemClock.sleep(3000);
+        SystemClock.sleep(1000);
         assertLoggedUIstate(ViewMatchers.Visibility.VISIBLE);
         assertNotLoggedUIstate(ViewMatchers.Visibility.GONE);
 
