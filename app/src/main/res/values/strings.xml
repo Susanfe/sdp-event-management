@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Event Manager</string>
+    <string name="app_name">Gatsbi</string>
 
     <string name="filter_title_event_picking">Filter for app indexing and URI</string>
 
