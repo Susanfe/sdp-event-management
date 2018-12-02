@@ -7,12 +7,7 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -110,9 +105,9 @@ public class EventPickingActivity extends AppCompatActivity {
     private void setupAdapters() {
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
-        eventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.Event);
+        eventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.Event, this);
         setupRecyclerView(eventList, eventsAdapter, new OvershootInRightAnimator());
-        joinedEventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.JoinedEvents);
+        joinedEventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.JoinedEvents, this);
         setupRecyclerView(joinedEventsList, joinedEventsAdapter, new LandingAnimator());
     }
 
