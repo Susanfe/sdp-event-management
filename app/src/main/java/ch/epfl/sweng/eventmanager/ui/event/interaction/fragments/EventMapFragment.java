@@ -106,11 +106,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 fragmentTransaction.replace(R.id.mapFragment, mapFragment).commit();
             }
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         mapFragment.getMapAsync(googleMap -> {
             mMap = googleMap;
             if (mMap != null) {
@@ -119,6 +114,11 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 setUpOverlay();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void setUpMap(){
