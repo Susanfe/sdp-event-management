@@ -34,6 +34,8 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
     Button submitFeedback;
     @BindView(R.id.feedback_recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.ratings_empty_tv)
+    TextView emptyRatingsTextView;
 
     private RatingsAdapter ratingsAdapter = new RatingsAdapter();
 
@@ -64,16 +66,18 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
             repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, ratingExists::set);
 
             if (ratingExists.get() != null && ratingExists.get()){
-                submitFeedback.setVisibility(View.INVISIBLE);
+                submitFeedback.setVisibility(View.GONE);
             }
 
             repository.getRatings(ev.getId()).observe(this, ratings -> {
                 if (ratings != null && ratings.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);
+                    emptyRatingsTextView.setVisibility(View.GONE);
                     ratingsAdapter.setContent(ratings);
                 } else {
                     recyclerView.setVisibility(View.GONE);
                     ratingsAdapter.setContent(Collections.emptyList());
+                    emptyRatingsTextView.setVisibility(View.VISIBLE);
                 }
             });
         });

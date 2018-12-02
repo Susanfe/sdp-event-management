@@ -74,6 +74,8 @@ public class EventFeedbackFragmentTest {
     public void submitFeedbackTest() {
         repository.cleanRatings();
         onView(withId(R.id.feedback_for_go_button)).check(matches(isClickable())).perform(click());
+        onView(withId(R.id.feedback_submit_feedback)).check(matches(isClickable())).perform(click());
+
         submitRating(DESCRIPTION_1, RATING_1);
         onView(withText(R.string.event_feedback_submitted)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
@@ -85,9 +87,12 @@ public class EventFeedbackFragmentTest {
                 .perform(DrawerActions.open());
         onView(withId(R.id.nav_view))
                 .perform(NavigationViewActions.navigateTo(R.id.nav_feedback));
+        onView(withId(R.id.feedback_submit_feedback)).check(matches(isClickable())).perform(click());
+
         submitRating(DESCRIPTION_1, RATING_1);
 
         onView(withId(R.id.feedback_for_go_button)).check(matches(isClickable())).perform(click());
+        onView(withId(R.id.feedback_submit_feedback)).check(matches(isClickable())).perform(click());
 
         submitRating(DESCRIPTION_2, RATING_2);
 
