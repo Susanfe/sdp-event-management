@@ -135,7 +135,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 mMap.getUiSettings().setMapToolbarEnabled(true);
                 enableMyLocationIfPermitted();
                 mMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
-                mMap.setOnMyLocationClickListener(onMyLocationClickListener);
             });
         }
     }
@@ -214,9 +213,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         // (the camera animates to the user's current position).
         return false;
     };
-
-    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener = location ->
-        Toast.makeText(getActivity(), "" + location, Toast.LENGTH_LONG).show();
 
     @Override
     public boolean onClusterClick(Cluster<Spot> cluster) {
