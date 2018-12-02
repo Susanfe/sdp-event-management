@@ -99,9 +99,10 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             if (ev == null) {
                 return;
             }
-
-            Blurry.with(this).radius(3).from(ev.getImage()).
-                    into(headerView.findViewById(R.id.drawer_header_image));
+            if (ev.getImage() != null){
+                Blurry.with(this).radius(3).from(ev.getImage()).
+                        into(headerView.findViewById(R.id.drawer_header_image));
+            }
 
             drawer_header_text.setText(ev.getName());
             setTitle(ev.getName());
