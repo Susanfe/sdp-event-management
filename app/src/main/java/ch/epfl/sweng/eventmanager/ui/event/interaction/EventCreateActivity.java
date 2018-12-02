@@ -3,32 +3,22 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-
-import javax.inject.Inject;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import dagger.android.AndroidInjection;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 
