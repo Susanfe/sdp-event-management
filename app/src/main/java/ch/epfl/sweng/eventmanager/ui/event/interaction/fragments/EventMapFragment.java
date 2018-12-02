@@ -72,6 +72,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     protected ZoneModel zonesModel;
     protected ScheduleViewModel scheduleViewModel;
     private Spot clickedClusterItem;
+    SupportMapFragment mapFragment;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -84,11 +85,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     public void onCreate(Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         if (spotsModel == null) {
             spotsModel = ViewModelProviders.of(requireActivity(), factory).get(SpotsModel.class);
@@ -100,7 +96,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
             scheduleViewModel = ViewModelProviders.of(requireActivity(), factory).get(ScheduleViewModel.class);
         }
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+        mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mapFragment);
         if (mapFragment == null) {
             FragmentManager fragmentManager = getFragmentManager();
@@ -118,6 +114,11 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 setUpOverlay();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void setUpMap(){
@@ -140,9 +141,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         }
     }
 
-    /**
-     * Set up the overlay that covers the map
-     */
     private void setUpOverlay() {
         if (getActivity() != null){
             this.zonesModel.getZone().observe(getActivity(), zones -> {
@@ -190,9 +188,11 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                         // 2. Add new spots
                         for (Spot s : spots) {
                             s.setScheduleList(items);
-                            mClusterManager.addItem(s);
                         }
+                        mClusterManager.addItems(spots);
+                        mClusterManager.cluster();
                     }));
+
         }
     }
 
@@ -212,8 +212,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     }
 
     private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener = () -> {
-        //Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false;
     };
@@ -249,14 +247,18 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     public void onClusterItemInfoWindowClick(Spot spot) {
         if (getActivity() != null && spot != null) {
             if(spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
-                ScheduleParentFragment scheduleParentFragment = new ScheduleParentFragment();
-                Bundle args = new Bundle();
-                args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
-                scheduleParentFragment.setArguments(args);
-                ((EventShowcaseActivity)getActivity()).changeFragment(
-                        scheduleParentFragment, true);
+                goToSchedule();
             }
         }
+    }
+
+    private void goToSchedule() {
+        ScheduleParentFragment scheduleParentFragment = new ScheduleParentFragment();
+        Bundle args = new Bundle();
+        args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
+        scheduleParentFragment.setArguments(args);
+        ((EventShowcaseActivity)getActivity()).changeFragment(
+                scheduleParentFragment, true);
     }
 
     /**
