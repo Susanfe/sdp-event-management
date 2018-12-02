@@ -2,7 +2,6 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.widget.*;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
+import com.bumptech.glide.Glide;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
@@ -75,7 +74,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             eventDescription.setText(ev.getDescription());
             eventDescription.setVisibility(View.VISIBLE);
 
-            eventImage.setImageBitmap(ev.getImage());
+            Glide.with(this).load(ev.getImageURL()).into(eventImage);
             eventImage.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 

@@ -56,8 +56,8 @@ public class FirebaseEventRepository implements EventRepository {
             MediatorLiveData<List<Event>> events = new MediatorLiveData<>();
             List<Event> eventList = new ArrayList<>();
             for (Event event : list) {
-                events.addSource(getEventImage(event), img -> {
-                    event.setImage(img);
+                events.addSource(getEventImageURL(event), url -> {
+                    event.setImageURL(url);
                     eventList.add(event);
                     events.setValue(eventList);
                 });
@@ -86,8 +86,8 @@ public class FirebaseEventRepository implements EventRepository {
             }
         });
 
-        return Transformations.switchMap(ret, ev -> Transformations.map(getEventImage(ev), img -> {
-            ev.setImage(img);
+        return Transformations.switchMap(ret, ev -> Transformations.map(getEventImageURL(ev), url -> {
+            ev.setImageURL(url);
             return ev;
         }));
     }
@@ -98,11 +98,11 @@ public class FirebaseEventRepository implements EventRepository {
     }
 
     @Override
-    public LiveData<Bitmap> getEventImage(Event event) {
+    public LiveData<String> getEventImageURL(Event event) {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
         StorageReference eventLogoReference = imagesRef.child(getImageName(event));
 
-        return FirebaseHelper.getImage(eventLogoReference);
+        return FirebaseHelper.getImageURL(eventLogoReference);
     }
 
     private <T> LiveData<List<T>> getElems(int eventId, String basePath, Class<T> classOfT) {

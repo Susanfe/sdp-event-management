@@ -1,8 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.graphics.Bitmap;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,7 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Louis Vialar
@@ -128,8 +127,8 @@ public class EventTest {
 
     @Test
     public void setAndGetImageTest(){
-        Bitmap img = Mockito.mock(Bitmap.class);
-        ev1.setImage(img);
-        assertEquals(ev1.getImage(), img);
+        String URL = "Fake URL";
+        ev1.setImageURL(URL);
+        assertEquals(ev1.getImageURL(), URL);
     }
 }

@@ -2,27 +2,29 @@ package ch.epfl.sweng.eventmanager.ui.event.selection;
 
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Button;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Event> mEvents;
+    private Context context;
 
     void update(List<Event> events) {
         class EventDiffCallback extends DiffUtil.Callback {
@@ -63,14 +65,15 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public enum ItemType {JoinedEvents, Event}
     private ItemType itemType;
 
-    private EventListAdapter(List<Event> myEvents, ItemType itemType) {
+    private EventListAdapter(List<Event> myEvents, Context context, ItemType itemType) {
         mEvents = myEvents;
+        this.context = context;
         this.itemType = itemType;
     }
 
-    static EventListAdapter newInstance(ItemType itemType) {
+    static EventListAdapter newInstance(ItemType itemType, Context context) {
         List<Event> emptyList = new ArrayList<>();
-        return new EventListAdapter(emptyList,itemType);
+        return new EventListAdapter(emptyList, context, itemType);
     }
 
     // Create new views (invoked by the layout manager)
@@ -114,13 +117,13 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private void eventOnBindViewHolder(EventViewHolder holder, int position) {
         holder.eventNameTextView.setText(mEvents.get(position).getName());
         holder.eventSummary.setText(mEvents.get(position).getDescription());
-        holder.eventThumbnail.setImageBitmap(mEvents.get(position).getImage());
+        Glide.with(context).load(mEvents.get(position).getImageURL()).into(holder.eventThumbnail);
     }
 
     private void joinedEventOnBindViewHolder(JoinedEventViewHolder holder, int position) {
         holder.eventNameTextView.setText(mEvents.get(position).getName());
         holder.eventSummary.setText(mEvents.get(position).getDescription());
-        holder.eventThumbnail.setImageBitmap(mEvents.get(position).getImage());
+        Glide.with(context).load(mEvents.get(position).getImageURL()).into(holder.eventThumbnail);
     }
 
 

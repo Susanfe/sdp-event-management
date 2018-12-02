@@ -1,17 +1,10 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.graphics.Bitmap;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import ch.epfl.sweng.eventmanager.users.Role;
 import com.google.firebase.database.Exclude;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -48,9 +41,9 @@ public final class Event {
      */
     private String organizerEmail;
     /**
-     * An image representing the event, may be null
+     * An URL to the image representing the event, may be null
      */
-    private Bitmap image;
+    private String imageURL;
     /**
      * The location of the event
      */
@@ -70,13 +63,13 @@ public final class Event {
 
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 String organizerEmail, Bitmap image, EventLocation location,
+                 String organizerEmail, String imageURL, EventLocation location,
                  Map<String, Map<String, String>> users, String twitterName) {
-        this(id, name, description, beginDate, endDate, organizerEmail, image, location, users, twitterName, null);
+        this(id, name, description, beginDate, endDate, organizerEmail, imageURL, location, users, twitterName, null);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 String organizerEmail, Bitmap image, EventLocation location,
+                 String organizerEmail, String imageURL, EventLocation location,
                  Map<String, Map<String, String>> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
         this.ticketingConfiguration = ticketingConfiguration;
 
@@ -89,7 +82,7 @@ public final class Event {
         this.endDate = endDate.getTime();
         this.description = description;
         this.organizerEmail = organizerEmail;
-        this.image = image;
+        this.imageURL = imageURL;
         this.location = location;
         this.users = users;
         this.twitterName = twitterName;
@@ -129,8 +122,8 @@ public final class Event {
     }
 
     @Exclude
-    public Bitmap getImage() {
-        return image;
+    public String getImageURL() {
+        return imageURL;
     }
 
     public EventLocation getLocation() {
@@ -194,8 +187,8 @@ public final class Event {
         return f.format(endDate);
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public EventTicketingConfiguration getTicketingConfiguration() {
