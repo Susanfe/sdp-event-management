@@ -27,6 +27,7 @@ import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.Objects;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
@@ -189,8 +190,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case R.id.nav_scan:
-                // TODO Handle null pointer exception
-                startActivity(ticketingManager.start(model.getEvent().getValue(), this));
+                startActivity(ticketingManager.start(
+                        Objects.requireNonNull(model.getEvent().getValue()),
+                        this));
                 break;
 
             case R.id.nav_settings:
@@ -234,6 +236,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 if (newsFragment == null) newsFragment = new NewsFragment();
                 changeFragment(newsFragment, saveToBackstack);
                 break;
+
+            case MAP_EDITION:
+                changeFragment(new EventMapEditionFragment(), saveToBackstack);
             default:
                 changeFragment(new EventMainFragment(), saveToBackstack);
                 break;
@@ -251,6 +256,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             if (current instanceof EventMapFragment) navigationView.setCheckedItem(R.id.nav_map);
             if (current instanceof ScheduleParentFragment) navigationView.setCheckedItem(R.id.nav_schedule);
             if (current instanceof EventTicketFragment) navigationView.setCheckedItem(R.id.nav_tickets);
+            if (current instanceof EventMapEditionFragment) navigationView.setCheckedItem(R.id.nav_map);
         });
     }
 
@@ -265,6 +271,19 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_map_edition, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_map_edition_edit :
+                // Action is handled elsewhere
+                return false;
+
+            default :
+                // Action was not consumed
+                return false;
+        }
     }
 
     /**
@@ -299,6 +318,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     }
 
     public enum FragmentType {
-        MAIN, MAP, SCHEDULE, NEWS, FORM
+        // Every registered type here needs to be used in the callChangeFragment method
+        MAIN, MAP, SCHEDULE, NEWS, FORM, MAP_EDITION
     }
 }

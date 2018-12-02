@@ -7,11 +7,14 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,6 +32,7 @@ import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -67,9 +71,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     @Inject
     ViewModelFactory factory;
     private ClusterManager<Spot> mClusterManager;
-    protected SpotsModel spotsModel;
-    protected ZoneModel zonesModel;
-    protected ScheduleViewModel scheduleViewModel;
+    private SpotsModel spotsModel;
+    private ZoneModel zonesModel;
+    private ScheduleViewModel scheduleViewModel;
     private Spot clickedClusterItem;
     SupportMapFragment mapFragment;
 
@@ -84,6 +88,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     public void onCreate(Bundle savedInstanceState) {
         AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
+
+        // Indicates to the fragment that EventShowcaseActivity has a menu
+        setHasOptionsMenu(true);
 
         if (spotsModel == null) {
             spotsModel = ViewModelProviders.of(requireActivity(), factory).get(SpotsModel.class);
@@ -105,6 +112,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 fragmentTransaction.replace(R.id.mapFragment, mapFragment).commit();
             }
         }
+
+        assert mapFragment != null;
         mapFragment.getMapAsync(googleMap -> {
             mMap = googleMap;
             if (mMap != null) {
@@ -113,11 +122,29 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 setUpOverlay();
             }
         });
+
+
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem item = menu.getItem(0);
+        item.setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_map_edition_edit:
+                ((EventShowcaseActivity)Objects.requireNonNull(getActivity())).callChangeFragment(
+                        EventShowcaseActivity.FragmentType.MAP_EDITION, false);
+                return true;
+
+            default:
+                // Action was not consumed (calls activity method)
+                return false;
+        }
     }
 
     private void setUpMap(){
@@ -252,7 +279,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         Bundle args = new Bundle();
         args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
         scheduleParentFragment.setArguments(args);
-        ((EventShowcaseActivity)getActivity()).changeFragment(
+        ((EventShowcaseActivity)Objects.requireNonNull(getActivity())).changeFragment(
                 scheduleParentFragment, true);
     }
 
@@ -267,13 +294,14 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         private final int mDimension;
 
         public SpotRenderer(Context context) {
-            super(getActivity(), mMap, mClusterManager);
+            super(Objects.requireNonNull(getActivity()), mMap, mClusterManager);
 
             if (context == null){
                 throw new NullPointerException("context is null");
             }
 
-            View multiProfile = getLayoutInflater().inflate(R.layout.custom_marker, null);
+            View multiProfile = getLayoutInflater().inflate(R.layout.custom_marker,
+                    new LinearLayout(getContext()));
             mClusterIconGenerator.setContentView(multiProfile);
             mClusterImageView = multiProfile.findViewById(R.id.image);
 
@@ -307,7 +335,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 if(spotImages.size() == 4) {
                     break;
                 }
-                Drawable drawable = new BitmapDrawable(p.getBitmap());
+                Drawable drawable = new BitmapDrawable(
+                        Objects.requireNonNull(getContext()).getResources(), p.getBitmap());
+
                 drawable.setBounds(0, 0, width, height);
                 spotImages.add(drawable);
             }
@@ -334,7 +364,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         private final View myContentsView;
 
         MyCustomAdapterForItems() {
-            myContentsView = getLayoutInflater().inflate(R.layout.custom_info_window, null);
+            myContentsView = getLayoutInflater().inflate(R.layout.custom_info_window,
+                    new LinearLayout(getContext()));
         }
 
         @Override
