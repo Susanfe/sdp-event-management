@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,9 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -74,8 +77,10 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
                     recyclerView.setVisibility(View.VISIBLE);
                     emptyRatingsTextView.setVisibility(View.GONE);
                     ratingsAdapter.setContent(ratings);
+                    submitFeedback.setVisibility(View.GONE);
                 } else {
                     recyclerView.setVisibility(View.GONE);
+                    submitFeedback.setVisibility(View.VISIBLE);
                     ratingsAdapter.setContent(Collections.emptyList());
                     emptyRatingsTextView.setVisibility(View.VISIBLE);
                 }
@@ -137,7 +142,7 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
             public void bind(EventRating rating) {
                 this.rating.setRating(rating.getRating());
                 this.comment.setText(rating.getDescription());
-                this.date.setText(rating.getDate().toString());
+                this.date.setText(new Date(rating.getDate()).toString());
             }
         }
     }

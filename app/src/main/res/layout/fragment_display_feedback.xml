@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               xmlns:app="http://schemas.android.com/apk/res-auto"
+              tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragment"
 >
 
+    <androidx.appcompat.widget.AppCompatButton
+            android:text="@string/submit_your_feedback"
+            android:id="@+id/feedback_submit_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:gravity="center"
+            app:layout_anchorGravity="bottom"
+            app:layout_anchor="@+id/feedback_relative_layout"
+    />
     <RelativeLayout android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="460dp"
                     android:id="@+id/feedback_relative_layout">
+
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
                 android:clipToPadding="false"
                 android:id="@+id/feedback_recycler_view"
-        >
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" android:layout_marginTop="0dp"
+                android:layout_alignParentLeft="true">
         </androidx.recyclerview.widget.RecyclerView>
-
-        <Button
-                android:text="@string/submit_your_feedback"
-                android:id="@+id/feedback_submit_feedback"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-        />
     </RelativeLayout>
 
     <TextView

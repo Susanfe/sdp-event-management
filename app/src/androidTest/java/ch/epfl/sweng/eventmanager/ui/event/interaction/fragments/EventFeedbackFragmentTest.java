@@ -13,6 +13,7 @@ import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.runner.AndroidJUnitRunner;
@@ -81,7 +82,7 @@ public class EventFeedbackFragmentTest {
     }
 
     @Test
-    public void submitFeedbackTwiceFailsTest() {
+    public void submitFeedbackAndReadTest() {
         repository.cleanRatings();
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
@@ -92,11 +93,9 @@ public class EventFeedbackFragmentTest {
         submitRating(DESCRIPTION_1, RATING_1);
 
         onView(withId(R.id.feedback_for_go_button)).check(matches(isClickable())).perform(click());
-        onView(withId(R.id.feedback_submit_feedback)).check(matches(isClickable())).perform(click());
 
-        submitRating(DESCRIPTION_2, RATING_2);
-
-        onView(withText(R.string.event_feedback_already_submitted)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+        onView(withId(R.id.feedback_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
+                RecyclerViewButtonClick.clickChildViewWithId(R.id.item_feedback_date)));
     }
 
     @After public void close(){

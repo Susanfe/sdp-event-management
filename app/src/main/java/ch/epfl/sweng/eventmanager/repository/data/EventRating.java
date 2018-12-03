@@ -1,12 +1,10 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import java.util.Date;
-
 public class EventRating {
     private String deviceId;
     private float rating;
     private String description;
-    private Date date;
+    private long date;
 
     public EventRating() {
     }
@@ -15,7 +13,7 @@ public class EventRating {
         this.deviceId = deviceId;
         this.rating = rating;
         this.description = description;
-        this.date = new Date(date);
+        this.date = date;
     }
 
     public String getDeviceId() {
@@ -30,7 +28,7 @@ public class EventRating {
         return description;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 }

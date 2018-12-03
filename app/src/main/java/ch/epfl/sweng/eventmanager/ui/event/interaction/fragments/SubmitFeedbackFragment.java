@@ -60,8 +60,7 @@ public class SubmitFeedbackFragment extends AbstractShowcaseFragment {
 
             sendButton.setOnClickListener(l -> {
                 EventRating newEventRating = new EventRating(UNIQUE_ID_DEVICE, rating.getRating(), description.getText().toString(), System.currentTimeMillis());
-                //TODO Use a unique identifier to restrict each device to one feedback
-                if (ratingExists.get() == null) ;
+                if (ratingExists.get() == null);
                 else if (!ratingExists.get()) {
                     //Publish the rating and shows that feedback has been published
                     repository.publishRating(ev.getId(), newEventRating).addOnSuccessListener(aVoid -> {
