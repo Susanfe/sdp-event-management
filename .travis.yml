@@ -1,6 +1,6 @@
 ﻿language: android
 env:
-  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=19
+  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=24
 
   # disabled: dies randomly
   # - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16 VIEW_AVD_LOGS=1 EMU_OPTS="-noaudio"
