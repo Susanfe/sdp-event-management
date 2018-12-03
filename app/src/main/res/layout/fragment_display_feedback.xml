@@ -28,7 +28,8 @@
                 android:visibility="visible"
                 android:gravity="center"
                 app:layout_anchorGravity="bottom"
-                android:layout_alignParentStart="true" android:layout_alignParentBottom="true"/>
+                android:layout_alignParentStart="true" android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"/>
     </RelativeLayout>
 
     <TextView
