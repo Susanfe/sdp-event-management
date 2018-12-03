@@ -20,6 +20,7 @@ import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -66,7 +67,7 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
             AtomicReference<Boolean> ratingExists = new AtomicReference<>();
             repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, ratingExists::set);
 
-            if (ratingExists.get() != null && ratingExists.get()){
+            if (ratingExists.get() != null && ratingExists.get()) {
                 submitFeedback.setVisibility(View.GONE);
             }
 
@@ -110,6 +111,9 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
 
         public void setContent(List<EventRating> ratings) {
             this.ratingList = ratings;
+
+            Collections.sort(ratingList, (o1, o2) -> -1 * Long.compare(o1.getDate(), o2.getDate()));
+
             this.notifyDataSetChanged();
         }
 
