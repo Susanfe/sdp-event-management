@@ -1,6 +1,6 @@
 ﻿language: android
 env:
-  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=19
+  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=21
 
   # disabled: dies randomly
   # - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16 VIEW_AVD_LOGS=1 EMU_OPTS="-noaudio"
@@ -32,10 +32,6 @@ before_script:
   - adb shell settings put global window_animation_scale 0.0
   - adb shell settings put global transition_animation_scale 0.0
   - adb shell settings put global animator_duration_scale 0.0
-  # For Multidex issue for devices API < 19
-  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
-  - adb shell stop installd
-  - adb shell start installd
   # Set twitter key
   - sed -i 's/${CONSUMER_SECRET}/$TWITTER_CONSUMMER_SECRET/' app/src/main/res/values/twitter.xml
   - adb shell input keyevent 4 &
