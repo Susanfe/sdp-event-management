@@ -51,6 +51,8 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.Schedu
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
+import ch.epfl.sweng.eventmanager.users.Role;
+import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.support.AndroidSupportInjection;
 
@@ -128,8 +130,11 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item = menu.getItem(0);
-        item.setVisible(true);
+        if (Session.isLoggedIn() && Session.isClearedFor(Role.ADMIN,
+                ((EventShowcaseActivity)Objects.requireNonNull(getActivity())).getEvent())) {
+            MenuItem item = menu.getItem(0);
+            item.setVisible(true);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 

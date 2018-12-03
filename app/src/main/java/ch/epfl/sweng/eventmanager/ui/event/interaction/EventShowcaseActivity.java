@@ -47,6 +47,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private Fragment scheduleParentFragment;
 
     private int eventID;
+    private Event event;
 
     private void initModels() {
         this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
@@ -89,6 +90,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 return;
             }
 
+            this.event = ev;
             drawer_header_text.setText(ev.getName());
             setTitle(ev.getName());
         });
@@ -316,6 +318,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     public int getEventID() {
         return eventID;
     }
+
+    public Event getEvent() {return event;}
 
     public enum FragmentType {
         // Every registered type here needs to be used in the callChangeFragment method
