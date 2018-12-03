@@ -1,17 +1,15 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import android.net.Uri;
+import ch.epfl.sweng.eventmanager.repository.impl.FirebaseHelper;
 import ch.epfl.sweng.eventmanager.users.Role;
 import com.google.firebase.database.Exclude;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -194,8 +192,22 @@ public final class Event {
         return f.format(endDate);
     }
 
+    @Exclude
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    @Exclude
+    public boolean uploadImage(Uri imgSrc, Bitmap image) {
+        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
+        StorageReference eventsLogoRef = imagesRef.child(getImageName());
+        this.setImage(image);
+        return FirebaseHelper.uploadImage(eventsLogoRef,imgSrc).getValue();
+    }
+
+    @Exclude
+    public String getImageName() {
+        return getName().replace(" ", "_") + ".png";
     }
 
     public EventTicketingConfiguration getTicketingConfiguration() {

@@ -1,39 +1,36 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-
-import javax.inject.Inject;
-
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import dagger.android.AndroidInjection;
 
+import javax.inject.Inject;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";
+    private static final int PICK_IMAGE = 1;
 
     @Inject
     ViewModelFactory factory;
@@ -53,11 +50,16 @@ public class EventCreateActivity extends AppCompatActivity {
     EditText description;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.create_form_upload_image)
+    Button uploadImageBtn;
+    @BindView(R.id.create_form_image_view)
+    ImageView eventImage;
     @BindView(R.id.create_form)
     View createForm;
 
     private int eventID;
     private Event event;
+    private Uri eventImageSrc;
     private boolean loading = true;
 
     private void populateForm(Event event) {
@@ -66,6 +68,7 @@ public class EventCreateActivity extends AppCompatActivity {
         this.email.setText(event.getOrganizerEmail(), TextView.BufferType.EDITABLE);
         this.twitter.setText(event.getTwitterName(), TextView.BufferType.EDITABLE);
         this.description.setText(event.getDescription(), TextView.BufferType.EDITABLE);
+        this.eventImage.setImageBitmap(event.getImage());
     }
 
     private void populateEvent() {
@@ -100,6 +103,15 @@ public class EventCreateActivity extends AppCompatActivity {
         } else {
             return repository.updateEvent(event);
         }
+    }
+
+    @OnClick(R.id.create_form_upload_image)
+    public void setupSelectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE);
+
     }
 
     private void setupButton() {
@@ -173,6 +185,24 @@ public class EventCreateActivity extends AppCompatActivity {
                 // FIXME: or maybe we want that actually?
                 event.removeObservers(this);
             });
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            eventImageSrc = data.getData();
+            try {
+               Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(), eventImageSrc);
+               eventImage.setImageBitmap(image);
+               event.uploadImage(eventImageSrc, image);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+                Log.i(TAG, "failed to import image");
+            }
         }
     }
 }

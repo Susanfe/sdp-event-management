@@ -2,17 +2,17 @@ package ch.epfl.sweng.eventmanager.repository.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.annotation.NonNull;
-import android.util.Log;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +61,25 @@ public class FirebaseHelper {
             img.setValue(null);
         });
         return img;
+    }
+
+    public static LiveData<Boolean> uploadImage(StorageReference ref, Uri imgUri) {
+        MutableLiveData<Boolean> success = new MutableLiveData<>();
+        ref.putFile(imgUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        success.setValue(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("FirebaseHelper", "Failed to upload image" + e.getMessage());
+                        success.setValue(false);
+                    }
+                });
+        return success;
     }
 
     public static interface Mapper<T> {
