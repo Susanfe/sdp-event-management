@@ -282,8 +282,8 @@ public class EventPickingActivity extends AppCompatActivity {
      * Depending on Android's version on the device, the method launches an animation to reveal the
      * account/signin layout
      */
-    public void revealCircular(boolean inverse){
-        int viewState = inverse ? View.GONE : View.VISIBLE;
+    public void revealCircular(boolean hide){
+        int viewState = hide ? View.GONE : View.VISIBLE;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             int x = loginAccountButton.getRight();
@@ -295,7 +295,7 @@ public class EventPickingActivity extends AppCompatActivity {
             Animator anim;
 
             // We want to hide the layout
-            if (inverse) {
+            if (hide) {
                 anim = ViewAnimationUtils.createCircularReveal(loginAccountUI, x, y, endRadius, startRadius);
                 anim.addListener(new Animator.AnimatorListener() {
                     @Override

@@ -34,12 +34,6 @@ public class EventPickingActivityTest {
     @Rule
     public final EventTestRule<EventPickingActivity> mActivityRule = new EventTestRule<>(EventPickingActivity.class);
 
-    @Before
-    public void setUpDummy() {
-        Session.enforceDummySessions();
-        Session.logout();
-    }
-
     @After
     public void autoLogOut() {
         Session.logout();
