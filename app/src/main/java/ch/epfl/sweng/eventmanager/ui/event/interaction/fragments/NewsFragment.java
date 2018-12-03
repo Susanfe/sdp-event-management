@@ -4,6 +4,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +30,8 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.user.LoginFacebookActivity;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 
@@ -43,6 +47,8 @@ public class NewsFragment extends AbstractShowcaseFragment {
     TextView emptyListTextView;
     @BindView(R.id.news_create_button)
     Button newsCreateButton;
+    @BindView(R.id.go_facebook)
+    Button facebookButton;
     private NewsAdapter newsAdapter;
 
     public NewsFragment() {
@@ -62,6 +68,12 @@ public class NewsFragment extends AbstractShowcaseFragment {
         recyclerView.setHasFixedSize(true);
 
         newsCreateButton.setOnClickListener(v -> getParentActivity().changeFragment(new SendNewsFragment(), true));
+        facebookButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), LoginFacebookActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        });
+
 
         newsAdapter = new NewsAdapter();
         recyclerView.setAdapter(newsAdapter);
