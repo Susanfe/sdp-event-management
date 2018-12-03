@@ -68,16 +68,16 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
 
     private static final float ZOOMLEVEL = 15.0f; //This goes up to 21
     public static final String TAB_NB_KEY = "ch.epfl.sweng.eventmanager.TAB_NB_KEY";
-    private GoogleMap mMap;
+    GoogleMap mMap;
 
     @Inject
     ViewModelFactory factory;
     private ClusterManager<Spot> mClusterManager;
-    private SpotsModel spotsModel;
+    SpotsModel spotsModel;
     private ZoneModel zonesModel;
-    private ScheduleViewModel scheduleViewModel;
+    ScheduleViewModel scheduleViewModel;
     private Spot clickedClusterItem;
-    SupportMapFragment mapFragment;
+    private SupportMapFragment mapFragment;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
@@ -183,7 +183,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         }
     }
 
-    private void setUpCluster() {
+    protected void setUpCluster() {
         if (getActivity() != null){
             mClusterManager = new ClusterManager<>(getActivity(), mMap);
             mClusterManager.setOnClusterItemInfoWindowClickListener(this);
@@ -292,13 +292,14 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
      * how the markers and clusters are rendered
      */
     private class SpotRenderer extends DefaultClusterRenderer<Spot> {
-        private final IconGenerator mIconGenerator = new IconGenerator(getActivity().getApplicationContext());
+        private final IconGenerator mIconGenerator = new IconGenerator(
+                Objects.requireNonNull(getActivity()).getApplicationContext());
         private final IconGenerator mClusterIconGenerator = new IconGenerator(getActivity().getApplicationContext());
         private final ImageView mImageView;
         private final ImageView mClusterImageView;
         private final int mDimension;
 
-        public SpotRenderer(Context context) {
+        SpotRenderer(Context context) {
             super(Objects.requireNonNull(getActivity()), mMap, mClusterManager);
 
             if (context == null){

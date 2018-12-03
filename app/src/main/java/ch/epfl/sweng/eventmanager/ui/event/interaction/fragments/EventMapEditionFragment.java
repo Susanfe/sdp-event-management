@@ -1,35 +1,46 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-import com.google.android.gms.maps.SupportMapFragment;
+import java.util.List;
 
-import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Spot;
 
-public class EventMapEditionFragment extends AbstractShowcaseFragment {
-
-    private SupportMapFragment mapFragment;
-
-    public EventMapEditionFragment() {
-        super(R.layout.fragment_event_map_edition);
-    }
+public class EventMapEditionFragment extends EventMapFragment implements GoogleMap.OnMarkerClickListener {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void setUpCluster() {
+        mMap.setOnMarkerClickListener(this);
+        addMarkers();
+    }
 
-        mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.mapFragment);
-        if (mapFragment == null) {
-            mapFragment = SupportMapFragment.newInstance();
+    private void addMarkers() {
+        if (getActivity() != null){
+            this.scheduleViewModel.getScheduledItems().observe(getActivity(), items ->
+                    this.spotsModel.getSpots().observe(getActivity(), spots -> {
+                        if (spots == null) {
+                            return;
+                        }
+                        // Add new spots
+                        for (Spot s : spots) {
+                            s.setScheduleList(items);
+                        }
+                        addItems(spots);
+                    }));
+
+        }
+    }
+
+    private void addItems(List<Spot> spots) {
+        for (Spot s : spots) {
+            mMap.addMarker(new MarkerOptions().title(s.getTitle()).snippet(s.getSnippet()).draggable(true));
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+    public boolean onMarkerClick(Marker marker) {
+        return false;
     }
 }
