@@ -6,9 +6,11 @@ import ch.epfl.sweng.eventmanager.repository.data.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.Map;
 
+@Singleton
 public final class Session {
     private final InMemorySession session;
 
