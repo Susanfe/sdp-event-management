@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
+import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
 import com.twitter.sdk.android.core.models.Tweet;
@@ -36,15 +37,21 @@ public class NewsViewModel extends ViewModel {
         return Transformations.switchMap(twitterName, name -> repository.getTweets(name));
     }
 
-    private LiveData<List<NewsOrTweet>> combine(LiveData<List<News>> newsData, LiveData<List<Tweet>> tweetsData) {
+    private LiveData<List<Feed>> nameToFacebookNews(LiveData<String> facebookName) {
+        return Transformations.switchMap(facebookName, name -> repository.getFacebookNews(name));
+    }
+
+    private LiveData<List<NewsOrTweet>> combine(LiveData<List<News>> newsData, LiveData<List<Tweet>> tweetsData, LiveData<List<Feed>> facebookData) {
         MediatorLiveData<List<NewsOrTweet>> data = new MediatorLiveData<>();
-        data.addSource(newsData, news -> data.setValue(NewsOrTweet.mergeLists(news, tweetsData.getValue())));
-        data.addSource(tweetsData, tweets -> data.setValue(NewsOrTweet.mergeLists(newsData.getValue(), tweets)));
+        data.addSource(newsData, news -> data.setValue(NewsOrTweet.mergeLists(news, tweetsData.getValue(), facebookData.getValue())));
+        data.addSource(tweetsData, tweets -> data.setValue(NewsOrTweet.mergeLists(newsData.getValue(), tweets, facebookData.getValue())));
+        data.addSource(facebookData, facebook -> data.setValue(NewsOrTweet.mergeLists(newsData.getValue(), tweetsData.getValue(), facebook)));
 
         return data;
     }
 
-    public LiveData<List<NewsOrTweet>> getNews(LiveData<String> twitterName) {
-        return combine(news, nameToTweets(twitterName));
+    public LiveData<List<NewsOrTweet>> getNews(LiveData<String> twitterName, LiveData<String> facebookName) {
+        return combine(news, nameToTweets(twitterName), nameToFacebookNews(facebookName));
     }
+
 }
