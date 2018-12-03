@@ -3,7 +3,6 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +38,7 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
     @BindView(R.id.ratings_empty_tv)
     TextView emptyRatingsTextView;
 
-    private RatingsAdapter ratingsAdapter = new RatingsAdapter();
+    private RatingsRecyclerViewAdapter ratingsRecyclerViewAdapter = new RatingsRecyclerViewAdapter();
 
     public EventFeedbackFragment() {
         super(R.layout.fragment_display_feedback);
@@ -53,7 +51,7 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, view);
 
-        recyclerView.setAdapter(ratingsAdapter);
+        recyclerView.setAdapter(ratingsRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return view;
@@ -76,12 +74,12 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
                 if (ratings != null && ratings.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);
                     emptyRatingsTextView.setVisibility(View.GONE);
-                    ratingsAdapter.setContent(ratings);
+                    ratingsRecyclerViewAdapter.setContent(ratings);
                     submitFeedback.setVisibility(View.GONE);
                 } else {
                     recyclerView.setVisibility(View.GONE);
                     submitFeedback.setVisibility(View.VISIBLE);
-                    ratingsAdapter.setContent(Collections.emptyList());
+                    ratingsRecyclerViewAdapter.setContent(Collections.emptyList());
                     emptyRatingsTextView.setVisibility(View.VISIBLE);
                 }
             });
@@ -97,7 +95,7 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         super.onAttach(context);
     }
 
-    public class RatingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public class RatingsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private List<EventRating> ratingList = Collections.emptyList();
 
         @NonNull
@@ -117,8 +115,8 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            if (holder instanceof RatingsAdapter.RatingViewHolder)
-                ((RatingsAdapter.RatingViewHolder) holder).bind(ratingList.get(position));
+            if (holder instanceof RatingsRecyclerViewAdapter.RatingViewHolder)
+                ((RatingsRecyclerViewAdapter.RatingViewHolder) holder).bind(ratingList.get(position));
         }
 
         @Override
