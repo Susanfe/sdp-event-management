@@ -1,8 +1,11 @@
-package ch.epfl.sweng.eventmanager.users;
+package ch.epfl.sweng.eventmanager.test.users;
 
 import android.app.Activity;
 import android.content.Intent;
+import ch.epfl.sweng.eventmanager.users.InMemorySession;
 import com.google.android.gms.tasks.OnCompleteListener;
+
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import ch.epfl.sweng.eventmanager.repository.data.DummyUser;
@@ -13,7 +16,7 @@ import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
  * Dummy InMemorySession class, only used in tests.
  */
 @Singleton
-public class DummyInMemorySession implements InMemorySession{
+public class DummyInMemorySession implements InMemorySession {
     /**
      * Public in order to be used from the tests.
      */
@@ -23,6 +26,9 @@ public class DummyInMemorySession implements InMemorySession{
     public static final String DUMMY_DISPLAYNAME = "Lamb Da";
 
     private DummyUser user;
+
+    @Inject
+    public DummyInMemorySession() {}
 
     @Override
     public void login(String email, String password, Activity context, OnCompleteListener callback) {

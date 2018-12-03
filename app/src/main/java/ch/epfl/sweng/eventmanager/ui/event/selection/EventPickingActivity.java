@@ -70,6 +70,9 @@ public class EventPickingActivity extends AppCompatActivity {
     @BindView(R.id.event_picking_toolbar)
     Toolbar toolbar;
 
+    @Inject
+    Session session;
+
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -156,7 +159,7 @@ public class EventPickingActivity extends AppCompatActivity {
 
     private void openLoginOrAccountActivity() {
         Class nextActivity;
-        if (Session.isLoggedIn()) {
+        if (session.isLoggedIn()) {
             nextActivity = DisplayAccountActivity.class;
         } else {
             nextActivity = LoginActivity.class;
@@ -221,7 +224,7 @@ public class EventPickingActivity extends AppCompatActivity {
                 break;
 
             case R.id.logout_button:
-                Session.logout();
+                session.logout();
                 break;
         }
 
@@ -230,7 +233,7 @@ public class EventPickingActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (Session.isLoggedIn()) {
+        if (session.isLoggedIn()) {
             menu.findItem(R.id.activity_login_login_button).setTitle(R.string.account_button);
             menu.findItem(R.id.logout_button).setVisible(true);
         } else {
