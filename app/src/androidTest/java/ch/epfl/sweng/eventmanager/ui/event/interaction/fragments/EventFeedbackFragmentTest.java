@@ -52,12 +52,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class EventFeedbackFragmentTest {
-    private static final Integer EVENT_ID = 1;
-
     private static final String DESCRIPTION_1 = "The event was great !";
-    private static final String DESCRIPTION_2 = "The event was awful !";
     private static final Float RATING_1 = 5f;
-    private static final Float RATING_2 = 0f;
 
     @Inject
     MockFeedbackRepository repository;
