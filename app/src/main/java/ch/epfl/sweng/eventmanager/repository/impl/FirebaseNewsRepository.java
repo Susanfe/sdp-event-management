@@ -2,9 +2,17 @@ package ch.epfl.sweng.eventmanager.repository.impl;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import android.os.Bundle;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
+import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
+
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -15,8 +23,13 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.TimelineResult;
 import com.twitter.sdk.android.tweetui.UserTimeline;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,6 +82,54 @@ public class FirebaseNewsRepository implements NewsRepository {
             data.setValue(Collections.emptyList());
         }
 
+        return data;
+    }
+
+    public boolean isLogging() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        return isLoggedIn;
+    }
+
+    @Override
+    public LiveData<List<Feed>> getFacebookNews(String screenName) {
+        MutableLiveData<List<Feed>> data = new MutableLiveData<>();
+        List<Feed> feedList = new ArrayList<>();
+        Log.i("test0", String.valueOf(isLogging()));
+
+        Bundle params = new Bundle();
+        params.putString("fields", "description, message,created_time,id, full_picture,status_type,source, name");
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/793504527660961/feed", null, HttpMethod.GET,
+            new GraphRequest.Callback() {
+                public void onCompleted(GraphResponse response) {
+                    /* handle the result */
+                    try {
+                        Log.v("facebook request", "start");
+                        JSONObject jObjResponse = new JSONObject(String.valueOf(response.getJSONObject()));
+                        JSONArray jArray = jObjResponse.getJSONArray("data");
+
+                        for (int i = 0; i < jArray.length(); i++) {
+                            JSONObject jObject = jArray.getJSONObject(i);
+                            Feed feed = new Feed(jObject);
+                            Log.i("test", String.valueOf(i));
+                            feedList.add(feed);
+                            //Log.v("data[]", jObject.toString());
+                            /*
+                            if (i == 0) {
+                                prevTime = String.valueOf(feed.getCreatedTime().getTime() / 1000);
+                            }
+                            */
+                        }
+                        data.setValue(feedList);
+                        Log.i("test1", "passe sans exception");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        data.setValue(Collections.EMPTY_LIST);
+                        Log.i("test2", "passe avec exception");
+                    }
+                }
+            }
+        ).executeAsync();
         return data;
     }
 }
