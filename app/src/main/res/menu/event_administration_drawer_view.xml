@@ -5,6 +5,9 @@
             android:id="@+id/nav_user_management"
             android:title="@string/user_management_nav_item_activity_event" />
         <item
+            android:id="@+id/nav_send_news"
+            android:title="@string/send_news_nav_item_activity_event" />
+        <item
             android:id="@+id/nav_showcase"
             android:title="@string/showcase_nav_item_activity_event" />
         <item

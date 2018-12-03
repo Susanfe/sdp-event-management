@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.MultiFragmentActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 
 /**
@@ -46,7 +47,7 @@ public abstract class AbstractShowcaseFragment extends Fragment {
         }
     }
 
-    EventShowcaseActivity getParentActivity() {
-        return (EventShowcaseActivity) getActivity();
+    public MultiFragmentActivity getParentActivity() {
+        return (MultiFragmentActivity) getActivity();
     }
 }
