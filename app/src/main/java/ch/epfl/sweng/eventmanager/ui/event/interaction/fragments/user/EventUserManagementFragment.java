@@ -148,11 +148,11 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
      * @param v
      * @param ev
      */
-    protected void removeUser(View v, Event ev, String uidKey, Role role) {
+    protected void removeUser(View v, Event ev, String uid, Role role) {
         Button removeButton = v.findViewById(R.id.remove_button);
         setInProgressState(removeButton, true);
 
-        cloudFunction.removeUserFromEvent(uidKey, ev.getId(), role.toString().toLowerCase())
+        cloudFunction.removeUserFromEvent(uid, ev.getId(), role.toString().toLowerCase())
                 .addOnCompleteListener(task -> {
                     String toastText;
                     if (task.isSuccessful()) toastText = getString(R.string.remove_user_success);

@@ -22,10 +22,10 @@ public interface CloudFunction {
      * Calls a dedicated FireBase Cloud Function allowing an event administrator to remove a role
      * from an user on its event.
      *
-     * @param uidKey key of the uid of the user to be removed
+     * @param uid uid of the user to be removed
      * @param eventId target event
      * @param role string representation of the role to be removed
      * @return the related task
      */
-    Task<Boolean> removeUserFromEvent(String uidKey, int eventId, String role);
+    Task<Boolean> removeUserFromEvent(String uid, int eventId, String role);
 }
