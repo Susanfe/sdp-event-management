@@ -105,8 +105,9 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
         List<Ticket> ticketList = new ArrayList<>();
         for (CSVRecord r: rawRecords) {
             String id = r.get("id");
+            String name = r.get("name");
             if (id != null) { // Found a 'valid' entry
-                Ticket ticket = new Ticket(id);
+                Ticket ticket = new Ticket(id, name);
                 ticketList.add(ticket);
             }
         }

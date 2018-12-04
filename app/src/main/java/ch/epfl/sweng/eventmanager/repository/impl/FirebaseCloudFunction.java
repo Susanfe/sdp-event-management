@@ -25,7 +25,6 @@ public class FirebaseCloudFunction {
         data.put("eventId", eventId);
         data.put("userEmail", email);
         data.put("role", role);
-        data.put("push", true);
 
         return FirebaseFunctions.getInstance()
                 .getHttpsCallable("addUserToEvent")
@@ -49,7 +48,8 @@ public class FirebaseCloudFunction {
      */
     public static Task<Boolean> importTickets(List<Ticket> tickets, int eventId) {
         Map<String, Object> data = new HashMap<>();
-        // TODO: set parameters
+        data.put("tickets", tickets);
+        data.put("eventId", eventId);
 
         return FirebaseFunctions.getInstance()
                 .getHttpsCallable("importTickets")

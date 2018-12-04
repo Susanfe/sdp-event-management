@@ -53,3 +53,7 @@ exports.addUserToEvent = functions.https.onCall((data, context) => {
       }
     })
 })
+
+exports.importTickets = function.https.onCall((data, context) => {
+  return false;
+})
