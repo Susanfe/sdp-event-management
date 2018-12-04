@@ -8,8 +8,10 @@
     tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment"
     android:layout_marginTop="?attr/actionBarSize">
 
-    <RelativeLayout
-        android:id="@+id/news_relative_layout"
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/Button_global"
+        android:text="@string/news_create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/news_create_button"
@@ -17,6 +19,12 @@
         app:layout_anchorGravity="center_horizontal"
         app:layout_anchor="@+id/news_relative_layout"
         android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/news_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
     <Button
         android:id="@+id/go_facebook"
