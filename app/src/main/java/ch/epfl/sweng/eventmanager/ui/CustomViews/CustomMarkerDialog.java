@@ -1,20 +1,19 @@
 package ch.epfl.sweng.eventmanager.ui.CustomViews;
 
 import android.app.Dialog;
-import android.database.DataSetObserver;
+import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ExpandableListView;
-import android.widget.ListAdapter;
+import android.widget.ArrayAdapter;
 
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.DialogFragment;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 
 public class CustomMarkerDialog extends DialogFragment {
 
@@ -27,8 +26,6 @@ public class CustomMarkerDialog extends DialogFragment {
 
         builder.setView(R.layout.contextual_menu);
 
-        setTypeAdapter();
-
         builder.setNegativeButton("Done", (dialog, which) -> {
             // Dismisses the Dialog
         });
@@ -36,9 +33,22 @@ public class CustomMarkerDialog extends DialogFragment {
         return builder.create();
     }
 
-    private void setTypeAdapter() {
-        ExpandableListView expandableListView = Objects.requireNonNull(getActivity())
-                .findViewById(R.id.contextual_menu_type_options);
-        expandableListView.setAdapter(new CustomExpendableListAdapter());
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        setTypeAdapter(getContext());
+    }
+
+    private void setTypeAdapter(Context context) {
+        AppCompatSpinner typeSpinner = getDialog().findViewById(R.id.contextual_menu_spotType_spinner);
+
+        ArrayAdapter<SpotType> adapter = new ArrayAdapter<>(context,
+                android.R.layout.simple_spinner_item,
+                SpotType.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        typeSpinner.setAdapter(adapter);
+
     }
 }

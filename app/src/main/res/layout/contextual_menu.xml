@@ -32,16 +32,12 @@
             android:hint="@string/event_list_item_default_description"
             />
 
-        <ExpandableListView
+        <androidx.appcompat.widget.AppCompatSpinner
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/expandableListPreferredItemPaddingLeft"
-            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="0.5dp"
-            android:id="@+id/contextual_menu_type_options"
-            >
+            android:layout_height="wrap_content"
+            android:id="@+id/contextual_menu_spotType_spinner">
 
-        </ExpandableListView>
+        </androidx.appcompat.widget.AppCompatSpinner>
 
     </LinearLayout>
 
