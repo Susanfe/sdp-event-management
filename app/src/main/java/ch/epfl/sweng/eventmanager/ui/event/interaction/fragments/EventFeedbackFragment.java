@@ -20,14 +20,13 @@ import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class EventFeedbackFragment extends AbstractShowcaseFragment {
     private static final String TAG = "EventFeedbackFragment";
-    private String UNIQUE_ID_DEVICE;
+    private String UNIQUE_DEVICE_ID;
 
     @Inject
     protected FeedbackRepository repository;
@@ -65,7 +64,7 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         model.getEvent().observe(this, ev -> {
 
             AtomicReference<Boolean> ratingExists = new AtomicReference<>();
-            repository.ratingFromDeviceExists(ev.getId(), UNIQUE_ID_DEVICE).observe(this, ratingExists::set);
+            repository.ratingFromDeviceExists(ev.getId(), UNIQUE_DEVICE_ID).observe(this, ratingExists::set);
 
             if (ratingExists.get() != null && ratingExists.get()) {
                 submitFeedback.setVisibility(View.GONE);
@@ -92,7 +91,7 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
     @Override
     public void onAttach(Context context) {
         AndroidSupportInjection.inject(this);
-        UNIQUE_ID_DEVICE = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        UNIQUE_DEVICE_ID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         super.onAttach(context);
     }
 
