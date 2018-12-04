@@ -1,7 +1,6 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup
 // triggers.
-let functions = require('firebase-functions');
-let request = require('request');
+const functions = require('firebase-functions');
 
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require('firebase-admin');
@@ -46,7 +45,27 @@ exports.addUserToEvent = functions.https.onCall((data, context) => {
   });
 });
 
-/*
+exports.removeUserFromEvent = functions.https.onCall((data, context) => {
+  // Extract parameters from client
+  const eventId = data.eventId;
+  const targetUserUid = data.uid;
+  const role = data.role;
+
+  // Auhtenticated user
+  const currentUserUid = context.auth.uid;
+  //const currentUserUid = "u0YmYQasWpNaNYZt4iXngV0aTxF3"; // Used locally for debug
+
+  var ref = admin.database().ref('/events/' + eventId + '/users/');
+  ref.orderByValue('admin').on("value", adminsSnapshot => {
+    if (adminsSnapshot.val().includes(currentUserUid)) { // current user is admin
+        return ref.child(targetUserUid).set(null);
+    } else {
+      console.log('Current user ' + currentUserUid + ' is not allowed to write event ' + eventId);
+      return false;
+    }
+  });
+})
+
 
 const API_KEY = "AAAAlIAvtxI:APA91bHnmNkZWIQzzWcxypS45bpVKBXkLNwtxM-gU6UCfZt2TI-jd02Typ8ACtLpGbHCASrWlwKHDT9EsRpqrUj7hAH8GdhvKp3_UaF_Vx4k3yqgXLqMQv2py-FiUODmG2hy2QuTGdUI"; // Firebase Cloud Messaging Server API key
 
@@ -96,5 +115,4 @@ function sendNotificationToUsers(title, body, eventId, eventName, onSuccess) {
 
 // start listening
 listenForNotificationRequests();
-*/
 

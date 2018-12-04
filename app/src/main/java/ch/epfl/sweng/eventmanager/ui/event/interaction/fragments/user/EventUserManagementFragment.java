@@ -134,7 +134,26 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
                     if (task.isSuccessful()) toastText = getString(R.string.add_user_success);
                     else toastText = getString(R.string.add_user_failure);
                     Toast.makeText(getActivity(), toastText, Toast.LENGTH_LONG).show();
-                    setInProgressState(false);
+                    setInProgressState(mAddUserButton, false);
+                });
+    }
+
+    /**
+     * Callback used to remove an user from the current event at a given role.
+     * @param v
+     * @param ev
+     */
+    protected void removeUser(View v, Event ev, String uidKey, Role role) {
+        Button removeButton = v.findViewById(R.id.remove_button);
+        setInProgressState(removeButton, true);
+
+        cloudFunction.removeUserFromEvent(uidKey, ev.getId(), role.toString().toLowerCase())
+                .addOnCompleteListener(task -> {
+                    String toastText;
+                    if (task.isSuccessful()) toastText = getString(R.string.remove_user_success);
+                    else toastText = getString(R.string.remove_user_failure);
+                    Toast.makeText(getActivity(), toastText, Toast.LENGTH_LONG).show();
+                    setInProgressState(removeButton, false);
                 });
     }
 }
