@@ -1,10 +1,8 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
 import androidx.lifecycle.ViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNewsFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
@@ -65,5 +63,11 @@ public abstract class EventInteractionModule {
     abstract EventFeedbackFragment contributeEventFeedbackFragmentInjector();
 
     @ContributesAndroidInjector
+    abstract SubmitFeedbackFragment contributeSubmitFeedbackFragmentInjector();
+
+    @ContributesAndroidInjector
     abstract EventMainFragment contributeEventMainFragmentInjector();
+
+    @ContributesAndroidInjector
+    abstract EventUserManagementFragment contributeEventUserManagementFragmentInjector();
 }

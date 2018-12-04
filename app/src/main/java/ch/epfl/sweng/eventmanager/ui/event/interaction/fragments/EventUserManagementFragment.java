@@ -8,6 +8,7 @@ import ch.epfl.sweng.eventmanager.R;
  * Allows an administrator a manage the users allowed to work with this event (= access to admin
  * features).
  */
+//FIXME rename this class please! we already have one with the same name in the subpackage .user
 public class EventUserManagementFragment extends AbstractShowcaseFragment {
     private static final String TAG = "UserManagement";
 
