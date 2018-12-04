@@ -4,6 +4,7 @@ package ch.epfl.sweng.eventmanager.repository.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,6 +48,14 @@ public class Feed {
 
     public Date getTime() {
         return time;
+    }
+
+    public String dateAsString() {
+        if (time.getTime() <= 0) {
+            return null;
+        }
+        DateFormat f = DateFormat.getDateTimeInstance();
+        return f.format(time.getTime());
     }
 
     public String getContent() {

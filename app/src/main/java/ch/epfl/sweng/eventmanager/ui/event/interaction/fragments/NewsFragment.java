@@ -199,7 +199,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
             final void bind(Feed feed) {
                 this.content.setText(feed.getContent());
-                this.date.setText(feed.getTime().toString());
+                this.date.setText(feed.dateAsString());
             }
         }
 
