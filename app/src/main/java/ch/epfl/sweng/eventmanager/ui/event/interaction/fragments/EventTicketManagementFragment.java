@@ -17,12 +17,16 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.FileUtil;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.Ticket;
+import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -58,6 +62,17 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
                 Log.e(TAG, "Got null model from parent activity");
             }
 
+            uploadButton.setOnClickListener(v -> {
+                setInProgressState(true);
+                try {
+                    CSVParser parser = CSVParser.parse(mFile, Charset.defaultCharset(), CSVFormat.RFC4180);
+                    importFromRecords(parser.getRecords(), ev);
+                } catch (Exception e) {
+                    Toast error = Toast.makeText(getActivity(), "Could not parse file: " + e.toString(), Toast.LENGTH_LONG);
+                    setInProgressState(false);
+                    error.show();
+                }
+            });
         });
     }
 
@@ -77,17 +92,34 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
         });
 
         uploadButton.setText(getString(R.string.upload_button));
-        uploadButton.setOnClickListener(v -> {
-            try {
-                CSVParser parser = CSVParser.parse(mFile, Charset.defaultCharset(), CSVFormat.RFC4180);
-                List<CSVRecord> records = parser.getRecords();
-            } catch (Exception e) {
-                Toast error = Toast.makeText(getActivity(), "Could not parse file: " + e.toString(), Toast.LENGTH_LONG);
-                error.show();
-            }
-        });
 
         return view;
+    }
+
+    void setInProgressState(Boolean working) {
+        if (working) uploadButton.setEnabled(false);
+        else uploadButton.setEnabled(true);
+    }
+
+    void importFromRecords(List<CSVRecord> rawRecords, Event event) {
+        List<Ticket> ticketList = new ArrayList<>();
+        for (CSVRecord r: rawRecords) {
+            String id = r.get("id");
+            if (id != null) { // Found a 'valid' entry
+                Ticket ticket = new Ticket(id);
+                ticketList.add(ticket);
+            }
+        }
+
+        // Call FB cloud function to store in FB realtime db
+        FirebaseCloudFunction.importTickets(ticketList, event.getId())
+                .addOnCompleteListener(task -> {
+                    String toastText;
+                    if (task.isSuccessful()) toastText = "OK";
+                    else toastText = "ERR";
+                    Toast.makeText(getActivity(), toastText, Toast.LENGTH_LONG).show();
+                    setInProgressState(false);
+                });
     }
 
     @Override
