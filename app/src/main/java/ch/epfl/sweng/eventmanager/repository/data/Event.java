@@ -7,6 +7,7 @@ import ch.epfl.sweng.eventmanager.users.Role;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -198,11 +199,10 @@ public final class Event {
     }
 
     @Exclude
-    public boolean uploadImage(Uri imgSrc, Bitmap image) {
+    public UploadTask uploadImage(Uri imgSrc) {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
         StorageReference eventsLogoRef = imagesRef.child(getImageName());
-        this.setImage(image);
-        return FirebaseHelper.uploadImage(eventsLogoRef,imgSrc).getValue();
+        return FirebaseHelper.uploadImage(eventsLogoRef,imgSrc);
     }
 
     @Exclude

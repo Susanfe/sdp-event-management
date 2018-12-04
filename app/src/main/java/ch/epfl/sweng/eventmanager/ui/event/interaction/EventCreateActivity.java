@@ -76,6 +76,13 @@ public class EventCreateActivity extends AppCompatActivity {
         this.event.setOrganizerEmail(getFieldValue(this.email));
         this.event.setTwitterName(getFieldValue(this.twitter));
         this.event.setDescription(getFieldValue(this.description));
+        this.event.uploadImage(eventImageSrc)
+                .addOnSuccessListener(msg -> Toast.makeText(this, getString(R.string.image_successfully_uploaded),
+                        Toast.LENGTH_LONG))
+                .addOnFailureListener(msg -> {
+                    Toast.makeText(this, getString(R.string.image_successfully_uploaded), Toast.LENGTH_LONG);
+                    Log.i(TAG, "Failed to upload event image" + msg.getMessage());
+                });
     }
 
     private String getFieldValue(EditText field) {
@@ -111,7 +118,6 @@ public class EventCreateActivity extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE);
-
     }
 
     private void setupButton() {
@@ -194,12 +200,9 @@ public class EventCreateActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             eventImageSrc = data.getData();
             try {
-               Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(), eventImageSrc);
-               eventImage.setImageBitmap(image);
-               event.uploadImage(eventImageSrc, image);
-            }
-            catch (IOException e)
-            {
+                Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(), eventImageSrc);
+                eventImage.setImageBitmap(image);
+            } catch (IOException e) {
                 e.printStackTrace();
                 Log.i(TAG, "failed to import image");
             }

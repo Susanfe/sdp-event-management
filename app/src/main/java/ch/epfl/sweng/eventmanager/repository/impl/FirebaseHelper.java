@@ -7,8 +7,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
 import com.google.firebase.storage.StorageReference;
@@ -63,23 +61,8 @@ public class FirebaseHelper {
         return img;
     }
 
-    public static LiveData<Boolean> uploadImage(StorageReference ref, Uri imgUri) {
-        MutableLiveData<Boolean> success = new MutableLiveData<>();
-        ref.putFile(imgUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        success.setValue(true);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.i("FirebaseHelper", "Failed to upload image" + e.getMessage());
-                        success.setValue(false);
-                    }
-                });
-        return success;
+    public static UploadTask uploadImage(StorageReference ref, Uri imgUri) {
+       return ref.putFile(imgUri);
     }
 
     public static interface Mapper<T> {
