@@ -1,6 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

@@ -70,4 +70,7 @@ public abstract class EventInteractionModule {
 
     @ContributesAndroidInjector
     abstract EventUserManagementFragment contributeEventUserManagementFragmentInjector();
+
+    @ContributesAndroidInjector
+    abstract EventTicketManagementFragment contributeEventTicketManagementFragmentInjector();
 }

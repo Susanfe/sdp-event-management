@@ -29,7 +29,6 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.Ticket;
-import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -92,7 +91,7 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
             Intent chooseFile;
             Intent intent;
             chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-            chooseFile.setType("text/plain");
+            chooseFile.setType("text/*");
             intent = Intent.createChooser(chooseFile, "Choose CSV file");
             startActivityForResult(intent, ACTIVITY_CHOOSE_FILE);
         });
@@ -110,8 +109,8 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
     void importFromRecords(List<CSVRecord> rawRecords, Event event) {
         List<Ticket> ticketList = new ArrayList<>();
         for (CSVRecord r: rawRecords) {
-            String id = r.get("id");
-            String name = r.get("name");
+            String id = r.get(0);
+            String name = r.get(1);
             if (id != null) { // Found a 'valid' entry
                 Ticket ticket = new Ticket(id, name);
                 ticketList.add(ticket);

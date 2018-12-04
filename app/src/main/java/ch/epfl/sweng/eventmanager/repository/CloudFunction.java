@@ -29,5 +29,5 @@ public interface CloudFunction {
      * @param eventId target event
      * @return the related task
      */
-    public Task<Boolean> importTickets(List<Ticket> tickets, int eventId);
+    Task<Boolean> importTickets(List<Ticket> tickets, int eventId);
 }
