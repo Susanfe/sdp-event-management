@@ -6,7 +6,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.CheckedTextView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -17,8 +25,6 @@ import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import com.bumptech.glide.Glide;
 import dagger.android.support.AndroidSupportInjection;
-
-import javax.inject.Inject;
 
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
@@ -105,7 +111,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) ButterKnife.bind(this, view);
 
-        showcaseActivity = getParentActivity();
+        showcaseActivity = (EventShowcaseActivity) getParentActivity();
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
         contactButton.setOnClickListener(v -> showcaseActivity.callChangeFragment(
