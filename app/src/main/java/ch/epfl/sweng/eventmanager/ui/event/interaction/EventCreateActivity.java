@@ -22,6 +22,7 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.tasks.Task;
 import dagger.android.AndroidInjection;
+import id.zelory.compressor.Compressor;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -201,6 +202,8 @@ public class EventCreateActivity extends AppCompatActivity {
             eventImageSrc = data.getData();
             try {
                 Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(), eventImageSrc);
+                Bitmap compressedImage = new Compressor(this).setCompressFormat(Bitmap.CompressFormat.WEBP)
+                        .setMaxHeight(500).setMaxWidth(500).setQuality(100).compressToBitmap(image);
                 eventImage.setImageBitmap(image);
             } catch (IOException e) {
                 e.printStackTrace();

@@ -80,6 +80,7 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.2'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.auth0.android:jwtdecode:1.1.1'
+    implementation 'id.zelory:compressor:2.1.0'
 
     // Play services
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
