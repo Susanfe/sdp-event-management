@@ -65,6 +65,7 @@
     <string name="pick_event_nav_item_activity_event_showcase">Event picker</string>
     <string name="user_management_nav_item_activity_event">User management</string>
     <string name="showcase_nav_item_activity_event">Public area</string>
+    <string name="send_news_nav_item_activity_event">Publish news</string>
 
     <string name="user_management_help_text">This page allows you to add and remove roles specific
         to this event.

@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository;
 
+import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseEventRepository;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseFeedbackRepository;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseNewsRepository;
@@ -24,4 +25,8 @@ public abstract class RepositoriesModule {
     @Binds
     @Singleton
     abstract FeedbackRepository providesFeedbackRepository(FirebaseFeedbackRepository repository);
+
+    @Binds
+    @Singleton
+    abstract CloudFunction providesCloudFunction(FirebaseCloudFunction impl);
 }

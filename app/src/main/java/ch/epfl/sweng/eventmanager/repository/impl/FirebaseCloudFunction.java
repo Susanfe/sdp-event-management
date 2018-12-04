@@ -8,19 +8,28 @@ import com.google.firebase.functions.HttpsCallableResult;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
+import javax.inject.Inject;
 
-public class FirebaseCloudFunction {
+import androidx.annotation.NonNull;
+import ch.epfl.sweng.eventmanager.repository.CloudFunction;
+
+public class FirebaseCloudFunction implements CloudFunction {
+
+    @Inject
+    public FirebaseCloudFunction() {
+
+    }
+
     /**
      * Calls a dedicated FireBase Cloud Function allowing an event administrator to add an user to
      * its event.
      *
-     * @param email email of the target user
+     * @param email   email of the target user
      * @param eventId target event
-     * @param role string representation role to be assigned to the target user
+     * @param role    string representation role to be assigned to the target user
      * @return the related task
      */
-    public static Task<Boolean> addUserToEvent(String email, int eventId, String role) {
+    public Task<Boolean> addUserToEvent(String email, int eventId, String role) {
         // Prepare parameters for the Firebase Cloud Function
         Map<String, Object> data = new HashMap<>();
         data.put("eventId", eventId);
@@ -50,7 +59,7 @@ public class FirebaseCloudFunction {
      * @param role string representation of the role to be removed
      * @return the related task
      */
-    public static Task<Boolean> removeUserFromEvent(String uidKey, int eventId, String role) {
+    public Task<Boolean> removeUserFromEvent(String uidKey, int eventId, String role) {
         // Prepare parameters for the Firebase Cloud Function
         Map<String, Object> data = new HashMap<>();
         data.put("eventId", eventId);
