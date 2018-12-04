@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.test.repository;
 
 import android.graphics.Bitmap;
 
+import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.gson.Gson;
@@ -30,7 +31,7 @@ import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
 /**
  * @author Louis Vialar
  */
-public class MockEventsRepository implements EventRepository {
+public class MockEventsRepository implements EventRepository, CloudFunction {
     public static final Map<Integer, EventTicketingConfiguration> CONFIG_BY_EVENT;
     public static final String EVENT_EMAIL = "events@not-really-epfl.ch";
     private static int CURRENT_EVENT_ID = 1000;
@@ -108,10 +109,8 @@ public class MockEventsRepository implements EventRepository {
                 " \"latitude\" : 46.517365,\n        \"longitude\" :" +
                 " 6.566036\n      } ]\n    } ]";
 
-        Map<String, Map<String, String>> usersMap = new HashMap<>();
-        Map<String, String> userUids = new HashMap<>();
-        userUids.put("key1", DummyInMemorySession.DUMMY_UID);
-        usersMap.put("admin", userUids);
+        Map<String, String> usersMap = new HashMap<>();
+        usersMap.put(DummyInMemorySession.DUMMY_UID, "admin");
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact",
@@ -231,5 +230,17 @@ public class MockEventsRepository implements EventRepository {
     public Task<Event> updateEvent(Event event) {
         events.put(event.getId(), event);
         return Tasks.call(() -> event);
+    }
+
+    @Override
+    public Task<Boolean> addUserToEvent(String email, int eventId, String role) {
+        Event ev = events.get(eventId).getValue();
+        if (ev == null)
+            return Tasks.call(() -> false);
+
+        ev.getUsers().put(email, role);
+        events.put(eventId, ev);
+
+        return Tasks.call(() -> true);
     }
 }

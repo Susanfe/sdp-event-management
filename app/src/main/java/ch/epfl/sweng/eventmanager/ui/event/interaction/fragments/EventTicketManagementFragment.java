@@ -20,10 +20,13 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.FileUtil;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.Ticket;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
@@ -47,6 +50,9 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
 
     @BindView(R.id.upload_button)
     Button uploadButton;
+
+    @Inject
+    CloudFunction cloudFunction;
 
     public EventTicketManagementFragment() {
         // Required empty public constructor
@@ -113,7 +119,7 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
         }
 
         // Call FB cloud function to store in FB realtime db
-        FirebaseCloudFunction.importTickets(ticketList, event.getId())
+        cloudFunction.importTickets(ticketList, event.getId())
                 .addOnCompleteListener(task -> {
                     String toastText;
                     if (task.isSuccessful()) toastText = "OK";
