@@ -11,12 +11,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.fragment.app.DialogFragment;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomMarkerDialog;
 
 public class EventMapEditionFragment extends EventMapFragment implements GoogleMap.OnMarkerClickListener {
 
     private static final String TAG = "MapEdition.STYLE_TAG";
+    private static final String FRAGMENT_TAG = "ui.event.interaction.fragments.EventMapEditionFragment.FRAGMENT_TAG";
 
     @Override
     protected void setUpCluster() {
@@ -63,6 +66,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        DialogFragment dialogFragment = new CustomMarkerDialog();
+        dialogFragment.show(getChildFragmentManager(), FRAGMENT_TAG);
         return false;
     }
 }
