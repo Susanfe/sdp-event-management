@@ -4,32 +4,27 @@
         android:menuCategory="container"
         android:id="@+id/event_showcase_group_container">
         <item
-                android:id="@+id/nav_main"
-                android:title="@string/main_nav_item_activity_event_showcase"/>
+            android:id="@+id/nav_main"
+            android:title="@string/main_nav_item_activity_event_showcase"/>
         <item
-                android:id="@+id/nav_news"
-                android:title="@string/news_nav_item_activity_event_showcase"/>
+            android:id="@+id/nav_news"
+            android:title="@string/news_nav_item_activity_event_showcase"/>
         <item
-                android:id="@+id/nav_map"
-                android:title="@string/map_nav_item_activity_event_showcase"/>
+            android:id="@+id/nav_map"
+            android:title="@string/map_nav_item_activity_event_showcase"/>
         <item
-                android:id="@+id/nav_schedule"
-                android:title="@string/schedule_nav_item_activity_event_showcase"/>
+            android:id="@+id/nav_schedule"
+            android:title="@string/schedule_nav_item_activity_event_showcase"/>
         <item
             android:id="@+id/nav_admin"
             android:title="@string/admin_nav_item_activity_event_showcase"
-            android:visible="false" />
+            android:visible="false"/>
         <item
-            android:id="@+id/nav_tickets"
-            android:title="@string/ticket_nav_item_activity_event_showcase"/>
-        <item
-                android:id="@+id/nav_scan"
-                android:title="@string/scan_nav_item_activity_event_showcase"
-                android:visible="false"
-        />
+            android:id="@+id/nav_scan"
+            android:title="@string/scan_nav_item_activity_event_showcase"
+            android:visible="false"/>
         <item android:id="@+id/nav_feedback"
-              android:title="@string/feedback_nav"
-        />
+            android:title="@string/feedback_nav"/>
     </group>
 
     <group android:checkableBehavior="single"
