@@ -26,7 +26,6 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
-import java.io.Serializable;
 import java.util.Objects;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
