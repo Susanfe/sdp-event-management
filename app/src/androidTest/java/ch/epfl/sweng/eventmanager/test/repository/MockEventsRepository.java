@@ -109,10 +109,8 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 " \"latitude\" : 46.517365,\n        \"longitude\" :" +
                 " 6.566036\n      } ]\n    } ]";
 
-        Map<String, Map<String, String>> usersMap = new HashMap<>();
-        Map<String, String> userUids = new HashMap<>();
-        userUids.put("key1", DummyInMemorySession.DUMMY_UID);
-        usersMap.put("admin", userUids);
+        Map<String, String> usersMap = new HashMap<>();
+        usersMap.put(DummyInMemorySession.DUMMY_UID, "admin");
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact",
@@ -240,10 +238,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         if (ev == null)
             return Tasks.call(() -> false);
 
-        if (!ev.getUsers().containsKey(role))
-            ev.getUsers().put(role, new HashMap<>());
-
-        ev.getUsers().get(role).put(String.valueOf(System.currentTimeMillis()), email);
+        ev.getUsers().put(email, role);
         events.put(eventId, ev);
 
         return Tasks.call(() -> true);
