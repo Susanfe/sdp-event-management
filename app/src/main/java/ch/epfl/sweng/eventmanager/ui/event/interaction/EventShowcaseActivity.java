@@ -1,13 +1,11 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import javax.inject.Inject;
@@ -23,6 +21,7 @@ import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFormFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapEditionFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
@@ -39,7 +38,6 @@ import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
-import javax.inject.Inject;
 import java.util.Objects;
 import jp.wasabeef.blurry.Blurry;
 
