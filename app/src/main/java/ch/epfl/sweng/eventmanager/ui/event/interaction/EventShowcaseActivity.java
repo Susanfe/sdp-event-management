@@ -240,6 +240,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             case MAP_EDITION:
                 changeFragment(new EventMapEditionFragment(), saveToBackstack);
+                break;
+
             default:
                 changeFragment(new EventMainFragment(), saveToBackstack);
                 break;

@@ -143,7 +143,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         switch(item.getItemId()) {
             case R.id.menu_map_edition_edit:
                 ((EventShowcaseActivity)Objects.requireNonNull(getActivity())).callChangeFragment(
-                        EventShowcaseActivity.FragmentType.MAP_EDITION, false);
+                        EventShowcaseActivity.FragmentType.MAP_EDITION, true);
                 return true;
 
             default:
