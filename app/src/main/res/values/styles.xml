@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.OverFlow</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -91,7 +92,6 @@
         <item name="srcCompat">@drawable/ic_account_circle_24dp</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
-
 
     <!-- ############################# CARDVIEW UI ############################################-->
     <style name="cardView_rounded" parent="Base.CardView">
