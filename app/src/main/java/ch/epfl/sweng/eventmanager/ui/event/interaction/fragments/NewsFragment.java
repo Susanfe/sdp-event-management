@@ -4,8 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.TweetBuilder;
+import com.twitter.sdk.android.tweetui.CompactTweetView;
+
+import java.util.Collections;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
@@ -19,16 +26,8 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
-import ch.epfl.sweng.eventmanager.users.Role;
-import ch.epfl.sweng.eventmanager.users.Session;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.models.TweetBuilder;
-import com.twitter.sdk.android.tweetui.CompactTweetView;
 import dagger.android.support.AndroidSupportInjection;
 
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Display an event's news feed.
@@ -40,12 +39,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
     RecyclerView recyclerView;
     @BindView(R.id.news_empty_tv)
     TextView emptyListTextView;
-    @BindView(R.id.news_create_button)
-    Button newsCreateButton;
     private NewsAdapter newsAdapter;
-
-    @Inject
-    Session session;
 
     public NewsFragment() {
         super(R.layout.fragment_news);
@@ -63,8 +57,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
-        newsCreateButton.setOnClickListener(v -> getParentActivity().changeFragment(new SendNewsFragment(), true));
-
         newsAdapter = new NewsAdapter();
         recyclerView.setAdapter(newsAdapter);
 
@@ -78,15 +70,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
         if (model == null) {
             model = ViewModelProviders.of(requireActivity()).get(NewsViewModel.class);
         }
-
-        super.model.getEvent().observe(this, ev -> {
-            if (session.isClearedFor(Role.ADMIN, ev)) {
-                newsCreateButton.setVisibility(View.VISIBLE);
-            } else {
-                newsCreateButton.setVisibility(View.GONE);
-            }
-        });
-
 
         LiveData<String> twitterName = Transformations.map(super.model.getEvent(), Event::getTwitterName);
 
@@ -105,8 +88,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        AndroidSupportInjection.inject(this);
-
         super.onCreate(savedInstanceState);
 
         model = ViewModelProviders.of(requireActivity()).get(NewsViewModel.class);
