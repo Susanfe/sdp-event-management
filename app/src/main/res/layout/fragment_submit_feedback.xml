@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+    <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/feedback_form_ratingBar"
+            android:numStars="5"
+            android:stepSize="0.25"/>
+
+    <EditText
+            android:id="@+id/feedback_form_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="top"
+            android:hint="@string/contact_form_hint_message"
+            android:inputType="textMultiLine"
+            android:layout_weight="70"/>
+
+    <Button
+            android:id="@+id/feedback_form_send_button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/contact_form_send_button_text"
+            android:layout_weight="10"
+            style="@style/Button_global"/>
+
+
+</LinearLayout>
