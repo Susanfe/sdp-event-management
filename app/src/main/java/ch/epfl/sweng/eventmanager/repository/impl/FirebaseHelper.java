@@ -62,7 +62,7 @@ public class FirebaseHelper {
         return img;
     }
 
-    public static UploadTask uploadImage(StorageReference ref, File imgUri) {
+    public static UploadTask uploadFileToStorage(StorageReference ref, File imgUri) {
        return ref.putFile(Uri.fromFile(imgUri));
     }
 

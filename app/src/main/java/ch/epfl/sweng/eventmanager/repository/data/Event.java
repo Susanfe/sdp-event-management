@@ -202,7 +202,7 @@ public final class Event {
     public UploadTask uploadImage(File imgSrc) {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
         StorageReference eventsLogoRef = imagesRef.child(getImageName());
-        return FirebaseHelper.uploadImage(eventsLogoRef,imgSrc);
+        return FirebaseHelper.uploadFileToStorage(eventsLogoRef,imgSrc);
     }
 
     @Exclude
