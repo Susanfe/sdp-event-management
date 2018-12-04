@@ -35,7 +35,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     private void addItems(List<Spot> spots) {
         for (Spot s : spots) {
-            mMap.addMarker(new MarkerOptions().title(s.getTitle()).snippet(s.getSnippet()).draggable(true));
+            mMap.addMarker(new MarkerOptions().title(s.getTitle()).snippet(s.getSnippet())
+                    .draggable(true).position(s.getPosition()));
         }
     }
 
