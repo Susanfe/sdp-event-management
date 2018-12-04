@@ -112,9 +112,8 @@ public class EventCreateActivity extends AppCompatActivity {
     private Task<Event> prepareCreationTask() {
         if (eventID <= 0) {
             // Create the event and set the user admin of his event
-            Map<String, Map<String, String>> users = new HashMap<>();
-            users.put("admin", new HashMap<>());
-            users.get("admin").put("originalOwner", Session.getCurrentUser().getUid());
+            Map<String, String> users = new HashMap<>();
+            users.put(Session.getCurrentUser().getUid(), "admin");
 
             event.setUsers(users);
 

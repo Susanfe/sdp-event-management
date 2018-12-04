@@ -150,5 +150,7 @@
     <string name="ticket_scanning">Ticket scanning</string>
     <string name="ticket_scanning_vibrations_switch_title">Vibrations</string>
     <string name="ticket_scanning_sound_switch_title">Sound</string>
+    <string name="submit_your_feedback">Submit your Feedback</string>
+    <string name="ratings_empty">There is no ratings yet.</string>
 
 </resources>
