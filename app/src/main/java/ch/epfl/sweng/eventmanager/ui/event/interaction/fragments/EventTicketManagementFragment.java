@@ -1,6 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,12 +13,15 @@ import android.widget.Toast;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import ch.epfl.sweng.eventmanager.FileUtil;
 import ch.epfl.sweng.eventmanager.R;
 
 import static android.app.Activity.RESULT_OK;
@@ -31,6 +33,7 @@ import static android.app.Activity.RESULT_OK;
 public class EventTicketManagementFragment extends AbstractShowcaseFragment {
     private final int ACTIVITY_CHOOSE_FILE = 1;
     private static final String TAG = "EventTicketManagement";
+    private File mFile = null;
 
     @BindView(R.id.select_file_button)
     Button selectFileButton;
@@ -76,11 +79,10 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
         uploadButton.setText(getString(R.string.upload_button));
         uploadButton.setOnClickListener(v -> {
             try {
-                String filepath = filePathField.getText().toString();
-                File rawData = new File(filepath);
-                CSVParser parser = CSVParser.parse(rawData, Charset.defaultCharset(), CSVFormat.RFC4180);
+                CSVParser parser = CSVParser.parse(mFile, Charset.defaultCharset(), CSVFormat.RFC4180);
+                List<CSVRecord> records = parser.getRecords();
             } catch (Exception e) {
-                Toast error = Toast.makeText(getActivity(), "Could not read file: " + e.toString(), Toast.LENGTH_LONG);
+                Toast error = Toast.makeText(getActivity(), "Could not parse file: " + e.toString(), Toast.LENGTH_LONG);
                 error.show();
             }
         });
@@ -94,8 +96,13 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
             case ACTIVITY_CHOOSE_FILE: {
                 if (resultCode == RESULT_OK){
                     Uri uri = data.getData();
-                    String filePath = uri.getPath();
-                    filePathField.setText(filePath);
+                    try {
+                        mFile = FileUtil.from(getActivity(), uri);
+                        filePathField.setText(mFile.getPath());
+                    } catch (Exception e) {
+                        Toast error = Toast.makeText(getActivity(), "Could not resolve file: " + e.toString(), Toast.LENGTH_LONG);
+                        error.show();
+                    }
                 }
             }
         }
