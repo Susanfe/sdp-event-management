@@ -1,4 +1,5 @@
 ﻿language: android
+jdk: oraclejdk8
 env:
   - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=22
 
