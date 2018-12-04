@@ -1,7 +1,7 @@
 ﻿language: android
 jdk: oraclejdk8
 env:
-  - ABI=google_apis/armeabi-v7a API=25
+  - ABI_IMAGE=armeabi-v7a-google_apis-25 ABI=google_apis/armeabi-v7a API=25
 
   # disabled: dies randomly
   # - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16 VIEW_AVD_LOGS=1 EMU_OPTS="-noaudio"
