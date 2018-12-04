@@ -18,6 +18,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingService;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventAdministrationActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingActivity;
@@ -33,12 +34,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
  */
 public abstract class StarterTest extends ScanningTest {
     @Rule
-    public final EventTestRule<EventShowcaseActivity> mActivityRule;
+    public final EventTestRule<EventAdministrationActivity> mActivityRule;
     private final Class expectedClass;
 
     StarterTest(int eventId, Class expectedClass) {
         super(eventId);
-        this.mActivityRule = new EventTestRule<>(EventShowcaseActivity.class, eventId);
+        this.mActivityRule = new EventTestRule<>(EventAdministrationActivity.class, eventId);
         this.expectedClass = expectedClass;
     }
 
@@ -73,7 +74,7 @@ public abstract class StarterTest extends ScanningTest {
 
     void testOpen(Class expectedClass) {
         onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_scan));
+                .perform(NavigationViewActions.navigateTo(R.id.nav_ticket_scanning));
 
         Intents.intended(Matchers.allOf(
                 IntentMatchers.hasComponent(expectedClass.getName()),

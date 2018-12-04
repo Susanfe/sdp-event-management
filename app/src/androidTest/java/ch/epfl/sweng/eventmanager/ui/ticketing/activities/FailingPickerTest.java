@@ -16,6 +16,7 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ticketing.ErrorCodes;
 import ch.epfl.sweng.eventmanager.ticketing.data.ApiResult;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventAdministrationActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
 
@@ -29,7 +30,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
  */
 public class FailingPickerTest extends ScanningTest {
     @Rule
-    public final EventTestRule<EventShowcaseActivity> mActivityRule = new EventTestRule<>(EventShowcaseActivity.class, 2);
+    public final EventTestRule<EventAdministrationActivity> mActivityRule = new EventTestRule<>(EventAdministrationActivity.class, 2);
 
     public FailingPickerTest() {
         super(2);
@@ -44,7 +45,7 @@ public class FailingPickerTest extends ScanningTest {
                 .perform(DrawerActions.open());
 
         onView(withId(R.id.nav_view))
-                .perform(NavigationViewActions.navigateTo(R.id.nav_scan));
+                .perform(NavigationViewActions.navigateTo(R.id.nav_ticket_scanning));
     }
 
 
