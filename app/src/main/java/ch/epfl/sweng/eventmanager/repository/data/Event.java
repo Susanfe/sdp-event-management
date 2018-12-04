@@ -152,24 +152,6 @@ public final class Event {
     @Exclude
     public Map<Role, List<String>> getPermissions() {
         Map<Role, List<String>> result = new HashMap<>();
-        Map<Role, List<Pair<String, String>>> intermediateRepresentation = getStructuredPermissions();
-
-        // This implementation is quite inefficient since it loops again on all the permissions
-        // (which was already done in getStructuredPermission)
-        // FIXME: refactor the two methods
-        for (Role role: intermediateRepresentation.keySet()) {
-            List<String> uidList = new ArrayList<>();
-            for (Pair<String, String> pair: intermediateRepresentation.get(role)) {
-               uidList.add(pair.second);
-            }
-            result.put(role, uidList);
-        }
-
-        return result;
-    }
-
-    public Map<Role, List<Pair<String, String>>> getStructuredPermissions() {
-        Map<Role, List<Pair<String, String>>> result = new HashMap<>();
 
         // Don't blow up if the event does not contain any permission data
         if (getUsers() == null) return result;

@@ -23,7 +23,7 @@ import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.users.Role;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
-    private Map<String, Pair<String, Role>> mUsers;
+    private Map<User, Role> mUsers;
     public EventUserManagementFragment mContext;
     private Event mEvent;
 
@@ -51,15 +51,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         this.mEvent = event;
 
         // Build our internal User to Roles representation
-        Map<Role, List<Pair<String, String>>> raw = mEvent.getStructuredPermissions();
+        Map<Role, List<String>> raw = mEvent.getPermissions();
 
         mUsers = new HashMap<>();
         for (Role role : raw.keySet()) {
             // TODO handle null pointer exception
-            for (Pair<String, String> pair : raw.get(role)) { // Pair of key to uid
-                User user = new FirebaseBackedUser(pair.second);
-                // FIXME: fetch email instead of Uid once our FirebaseBackedUser suports it
-                mUsers.put(user.getUid(), new Pair(pair.first, role));
+            for (String uid : raw.get(role)) { // Pair of key to uid
+                User user = new FirebaseBackedUser(uid);
+                mUsers.put(user, role);
             }
         }
     }
@@ -78,13 +77,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        List<String> index = new ArrayList<>(mUsers.keySet());
-        String uid = index.get(position);
-        holder.userUid.setText(uid);
-        holder.userRole.setText(mUsers.get(uid).second.toString());
+        List<User> index = new ArrayList<>(mUsers.keySet());
+        User user = index.get(position);
+        // FIXME: fetch email instead of Uid once our FirebaseBackedUser suports it
+        holder.userUid.setText(user.getUid());
+        holder.userRole.setText(mUsers.get(user).toString());
 
         holder.removeButton.setOnClickListener(
-                v -> mContext.removeUser(v, mEvent, mUsers.get(uid).first, mUsers.get(uid).second)
+                v -> mContext.removeUser(v, mEvent, user.getUid(), mUsers.get(user))
         );
     }
 
