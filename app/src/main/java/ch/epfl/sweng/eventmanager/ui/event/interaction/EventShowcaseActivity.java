@@ -57,8 +57,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private Fragment newsFragment;
     private Fragment scheduleParentFragment;
 
-    private int eventID;
-
     private void initModels() {
         this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
         this.model.init(eventID);
