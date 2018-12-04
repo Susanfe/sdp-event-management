@@ -11,6 +11,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFr
 import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingModule;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventCreateActivityTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventUpdateActivityTest;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventUserManagementFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.activities.NoOpBarcodeViewManagerModule;
@@ -34,6 +35,7 @@ public interface TestComponent extends ApplicationComponent {
     void inject(EventCreateActivityTest test);
     void inject(ScanningTest test);
     void inject(EventFeedbackFragmentTest test);
+    void inject(EventUserManagementFragmentTest test);
 
     @Component.Builder
     interface Builder extends ApplicationComponent.Builder {

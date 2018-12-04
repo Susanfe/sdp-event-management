@@ -248,4 +248,15 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
         return Tasks.call(() -> true);
     }
+
+    @Override
+    public Task<Boolean> removeUserFromEvent(String uidKey, int eventId, String role) {
+        Event ev = events.get(eventId).getValue();
+        if (ev == null)
+            return Tasks.call(() -> false);
+
+        // TODO
+
+        return Tasks.call(() -> true);
+    }
 }
