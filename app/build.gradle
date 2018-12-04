@@ -19,7 +19,7 @@ android {
         testInstrumentationRunner ".MockTestRunner"
 
         vectorDrawables.useSupportLibrary = true
-        multiDexEnabled false
+        multiDexEnabled true
     }
     buildTypes {
         release {

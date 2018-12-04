@@ -26,14 +26,11 @@ import com.google.android.gms.tasks.Task;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";

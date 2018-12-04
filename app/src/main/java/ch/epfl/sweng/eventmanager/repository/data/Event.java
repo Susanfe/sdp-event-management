@@ -2,16 +2,6 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseHelper;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import ch.epfl.sweng.eventmanager.users.Role;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.storage.FirebaseStorage;
@@ -19,9 +9,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 

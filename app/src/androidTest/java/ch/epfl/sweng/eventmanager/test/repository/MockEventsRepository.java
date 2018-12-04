@@ -1,32 +1,19 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
 import android.graphics.Bitmap;
-
+import androidx.lifecycle.LiveData;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
+import ch.epfl.sweng.eventmanager.repository.EventRepository;
+import ch.epfl.sweng.eventmanager.repository.data.*;
+import ch.epfl.sweng.eventmanager.test.ObservableMap;
+import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
+import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import androidx.lifecycle.LiveData;
-import ch.epfl.sweng.eventmanager.repository.EventRepository;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
-import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.repository.data.Position;
-import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
-import ch.epfl.sweng.eventmanager.repository.data.Spot;
-import ch.epfl.sweng.eventmanager.repository.data.Zone;
-import ch.epfl.sweng.eventmanager.test.ObservableMap;
-import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
-import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
+import java.util.*;
 
 /**
  * @author Louis Vialar
