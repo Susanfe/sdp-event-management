@@ -24,6 +24,8 @@ import javax.inject.Inject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";
