@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.OverFlow</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -81,7 +82,6 @@
     <style name="FloatingButtonStyle" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="backgroundTint">@color/colorSecondary</item>
     </style>
-
 
     <!-- ############################# CARDVIEW UI ############################################-->
     <style name="cardView_rounded" parent="Base.CardView">

@@ -1,5 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY app_name "Gatsbi">
+    ]>
+
 <resources>
-    <string name="app_name">Event Manager</string>
+    <string name="app_name">&app_name;</string>
 
     <string name="filter_title_event_picking">Filter for app indexing and URI</string>
 
@@ -128,7 +133,7 @@
 
     <!-- Generic text -->
     <string name="undo">Undo</string>
-    <string name="welcome">Welcome!</string>
+    <string name="welcome">Welcome on &app_name; !</string>
     <string name="create_form_hint_name">Name of the event</string>
     <string name="create_form_hint_description">Description of the event</string>
     <string name="create_form_hint_email">Email of the event organizer</string>
