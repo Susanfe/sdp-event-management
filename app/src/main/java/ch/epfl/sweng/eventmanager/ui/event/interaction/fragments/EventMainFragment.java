@@ -2,12 +2,19 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.widget.*;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.CheckedTextView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -16,10 +23,7 @@ import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import dagger.android.support.AndroidSupportInjection;
-
-import javax.inject.Inject;
 
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
@@ -106,7 +110,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) ButterKnife.bind(this, view);
 
-        showcaseActivity = getParentActivity();
+        showcaseActivity = (EventShowcaseActivity) getParentActivity();
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
         contactButton.setOnClickListener(v -> showcaseActivity.callChangeFragment(
