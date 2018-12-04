@@ -10,6 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+
+import java.io.File;
+import java.nio.charset.Charset;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,11 +69,21 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
             Intent intent;
             chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
             chooseFile.setType("text/plain");
-            intent = Intent.createChooser(chooseFile, "Choose a file");
+            intent = Intent.createChooser(chooseFile, "Choose CSV file");
             startActivityForResult(intent, ACTIVITY_CHOOSE_FILE);
         });
 
         uploadButton.setText(getString(R.string.upload_button));
+        uploadButton.setOnClickListener(v -> {
+            try {
+                String filepath = filePathField.getText().toString();
+                File rawData = new File(filepath);
+                CSVParser parser = CSVParser.parse(rawData, Charset.defaultCharset(), CSVFormat.RFC4180);
+            } catch (Exception e) {
+                Toast error = Toast.makeText(getActivity(), "Could not read file: " + e.toString(), Toast.LENGTH_LONG);
+                error.show();
+            }
+        });
 
         return view;
     }
