@@ -6,34 +6,37 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFormFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.settings.SettingsActivity;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
-import javax.inject.Inject;
-import java.io.Serializable;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
 
     @Inject
     ViewModelFactory factory;
-    @Inject
-    TicketingManager ticketingManager;
 
     private EventInteractionModel model;
     private ScheduleViewModel scheduleModel;
@@ -59,21 +62,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
         this.zonesModel = ViewModelProviders.of(this, factory).get(ZoneModel.class);
         this.zonesModel.init(eventID);
-    }
-
-    private void setupMenu() {
-        LiveData<EventTicketingConfiguration> data = Transformations.map(model.getEvent(),
-                Event::getTicketingConfiguration);
-        data.observe(this, d -> {
-            MenuItem item = navigationView.getMenu().findItem(R.id.nav_scan);
-            if (d != null) {
-                Log.i(TAG, "Got a ticketing configuration, setting button visible");
-                item.setVisible(true);
-            } else {
-                Log.i(TAG, "Got no ticketing configuration, setting button invisible");
-                item.setVisible(false);
-            }
-        });
     }
 
     private void setupHeader() {
@@ -106,7 +94,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         } else {
             this.initModels();
             this.setupHeader();
-            this.setupMenu();
 
             // Only display admin button if the user is at least staff
             model.getEvent().observe(this, ev -> {
@@ -181,13 +168,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 changeFragment(new EventFeedbackFragment(), true);
                 break;
 
-            case R.id.nav_scan:
-                // TODO Handle null pointer exception
-                startActivity(ticketingManager.start(model.getEvent().getValue(), this));
-                break;
-
             case R.id.nav_settings:
-                Intent intent = new Intent(this,SettingsActivity.class);
+                Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;
         }

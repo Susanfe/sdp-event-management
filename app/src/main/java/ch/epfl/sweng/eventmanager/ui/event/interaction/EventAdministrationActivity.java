@@ -8,8 +8,12 @@ import android.view.MenuItem;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketManagementFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNewsFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
@@ -17,6 +21,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserM
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 
@@ -25,9 +30,26 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
 
     @Inject
     ViewModelFactory factory;
+    @Inject
+    TicketingManager ticketingManager;
 
     private EventInteractionModel model;
     private NewsViewModel newsModel;
+
+    private void setupMenu() {
+        LiveData<EventTicketingConfiguration> data = Transformations.map(model.getEvent(),
+                Event::getTicketingConfiguration);
+        data.observe(this, d -> {
+            MenuItem item = navigationView.getMenu().findItem(R.id.nav_ticket_scanning);
+            if (d != null) {
+                Log.i(TAG, "Got a ticketing configuration, setting button visible");
+                item.setVisible(true);
+            } else {
+                Log.i(TAG, "Got no ticketing configuration, setting button invisible");
+                item.setVisible(false);
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +67,7 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
         } else {
             this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
             this.model.init(eventID);
+            this.setupMenu();
 
             // Only display admin button if the user is at least staff
             model.getEvent().observe(this, ev -> {
@@ -94,6 +117,11 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
 
             case R.id.nav_ticket_management :
                 changeFragment(new EventTicketManagementFragment(), true);
+                break;
+
+            case R.id.nav_ticket_scanning:
+                // TODO Handle null pointer exception
+                startActivity(ticketingManager.start(model.getEvent().getValue(), this));
                 break;
 
             case R.id.nav_edit_event :

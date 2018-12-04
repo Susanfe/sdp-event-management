@@ -5,14 +5,18 @@
             android:id="@+id/nav_user_management"
             android:title="@string/user_management_nav_item_activity_event" />
         <item
+            android:id="@+id/nav_edit_event"
+            android:title="@string/edit_nav_item_activity_event" />
+        <item
             android:id="@+id/nav_send_news"
             android:title="@string/send_news_nav_item_activity_event" />
         <item
             android:id="@+id/nav_ticket_management"
             android:title="@string/ticket_management_nav_item_activity_event" />
         <item
-            android:id="@+id/nav_edit_event"
-            android:title="@string/edit_nav_item_activity_event" />
+            android:id="@+id/nav_ticket_scanning"
+            android:title="@string/ticket_scanning_nav_item_activity_event"
+            android:visible="false"/>
         <item
             android:id="@+id/nav_showcase"
             android:title="@string/showcase_nav_item_activity_event" />

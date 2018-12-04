@@ -68,6 +68,7 @@
     <string name="showcase_nav_item_activity_event">Public area</string>
     <string name="send_news_nav_item_activity_event">Publish news</string>
     <string name="ticket_management_nav_item_activity_event">Ticket management</string>
+    <string name="ticket_scanning_nav_item_activity_event">Ticket scanning</string>
 
     <string name="user_management_help_text">This page allows you to add and remove roles specific
         to this event.
@@ -98,7 +99,6 @@
     <string name="loading_text">Loading…</string>
     <string name="loading_failed">Loading failed : %1$s</string>
     <string name="ticketing_missing_service">Internal error (missing API service)</string>
-    <string name="scan_nav_item_activity_event_showcase">Scan Tickets</string>
     <string name="ticketing_scan_success">Valid ticket!</string>
     <string name="ticketing_scan_failure">Invalid ticket :(</string>
     <string name="ticketing_scan_user">Buyer:</string>
