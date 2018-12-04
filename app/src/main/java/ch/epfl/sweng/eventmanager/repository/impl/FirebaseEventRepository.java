@@ -48,27 +48,34 @@ public class FirebaseEventRepository implements EventRepository {
     public LiveData<List<Event>> getEvents() {
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = fdB.getReference("events");
+        dbRef.keepSynced(true);
 
-        return Transformations.switchMap(FirebaseHelper.getList(dbRef, Event.class, (event, ref) -> {
+
+        LiveData<List<Event>> list = FirebaseHelper.getList(dbRef, Event.class, (event, ref) -> {
             event.setId(Integer.parseInt(ref.getKey()));
             return event;
-        }), list -> {
-            MediatorLiveData<List<Event>> events = new MediatorLiveData<>();
-            List<Event> eventList = new ArrayList<>();
-            for (Event event : list) {
-                events.addSource(getEventImage(event), img -> {
+        });
+
+        MediatorLiveData<List<Event>> events = new MediatorLiveData<>();
+        events.addSource(list, events::setValue);
+
+        events.addSource(Transformations.switchMap(list, evts -> {
+            MediatorLiveData<List<Event>> images = new MediatorLiveData<>();
+            for (Event event : evts) {
+                images.addSource(getEventImage(event), img -> {
                     event.setImage(img);
-                    eventList.add(event);
-                    events.setValue(eventList);
+                    images.setValue(evts); // Use this to update the underlying listeners
                 });
             }
-            return events;
-        });
+            return images;
+        }), events::setValue);
+
+        return events;
     }
 
     @Override
     public LiveData<Event> getEvent(int eventId) {
-        final MutableLiveData<Event> ret = new MutableLiveData<>();
+        final MutableLiveData<Event> event = new MutableLiveData<>();
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance()
                 .getReference("events")
@@ -77,7 +84,7 @@ public class FirebaseEventRepository implements EventRepository {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ret.postValue(dataSnapshot.getValue(Event.class));
+                event.postValue(dataSnapshot.getValue(Event.class));
             }
 
             @Override
@@ -86,10 +93,14 @@ public class FirebaseEventRepository implements EventRepository {
             }
         });
 
-        return Transformations.switchMap(ret, ev -> Transformations.map(getEventImage(ev), img -> {
+        MediatorLiveData<Event> ret = new MediatorLiveData<>();
+        ret.addSource(event, ret::setValue);
+        ret.addSource(Transformations.switchMap(event, ev -> Transformations.map(getEventImage(ev), img -> {
             ev.setImage(img);
             return ev;
-        }));
+        })), ret::setValue);
+
+        return ret;
     }
 
     private String getImageName(Event event) {
