@@ -16,10 +16,6 @@ public class Feed {
     private Date time;
     private String author = "";
 
-    public Date getTime() {
-        return time;
-    }
-
     public Feed(JSONObject object) {
         try {
             String dateStr = object.getString("created_time");
@@ -48,4 +44,13 @@ public class Feed {
             e.printStackTrace();
         }
     }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
 }
