@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.test.repository;
 
 import javax.inject.Singleton;
 
+import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
@@ -35,6 +36,12 @@ public class MockRepositoriesModule {
     @Provides
     @Singleton
     public EventRepository providesEventRepository(MockEventsRepository repository) {
+        return repository;
+    }
+
+    @Provides
+    @Singleton
+    public CloudFunction providesCloudFunction(MockEventsRepository repository) {
         return repository;
     }
 
