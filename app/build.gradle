@@ -69,7 +69,7 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:16.0.5'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-database:16.0.5'
     implementation 'com.google.firebase:firebase-storage:16.0.5'
     implementation 'com.google.firebase:firebase-auth:16.0.5'
@@ -141,7 +141,8 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'test
             '**/*_Impl*.class',
             '**/*_*ViewBinding*.class',
             '**/repository/impl/*.class',
-            '**/ui/event/interaction/fragments/EventMapFragment.class'
+            '**/ui/event/interaction/fragments/EventMapFragment.class',
+            '**/ui/event/interaction/fragments/EventMapEditionFragment.class'
     ]
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/javac/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"
