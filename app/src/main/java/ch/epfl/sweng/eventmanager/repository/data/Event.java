@@ -2,6 +2,16 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseHelper;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import ch.epfl.sweng.eventmanager.users.Role;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.storage.FirebaseStorage;
@@ -9,6 +19,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -58,7 +71,7 @@ public final class Event {
     /**
      * A map from roles to a list of user UIDs.
      */
-    private Map<String, Map<String, String>> users;
+    private Map<String, String> users;
 
     /**
      * The twitter account screen name
@@ -70,13 +83,13 @@ public final class Event {
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate,
                  String organizerEmail, Bitmap image, EventLocation location,
-                 Map<String, Map<String, String>> users, String twitterName) {
+                 Map<String, String> users, String twitterName) {
         this(id, name, description, beginDate, endDate, organizerEmail, image, location, users, twitterName, null);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate,
                  String organizerEmail, Bitmap image, EventLocation location,
-                 Map<String, Map<String, String>> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
+                 Map<String, String> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
         this.ticketingConfiguration = ticketingConfiguration;
 
         if (beginDate.getTime() > endDate.getTime())
@@ -105,14 +118,20 @@ public final class Event {
         return name;
     }
 
-    public Date getBeginDate() {
+    public long getBeginDate() { return beginDate; }
+
+    public long getEndDate() {return endDate;};
+
+    @Exclude
+    public Date getBeginDateAsDate() {
         if (beginDate <= 0) {
             return null;
         }
         return new Date(beginDate);
     }
 
-    public Date getEndDate() {
+    @Exclude
+    public Date getEndDateAsDate() {
         if (endDate <= 0) {
             return null;
         }
@@ -141,7 +160,7 @@ public final class Event {
      *
      * @return firebase representation of user permissions.
      */
-    public Map<String, Map<String, String>> getUsers() { return users; }
+    public Map<String, String> getUsers() { return users; }
 
     /**
      * @return a map of Role permissions to User IDs
@@ -153,12 +172,13 @@ public final class Event {
         // Don't blow up if the event does not contain any permission data
         if (getUsers() == null) return result;
 
-
         // The keys of a Java Map are unique
-        for (String rawRole : getUsers().keySet()) {
-            Role role = Role.valueOf(rawRole.toUpperCase());
-            // TODO handle null pointer exception
-            List<String> users = new ArrayList<>(getUsers().get(rawRole).values());
+        for (String uid : getUsers().keySet()) {
+            Role role = Role.valueOf(getUsers().get(uid).toUpperCase());
+
+            List<String> users;
+            if (result.get(role) == null) users = Arrays.asList(uid);
+            else users = result.get(role);
 
             result.put(role, users);
         }
@@ -167,10 +187,8 @@ public final class Event {
     }
 
     // FIXME Use or delete method ?
-    public Collection<String> getUsersForRole(Role role) {
-       Map<String, String> uidMap = getUsers().get(role.toString().toLowerCase());
-       if (uidMap == null) return new ArrayList<>();
-       return uidMap.values();
+    public List<String> getUsersForRole(Role role) {
+        return getPermissions().get(role);
     }
 
     public String getTwitterName() {
@@ -242,7 +260,7 @@ public final class Event {
         this.location = location;
     }
 
-    public void setUsers(Map<String, Map<String, String>> users) {
+    public void setUsers(Map<String, String> users) {
         this.users = users;
     }
 

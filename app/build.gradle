@@ -98,6 +98,7 @@ dependencies {
 
     //UI Animation
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
+    implementation 'jp.wasabeef:blurry:3.0.0'
 
     // Tests
     testImplementation 'junit:junit:4.12'

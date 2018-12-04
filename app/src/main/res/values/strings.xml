@@ -1,5 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY app_name "Gatsbi">
+    ]>
+
 <resources>
-    <string name="app_name">Event Manager</string>
+    <string name="app_name">&app_name;</string>
 
     <string name="filter_title_event_picking">Filter for app indexing and URI</string>
 
@@ -128,15 +133,18 @@
 
     <!-- Generic text -->
     <string name="undo">Undo</string>
-    <string name="welcome">Welcome!</string>
+    <string name="welcome">Welcome on &app_name; !</string>
     <string name="create_form_hint_name">Name of the event</string>
     <string name="create_form_hint_description">Description of the event</string>
     <string name="create_form_hint_email">Email of the event organizer</string>
     <string name="create_form_hint_twitter_handle">(Optional) Event twitter handle</string>
+    <string name="create_form_hint_begin_date">Beginning date</string>
+    <string name="create_form_hint_end_date">Ending date</string>
+
     <string name="create_event_title">Create Event</string>
     <string name="edit_nav_item_activity_event">Event edition</string>
     <string name="create_event_canceled">Operation was unexpectedly cancelled.</string>
-    <string name="create_event_error">An error occured:</string>
+    <string name="create_event_error">An error occurred:</string>
     <string name="create_event_success">The event has been created!</string>
     <string name="create_event_update_success">The event has been updated!</string>
     <string name="feedback_form_main_go_button">Feedback</string>
@@ -147,6 +155,8 @@
     <string name="ticket_scanning">Ticket scanning</string>
     <string name="ticket_scanning_vibrations_switch_title">Vibrations</string>
     <string name="ticket_scanning_sound_switch_title">Sound</string>
+    <string name="submit_your_feedback">Submit your Feedback</string>
+    <string name="ratings_empty">There is no ratings yet.</string>
     <string name="create_form_upload_image">Upload image</string>
     <string name="event_create_add_event_name">Please first add event name</string>
     <string name="image_successfully_uploaded">Event image successfully uploaded !</string>

@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -25,6 +26,10 @@ import com.google.android.gms.tasks.Task;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -44,6 +49,10 @@ public class EventCreateActivity extends AppCompatActivity {
     Button sendButton;
     @BindView(R.id.create_form_name)
     EditText name;
+    @BindView(R.id.create_form_begin_date)
+    EditText beginDate;
+    @BindView(R.id.create_form_end_date)
+    EditText endDate;
     @BindView(R.id.create_form_email)
     EditText email;
     @BindView(R.id.create_form_twitter_handle)
@@ -70,6 +79,8 @@ public class EventCreateActivity extends AppCompatActivity {
         this.email.setText(event.getOrganizerEmail(), TextView.BufferType.EDITABLE);
         this.twitter.setText(event.getTwitterName(), TextView.BufferType.EDITABLE);
         this.description.setText(event.getDescription(), TextView.BufferType.EDITABLE);
+        this.beginDate.setText(formatDate(event.getBeginDateAsDate()));
+        this.endDate.setText(formatDate(event.getBeginDateAsDate()));
         this.eventImage.setImageBitmap(event.getImage());
     }
 
@@ -78,6 +89,8 @@ public class EventCreateActivity extends AppCompatActivity {
         this.event.setOrganizerEmail(getFieldValue(this.email));
         this.event.setTwitterName(getFieldValue(this.twitter));
         this.event.setDescription(getFieldValue(this.description));
+        this.event.setBeginDate(getDateValue(this.beginDate));
+        this.event.setEndDate(getDateValue(this.endDate));
         this.event.uploadImage(eventImageSrc)
                 .addOnSuccessListener(msg -> Toast.makeText(this, getString(R.string.image_successfully_uploaded),
                         Toast.LENGTH_LONG))
@@ -85,6 +98,25 @@ public class EventCreateActivity extends AppCompatActivity {
                     Toast.makeText(this, getString(R.string.image_successfully_uploaded), Toast.LENGTH_LONG);
                     Log.i(TAG, "Failed to upload event image" + msg.getMessage());
                 });
+    }
+
+    private String formatDate(Date date) {
+        String format = "dd/MM/yyyy";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
+        return dateFormat.format(date);
+    }
+
+    private long getDateValue(EditText editText) {
+        String format = "dd/MM/yyyy";
+        long date = 0L;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
+        try {
+            date = dateFormat.parse(editText.getText().toString()).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.i(TAG, "unable to parse date");
+        }
+        return date;
     }
 
     private String getFieldValue(EditText field) {
@@ -102,9 +134,8 @@ public class EventCreateActivity extends AppCompatActivity {
     private Task<Event> prepareCreationTask() {
         if (eventID <= 0) {
             // Create the event and set the user admin of his event
-            Map<String, Map<String, String>> users = new HashMap<>();
-            users.put("admin", new HashMap<>());
-            users.get("admin").put("originalOwner", Session.getCurrentUser().getUid());
+            Map<String, String> users = new HashMap<>();
+            users.put(Session.getCurrentUser().getUid(), "admin");
 
             event.setUsers(users);
 
@@ -154,6 +185,31 @@ public class EventCreateActivity extends AppCompatActivity {
         });
     }
 
+    @OnClick(R.id.create_form_begin_date)
+    void onClickBeginDate() {
+        pickDateDialog(beginDate, System.currentTimeMillis() - 1000);
+    }
+
+    @OnClick(R.id.create_form_end_date)
+    void onClickEndDate() {
+        pickDateDialog(endDate, getDateValue(beginDate));
+    }
+
+    private void pickDateDialog(EditText dateField, long minDate) {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener date = (view, year, month, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            dateField.setText(formatDate(calendar.getTime()));
+        };
+        DatePickerDialog datePickerDialog = new DatePickerDialog(EventCreateActivity.this, date,
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMinDate(minDate);
+        datePickerDialog.show();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
@@ -161,9 +217,8 @@ public class EventCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_event_create);
-        ButterKnife.bind(this);
 
-        // Setup button
+        ButterKnife.bind(this);
         this.setupButton();
 
         // Fetch event from passed ID
