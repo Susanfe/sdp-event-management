@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragment"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:layout_marginTop="?attr/actionBarSize">
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/feedback_relative_layout">
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/feedback_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:padding="10dp"
+                tools:listitem="@layout/item_feedback" android:visibility="visible">
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.appcompat.widget.AppCompatButton
+                android:text="@string/submit_your_feedback"
+                android:id="@+id/feedback_submit_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:gravity="center"
+                app:layout_anchorGravity="bottom"
+                android:layout_alignParentStart="true" android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
+
+    <TextView
+            android:text="@string/ratings_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratings_empty_tv"
+            android:gravity="center"
+            app:layout_anchorGravity="center"
+            android:visibility="gone"/>
+
+</LinearLayout>
