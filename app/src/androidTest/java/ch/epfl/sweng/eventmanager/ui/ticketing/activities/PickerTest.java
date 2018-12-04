@@ -22,7 +22,7 @@ public class PickerTest extends ActivityTest<TicketingConfigurationPickerActivit
         super(2, TicketingConfigurationPickerActivity.class);
     }
 
-    @Ignore
+    @Ignore("Fails on travis")
     @Test
     public void testDisplaysConfigs() {
         SystemClock.sleep(1000);
