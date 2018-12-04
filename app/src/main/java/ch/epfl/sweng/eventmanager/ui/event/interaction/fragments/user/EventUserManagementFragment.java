@@ -5,23 +5,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.*;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcaseFragment;
 import ch.epfl.sweng.eventmanager.users.Role;
+import dagger.android.support.AndroidSupportInjection;
+
+import javax.inject.Inject;
 
 /**
  * Allows an administrator a manage the users allowed to work with this event (= access to admin
@@ -48,9 +44,18 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
     @BindView(R.id.user_management_user_list_right_header)
     TextView rightHeader;
 
+    @Inject
+    CloudFunction cloudFunction;
+
     public EventUserManagementFragment() {
         // Required empty public constructor
         super(R.layout.fragment_event_user_management);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -123,7 +128,7 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
         setInProgressState(true);
         String email = mAddUserEmailField.getText().toString();
         String role = mAddUserSpinner.getSelectedItem().toString().toLowerCase();
-        FirebaseCloudFunction.addUserToEvent(email, ev.getId(), role)
+        cloudFunction.addUserToEvent(email, ev.getId(), role)
                 .addOnCompleteListener(task -> {
                     String toastText;
                     if (task.isSuccessful()) toastText = getString(R.string.add_user_success);

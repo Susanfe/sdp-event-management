@@ -1,6 +1,19 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
 import android.graphics.Bitmap;
+import ch.epfl.sweng.eventmanager.repository.CloudFunction;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import androidx.lifecycle.LiveData;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.*;
@@ -17,7 +30,7 @@ import java.util.*;
 /**
  * @author Louis Vialar
  */
-public class MockEventsRepository implements EventRepository {
+public class MockEventsRepository implements EventRepository, CloudFunction {
     public static final Map<Integer, EventTicketingConfiguration> CONFIG_BY_EVENT;
     public static final String EVENT_EMAIL = "events@not-really-epfl.ch";
     private static int CURRENT_EVENT_ID = 1000;
@@ -218,5 +231,20 @@ public class MockEventsRepository implements EventRepository {
     public Task<Event> updateEvent(Event event) {
         events.put(event.getId(), event);
         return Tasks.call(() -> event);
+    }
+
+    @Override
+    public Task<Boolean> addUserToEvent(String email, int eventId, String role) {
+        Event ev = events.get(eventId).getValue();
+        if (ev == null)
+            return Tasks.call(() -> false);
+
+        if (!ev.getUsers().containsKey(role))
+            ev.getUsers().put(role, new HashMap<>());
+
+        ev.getUsers().get(role).put(String.valueOf(System.currentTimeMillis()), email);
+        events.put(eventId, ev);
+
+        return Tasks.call(() -> true);
     }
 }
