@@ -94,6 +94,7 @@ public class NewsOrTweet implements Comparable<NewsOrTweet> {
         return "NewsOrTweet{" +
                 "news=" + news +
                 ", tweet=" + tweet +
+                ", facebook news=" +
                 ", time=" + time +
                 '}';
     }
@@ -107,6 +108,7 @@ public class NewsOrTweet implements Comparable<NewsOrTweet> {
 
         if (time != that.time) return false;
         if (news != null ? !news.equals(that.news) : that.news != null) return false;
+        if (facebook != null ? !facebook.equals(that.facebook) : that.facebook != null) return false;
         return tweet != null ? tweet.equals(that.tweet) : that.tweet == null;
     }
 }
