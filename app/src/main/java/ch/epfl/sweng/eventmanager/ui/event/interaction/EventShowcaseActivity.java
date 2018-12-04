@@ -17,7 +17,6 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFr
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFormFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
@@ -241,18 +240,14 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     @Override
     public void onBackPressed() {
         Fragment fragment = getCurrentFragment();
-        if (fragment instanceof EventTicketFragment || fragment instanceof EventMapFragment || fragment instanceof ScheduleParentFragment || fragment instanceof NewsFragment) {
-            callChangeFragment(FragmentType.MAIN, true);
+        int fragments = getSupportFragmentManager().getBackStackEntryCount();
+        if (fragments == 1) {
+            finish();
         } else {
-            int fragments = getSupportFragmentManager().getBackStackEntryCount();
-            if (fragments == 1) {
-                finish();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                getSupportFragmentManager().popBackStack();
             } else {
-                if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                    getSupportFragmentManager().popBackStack();
-                } else {
-                    super.onBackPressed();
-                }
+                super.onBackPressed();
             }
         }
     }
