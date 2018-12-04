@@ -33,6 +33,8 @@
     <string name="no_more_events_to_explore">Sorry, you\'ve already joined all the available events for now :\'( ! \n
         Please come back later !
     </string>
+    <string name="ticket_management_help">This page allows you to upload a comma-separated list
+        (CSV) file containing the IDs of the tickets to be scanned.</string>
     <string name="event_successfully_joined">Event successfully joined !</string>
     <string name="event_successfully_unjoined">Event successfully unjoined !</string>
 
@@ -52,6 +54,8 @@
     <string name="join_event_event_item_btn">Join Event</string>
     <string name="goto_event_btn">Go to event</string>
     <string name="add_button">Add</string>
+    <string name="select_file_button">Select file</string>
+    <string name="upload_button">Upload</string>
     <string name="add_user_success">The user was added to this event</string>
     <string name="add_user_failure">Could not add the user to this event</string>
 
