@@ -6,12 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment"
-    android:layout_marginTop="?attr/actionBarSize"
-    >
+    android:layout_marginTop="?attr/actionBarSize">
 
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/Button_global"
-        android:text="@string/news_create"
+    <RelativeLayout
+        android:id="@+id/news_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/news_create_button"
@@ -26,28 +24,25 @@
         android:layout_height="wrap_content"
         android:text="facebook" />
 
-    <RelativeLayout android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/news_relative_layout">
 
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:clipToPadding="false"
-                tools:listitem="@layout/item_news"/>
-
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="10dp"
+            tools:listitem="@layout/item_news" />
     </RelativeLayout>
 
     <TextView
-        android:text="@string/news_empty"
+        android:id="@+id/news_empty_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/news_empty_tv"
         android:gravity="center"
-        app:layout_anchorGravity="center"
-        app:layout_anchor="@+id/news_relative_layout" android:visibility="gone"/>
+        android:text="@string/news_empty"
+        android:visibility="gone"
+        app:layout_anchor="@+id/news_relative_layout"
+        app:layout_anchorGravity="center_vertical|center_horizontal" />
 
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
+
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -8,13 +9,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.twitter.sdk.android.core.models.Tweet;
@@ -24,6 +21,12 @@ import com.twitter.sdk.android.tweetui.CompactTweetView;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -51,6 +54,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
     Button newsCreateButton;
     @BindView(R.id.go_facebook)
     Button facebookButton;
+
     private NewsAdapter newsAdapter;
 
     public NewsFragment() {
@@ -76,7 +80,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
             startActivity(intent);
         });
 
-
         newsAdapter = new NewsAdapter();
         recyclerView.setAdapter(newsAdapter);
 
@@ -90,15 +93,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
         if (model == null) {
             model = ViewModelProviders.of(requireActivity()).get(NewsViewModel.class);
         }
-
-        super.model.getEvent().observe(this, ev -> {
-            if (Session.isClearedFor(Role.ADMIN, ev)) {
-                newsCreateButton.setVisibility(View.VISIBLE);
-            } else {
-                newsCreateButton.setVisibility(View.GONE);
-            }
-        });
-
 
         LiveData<String> twitterName = Transformations.map(super.model.getEvent(), Event::getTwitterName);
         //FIXME: put in firebase
