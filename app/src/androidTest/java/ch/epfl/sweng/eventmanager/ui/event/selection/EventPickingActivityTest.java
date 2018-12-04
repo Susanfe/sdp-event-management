@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.SystemClock;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,10 +19,12 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.runner.lifecycle.Stage.RESUMED;
+import static ch.epfl.sweng.eventmanager.TestHelper.waitId;
 
 public class EventPickingActivityTest {
 
@@ -41,11 +42,8 @@ public class EventPickingActivityTest {
 
     @Test
     public void testLoginFeature() {
-        if (Session.isLoggedIn()) {
-            onView(withId(R.id.event_picking_login_account)).perform(click());
-            onView(withId(R.id.layout_login_signup_logout_button)).perform(click());
-            SystemClock.sleep(1000);
-        }
+        ifLoggedInLogOut();
+
         onView(withId(R.id.event_picking_login_account)).perform(click());
         SystemClock.sleep(1000);
 
@@ -98,10 +96,35 @@ public class EventPickingActivityTest {
                 withEffectiveVisibility(state)));
     }
 
+    @Test
+    public void testSignupButton() {
+        ifLoggedInLogOut();
+
+        onView(withId(R.id.event_picking_login_account)).perform(click());
+        onView(withId(R.id.layout_login_signup_signup_button)).perform(click());
+
+        SystemClock.sleep(1000);
+
+        onView(isRoot()).perform(waitId(R.id.signup_toolbar, 2000));
+    }
+
+    @Test
+    public void testLoginButton() {
+        ifLoggedInLogOut();
+
+
+        onView(withId(R.id.event_picking_login_account)).perform(click());
+        onView(withId(R.id.layout_login_signup_login_button)).perform(click());
+
+        SystemClock.sleep(1000);
+
+        onView(isRoot()).perform(waitId(R.id.activity_login_progress_bar, 2000));
+    }
+
     /**
      * Method that get the Activity instance under test
      * Taken from https://qathread.blogspot.com/2014/09/discovering-espresso-for-android-how-to.html
-     * @return
+     * @return ACtivity object containing activity under test
      */
     private Activity getActivityInstance(){
         getInstrumentation().runOnMainSync(() -> {
@@ -112,6 +135,14 @@ public class EventPickingActivityTest {
         });
 
         return currentActivity;
+    }
+
+    private void ifLoggedInLogOut() {
+        if (Session.isLoggedIn()) {
+            onView(withId(R.id.event_picking_login_account)).perform(click());
+            onView(withId(R.id.layout_login_signup_logout_button)).perform(click());
+            SystemClock.sleep(1000);
+        }
     }
 
 }
