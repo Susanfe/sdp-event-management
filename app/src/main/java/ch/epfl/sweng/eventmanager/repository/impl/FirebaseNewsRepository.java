@@ -85,23 +85,13 @@ public class FirebaseNewsRepository implements NewsRepository {
         return data;
     }
 
-    public boolean isLogging() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        return isLoggedIn;
-    }
-
     @Override
     public LiveData<List<Feed>> getFacebookNews(String screenName) {
         MutableLiveData<List<Feed>> data = new MutableLiveData<>();
         List<Feed> feedList = new ArrayList<>();
-        Log.i("test0", String.valueOf(isLogging()));
 
-        Bundle params = new Bundle();
-        params.putString("fields", "description, message,created_time,id, full_picture,status_type,source, name");
         new GraphRequest(AccessToken.getCurrentAccessToken(), "/793504527660961/feed", null, HttpMethod.GET,
-            new GraphRequest.Callback() {
-                public void onCompleted(GraphResponse response) {
+                response -> {
                     /* handle the result */
                     try {
                         Log.v("facebook request", "start");
@@ -111,24 +101,14 @@ public class FirebaseNewsRepository implements NewsRepository {
                         for (int i = 0; i < jArray.length(); i++) {
                             JSONObject jObject = jArray.getJSONObject(i);
                             Feed feed = new Feed(jObject);
-                            Log.i("test", String.valueOf(i));
                             feedList.add(feed);
-                            //Log.v("data[]", jObject.toString());
-                            /*
-                            if (i == 0) {
-                                prevTime = String.valueOf(feed.getCreatedTime().getTime() / 1000);
-                            }
-                            */
                         }
                         data.setValue(feedList);
-                        Log.i("test1", "passe sans exception");
                     } catch (Exception e) {
                         e.printStackTrace();
                         data.setValue(Collections.EMPTY_LIST);
-                        Log.i("test2", "passe avec exception");
                     }
                 }
-            }
         ).executeAsync();
         return data;
     }

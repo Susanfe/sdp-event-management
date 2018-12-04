@@ -1,7 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 
-import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -33,7 +33,6 @@ import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.user.LoginFacebookActivity;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
@@ -51,7 +50,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
     @BindView(R.id.go_facebook)
     Button facebookButton;
     @BindView(R.id.news_create_button)
-    Button newsCreateButton;
+    AppCompatButton newsCreateButton;
 
     private NewsAdapter newsAdapter;
 

@@ -12,6 +12,7 @@ import java.util.Map;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
+import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.test.ObservableList;
 
@@ -57,6 +58,9 @@ public class MockNewsRepository implements NewsRepository {
     public LiveData<List<Tweet>> getTweets(String screenName) {
         return new MutableLiveData<>();
     }
+
+    @Override
+    public LiveData<List<Feed>> getFacebookNews(String screenName) { return new MutableLiveData<>(); }
 
     public void setNextInsertToFail() {
         nextWillFail = true;

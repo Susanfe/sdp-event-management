@@ -23,6 +23,7 @@ import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
 import ch.epfl.sweng.eventmanager.users.Session;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -106,4 +107,5 @@ public class NewsFragmentTest {
 
         onView(withText(R.string.send_news_failed)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
+
 }
