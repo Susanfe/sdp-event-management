@@ -33,6 +33,8 @@ public class MultiFragmentActivity extends AppCompatActivity
 
     private static final String TAG = "MultiFragmentActivity";
 
+    protected int eventID;
+
     /**
      * Initialize the UI structure: toolbar and drawer.
      */
@@ -109,5 +111,12 @@ public class MultiFragmentActivity extends AppCompatActivity
                             + exception.toString()
             );
         }
+    }
+
+    /**
+     * @return the ID associated with the displayed event
+     */
+    public int getEventID() {
+        return eventID;
     }
 }
