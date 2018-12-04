@@ -17,14 +17,15 @@ import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.tools.ImageConverter;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.tasks.Task;
 import dagger.android.AndroidInjection;
-import id.zelory.compressor.Compressor;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class EventCreateActivity extends AppCompatActivity {
 
     private int eventID;
     private Event event;
-    private Uri eventImageSrc;
+    private File eventImageSrc;
     private boolean loading = true;
 
     private void populateForm(Event event) {
@@ -199,12 +200,12 @@ public class EventCreateActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            eventImageSrc = data.getData();
+            Uri eventImageUri = data.getData();
             try {
-                Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(), eventImageSrc);
-                Bitmap compressedImage = new Compressor(this).setCompressFormat(Bitmap.CompressFormat.WEBP)
-                        .setMaxHeight(500).setMaxWidth(500).setQuality(100).compressToBitmap(image);
+                Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(), eventImageUri);
                 eventImage.setImageBitmap(image);
+                eventImageSrc = ImageConverter.convertToPng(this,eventImageUri);
+                eventImageSrc.deleteOnExit();
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.i(TAG, "failed to import image");

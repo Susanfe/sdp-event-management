@@ -12,6 +12,7 @@ import com.google.firebase.database.*;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,8 +62,8 @@ public class FirebaseHelper {
         return img;
     }
 
-    public static UploadTask uploadImage(StorageReference ref, Uri imgUri) {
-       return ref.putFile(imgUri);
+    public static UploadTask uploadImage(StorageReference ref, File imgUri) {
+       return ref.putFile(Uri.fromFile(imgUri));
     }
 
     public static interface Mapper<T> {
