@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import android.content.res.Resources;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -16,11 +17,16 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomMarkerDialog;
 
-public class EventMapEditionFragment extends EventMapFragment implements GoogleMap.OnMarkerClickListener {
+public class EventMapEditionFragment extends EventMapFragment implements GoogleMap.OnMarkerClickListener,
+        View.OnLongClickListener {
 
     private static final String TAG = "MapEdition.STYLE_TAG";
     private static final String FRAGMENT_TAG = "ui.event.interaction.fragments.EventMapEditionFragment.FRAGMENT_TAG";
 
+    /**
+     * Method is here used to do all the additional work without overriding onCreate(..)
+     * No cluster is wanted in the edition version
+     */
     @Override
     protected void setUpCluster() {
         try {
@@ -39,6 +45,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         mMap.setOnMarkerClickListener(this);
         addMarkers();
     }
+
 
     private void addMarkers() {
         if (getActivity() != null){
@@ -68,6 +75,11 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     public boolean onMarkerClick(Marker marker) {
         DialogFragment dialogFragment = new CustomMarkerDialog();
         dialogFragment.show(getChildFragmentManager(), FRAGMENT_TAG);
+        return true;
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
         return false;
     }
 }
