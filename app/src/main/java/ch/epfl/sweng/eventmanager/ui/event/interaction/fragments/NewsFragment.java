@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -27,6 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
@@ -99,8 +101,11 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
 
         LiveData<String> twitterName = Transformations.map(super.model.getEvent(), Event::getTwitterName);
+        //FIXME: put in firebase
+        MutableLiveData<String> facebookName = new MutableLiveData<>();
+        facebookName.setValue("japanimpact.ch");
 
-        this.model.getNews(twitterName).observe(this, news -> {
+        this.model.getNews(twitterName, facebookName).observe(this, news -> {
             if (news != null && news.size() > 0) {
                 emptyListTextView.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
@@ -139,10 +144,15 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 final CompactTweetView compactTweetView = new CompactTweetView(parent.getContext(), tweet);
 
                 return new TweetViewHolder(compactTweetView);
-            } else {
+            } else if(viewType == NewsOrTweet.TYPE_NEWS){
                 View v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_news, parent, false);
                 return new NewsViewHolder(v);
+            }
+            else {
+                View v = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.facebook_item_news, parent, false);
+                return new FacebookViewHolder(v);
             }
         }
 
@@ -153,6 +163,8 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 ((NewsViewHolder) holder).bind(news.get(position).getNews());
             else if (holder instanceof TweetViewHolder)
                 ((CompactTweetView) ((TweetViewHolder) holder).itemView).setTweet(news.get(position).getTweet());
+            else if (holder instanceof FacebookViewHolder)
+                ((FacebookViewHolder) holder).bind(news.get(position).getFacebook());
         }
 
         @Override
@@ -172,6 +184,23 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
 
             this.notifyDataSetChanged();
+        }
+
+        static final class FacebookViewHolder extends RecyclerView.ViewHolder {
+            @BindView(R.id.text_facebook_news_content)
+            TextView content;
+            @BindView(R.id.text_facebook_news_date)
+            TextView date;
+
+            FacebookViewHolder(View itemView) {
+                super(itemView);
+                ButterKnife.bind(this, itemView);
+            }
+
+            final void bind(Feed feed) {
+                this.content.setText(feed.getContent());
+                this.date.setText(feed.getTime().toString());
+            }
         }
 
         static final class TweetViewHolder extends RecyclerView.ViewHolder {
@@ -200,6 +229,4 @@ public class NewsFragment extends AbstractShowcaseFragment {
             }
         }
     }
-
-
 }
