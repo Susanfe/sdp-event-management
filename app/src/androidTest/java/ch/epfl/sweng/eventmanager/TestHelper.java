@@ -6,9 +6,18 @@ import android.widget.EditText;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.test.espresso.matcher.BoundedMatcher;
+import java.util.concurrent.TimeoutException;
 
+import androidx.appcompat.widget.Toolbar;
+import androidx.test.espresso.PerformException;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.matcher.BoundedMatcher;
+import androidx.test.espresso.util.HumanReadables;
+import androidx.test.espresso.util.TreeIterables;
+
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.CoreMatchers.is;
 
 public class TestHelper {
@@ -51,6 +60,57 @@ public class TestHelper {
             @Override
             protected boolean matchesSafely(EditText view) {
                 return view.getError() == null;
+            }
+        };
+    }
+
+    /**
+     * Perform action of waiting for a specific view id.
+     * E.g.:
+     * onView(isRoot()).perform(waitId(R.id.dialogEditor, Sampling.SECONDS_15));
+     * Taken from stackoverflow 38531243
+     *
+     * @param viewId id of the xml res to be checked
+     * @param millis time (in milliseconds) to wait
+     * @return a ViewAction to be used in perform(..)
+     */
+    public static ViewAction waitId(final int viewId, final long millis) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isRoot();
+            }
+
+            @Override
+            public String getDescription() {
+                return "wait for a specific view with id <" + viewId + "> during " + millis + " millis.";
+            }
+
+            @Override
+            public void perform(final UiController uiController, final View view) {
+                uiController.loopMainThreadUntilIdle();
+                final long startTime = System.currentTimeMillis();
+                final long endTime = startTime + millis;
+                final Matcher<View> viewMatcher = withId(viewId);
+
+                do {
+                    for (View child : TreeIterables.breadthFirstViewTraversal(view)) {
+                        // found view with required ID
+                        if (viewMatcher.matches(child)) {
+                            return;
+                        }
+                    }
+
+                    uiController.loopMainThreadForAtLeast(50);
+                }
+                while (System.currentTimeMillis() < endTime);
+
+                // timeout happens
+                throw new PerformException.Builder()
+                        .withActionDescription(this.getDescription())
+                        .withViewDescription(HumanReadables.describe(view))
+                        .withCause(new TimeoutException())
+                        .build();
             }
         };
     }

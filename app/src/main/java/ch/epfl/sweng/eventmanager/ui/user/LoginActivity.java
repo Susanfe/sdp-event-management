@@ -73,17 +73,28 @@ public class LoginActivity extends AppCompatActivity {
                 mEmailView, mPasswordView, null);
 
         // FIXME: Quite ugly, do we have a sexier way to return from UserManagerHelper.validateForm/3 ?
-        boolean cancel = validatedForm.first.first;
-        EditText focusView = validatedForm.first.second;
-        String email = validatedForm.second.first;
-        String password = validatedForm.second.second;
+        boolean cancel = false;
+        EditText focusView = null;
+        if (validatedForm.first != null) {
+            if (validatedForm.first.first != null)
+                cancel = validatedForm.first.first;
+
+            focusView = validatedForm.first.second;
+        }
+
+        String email = "", password =  "";
+        if (validatedForm.second != null) {
+            email = validatedForm.second.first;
+            password = validatedForm.second.second;
+        }
 
         if (cancel) {
+            assert focusView != null;
             focusView.requestFocus();
         } else {
             UserManagerHelper.showProgress(mLoginButton, mProgressBar, true);
             OnCompleteListener callback = UserManagerHelper.getAuthOnCompleteListener(this, mPasswordView,
-                    mSignUpButton, mProgressBar);
+                    mLoginButton, mProgressBar);
             Session.login(email, password, this, callback);
         }
     }
