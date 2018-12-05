@@ -1,24 +1,25 @@
 package ch.epfl.sweng.eventmanager.test.inject;
 
-import javax.inject.Singleton;
-
 import ch.epfl.sweng.eventmanager.inject.ActivityBuilder;
 import ch.epfl.sweng.eventmanager.inject.ApplicationComponent;
 import ch.epfl.sweng.eventmanager.inject.ApplicationModule;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import ch.epfl.sweng.eventmanager.test.repository.MockRepositoriesModule;
-import ch.epfl.sweng.eventmanager.test.users.MockUsersModule;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragmentTest;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingModule;
+import ch.epfl.sweng.eventmanager.test.users.MockUsersModule;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventCreateActivityTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventUpdateActivityTest;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragmentTest;
+import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivityTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.activities.NoOpBarcodeViewManagerModule;
 import ch.epfl.sweng.eventmanager.ui.user.LoginActivityTest;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
 import dagger.android.support.AndroidSupportInjectionModule;
+
+import javax.inject.Singleton;
 
 @Component(modules = {
         AndroidInjectionModule.class,
@@ -33,11 +34,18 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Singleton
 public interface TestComponent extends ApplicationComponent {
     void inject(NewsFragmentTest test);
+
     void inject(EventUpdateActivityTest test);
+
     void inject(EventCreateActivityTest test);
+
     void inject(ScanningTest test);
+
     void inject(EventFeedbackFragmentTest test);
+
     void inject(LoginActivityTest test);
+
+    void inject(EventPickingActivityTest test);
 
     @Component.Builder
     interface Builder extends ApplicationComponent.Builder {
