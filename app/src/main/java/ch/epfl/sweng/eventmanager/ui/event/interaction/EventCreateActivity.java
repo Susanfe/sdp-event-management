@@ -34,6 +34,9 @@ public class EventCreateActivity extends AppCompatActivity {
     @Inject
     EventRepository repository;
 
+    @Inject
+    Session session;
+
     @BindView(R.id.create_form_send_button)
     Button sendButton;
     @BindView(R.id.create_form_name)
@@ -111,7 +114,7 @@ public class EventCreateActivity extends AppCompatActivity {
         if (eventID <= 0) {
             // Create the event and set the user admin of his event
             Map<String, String> users = new HashMap<>();
-            users.put(Session.getCurrentUser().getUid(), "admin");
+            users.put(session.getCurrentUser().getUid(), "admin");
 
             event.setUsers(users);
 

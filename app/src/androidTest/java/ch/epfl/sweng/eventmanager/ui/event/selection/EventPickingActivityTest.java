@@ -2,6 +2,15 @@ package ch.epfl.sweng.eventmanager.ui.event.selection;
 
 import android.app.Activity;
 import android.os.SystemClock;
+
+import ch.epfl.sweng.eventmanager.test.TestApplication;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import java.util.Collection;
+
 import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
@@ -13,6 +22,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Collection;
+
+import javax.inject.Inject;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -28,12 +39,20 @@ public class EventPickingActivityTest {
     private String password = "secret";
     private Activity currentActivity;
 
+    @Inject
+    Session session;
+
     @Rule
     public final EventTestRule<EventPickingActivity> mActivityRule = new EventTestRule<>(EventPickingActivity.class);
 
     @After
     public void autoLogOut() {
-        Session.logout();
+        session.logout();
+    }
+
+    @Before
+    public void setup() {
+        TestApplication.component.inject(this);
     }
 
     @Test
@@ -51,7 +70,7 @@ public class EventPickingActivityTest {
 
     @Test
     public void testLogoutFeature() {
-        Session.login(email, password, getActivityInstance(), task -> {});
+        session.login(email, password, getActivityInstance(), task -> {});
         pressBack();
 
         onView(withId(R.id.event_picking_login_account)).perform(click());
@@ -134,7 +153,7 @@ public class EventPickingActivityTest {
     }
 
     private void ifLoggedInLogOut() {
-        if (Session.isLoggedIn()) {
+        if (session.isLoggedIn()) {
             onView(withId(R.id.event_picking_login_account)).perform(click());
             onView(withId(R.id.layout_login_signup_logout_button)).perform(click());
             SystemClock.sleep(1000);

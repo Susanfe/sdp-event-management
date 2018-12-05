@@ -85,6 +85,9 @@ public class EventPickingActivity extends AppCompatActivity {
 
 
 
+    @Inject
+    Session session;
+
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -178,7 +181,7 @@ public class EventPickingActivity extends AppCompatActivity {
      */
     private void openLoginOrAccountActivity() {
         Class nextActivity;
-        if (Session.isLoggedIn()) {
+        if (session.isLoggedIn()) {
             nextActivity = DisplayAccountActivity.class;
         } else {
             nextActivity = LoginActivity.class;
@@ -255,7 +258,7 @@ public class EventPickingActivity extends AppCompatActivity {
                 break;
 
             case R.id.layout_login_signup_logout_button:
-                Session.logout();
+                session.logout();
                 loggedUI.setVisibility(View.GONE);
                 notLoggedUi.setVisibility(View.VISIBLE);
                 revealCircular(true);
@@ -322,7 +325,7 @@ public class EventPickingActivity extends AppCompatActivity {
      */
     public void onPrepareSignupLoginLayout() {
         loginAccountUI.setVisibility(View.GONE);
-        if (Session.isLoggedIn()) {
+        if (session.isLoggedIn()) {
             loggedUI.setVisibility(View.VISIBLE);
             notLoggedUi.setVisibility(View.GONE);
         } else {

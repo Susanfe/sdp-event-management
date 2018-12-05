@@ -36,6 +36,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     ViewModelFactory factory;
     @Inject
     TicketingManager ticketingManager;
+    @Inject
+    Session session;
 
     private EventInteractionModel model;
     private ScheduleViewModel scheduleModel;
@@ -122,7 +124,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                     return;
                 }
 
-                if (Session.isLoggedIn() && Session.isClearedFor(Role.ADMIN, ev)) {
+                if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN, ev)) {
                     MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
                     adminMenuItem.setVisible(true);
                 }

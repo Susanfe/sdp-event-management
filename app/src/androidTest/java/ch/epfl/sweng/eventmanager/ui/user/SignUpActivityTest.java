@@ -17,12 +17,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 public class SignUpActivityTest {
-
-    @Before
-    public void disableFirebaseAuth() {
-        Session.enforceDummySessions();
-    }
-
     @Rule
     public final ActivityTestRule<SignUpActivity> mActivityRule = new ActivityTestRule<>(SignUpActivity.class);
 
