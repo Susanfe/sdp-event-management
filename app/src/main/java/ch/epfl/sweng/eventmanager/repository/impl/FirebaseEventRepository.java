@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -98,7 +99,7 @@ public class FirebaseEventRepository implements EventRepository {
     }
 
     @Override
-    public LiveData<String> getEventImageURL(Event event) {
+    public LiveData<Uri> getEventImageURL(Event event) {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
         StorageReference eventLogoReference = imagesRef.child(getImageName(event));
 

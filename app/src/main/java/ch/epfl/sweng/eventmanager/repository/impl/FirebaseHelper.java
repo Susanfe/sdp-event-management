@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.repository.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -59,10 +60,10 @@ public class FirebaseHelper {
         return img;
     }
 
-    public static LiveData<String> getImageURL(StorageReference ref) {
-        final MutableLiveData<String> url = new MutableLiveData<>();
+    public static LiveData<Uri> getImageURL(StorageReference ref) {
+        final MutableLiveData<Uri> url = new MutableLiveData<>();
         ref.getDownloadUrl().addOnSuccessListener(uri -> {
-            url.setValue(uri.toString());
+            url.setValue(uri);
         }).addOnFailureListener(exception -> {
             Log.w("FirebaseHelper", "Could not load image URL " + url.toString());
             url.setValue(null);

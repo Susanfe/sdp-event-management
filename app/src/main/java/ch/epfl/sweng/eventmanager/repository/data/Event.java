@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.ImageView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import ch.epfl.sweng.eventmanager.inject.GlideApp;
@@ -47,9 +48,9 @@ public final class Event {
      */
     private String organizerEmail;
     /**
-     * An URL to the image representing the event, may be null
+     * An URI to the image representing the event, may be null
      */
-    private String imageURL;
+    private Uri imageURI;
     /**
      * The location of the event
      */
@@ -69,13 +70,13 @@ public final class Event {
 
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 String organizerEmail, String imageURL, EventLocation location,
+                 String organizerEmail, Uri imageURI, EventLocation location,
                  Map<String, String> users, String twitterName) {
-        this(id, name, description, beginDate, endDate, organizerEmail, imageURL, location, users, twitterName, null);
+        this(id, name, description, beginDate, endDate, organizerEmail, imageURI, location, users, twitterName, null);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 String organizerEmail, String imageURL, EventLocation location,
+                 String organizerEmail, Uri imageURI, EventLocation location,
                  Map<String, String> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
 
         this.ticketingConfiguration = ticketingConfiguration;
@@ -89,7 +90,7 @@ public final class Event {
         this.endDate = endDate.getTime();
         this.description = description;
         this.organizerEmail = organizerEmail;
-        this.imageURL = imageURL;
+        this.imageURI = imageURI;
         this.location = location;
         this.users = users;
         this.twitterName = twitterName;
@@ -177,8 +178,8 @@ public final class Event {
         return f.format(endDate);
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public void setImageURL(Uri imageURI) {
+        this.imageURI = imageURI;
     }
 
 
@@ -228,8 +229,13 @@ public final class Event {
 
 
     @Exclude
-    public String getImageURL() {
-        return imageURL;
+    public Uri getImageURI() {
+        return imageURI;
+    }
+
+    @Exclude
+    public boolean haveAnImage() {
+        return imageURI != null;
     }
 
     /**
@@ -239,12 +245,12 @@ public final class Event {
      */
     @Exclude
     public void loadEventImageIntoImageView(Context context, ImageView imageView) {
-        if(getImageURL() != null) {
+        if(getImageURI() != null) {
             CircularProgressDrawable progress = new CircularProgressDrawable(context);
             progress.setStrokeWidth(5f);
             progress.setCenterRadius(30f);
             progress.start();
-            GlideApp.with(context).load(getImageURL()).placeholder(progress).into(imageView);
+            GlideApp.with(context).load(getImageURI()).placeholder(progress).into(imageView);
         }
     }
 
@@ -256,12 +262,12 @@ public final class Event {
      */
     @Exclude
     public void loadEventImageIntoImageView(Context context, ImageView imageView, BitmapTransformation transformation) {
-        if (getImageURL() != null) {
+        if (getImageURI() != null) {
             CircularProgressDrawable progress = new CircularProgressDrawable(context);
             progress.setStrokeWidth(5f);
             progress.setCenterRadius(30f);
             progress.start();
-            GlideApp.with(context).load(getImageURL()).apply(RequestOptions.bitmapTransform(transformation)).placeholder(progress).into(imageView);
+            GlideApp.with(context).load(getImageURI()).apply(RequestOptions.bitmapTransform(transformation)).placeholder(progress).into(imageView);
         }
     }
 

@@ -89,7 +89,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 return;
             }
 
-            if (ev.getImageURL() != null) {
+            if (ev.haveAnImage()) {
                 ImageView header = headerView.findViewById(R.id.drawer_header_image);
                 ev.loadEventImageIntoImageView(this,header,new BlurTransformation(3));
             }

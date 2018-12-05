@@ -1,10 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.content.Context;
-import android.widget.ImageView;
-import jp.wasabeef.glide.transformations.BlurTransformation;
+import android.net.Uri;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -132,22 +129,8 @@ public class EventTest {
 
     @Test
     public void setAndGetImageTest(){
-        String URL = "Fake URL";
-        ev1.setImageURL(URL);
-        assertEquals(ev1.getImageURL(), URL);
-    }
-
-    @Test
-    public void loadEventImageIntoImageView() {
-        ImageView imageView = Mockito.mock(ImageView.class);
-        Context context = Mockito.mock(Context.class);
-        ev1.loadEventImageIntoImageView(context,imageView);
-    }
-
-    @Test
-    public void loadEventImageAndTransformIntoImageView() {
-        ImageView imageView = Mockito.mock(ImageView.class);
-        Context context = Mockito.mock(Context.class);
-        ev1.loadEventImageIntoImageView(context,imageView,new BlurTransformation(1));
+        Uri uri = Uri.EMPTY;
+        ev1.setImageURL(uri);
+        assertEquals(ev1.getImageURI(), uri);
     }
 }
