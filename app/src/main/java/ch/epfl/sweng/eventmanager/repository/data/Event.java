@@ -2,18 +2,16 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Bitmap;
 
+import com.google.firebase.database.Exclude;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.core.util.Pair;
 import ch.epfl.sweng.eventmanager.users.Role;
-import com.google.firebase.database.Exclude;
 
 
 /**
@@ -161,10 +159,14 @@ public final class Event {
             Role role = Role.valueOf(getUsers().get(uid).toUpperCase());
 
             List<String> users;
-            if (result.get(role) == null) users = Arrays.asList(uid);
-            else users = result.get(role);
-
-            result.put(role, users);
+            if (result.get(role) == null) {
+                users = new ArrayList<>();
+                users.add(uid);
+                result.put(role, users);
+            }
+            else {
+                result.get(role).add(uid);
+            }
         }
 
         return result;
