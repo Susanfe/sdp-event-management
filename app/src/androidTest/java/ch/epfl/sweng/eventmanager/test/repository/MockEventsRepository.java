@@ -1,25 +1,13 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
 import android.graphics.Bitmap;
-import ch.epfl.sweng.eventmanager.repository.CloudFunction;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import androidx.lifecycle.LiveData;
+import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.*;
 import ch.epfl.sweng.eventmanager.test.ObservableMap;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
-import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
+import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.gson.Gson;
