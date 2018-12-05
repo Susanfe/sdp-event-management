@@ -16,6 +16,8 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import com.google.android.gms.tasks.OnCompleteListener;
 import dagger.android.AndroidInjection;
 
+import javax.inject.Inject;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -36,6 +38,9 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar mProgressBar;
     @BindView(R.id.activity_login_toolbar)
     Toolbar toolbar;
+
+    @Inject
+    Session session;
 
     private void setupFields() {
         mEmailView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mEmailView));
@@ -73,18 +78,29 @@ public class LoginActivity extends AppCompatActivity {
                 mEmailView, mPasswordView, null);
 
         // FIXME: Quite ugly, do we have a sexier way to return from UserManagerHelper.validateForm/3 ?
-        boolean cancel = validatedForm.first.first;
-        EditText focusView = validatedForm.first.second;
-        String email = validatedForm.second.first;
-        String password = validatedForm.second.second;
+        boolean cancel = false;
+        EditText focusView = null;
+        if (validatedForm.first != null) {
+            if (validatedForm.first.first != null)
+                cancel = validatedForm.first.first;
+
+            focusView = validatedForm.first.second;
+        }
+
+        String email = "", password =  "";
+        if (validatedForm.second != null) {
+            email = validatedForm.second.first;
+            password = validatedForm.second.second;
+        }
 
         if (cancel) {
+            assert focusView != null;
             focusView.requestFocus();
         } else {
             UserManagerHelper.showProgress(mLoginButton, mProgressBar, true);
             OnCompleteListener callback = UserManagerHelper.getAuthOnCompleteListener(this, mPasswordView,
                     mSignUpButton, mProgressBar);
-            Session.login(email, password, this, callback);
+            session.login(email, password, this, callback);
         }
     }
 }

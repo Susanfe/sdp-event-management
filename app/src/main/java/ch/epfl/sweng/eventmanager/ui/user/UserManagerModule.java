@@ -12,6 +12,9 @@ public abstract class UserManagerModule {
     abstract LoginActivity contributeLoginActivityInjector();
 
     @ContributesAndroidInjector
+    abstract SignUpActivity contributeSignUpActivityInjector();
+
+    @ContributesAndroidInjector
     abstract DisplayAccountActivity contributeDisplayAccountActivityInjector();
 
 }

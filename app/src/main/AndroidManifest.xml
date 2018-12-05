@@ -7,12 +7,12 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".EventManagerApplication"
@@ -103,20 +103,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity
-            android:name=".ui.event.interaction.EventAdministrationActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.event.interaction.EventCreateActivity" />
-
         <receiver android:name=".repository.impl.NotificationPublisher" />
 
-        <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:label="Settings"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
-
-
-
+        <activity android:name=".ui.event.interaction.EventAdministrationActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.event.interaction.EventCreateActivity"
+                  android:theme="@style/AppTheme.ActionBar"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -136,6 +128,11 @@
         </activity>
 
         <activity android:name=".ui.user.LoginFacebookActivity" />
+
+        <activity android:name=".ui.settings.SettingsActivity"
+                  android:label="Settings"
+                  android:theme="@style/AppTheme.ActionBar"
+        />
     </application>
 
 </manifest>

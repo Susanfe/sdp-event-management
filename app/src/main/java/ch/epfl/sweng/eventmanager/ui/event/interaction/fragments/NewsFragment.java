@@ -36,6 +36,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.user.LoginFacebookActivity;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
+import dagger.android.support.AndroidSupportInjection;
 
 /**
  * Display an event's news feed.
@@ -64,7 +65,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        if (view!=null) ButterKnife.bind(this, view);
+        if (view != null) ButterKnife.bind(this, view);
 
         // TODO handle null pointer exception
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));

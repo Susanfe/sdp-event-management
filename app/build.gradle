@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "ch.epfl.sweng.eventmanager"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -23,16 +23,23 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled false 
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             testCoverageEnabled true
+
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        test { java.srcDirs = ['src/test/java', 'src/commonTest/java/'] }
+        androidTest { java.srcDirs = ['src/androidTest/java', 'src/commonTest/java/'] }
     }
 
     testOptions {
@@ -80,6 +87,9 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.2'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.auth0.android:jwtdecode:1.1.1'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'jp.wasabeef:glide-transformations:4.0.1'
 
     // Play services
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
@@ -145,7 +155,9 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'test
             '**/*_Impl*.class',
             '**/*_*ViewBinding*.class',
             '**/repository/impl/*.class',
-            '**/ui/event/interaction/fragments/EventMapFragment.class'
+            '**/ui/event/interaction/fragments/EventMapFragment.class',
+            '**/com/bumptech/glide/*',
+            '**/*Glide*'
     ]
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/javac/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"
@@ -157,3 +169,4 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'test
     ])
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.getkeepsafe.dexcount'
