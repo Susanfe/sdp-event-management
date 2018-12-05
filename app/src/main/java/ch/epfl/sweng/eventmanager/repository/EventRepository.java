@@ -1,7 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import androidx.lifecycle.LiveData;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import androidx.lifecycle.LiveData;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
@@ -19,7 +20,7 @@ public interface EventRepository {
 
     LiveData<Event> getEvent(int eventId);
 
-    LiveData<Bitmap> getEventImage(Event event);
+    LiveData<Uri> getEventImageURL(Event event);
 
     LiveData<List<Spot>> getSpots(int eventId);
 

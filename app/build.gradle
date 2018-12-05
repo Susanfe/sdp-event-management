@@ -19,15 +19,17 @@ android {
         testInstrumentationRunner ".MockTestRunner"
 
         vectorDrawables.useSupportLibrary = true
-        multiDexEnabled false
+        multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled false 
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             testCoverageEnabled true
+
         }
     }
     compileOptions {
@@ -85,6 +87,9 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.2'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.auth0.android:jwtdecode:1.1.1'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'jp.wasabeef:glide-transformations:4.0.1'
 
     // Play services
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
@@ -102,7 +107,6 @@ dependencies {
 
     //UI Animation
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
-    implementation 'jp.wasabeef:blurry:3.0.0'
 
     // Tests
     testImplementation 'junit:junit:4.12'
@@ -147,7 +151,9 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'test
             '**/*_Impl*.class',
             '**/*_*ViewBinding*.class',
             '**/repository/impl/*.class',
-            '**/ui/event/interaction/fragments/EventMapFragment.class'
+            '**/ui/event/interaction/fragments/EventMapFragment.class',
+            '**/com/bumptech/glide/*',
+            '**/*Glide*'
     ]
     def debugTree = fileTree(dir: "$project.buildDir/intermediates/javac/debug", excludes: fileFilter)
     def mainSrc = "$project.projectDir/src/main/java"
@@ -159,3 +165,4 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'test
     ])
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.getkeepsafe.dexcount'

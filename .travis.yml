@@ -1,6 +1,7 @@
 ﻿language: android
+jdk: oraclejdk8
 env:
-  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=19
+  - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=22
 
   # disabled: dies randomly
   # - ABI_IMAGE=armeabi-v7a-android ABI=armeabi-v7a API=16 VIEW_AVD_LOGS=1 EMU_OPTS="-noaudio"
@@ -24,7 +25,7 @@ before_script:
   # - echo "y" | android update sdk -a --no-ui --filter sys-img-$ABI_IMAGE-$API
   # Emulator Management: Create, Start and Wait
   - android list target
-  - echo no | android create avd --force -n test -t android-$API --abi $ABI
+  - echo no | android create avd --force -n test -t android-$API --abi $ABI --skin 480x800
   - emulator -avd test -gpu swiftshader -no-window -memory 1536 $EMU_OPTS & # no-audio causes failures, so I removed it
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
@@ -41,7 +42,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - if [ -n "$VIEW_AVD_LOGS" ] ; then adb logcat *:I & LOGCAT_PID=$!; fi
-  - ./gradlew build connectedCheck jacocoTestReport
+  - ./gradlew buildDebug connectedCheck jacocoTestReport
   - if [ -n "$LOGCAT_PID" ] ; then kill $LOGCAT_PID; fi
 after_script:
   # Report test coverage to Code Climate
