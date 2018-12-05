@@ -17,7 +17,6 @@ import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
-import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,13 +116,13 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private void eventOnBindViewHolder(EventViewHolder holder, int position) {
         holder.eventNameTextView.setText(mEvents.get(position).getName());
         holder.eventSummary.setText(mEvents.get(position).getDescription());
-        Glide.with(context).load(mEvents.get(position).getImageURL()).into(holder.eventThumbnail);
+        mEvents.get(position).loadEventImageIntoImageView(context,holder.eventThumbnail);
     }
 
     private void joinedEventOnBindViewHolder(JoinedEventViewHolder holder, int position) {
         holder.eventNameTextView.setText(mEvents.get(position).getName());
         holder.eventSummary.setText(mEvents.get(position).getDescription());
-        Glide.with(context).load(mEvents.get(position).getImageURL()).into(holder.eventThumbnail);
+        mEvents.get(position).loadEventImageIntoImageView(context,holder.eventThumbnail);
     }
 
 

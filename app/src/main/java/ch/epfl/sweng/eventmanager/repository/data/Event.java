@@ -1,8 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.app.Activity;
+import android.content.Context;
 import android.widget.ImageView;
-import androidx.annotation.Nullable;
 import ch.epfl.sweng.eventmanager.inject.GlideApp;
 import ch.epfl.sweng.eventmanager.users.Role;
 import com.bumptech.glide.request.RequestOptions;
@@ -233,18 +232,24 @@ public final class Event {
     }
 
     /**
-     * Will load the event image into the provided view. Can apply a transformation on the image if wanted
+     * Will load the event image into the provided view
+     * @param context
+     * @param imageView
+     */
+    @Exclude
+    public void loadEventImageIntoImageView(Context context, ImageView imageView) {
+            GlideApp.with(context).load(getImageURL()).into(imageView);
+    }
+
+    /**
+     * Will load the event image into the provided view and apply the requested transformation
      * @param context
      * @param imageView
      * @param transformation
      */
     @Exclude
-    public void loadEventImageIntoImageView(Activity context, ImageView imageView, @Nullable BitmapTransformation transformation) {
-        if(transformation != null) {
+    public void loadEventImageIntoImageView(Context context, ImageView imageView, BitmapTransformation transformation) {
             GlideApp.with(context).load(getImageURL()).apply(RequestOptions.bitmapTransform(transformation)).into(imageView);
-        } else {
-            GlideApp.with(context).load(getImageURL()).into(imageView);
-        }
     }
 
     @Exclude
