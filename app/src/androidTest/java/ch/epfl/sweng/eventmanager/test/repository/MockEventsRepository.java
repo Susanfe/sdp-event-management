@@ -101,7 +101,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         Map<String, String> usersMap = new HashMap<>();
         usersMap.put(DummyInMemorySession.DUMMY_UID, "admin");
 
-        Uri fakeImgUri = Uri.parse("android.resource://ch.epfl.sweng.eventmanager/drawable/event_default_cover.png");
+        Uri fakeImgUri = Uri.parse("android.resource://ch.epfl.sweng.eventmanager/drawable/event_default_cover");
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orgaEmail, fakeImgUri, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact",
