@@ -33,17 +33,12 @@ public class SessionTest {
     @Test
     public void testClearance() {
         // Initialize used structures
-        Map<String, Map<String, String>> emptyUserMapping = new HashMap<>();
-        Map<String, Map<String, String>> adminUserMapping = new HashMap<>();
-        Map<String, Map<String, String>> unknownUserMapping = new HashMap<>();
+        Map<String, String> emptyUserMapping = new HashMap<>();
+        Map<String, String> adminUserMapping = new HashMap<>();
+        Map<String, String> unknownUserMapping = new HashMap<>();
 
-        HashMap<String, String> adminUids= new HashMap<>();
-        adminUids.put("key1", DummyInMemorySession.DUMMY_UID);
-        HashMap<String, String> dummyUids = new HashMap<>();
-        dummyUids.put("key2", "unknownUid");
-
-        adminUserMapping.put(Role.ADMIN.toString().toLowerCase(), adminUids);
-        unknownUserMapping.put(Role.ADMIN.toString().toLowerCase(), dummyUids);
+        adminUserMapping.put(DummyInMemorySession.DUMMY_UID, Role.ADMIN.toString().toLowerCase());
+        unknownUserMapping.put("unknownUid", Role.ADMIN.toString().toLowerCase());
 
         List<Spot> spotList = new ArrayList<>();
         Event ev1 = new Event(1, "Event 1", "Descr 1", new Date(0), new Date(0),

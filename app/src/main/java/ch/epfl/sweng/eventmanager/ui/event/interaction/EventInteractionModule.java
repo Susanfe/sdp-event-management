@@ -66,6 +66,9 @@ public abstract class EventInteractionModule {
     abstract EventFeedbackFragment contributeEventFeedbackFragmentInjector();
 
     @ContributesAndroidInjector
+    abstract SubmitFeedbackFragment contributeSubmitFeedbackFragmentInjector();
+
+    @ContributesAndroidInjector
     abstract EventMainFragment contributeEventMainFragmentInjector();
 
     @ContributesAndroidInjector
