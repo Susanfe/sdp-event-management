@@ -26,7 +26,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.test.ObservableMap;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
-import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
+import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
 
 /**
  * @author Louis Vialar
