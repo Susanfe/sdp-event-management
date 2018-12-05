@@ -25,8 +25,9 @@ exports.addUserToEvent = functions.https.onCall((data, context) => {
   //const currentUserUid = "u0YmYQasWpNaNYZt4iXngV0aTxF3"; // Used locally for debug
 
   var ref = admin.database().ref('/events/' + eventId + '/users/');
-  ref.orderByValue('admin').on("value", adminsSnapshot => {
-    if (adminsSnapshot.val().includes(currentUserUid)) { // current user is admin
+  ref.orderByValue().equalTo('admin').once("value", adminUidMap => {
+    var adminUids = Object.keys(adminUidMap.val());
+    if (adminUids.includes(currentUserUid)) { // current user is admin
       var users = admin.database().ref('/users/');
       users.orderByChild('email').equalTo(userEmail).limitToFirst(1).once('value', userSnapshot => {
         var match = userSnapshot.val();
@@ -56,8 +57,9 @@ exports.removeUserFromEvent = functions.https.onCall((data, context) => {
   //const currentUserUid = "u0YmYQasWpNaNYZt4iXngV0aTxF3"; // Used locally for debug
 
   var ref = admin.database().ref('/events/' + eventId + '/users/');
-  ref.orderByValue('admin').on("value", adminsSnapshot => {
-    if (adminsSnapshot.val().includes(currentUserUid)) { // current user is admin
+  ref.orderByValue().equalTo('admin').once("value", adminUidMap => {
+    var adminUids = Object.keys(adminUidMap.val());
+    if (adminUids.includes(currentUserUid)) { // current user is admin
         return ref.child(targetUserUid).set(null);
     } else {
       console.log('Current user ' + currentUserUid + ' is not allowed to write event ' + eventId);
