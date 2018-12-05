@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.content.Context;
 import android.widget.ImageView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import ch.epfl.sweng.eventmanager.inject.GlideApp;
 import ch.epfl.sweng.eventmanager.users.Role;
 import com.bumptech.glide.request.RequestOptions;
@@ -76,7 +77,7 @@ public final class Event {
     public Event(int id, String name, String description, Date beginDate, Date endDate,
                  String organizerEmail, String imageURL, EventLocation location,
                  Map<String, String> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
-      
+
         this.ticketingConfiguration = ticketingConfiguration;
 
         if (beginDate.getTime() > endDate.getTime())
@@ -238,7 +239,13 @@ public final class Event {
      */
     @Exclude
     public void loadEventImageIntoImageView(Context context, ImageView imageView) {
-            GlideApp.with(context).load(getImageURL()).into(imageView);
+        if(getImageURL() != null) {
+            CircularProgressDrawable progress = new CircularProgressDrawable(context);
+            progress.setStrokeWidth(5f);
+            progress.setCenterRadius(30f);
+            progress.start();
+            GlideApp.with(context).load(getImageURL()).placeholder(progress).into(imageView);
+        }
     }
 
     /**
@@ -249,7 +256,13 @@ public final class Event {
      */
     @Exclude
     public void loadEventImageIntoImageView(Context context, ImageView imageView, BitmapTransformation transformation) {
-            GlideApp.with(context).load(getImageURL()).apply(RequestOptions.bitmapTransform(transformation)).into(imageView);
+        if (getImageURL() != null) {
+            CircularProgressDrawable progress = new CircularProgressDrawable(context);
+            progress.setStrokeWidth(5f);
+            progress.setCenterRadius(30f);
+            progress.start();
+            GlideApp.with(context).load(getImageURL()).apply(RequestOptions.bitmapTransform(transformation)).placeholder(progress).into(imageView);
+        }
     }
 
     @Exclude
