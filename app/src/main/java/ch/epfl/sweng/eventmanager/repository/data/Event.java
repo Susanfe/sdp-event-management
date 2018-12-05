@@ -111,14 +111,20 @@ public final class Event {
         return name;
     }
 
-    public Date getBeginDate() {
+    public long getBeginDate() { return beginDate; }
+
+    public long getEndDate() {return endDate;};
+
+    @Exclude
+    public Date getBeginDateAsDate() {
         if (beginDate <= 0) {
             return null;
         }
         return new Date(beginDate);
     }
 
-    public Date getEndDate() {
+    @Exclude
+    public Date getEndDateAsDate() {
         if (endDate <= 0) {
             return null;
         }

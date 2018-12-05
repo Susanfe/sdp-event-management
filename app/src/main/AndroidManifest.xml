@@ -105,14 +105,15 @@
 
         <activity android:name=".ui.event.interaction.EventAdministrationActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ui.event.interaction.EventCreateActivity"/>
+        <activity android:name=".ui.event.interaction.EventCreateActivity"
+                  android:theme="@style/AppTheme.ActionBar"/>
 
 
         <receiver android:name=".repository.impl.NotificationPublisher"/>
 
         <activity android:name=".ui.settings.SettingsActivity"
                   android:label="Settings"
-                  android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+                  android:theme="@style/AppTheme.ActionBar"
         />
     </application>
 

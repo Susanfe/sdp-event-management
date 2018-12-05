@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.OverFlow</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -19,6 +20,8 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
+
+    <style name="AppTheme.ActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar"/>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
@@ -38,7 +41,7 @@
     <!-- Custom overflow color-->
     <style name="Toolbar.OverFlow" parent="@style/Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/colorSecondary</item>
-        <item name="srcCompat">@drawable/ic_person_24dp</item>
+        <item name="srcCompat">@drawable/ic_account_circle_24dp</item>
     </style>
 
     <!-- ############################### BUTTON UI #############################################-->
@@ -68,11 +71,18 @@
         <item name="android:background">@drawable/button_barbutton_checkbutton</item>
     </style>
 
-    <!-- -->
+    <!-- Button that looks like a textView but oultines as button when clicked -->
     <style name="button_clickable_textview">
         <item name="android:background">@drawable/button_transparent</item>
         <item name="android:textColor">@drawable/text_clickable</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Button that is like global but expands to take place in the layout -->
+    <style name="Button_big_button_global" parent="Button_global">
+        <item name="android:paddingRight">@dimen/default_huge_padding</item>
+        <item name="android:paddingLeft">@dimen/default_huge_padding</item>
+        <item name="android:layout_margin">@dimen/default_huge_margin</item>
     </style>
 
     <!--Floating button-->
@@ -80,6 +90,10 @@
         <item name="backgroundTint">@color/colorSecondary</item>
     </style>
 
+    <style name="Button_account_widget">
+        <item name="srcCompat">@drawable/ic_account_circle_24dp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 
     <!-- ############################# CARDVIEW UI ############################################-->
     <style name="cardView_rounded" parent="Base.CardView">

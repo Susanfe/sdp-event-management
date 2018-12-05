@@ -139,7 +139,7 @@ class UserManagerHelper {
                 }
                 passwordView.requestFocus();
             }
-            UserManagerHelper.showProgress(signUpButton, progressBar, false);
+            showProgress(signUpButton, progressBar, false);
         };
     }
 }

@@ -1,5 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+    <!ENTITY app_name "Gatsbi">
+    ]>
+
 <resources>
-    <string name="app_name">Event Manager</string>
+    <string name="app_name">&app_name;</string>
 
     <string name="filter_title_event_picking">Filter for app indexing and URI</string>
 
@@ -25,7 +30,7 @@
     <string name="empty_password_error">The password cannot be empty</string>
     <string name="password_match_error">The passwords do not match</string>
     <string name="generic_auth_error">Could not authenticate. Unknown error.</string>
-    <string name="help_text_activity_event_picking">Please select an event to continue.</string>
+    <string name="help_text_activity_event_picking">Please select an event to continue</string>
     <string name="help_text_go_join_events">Please go explore and join an event to continue !</string>
     <string name="joined_help_text_activity_event_picking">Events you joined:</string>
     <string name="not_joined_help_text_activity_event_picking">Click here to go explore events !</string>
@@ -44,8 +49,8 @@
     <string name="password_field">Password</string>
     <string name="password_confirmation_field">Password confirmation</string>
 
-    <string name="login_button">Sign in »</string>
-    <string name="signup_button">Sign up »</string>
+    <string name="login_button">Sign in</string>
+    <string name="signup_button">Sign up</string>
     <string name="logout_button">Log out</string>
     <string name="account_button">My account</string>
     <string name="back_button">Back</string>
@@ -128,15 +133,18 @@
 
     <!-- Generic text -->
     <string name="undo">Undo</string>
-    <string name="welcome">Welcome!</string>
+    <string name="welcome">Welcome on &app_name; !</string>
     <string name="create_form_hint_name">Name of the event</string>
     <string name="create_form_hint_description">Description of the event</string>
     <string name="create_form_hint_email">Email of the event organizer</string>
     <string name="create_form_hint_twitter_handle">(Optional) Event twitter handle</string>
+    <string name="create_form_hint_begin_date">Beginning date</string>
+    <string name="create_form_hint_end_date">Ending date</string>
+
     <string name="create_event_title">Create Event</string>
     <string name="edit_nav_item_activity_event">Event edition</string>
     <string name="create_event_canceled">Operation was unexpectedly cancelled.</string>
-    <string name="create_event_error">An error occured:</string>
+    <string name="create_event_error">An error occurred:</string>
     <string name="create_event_success">The event has been created!</string>
     <string name="create_event_update_success">The event has been updated!</string>
     <string name="feedback_form_main_go_button">Feedback</string>

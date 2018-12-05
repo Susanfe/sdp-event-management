@@ -21,7 +21,7 @@ public class JoinedEventStrategy extends NotificationStrategy<Event> {
         // get Notification based on scheduled item
         Notification notification = getNotificationFromEvent(event);
 
-        SchedulerHelper.scheduleNotification(context, event.getId(), notification, SchedulerHelper.getTimeTo(event.getBeginDate()) - ONE_DAY);
+        SchedulerHelper.scheduleNotification(context, event.getId(), notification, SchedulerHelper.getTimeTo(event.getBeginDateAsDate()) - ONE_DAY);
     }
 
     @Override

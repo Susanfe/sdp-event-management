@@ -182,7 +182,7 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @OnClick(R.id.join_event_btn)
         void onClickJoinButton() {
             Context context = itemView.getContext();
-            ((EventPickingActivity) context).joinEvent(mEvents.get(getAdapterPosition()));
+            ((EventPickingActivity) context).joinOrUnjoinEvent(mEvents.get(getAdapterPosition()), true);
         }
     }
 

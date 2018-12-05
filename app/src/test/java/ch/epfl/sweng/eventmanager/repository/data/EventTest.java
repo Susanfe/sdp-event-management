@@ -73,19 +73,19 @@ public class EventTest {
 
     @Test
     public void getDateTest(){
-        assertEquals(ev1.getBeginDate(), start);
-        assertEquals(ev1.getEndDate(), end);
+        assertEquals(ev1.getBeginDateAsDate(), start);
+        assertEquals(ev1.getEndDateAsDate(), end);
 
         ev2.setBeginDate(end.getTime());
-        assertEquals(ev2.getBeginDate(), end);
+        assertEquals(ev2.getBeginDateAsDate(), end);
         ev2.setBeginDate(start.getTime());
-        assertEquals(ev2.getBeginDate(), start);
+        assertEquals(ev2.getBeginDateAsDate(), start);
 
 
         ev2.setEndDate(start.getTime());
-        assertEquals(ev2.getEndDate(), start);
+        assertEquals(ev2.getEndDateAsDate(), start);
         ev2.setEndDate(end.getTime());
-        assertEquals(ev2.getEndDate(), end);
+        assertEquals(ev2.getEndDateAsDate(), end);
 
     }
 
