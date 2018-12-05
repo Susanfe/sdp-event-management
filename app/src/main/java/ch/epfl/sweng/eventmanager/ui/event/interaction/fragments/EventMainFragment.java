@@ -6,15 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckedTextView;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RatingBar;
-import android.widget.TextView;
-
-import javax.inject.Inject;
-
+import android.widget.*;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -23,8 +15,9 @@ import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
-import com.bumptech.glide.Glide;
 import dagger.android.support.AndroidSupportInjection;
+
+import javax.inject.Inject;
 
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
@@ -80,7 +73,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             eventDescription.setText(ev.getDescription());
             eventDescription.setVisibility(View.VISIBLE);
 
-            Glide.with(this).load(ev.getImageURL()).into(eventImage);
+            ev.loadEventImageIntoImageView(getContext(),eventImage);
             eventImage.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 
