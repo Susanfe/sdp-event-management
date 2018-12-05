@@ -1,34 +1,25 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Intent;
-import android.view.Gravity;
-import androidx.test.espresso.contrib.DrawerActions;
-import androidx.test.espresso.contrib.NavigationViewActions;
+import android.widget.DatePicker;
+import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.intent.matcher.IntentMatchers;
-import androidx.test.rule.ActivityTestRule;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.TestApplication;
 import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
-import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingServiceManager;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
-import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
+import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
 import ch.epfl.sweng.eventmanager.users.Session;
 import org.hamcrest.Matchers;
 import org.junit.*;
 
 import javax.inject.Inject;
 
-import static androidx.test.espresso.Espresso.onIdle;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.*;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 public class EventCreateActivityTest {
@@ -39,6 +30,8 @@ public class EventCreateActivityTest {
 
     @Inject
     protected MockEventsRepository repository;
+    @Inject
+    Session session;
 
     public EventCreateActivityTest() {
         TestApplication.component.inject(this);
@@ -46,8 +39,7 @@ public class EventCreateActivityTest {
 
     @Before
     public void setup() {
-        Session.enforceDummySessions();
-        Session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD, null, null);
+        session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD, null, null);
 
         Intents.init();
     }
@@ -61,6 +53,8 @@ public class EventCreateActivityTest {
     public void testCreateEvent() {
         onView(withId(R.id.create_form_name)).perform(typeText("Event Test 1"), closeSoftKeyboard());
         onView(withId(R.id.create_form_email)).perform(typeText("you@test.com"), closeSoftKeyboard());
+        this.setDate(R.id.create_form_begin_date,2018,12,1);
+        this.setDate(R.id.create_form_end_date,2018,12,4);
         onView(withId(R.id.create_form_description)).perform(typeText("Event Test 1 description"), closeSoftKeyboard());
         onView(withId(R.id.create_form_send_button)).perform(click());
 
@@ -77,10 +71,18 @@ public class EventCreateActivityTest {
 
                 Assert.assertEquals("you@test.com", e.getOrganizerEmail());
                 Assert.assertEquals("Event Test 1 description", e.getDescription());
+                Assert.assertNotNull(e.getBeginDate());
+                Assert.assertNotNull(e.getEndDate());
                 Assert.assertNull(e.getTwitterName());
             }
         }
 
         Assert.assertTrue("Event was not found in repository after creation", found);
+    }
+
+    private void setDate(int datePickerLaunchViewId, int year, int monthOfYear, int dayOfMonth) {
+        onView(withId(datePickerLaunchViewId)).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(year, monthOfYear, dayOfMonth));
+        onView(withId(android.R.id.button1)).perform(click());
     }
 }

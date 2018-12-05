@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "ch.epfl.sweng.eventmanager"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -33,6 +33,11 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        test { java.srcDirs = ['src/test/java', 'src/commonTest/java/'] }
+        androidTest { java.srcDirs = ['src/androidTest/java', 'src/commonTest/java/'] }
     }
 
     testOptions {
@@ -101,6 +106,7 @@ dependencies {
 
     //UI Animation
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
+    implementation 'jp.wasabeef:blurry:3.0.0'
 
     // Tests
     testImplementation 'junit:junit:4.12'

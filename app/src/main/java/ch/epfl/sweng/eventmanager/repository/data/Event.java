@@ -14,6 +14,9 @@ import java.util.Map;
 import ch.epfl.sweng.eventmanager.users.Role;
 import com.google.firebase.database.Exclude;
 
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 
 /**
  * This class holds the basic elements about an organized event.<br>
@@ -107,14 +110,20 @@ public final class Event {
         return name;
     }
 
-    public Date getBeginDate() {
+    public long getBeginDate() { return beginDate; }
+
+    public long getEndDate() {return endDate;};
+
+    @Exclude
+    public Date getBeginDateAsDate() {
         if (beginDate <= 0) {
             return null;
         }
         return new Date(beginDate);
     }
 
-    public Date getEndDate() {
+    @Exclude
+    public Date getEndDateAsDate() {
         if (endDate <= 0) {
             return null;
         }

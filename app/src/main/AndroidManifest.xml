@@ -103,20 +103,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity
-            android:name=".ui.event.interaction.EventAdministrationActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.event.interaction.EventCreateActivity" />
-
         <receiver android:name=".repository.impl.NotificationPublisher" />
 
-        <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:label="Settings"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
-
-
-
+        <activity android:name=".ui.event.interaction.EventAdministrationActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.event.interaction.EventCreateActivity"
+                  android:theme="@style/AppTheme.ActionBar"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -136,6 +128,11 @@
         </activity>
 
         <activity android:name=".ui.user.LoginFacebookActivity" />
+
+        <activity android:name=".ui.settings.SettingsActivity"
+                  android:label="Settings"
+                  android:theme="@style/AppTheme.ActionBar"
+        />
     </application>
 
 </manifest>
