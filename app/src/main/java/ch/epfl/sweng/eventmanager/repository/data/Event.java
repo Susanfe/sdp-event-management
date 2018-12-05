@@ -1,18 +1,13 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.graphics.Bitmap;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import android.app.Activity;
+import android.widget.ImageView;
+import androidx.annotation.Nullable;
+import ch.epfl.sweng.eventmanager.inject.GlideApp;
 import ch.epfl.sweng.eventmanager.users.Role;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.Exclude;
+import jp.wasabeef.glide.transformations.BitmapTransformation;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -100,8 +95,7 @@ public final class Event {
         this.twitterName = twitterName;
     }
 
-    public Event() {
-    }
+    public Event() {}
 
     public int getId() {
         return id;
@@ -113,23 +107,7 @@ public final class Event {
 
     public long getBeginDate() { return beginDate; }
 
-    public long getEndDate() {return endDate;};
-
-    @Exclude
-    public Date getBeginDateAsDate() {
-        if (beginDate <= 0) {
-            return null;
-        }
-        return new Date(beginDate);
-    }
-
-    @Exclude
-    public Date getEndDateAsDate() {
-        if (endDate <= 0) {
-            return null;
-        }
-        return new Date(endDate);
-    }
+    public long getEndDate() {return endDate;}
 
     public String getDescription() {
         return description;
@@ -137,11 +115,6 @@ public final class Event {
 
     public String getOrganizerEmail() {
         return organizerEmail;
-    }
-
-    @Exclude
-    public String getImageURL() {
-        return imageURL;
     }
 
     public EventLocation getLocation() {
@@ -208,6 +181,7 @@ public final class Event {
         this.imageURL = imageURL;
     }
 
+
     public EventTicketingConfiguration getTicketingConfiguration() {
         return ticketingConfiguration;
     }
@@ -252,5 +226,41 @@ public final class Event {
         this.ticketingConfiguration = ticketingConfiguration;
     }
 
-    // TODO put setters ??
+
+    @Exclude
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    /**
+     * Will load the event image into the provided view. Can apply a transformation on the image if wanted
+     * @param context
+     * @param imageView
+     * @param transformation
+     */
+    @Exclude
+    public void loadEventImageIntoImageView(Activity context, ImageView imageView, @Nullable BitmapTransformation transformation) {
+        if(transformation != null) {
+            GlideApp.with(context).load(getImageURL()).apply(RequestOptions.bitmapTransform(transformation)).into(imageView);
+        } else {
+            GlideApp.with(context).load(getImageURL()).into(imageView);
+        }
+    }
+
+    @Exclude
+    public Date getBeginDateAsDate() {
+        if (beginDate <= 0) {
+            return null;
+        }
+        return new Date(beginDate);
+    }
+
+    @Exclude
+    public Date getEndDateAsDate() {
+        if (endDate <= 0) {
+            return null;
+        }
+        return new Date(endDate);
+    }
+
 }
