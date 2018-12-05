@@ -1,8 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.graphics.Bitmap;
+import android.net.Uri;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +40,7 @@ public class EventTest {
             start, end,  orgaEmail1, null, null, null, null);
     private final Event ev2 = new Event(2, "Event2", "Event Description 2",
             start, end, orgaEmail2, null, l1, null, null);
+
 
     @Test
     public void getIdTest() {
@@ -129,8 +129,8 @@ public class EventTest {
 
     @Test
     public void setAndGetImageTest(){
-        Bitmap img = Mockito.mock(Bitmap.class);
-        ev1.setImage(img);
-        assertEquals(ev1.getImage(), img);
+        Uri uri = Uri.EMPTY;
+        ev1.setImageURL(uri);
+        assertEquals(ev1.getImageURI(), uri);
     }
 }
