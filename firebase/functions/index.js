@@ -66,7 +66,6 @@ exports.removeUserFromEvent = functions.https.onCall((data, context) => {
   });
 })
 
-
 const API_KEY = "AAAAlIAvtxI:APA91bHnmNkZWIQzzWcxypS45bpVKBXkLNwtxM-gU6UCfZt2TI-jd02Typ8ACtLpGbHCASrWlwKHDT9EsRpqrUj7hAH8GdhvKp3_UaF_Vx4k3yqgXLqMQv2py-FiUODmG2hy2QuTGdUI"; // Firebase Cloud Messaging Server API key
 
 function listenForNotificationRequests() {
@@ -108,11 +107,10 @@ function sendNotificationToUsers(title, body, eventId, eventName, onSuccess) {
             console.error('HTTP Error: '+response.statusCode+' - '+response.statusMessage);
         }
         else {
-          onSuccess();
+            onSuccess();
         }
     });
 }
 
 // start listening
 listenForNotificationRequests();
-
