@@ -11,18 +11,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.core.util.Pair;
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.UserRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.FirebaseBackedUser;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.users.Role;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
+
+    @Inject
+    UserRepository userRepository;
+
     private Map<User, Role> mUsers;
     public EventUserManagementFragment mContext;
     private Event mEvent;
@@ -57,6 +63,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         for (Role role : raw.keySet()) {
             // TODO handle null pointer exception
             for (String uid : raw.get(role)) { // Pair of key to uid
+                // userRepository.getUser(uid); // UserRepository is null!
                 User user = new FirebaseBackedUser(uid);
                 mUsers.put(user, role);
             }
