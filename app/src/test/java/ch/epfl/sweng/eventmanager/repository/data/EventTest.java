@@ -1,6 +1,5 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.net.Uri;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
@@ -129,8 +128,8 @@ public class EventTest {
 
     @Test
     public void setAndGetImageTest(){
-        Uri uri = Uri.EMPTY;
-        ev1.setImageURL(uri.toString());
-        assertEquals(ev1.getImageURLasURI(), uri);
+        String url = "url";
+        ev1.setImageURL(url);
+        assertEquals(ev1.getImageURL(), url);
     }
 }
