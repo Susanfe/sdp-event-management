@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Button_barButton_middle"
+        android:text="@string/map_edition_add_spot"
+        android:id="@+id/contextual_add_spot_button"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Button_barButton_middle"
+        android:text="@string/map_edition_add_overlay"
+        android:id="@+id/contextual_add_overlay_button"/>
+
+</LinearLayout>
