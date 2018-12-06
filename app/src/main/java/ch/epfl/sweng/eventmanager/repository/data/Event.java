@@ -8,11 +8,12 @@ import ch.epfl.sweng.eventmanager.inject.GlideApp;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseHelper;
 import ch.epfl.sweng.eventmanager.users.Role;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 import jp.wasabeef.glide.transformations.BitmapTransformation;
 
 import java.io.File;
@@ -28,7 +29,7 @@ import java.util.*;
  */
 public final class Event {
     /**
-     * An internal id, identifying this event uniquely. Might have to be completed by an UUID in the future.
+     * An internal id identifying this event uniquely.
      */
     private int id;
     /**
@@ -129,8 +130,13 @@ public final class Event {
         return location;
     }
 
-    public Uri getImageURL() {
-        return this.imageURL != null ? Uri.parse(imageURL) : null;
+    @Exclude
+    public Uri getImageURLasURI() {
+        return haveAnImage() ? Uri.parse(imageURL) : null;
+    }
+
+    public String getImageURL(){
+        return imageURL;
     }
 
     /**
@@ -233,8 +239,8 @@ public final class Event {
         this.ticketingConfiguration = ticketingConfiguration;
     }
 
-    public void setImageURL(String imageURI) {
-        this.imageURL = imageURI;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     @Exclude
@@ -244,11 +250,21 @@ public final class Event {
 
 
     @Exclude
-    public StorageTask<UploadTask.TaskSnapshot> uploadImage(File imgSrc) {
+    public void uploadImage(File imgSrc) {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
         StorageReference eventsLogoRef = imagesRef.child(getImageName());
-        return FirebaseHelper.uploadFileToStorage(eventsLogoRef,imgSrc)
-                .addOnSuccessListener(taskSnapshot -> eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> setImageURL(uri.toString())));
+        FirebaseDatabase fdB = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = fdB.getReference("events").child(String.valueOf(getId()));
+        StorageMetadata metadata = new StorageMetadata.Builder()
+                .setContentType("image/png")
+                .build();
+         FirebaseHelper.uploadFileToStorage(eventsLogoRef,imgSrc, metadata).addOnSuccessListener(taskSnapshot ->
+                 eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                     setImageURL(uri.toString());
+                     Map<String, Object> updateUrl = new HashMap<>();
+                     updateUrl.put("imageURL", uri.toString());
+                     dbRef.updateChildren(updateUrl);
+                 }));
     }
 
     /**
@@ -267,12 +283,12 @@ public final class Event {
      */
     @Exclude
     public void loadEventImageIntoImageView(Context context, ImageView imageView) {
-        if(getImageURL() != null) {
+        if(getImageURLasURI() != null) {
             CircularProgressDrawable progress = new CircularProgressDrawable(context);
             progress.setStrokeWidth(5f);
             progress.setCenterRadius(30f);
             progress.start();
-            GlideApp.with(context).load(getImageURL()).placeholder(progress).into(imageView);
+            GlideApp.with(context).load(getImageURLasURI()).placeholder(progress).into(imageView);
         }
     }
 
@@ -284,12 +300,12 @@ public final class Event {
      */
     @Exclude
     public void loadEventImageIntoImageView(Context context, ImageView imageView, BitmapTransformation transformation) {
-        if (getImageURL() != null) {
+        if (getImageURLasURI() != null) {
             CircularProgressDrawable progress = new CircularProgressDrawable(context);
             progress.setStrokeWidth(5f);
             progress.setCenterRadius(30f);
             progress.start();
-            GlideApp.with(context).load(getImageURL()).apply(RequestOptions.bitmapTransform(transformation)).placeholder(progress).into(imageView);
+            GlideApp.with(context).load(getImageURLasURI()).apply(RequestOptions.bitmapTransform(transformation)).placeholder(progress).into(imageView);
         }
     }
 

@@ -48,8 +48,8 @@ public final class ImageConverter {
     }
 
     public static File convertToPng (Context context, Uri uri) throws IOException {
-        File compressedImage = new Compressor(context).setCompressFormat(Bitmap.CompressFormat.WEBP)
-                .setMaxHeight(500).setMaxWidth(500).setQuality(100).compressToFile(getFile(context,uri));
+        File compressedImage = new Compressor(context).setCompressFormat(Bitmap.CompressFormat.PNG)
+                .setMaxHeight(500).setMaxWidth(500).setQuality(25).compressToFile(getFile(context,uri));
         return compressedImage;
     }
 }

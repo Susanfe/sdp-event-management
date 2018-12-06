@@ -96,7 +96,7 @@ public class FirebaseEventRepository implements EventRepository {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
         StorageReference eventLogoReference = imagesRef.child(getImageName(event));
 
-        return FirebaseHelper.getImageURL(eventLogoReference);
+        return FirebaseHelper.getImageURLasURI(eventLogoReference);
     }*/
 
     private <T> LiveData<List<T>> getElems(int eventId, String basePath, Class<T> classOfT) {
@@ -146,7 +146,6 @@ public class FirebaseEventRepository implements EventRepository {
     public LiveData<Bitmap> getSpotImage(Spot spot) {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("spots-pictures");
         StorageReference spotImageReference = imagesRef.child(getImageName(spot));
-
         return FirebaseHelper.getImage(spotImageReference);
     }
 

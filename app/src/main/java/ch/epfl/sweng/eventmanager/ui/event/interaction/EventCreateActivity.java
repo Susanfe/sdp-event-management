@@ -71,6 +71,7 @@ public class EventCreateActivity extends AppCompatActivity {
     private int eventID;
     private Event event;
     private File eventImageSrc;
+    private Boolean imageChanged = false;
     private boolean loading = true;
 
     private void populateForm(Event event) {
@@ -91,19 +92,16 @@ public class EventCreateActivity extends AppCompatActivity {
         this.event.setDescription(getFieldValue(this.description));
         this.event.setBeginDate(getDateValue(this.beginDate));
         this.event.setEndDate(getDateValue(this.endDate));
-        this.event.uploadImage(eventImageSrc)
-                .addOnSuccessListener(msg -> Toast.makeText(this, getString(R.string.image_successfully_uploaded),
-                        Toast.LENGTH_LONG))
-                .addOnFailureListener(msg -> {
-                    Toast.makeText(this, getString(R.string.image_successfully_uploaded), Toast.LENGTH_LONG);
-                    Log.i(TAG, "Failed to upload event image" + msg.getMessage());
-                });
     }
 
     private String formatDate(Date date) {
-        String format = "dd/MM/yyyy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-        return dateFormat.format(date);
+        if (date != null) {
+            String format = "dd/MM/yyyy";
+            SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
+            return dateFormat.format(date);
+        } else {
+            return null;
+        }
     }
 
     private long getDateValue(EditText editText) {
@@ -164,6 +162,10 @@ public class EventCreateActivity extends AppCompatActivity {
             populateEvent(); // Update the event object
 
             prepareCreationTask().addOnSuccessListener(event -> {
+                //upload event image to storage if changed
+                if(imageChanged) {
+                    this.event.uploadImage(eventImageSrc);
+                }
                 // Start event administration activity
                 if (eventID <= 0) {
                     Toast.makeText(this, R.string.create_event_success, Toast.LENGTH_LONG).show();
@@ -254,6 +256,7 @@ public class EventCreateActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        imageChanged = true;
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri eventImageUri = data.getData();
             try {

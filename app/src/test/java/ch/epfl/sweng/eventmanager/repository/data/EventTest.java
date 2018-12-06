@@ -130,7 +130,7 @@ public class EventTest {
     @Test
     public void setAndGetImageTest(){
         Uri uri = Uri.EMPTY;
-        ev1.setImageURL(uri);
-        assertEquals(ev1.getImageURL(), uri);
+        ev1.setImageURL(uri.toString());
+        assertEquals(ev1.getImageURLasURI(), uri);
     }
 }

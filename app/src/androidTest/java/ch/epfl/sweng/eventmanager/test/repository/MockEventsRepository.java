@@ -164,7 +164,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
     private void addEvent(Event event) {
         events.put(event.getId(), event);
-        eventImagesUri.put(event.getId(), event.getImageURL());
+        eventImagesUri.put(event.getId(), event.getImageURLasURI());
     }
 
     private void addZones(int event, List<Zone> list) {
