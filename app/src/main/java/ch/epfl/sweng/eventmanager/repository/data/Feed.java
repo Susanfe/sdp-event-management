@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /*
 This class enable to store every component(message, time) of a facebook post.
@@ -18,7 +19,7 @@ public class Feed {
     public Feed(JSONObject object) {
         try {
             String dateStr = object.getString("created_time");
-            time = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(dateStr);
+            time = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.FRANCE).parse(dateStr);
             id = object.getString("id");
             if (object.has("message")) {
                 content = object.getString("message");
