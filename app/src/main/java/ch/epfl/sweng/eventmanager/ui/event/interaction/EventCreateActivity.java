@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -16,13 +15,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.inject.GlideApp;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.tools.ImageConverter;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.tasks.Task;
+import com.yalantis.ucrop.UCrop;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
@@ -70,7 +70,7 @@ public class EventCreateActivity extends AppCompatActivity {
 
     private int eventID;
     private Event event;
-    private File eventImageSrc;
+    private Uri eventImageSrc;
     private Boolean imageChanged = false;
     private boolean loading = true;
 
@@ -256,18 +256,35 @@ public class EventCreateActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        imageChanged = true;
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri eventImageUri = data.getData();
-            try {
-                Bitmap image = MediaStore.Images.Media.getBitmap(getContentResolver(), eventImageUri);
-                eventImage.setImageBitmap(image);
-                eventImageSrc = ImageConverter.convertToPng(this,eventImageUri);
-                eventImageSrc.deleteOnExit();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.i(TAG, "failed to import image");
-            }
+            cropAndConvertImage(eventImageUri);
         }
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+                eventImageSrc = UCrop.getOutput(data);
+                imageChanged = true;
+                GlideApp.with(this).load(eventImageSrc).into(eventImage);
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
+            Log.i(TAG,"Unable to crop image");
+            cropError.printStackTrace();
+        }
+    }
+
+    private void cropAndConvertImage(Uri eventImageUri) {
+        try {
+            File eventImageCropped = File.createTempFile("event_cover", "png");
+            eventImageCropped.deleteOnExit();
+            Uri eventImageCroppedUri = Uri.fromFile(eventImageCropped);
+            UCrop.Options compressOptions = new UCrop.Options();
+            compressOptions.setCompressionFormat(Bitmap.CompressFormat.WEBP);
+            compressOptions.setCompressionQuality(50);
+            UCrop.of(eventImageUri, eventImageCroppedUri).withMaxResultSize(533, 300).
+                    withOptions(compressOptions).start(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.i(TAG,"Unable to create tempFile for cropping event image");
+        }
+
     }
 }

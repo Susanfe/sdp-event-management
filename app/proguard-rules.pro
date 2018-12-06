@@ -34,3 +34,7 @@
 -dontwarn org.hamcrest.**
 -dontwarn org.mockito.**
 
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }
+

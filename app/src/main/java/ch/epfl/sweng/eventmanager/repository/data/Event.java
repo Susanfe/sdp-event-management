@@ -16,7 +16,6 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import jp.wasabeef.glide.transformations.BitmapTransformation;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -250,7 +249,7 @@ public final class Event {
 
 
     @Exclude
-    public void uploadImage(File imgSrc) {
+    public void uploadImage(Uri imgSrc) {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
         StorageReference eventsLogoRef = imagesRef.child(getImageName());
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
