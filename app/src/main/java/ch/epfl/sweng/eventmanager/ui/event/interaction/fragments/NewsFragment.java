@@ -1,7 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
-
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -36,7 +34,6 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.user.LoginFacebookActivity;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
-import dagger.android.support.AndroidSupportInjection;
 
 /**
  * Display an event's news feed.
@@ -50,8 +47,8 @@ public class NewsFragment extends AbstractShowcaseFragment {
     TextView emptyListTextView;
     @BindView(R.id.go_facebook)
     Button facebookButton;
-    @BindView(R.id.news_create_button)
-    AppCompatButton newsCreateButton;
+    //@BindView(R.id.news_create_button)
+    //AppCompatButton newsCreateButton;
 
     private NewsAdapter newsAdapter;
 
@@ -71,7 +68,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setHasFixedSize(true);
 
-        newsCreateButton.setOnClickListener(v -> getParentActivity().changeFragment(new SendNewsFragment(), true));
         facebookButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), LoginFacebookActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -91,14 +87,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
         if (model == null) {
             model = ViewModelProviders.of(requireActivity()).get(NewsViewModel.class);
         }
-
-        super.model.getEvent().observe(this, ev -> {
-            if (Session.isClearedFor(Role.ADMIN, ev)) {
-                newsCreateButton.setVisibility(View.VISIBLE);
-            } else {
-                newsCreateButton.setVisibility(View.GONE);
-            }
-        });
 
         LiveData<String> twitterName = Transformations.map(super.model.getEvent(), Event::getTwitterName);
         //FIXME: put in firebase

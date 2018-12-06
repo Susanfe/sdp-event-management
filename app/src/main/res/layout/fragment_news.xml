@@ -6,18 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment"
-    android:layout_marginTop="?attr/actionBarSize">
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        style="@style/Button_global"
-        android:text="@string/news_create"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        app:layout_anchorGravity="center_horizontal"
-        android:id="@+id/news_create_button"
-        android:visibility="gone"/>
+    android:layout_marginTop="?android:attr/actionBarSize">
 
     <Button
         android:id="@+id/go_facebook"
@@ -28,9 +17,7 @@
     <RelativeLayout
         android:id="@+id/news_relative_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -50,6 +37,5 @@
         android:visibility="gone"
         app:layout_anchor="@+id/news_relative_layout"
         app:layout_anchorGravity="center_vertical|center_horizontal" />
-
 
 </LinearLayout>
