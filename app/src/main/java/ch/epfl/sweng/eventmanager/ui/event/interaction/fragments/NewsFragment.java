@@ -19,6 +19,7 @@ import com.twitter.sdk.android.tweetui.CompactTweetView;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,11 +30,9 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
-import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
+import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweetOrFacebook;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.user.LoginFacebookActivity;
-import ch.epfl.sweng.eventmanager.users.Role;
-import ch.epfl.sweng.eventmanager.users.Session;
 
 /**
  * Display an event's news feed.
@@ -63,7 +62,8 @@ public class NewsFragment extends AbstractShowcaseFragment {
         if (view != null) ButterKnife.bind(this, view);
 
         // TODO handle null pointer exception
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(
+                Objects.requireNonNull(view).getContext()));
         recyclerView.setHasFixedSize(true);
 
         facebookButton.setOnClickListener(v -> {
@@ -87,9 +87,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
         }
 
         LiveData<String> twitterName = Transformations.map(super.model.getEvent(), Event::getTwitterName);
-        //FIXME: put in firebase
-        MutableLiveData<String> facebookName = new MutableLiveData<>();
-        facebookName.setValue("japanimpact.ch");
+        LiveData<String> facebookName = Transformations.map(super.model.getEvent(), Event::getFacebookName);
 
         this.model.getNews(twitterName, facebookName).observe(this, news -> {
             if (news != null && news.size() > 0) {
@@ -113,7 +111,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
     public static class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private List<NewsOrTweet> news;
+        private List<NewsOrTweetOrFacebook> news;
 
         NewsAdapter() {
             this.news = Collections.emptyList();
@@ -125,12 +123,12 @@ public class NewsFragment extends AbstractShowcaseFragment {
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                           int viewType) {
 
-            if (viewType == NewsOrTweet.TYPE_TWEET) {
+            if (viewType == NewsOrTweetOrFacebook.TYPE_TWEET) {
                 final Tweet tweet = new TweetBuilder().build();
                 final CompactTweetView compactTweetView = new CompactTweetView(parent.getContext(), tweet);
 
                 return new TweetViewHolder(compactTweetView);
-            } else if(viewType == NewsOrTweet.TYPE_NEWS){
+            } else if(viewType == NewsOrTweetOrFacebook.TYPE_NEWS){
                 View v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_news, parent, false);
                 return new NewsViewHolder(v);
@@ -163,7 +161,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
             return news.size();
         }
 
-        public void setContent(List<NewsOrTweet> news) {
+        public void setContent(List<NewsOrTweetOrFacebook> news) {
             this.news = news;
 
             Collections.sort(this.news);
