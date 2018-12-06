@@ -277,7 +277,7 @@ public final class Event {
      */
     @Exclude
     private String getImageName() {
-        return this.getId() + ".png";
+        return this.getId() + ".webp";
     }
 
     /**
