@@ -104,15 +104,15 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         Uri fakeImgUri = Uri.parse("android.resource://ch.epfl.sweng.eventmanager/drawable/event_default_cover");
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, fakeImgUri, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact",
+                orgaEmail, fakeImgUri, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact", "793504527660961",
                 CONFIG_BY_EVENT.get(1)));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapnImpact",
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapnImpact", "793504527660961",
                 CONFIG_BY_EVENT.get(2)));
 
         addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact",
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact", "793504527660961",
                 CONFIG_BY_EVENT.get(3)));
 
         addZones(1, new Gson().fromJson(jsonZone, zonesToken.getType()));
