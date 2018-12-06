@@ -9,13 +9,18 @@ import java.util.Date;
 import java.util.Locale;
 
 /*
-This class enable to store every component(message, time) of a facebook post.
+This class enable to store every component(message, post time, author) of a facebook post.
  */
 public class Feed {
     private String id = "";
     private String content = "";
     private Date time;
 
+    /**
+     * Stores in class instances components of the facebook post
+     *
+     * @param object the JSONObject that contain all the information
+     */
     public Feed(JSONObject object) {
         try {
             String dateStr = object.getString("created_time");
@@ -36,6 +41,10 @@ public class Feed {
         return time;
     }
 
+    /**
+     *
+     * @return the string representation of the facebook post time
+     */
     public String dateAsString() {
         if (time.getTime() <= 0) {
             return null;
