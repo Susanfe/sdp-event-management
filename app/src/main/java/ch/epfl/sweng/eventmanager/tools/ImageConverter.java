@@ -17,7 +17,7 @@ public final class ImageConverter {
     private static File getFile(Context context, Uri uri) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(uri);
         String fileName = "event_image";
-        File tempFile = File.createTempFile("event_image", EXTENSION_PNG);
+        File tempFile = File.createTempFile(fileName, EXTENSION_PNG);
         tempFile.deleteOnExit();
         FileOutputStream out = null;
         try {
@@ -49,7 +49,7 @@ public final class ImageConverter {
 
     public static File convertToPng (Context context, Uri uri) throws IOException {
         File compressedImage = new Compressor(context).setCompressFormat(Bitmap.CompressFormat.PNG)
-                .setMaxHeight(500).setMaxWidth(500).setQuality(25).compressToFile(getFile(context,uri));
+                .setMaxWidth(500).setQuality(25).compressToFile(getFile(context,uri));
         return compressedImage;
     }
 }
