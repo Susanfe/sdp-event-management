@@ -62,11 +62,22 @@ public class FirebaseHelper {
         return img;
     }
 
-    public static UploadTask uploadFileToStorage(StorageReference ref, File imgUri) {
-       return ref.putFile(Uri.fromFile(imgUri));
+    public static LiveData<Uri> getImageURL(StorageReference ref) {
+        final MutableLiveData<Uri> url = new MutableLiveData<>();
+        ref.getDownloadUrl().addOnSuccessListener(uri -> {
+            url.setValue(uri);
+        }).addOnFailureListener(exception -> {
+            Log.w("FirebaseHelper", "Could not load image URL " + url.toString());
+            url.setValue(null);
+        });
+        return url;
     }
 
-    public static interface Mapper<T> {
+    public static UploadTask uploadFileToStorage(StorageReference ref, File imgUri) {
+        return ref.putFile(Uri.fromFile(imgUri));
+    }
+
+    public interface Mapper<T> {
         static <T> Mapper<T> unit() {
             return (in, snapshot) -> in;
         }

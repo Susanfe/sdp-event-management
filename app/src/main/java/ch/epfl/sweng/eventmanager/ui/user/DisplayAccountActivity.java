@@ -15,6 +15,9 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventCreateActivity;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
+import dagger.android.AndroidInjection;
+
+import javax.inject.Inject;
 
 public class DisplayAccountActivity extends AppCompatActivity {
 
@@ -27,8 +30,13 @@ public class DisplayAccountActivity extends AppCompatActivity {
     @BindString(R.string.display_account_activity_logged_as)
     String loggedAs;
 
+    @Inject
+    Session session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_account);
         ButterKnife.bind(this);
@@ -37,21 +45,21 @@ public class DisplayAccountActivity extends AppCompatActivity {
             ActionBar actionbar = getSupportActionBar();
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
-            loggedAs = String.format("%s %s",loggedAs, Session.getCurrentUser().getEmail());
-            logoutButton.setOnClickListener(this::logoutThenRedirectToEventSelector);
-            createButton.setOnClickListener(this::redirectToEventCreator);
-            helpText.setText(loggedAs);
+        loggedAs = String.format("%s %s", loggedAs, session.getCurrentUser().getEmail());
+        logoutButton.setOnClickListener(this::logoutThenRedirectToEventSelector);
+        createButton.setOnClickListener(this::redirectToEventCreator);
+        helpText.setText(loggedAs);
     }
 
     private void logoutThenRedirectToEventSelector(View view) {
-        Session.logout();
+        session.logout();
 
         Toast toast = Toast.makeText(
                 this, getString(R.string.logout_toast), Toast.LENGTH_SHORT
         );
         toast.show();
 
-        Intent intent = new Intent(this,EventPickingActivity.class);
+        Intent intent = new Intent(this, EventPickingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();

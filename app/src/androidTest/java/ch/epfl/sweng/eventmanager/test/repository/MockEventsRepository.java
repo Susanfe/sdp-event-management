@@ -1,19 +1,21 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import androidx.lifecycle.LiveData;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.*;
 import ch.epfl.sweng.eventmanager.test.ObservableMap;
 import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
-import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
+import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.*;
+
 
 /**
  * @author Louis Vialar
@@ -33,7 +35,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     }
 
     private final ObservableMap<Integer, Event> events = new ObservableMap<>();
-    private final ObservableMap<Integer, Bitmap> eventImages = new ObservableMap<>();
+    private final ObservableMap<Integer, Uri> eventImagesUri = new ObservableMap<>();
     private final ObservableMap<Integer, List<Spot>> spots = new ObservableMap<>();
     private final ObservableMap<Integer, List<ScheduledItem>> scheduledItems = new ObservableMap<>();
     private final ObservableMap<Integer, List<Zone>> zones = new ObservableMap<>();
@@ -99,8 +101,10 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         Map<String, String> usersMap = new HashMap<>();
         usersMap.put(DummyInMemorySession.DUMMY_UID, "admin");
 
+        Uri fakeImgUri = Uri.parse("android.resource://ch.epfl.sweng.eventmanager/drawable/event_default_cover");
+
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact",
+                orgaEmail, fakeImgUri, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact",
                 CONFIG_BY_EVENT.get(1)));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
@@ -160,7 +164,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
     private void addEvent(Event event) {
         events.put(event.getId(), event);
-        eventImages.put(event.getId(), event.getImage());
+        eventImagesUri.put(event.getId(), event.getImageURI());
     }
 
     private void addZones(int event, List<Zone> list) {
@@ -183,8 +187,8 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     }
 
     @Override
-    public LiveData<Bitmap> getEventImage(Event event) {
-        return eventImages.get(event.getId());
+    public LiveData<Uri> getEventImageURL(Event event) {
+        return eventImagesUri.get(event.getId());
     }
 
     @Override

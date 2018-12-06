@@ -66,7 +66,7 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
 
     @Override
     public synchronized boolean onError(MediaPlayer mp, int what, int extra) {
-        if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
+        if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED && context instanceof Activity) {
             ((Activity) context).finish();
         } else {
             // possibly media player error, so release and recreate

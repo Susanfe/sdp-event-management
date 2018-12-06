@@ -176,7 +176,7 @@ public final class TicketingScanActivity extends TicketingActivity {
 
         initScan();
 
-        soundAlertManager = new SoundAlertManager(this);
+        soundAlertManager = new SoundAlertManager(TicketingScanActivity.this);
     }
 
     private void initScan() {
