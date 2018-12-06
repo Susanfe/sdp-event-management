@@ -81,7 +81,7 @@ public class EventCreateActivity extends AppCompatActivity {
         this.description.setText(event.getDescription(), TextView.BufferType.EDITABLE);
         this.beginDate.setText(formatDate(event.getBeginDateAsDate()));
         this.endDate.setText(formatDate(event.getBeginDateAsDate()));
-        this.eventImage.setImageBitmap(event.getImage());
+        event.loadEventImageIntoImageView(this,this.eventImage);
     }
 
     private void populateEvent() {

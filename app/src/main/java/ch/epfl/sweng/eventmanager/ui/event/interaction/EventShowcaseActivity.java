@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -25,8 +26,6 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 import jp.wasabeef.glide.transformations.BlurTransformation;
-
-import javax.inject.Inject;
 
 import javax.inject.Inject;
 

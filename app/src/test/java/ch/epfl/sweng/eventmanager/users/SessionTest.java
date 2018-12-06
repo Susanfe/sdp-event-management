@@ -1,17 +1,12 @@
 package ch.epfl.sweng.eventmanager.users;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.*;
 
 public class SessionTest {
     private Session session;

@@ -5,14 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.models.TweetBuilder;
-import com.twitter.sdk.android.tweetui.CompactTweetView;
-
-import java.util.Collections;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
@@ -26,7 +18,12 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
-import dagger.android.support.AndroidSupportInjection;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.TweetBuilder;
+import com.twitter.sdk.android.tweetui.CompactTweetView;
+
+import java.util.Collections;
+import java.util.List;
 
 
 /**

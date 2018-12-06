@@ -5,15 +5,15 @@ import android.net.Uri;
 import android.widget.ImageView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import ch.epfl.sweng.eventmanager.inject.GlideApp;
-import android.graphics.Bitmap;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseHelper;
 import ch.epfl.sweng.eventmanager.users.Role;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.Exclude;
-import jp.wasabeef.glide.transformations.BitmapTransformation;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import jp.wasabeef.glide.transformations.BitmapTransformation;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -54,9 +54,10 @@ public final class Event {
      */
     private String organizerEmail;
     /**
-     * An URI to the image representing the event, may be null
+     * An URL to the image representing the event stored in Firebase Storage, may be null.
+     * We store a string because Firebase can't handle URI objects
      */
-    private Uri imageURI;
+    private String imageURL;
     /**
      * The location of the event
      */
@@ -76,13 +77,13 @@ public final class Event {
 
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 String organizerEmail, Uri imageURI, EventLocation location,
+                 String organizerEmail, Uri imageURL, EventLocation location,
                  Map<String, String> users, String twitterName) {
-        this(id, name, description, beginDate, endDate, organizerEmail, imageURI, location, users, twitterName, null);
+        this(id, name, description, beginDate, endDate, organizerEmail, imageURL, location, users, twitterName, null);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 String organizerEmail, Uri imageURI, EventLocation location,
+                 String organizerEmail, Uri imageURL, EventLocation location,
                  Map<String, String> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
 
         this.ticketingConfiguration = ticketingConfiguration;
@@ -96,7 +97,7 @@ public final class Event {
         this.endDate = endDate.getTime();
         this.description = description;
         this.organizerEmail = organizerEmail;
-        this.imageURI = imageURI;
+        this.imageURL = imageURL.toString();
         this.location = location;
         this.users = users;
         this.twitterName = twitterName;
@@ -126,6 +127,10 @@ public final class Event {
 
     public EventLocation getLocation() {
         return location;
+    }
+
+    public Uri getImageURL() {
+        return this.imageURL != null ? Uri.parse(imageURL) : null;
     }
 
     /**
@@ -168,7 +173,7 @@ public final class Event {
         return this.twitterName;
     }
 
-    String beginDateAsString() {
+    public String beginDateAsString() {
         if (beginDate <= 0) {
             return null;
         }
@@ -176,29 +181,12 @@ public final class Event {
         return f.format(beginDate);
     }
 
-    String endDateAsString(){
+    public String endDateAsString(){
         if (endDate <= 0) {
             return null;
         }
         SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
         return f.format(endDate);
-    }
-
-    public void setImageURL(Uri imageURI) {
-        this.imageURI = imageURI;
-    }
-
-
-    @Exclude
-    public UploadTask uploadImage(File imgSrc) {
-        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
-        StorageReference eventsLogoRef = imagesRef.child(getImageName());
-        return FirebaseHelper.uploadFileToStorage(eventsLogoRef,imgSrc);
-    }
-
-    @Exclude
-    public String getImageName() {
-        return getName().replace(" ", "_") + ".png";
     }
 
     public EventTicketingConfiguration getTicketingConfiguration() {
@@ -245,15 +233,31 @@ public final class Event {
         this.ticketingConfiguration = ticketingConfiguration;
     }
 
-
-    @Exclude
-    public Uri getImageURI() {
-        return imageURI;
+    public void setImageURL(String imageURI) {
+        this.imageURL = imageURI;
     }
 
     @Exclude
     public boolean haveAnImage() {
-        return imageURI != null;
+        return imageURL != null;
+    }
+
+
+    @Exclude
+    public StorageTask<UploadTask.TaskSnapshot> uploadImage(File imgSrc) {
+        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
+        StorageReference eventsLogoRef = imagesRef.child(getImageName());
+        return FirebaseHelper.uploadFileToStorage(eventsLogoRef,imgSrc)
+                .addOnSuccessListener(taskSnapshot -> eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> setImageURL(uri.toString())));
+    }
+
+    /**
+     * Return the name for storing the eventImage into firebase
+     * @return String imageName
+     */
+    @Exclude
+    private String getImageName() {
+        return this.getId() + ".png";
     }
 
     /**
@@ -263,12 +267,12 @@ public final class Event {
      */
     @Exclude
     public void loadEventImageIntoImageView(Context context, ImageView imageView) {
-        if(getImageURI() != null) {
+        if(getImageURL() != null) {
             CircularProgressDrawable progress = new CircularProgressDrawable(context);
             progress.setStrokeWidth(5f);
             progress.setCenterRadius(30f);
             progress.start();
-            GlideApp.with(context).load(getImageURI()).placeholder(progress).into(imageView);
+            GlideApp.with(context).load(getImageURL()).placeholder(progress).into(imageView);
         }
     }
 
@@ -280,12 +284,12 @@ public final class Event {
      */
     @Exclude
     public void loadEventImageIntoImageView(Context context, ImageView imageView, BitmapTransformation transformation) {
-        if (getImageURI() != null) {
+        if (getImageURL() != null) {
             CircularProgressDrawable progress = new CircularProgressDrawable(context);
             progress.setStrokeWidth(5f);
             progress.setCenterRadius(30f);
             progress.start();
-            GlideApp.with(context).load(getImageURI()).apply(RequestOptions.bitmapTransform(transformation)).placeholder(progress).into(imageView);
+            GlideApp.with(context).load(getImageURL()).apply(RequestOptions.bitmapTransform(transformation)).placeholder(progress).into(imageView);
         }
     }
 

@@ -62,6 +62,7 @@ public class FirebaseHelper {
         return img;
     }
 
+    /*
     public static LiveData<Uri> getImageURL(StorageReference ref) {
         final MutableLiveData<Uri> url = new MutableLiveData<>();
         ref.getDownloadUrl().addOnSuccessListener(uri -> {
@@ -71,7 +72,7 @@ public class FirebaseHelper {
             url.setValue(null);
         });
         return url;
-    }
+    }*/
 
     public static UploadTask uploadFileToStorage(StorageReference ref, File imgUri) {
         return ref.putFile(Uri.fromFile(imgUri));
