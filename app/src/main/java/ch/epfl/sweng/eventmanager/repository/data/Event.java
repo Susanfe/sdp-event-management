@@ -76,20 +76,19 @@ public final class Event {
     private EventTicketingConfiguration ticketingConfiguration;
 
     // TODO define if an event can have only empty and null atributes
-    public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 String organizerEmail, Uri imageURL, EventLocation location,
-                 Map<String, String> users, String twitterName) {
+    public Event(int id, String name, String description, Date beginDate, Date endDate, String organizerEmail,
+                 Uri imageURL, EventLocation location, Map<String, String> users, String twitterName) {
         this(id, name, description, beginDate, endDate, organizerEmail, imageURL, location, users, twitterName, null);
     }
 
-    public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 String organizerEmail, Uri imageURL, EventLocation location,
-                 Map<String, String> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
+    public Event(int id, String name, String description, Date beginDate, Date endDate, String organizerEmail,
+                 Uri imageURL, EventLocation location, Map<String, String> users, String twitterName,
+                 EventTicketingConfiguration ticketingConfiguration) {
 
         this.ticketingConfiguration = ticketingConfiguration;
 
         if (beginDate.getTime() > endDate.getTime())
-            throw new IllegalArgumentException("The time at the start of the event should be later than the time at the end");
+            throw new IllegalArgumentException("The time at the start of the event should be later than the time at " + "the end");
 
         this.id = id;
         this.name = name;
@@ -103,30 +102,63 @@ public final class Event {
         this.twitterName = twitterName;
     }
 
-    public Event() {}
+    public Event() {
+    }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public long getBeginDate() { return beginDate; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public long getEndDate() {return endDate;}
+    public long getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(long beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public long getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(long endDate) {
+        this.endDate = endDate;
+    }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getOrganizerEmail() {
         return organizerEmail;
     }
 
+    public void setOrganizerEmail(String organizerEmail) {
+        this.organizerEmail = organizerEmail;
+    }
+
     public EventLocation getLocation() {
         return location;
+    }
+
+    public void setLocation(EventLocation location) {
+        this.location = location;
     }
 
     @Exclude
@@ -134,8 +166,12 @@ public final class Event {
         return haveAnImage() ? Uri.parse(imageURL) : null;
     }
 
-    public String getImageURL(){
+    public String getImageURL() {
         return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     /**
@@ -143,7 +179,13 @@ public final class Event {
      *
      * @return firebase representation of user permissions.
      */
-    public Map<String, String> getUsers() { return users; }
+    public Map<String, String> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Map<String, String> users) {
+        this.users = users;
+    }
 
     /**
      * @return a map of Role permissions to User IDs
@@ -178,6 +220,10 @@ public final class Event {
         return this.twitterName;
     }
 
+    public void setTwitterName(String twitterName) {
+        this.twitterName = twitterName;
+    }
+
     public String beginDateAsString() {
         if (beginDate <= 0) {
             return null;
@@ -186,7 +232,7 @@ public final class Event {
         return f.format(beginDate);
     }
 
-    public String endDateAsString(){
+    public String endDateAsString() {
         if (endDate <= 0) {
             return null;
         }
@@ -198,48 +244,8 @@ public final class Event {
         return ticketingConfiguration;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setBeginDate(long beginDate) {
-        this.beginDate = beginDate;
-    }
-
-    public void setEndDate(long endDate) {
-        this.endDate = endDate;
-    }
-
-    public void setOrganizerEmail(String organizerEmail) {
-        this.organizerEmail = organizerEmail;
-    }
-
-    public void setLocation(EventLocation location) {
-        this.location = location;
-    }
-
-    public void setUsers(Map<String, String> users) {
-        this.users = users;
-    }
-
-    public void setTwitterName(String twitterName) {
-        this.twitterName = twitterName;
-    }
-
     public void setTicketingConfiguration(EventTicketingConfiguration ticketingConfiguration) {
         this.ticketingConfiguration = ticketingConfiguration;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
     }
 
     @Exclude
@@ -254,20 +260,19 @@ public final class Event {
         StorageReference eventsLogoRef = imagesRef.child(getImageName());
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = fdB.getReference("events").child(String.valueOf(getId()));
-        StorageMetadata metadata = new StorageMetadata.Builder()
-                .setContentType("image/webp")
-                .build();
-         FirebaseHelper.uploadFileToStorage(eventsLogoRef,imgSrc, metadata).addOnSuccessListener(taskSnapshot ->
-                 eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                     setImageURL(uri.toString());
-                     Map<String, Object> updateUrl = new HashMap<>();
-                     updateUrl.put("imageURL", uri.toString());
-                     dbRef.updateChildren(updateUrl);
-                 }));
+        StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/webp").build();
+        FirebaseHelper.uploadFileToStorage(eventsLogoRef, imgSrc, metadata)
+                .addOnSuccessListener(taskSnapshot -> eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            setImageURL(uri.toString());
+            Map<String, Object> updateUrl = new HashMap<>();
+            updateUrl.put("imageURL", uri.toString());
+            dbRef.updateChildren(updateUrl);
+        }));
     }
 
     /**
      * Return the name for storing the eventImage into firebase
+     *
      * @return String imageName
      */
     @Exclude
@@ -277,12 +282,13 @@ public final class Event {
 
     /**
      * Will load the event image into the provided view
+     *
      * @param context
      * @param imageView
      */
     @Exclude
     public void loadEventImageIntoImageView(Context context, ImageView imageView) {
-        if(getImageURLasURI() != null) {
+        if (getImageURLasURI() != null) {
             CircularProgressDrawable progress = new CircularProgressDrawable(context);
             progress.setStrokeWidth(5f);
             progress.setCenterRadius(30f);
@@ -293,6 +299,7 @@ public final class Event {
 
     /**
      * Will load the event image into the provided view and apply the requested transformation
+     *
      * @param context
      * @param imageView
      * @param transformation
@@ -304,7 +311,8 @@ public final class Event {
             progress.setStrokeWidth(5f);
             progress.setCenterRadius(30f);
             progress.start();
-            GlideApp.with(context).load(getImageURLasURI()).apply(RequestOptions.bitmapTransform(transformation)).placeholder(progress).into(imageView);
+            GlideApp.with(context).load(getImageURLasURI()).apply(RequestOptions
+                    .bitmapTransform(transformation)).placeholder(progress).into(imageView);
         }
     }
 
