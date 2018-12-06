@@ -48,6 +48,12 @@
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_maps_key"/>
 
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+        See README(https://goo.gl/l4GJaQ) for more. -->
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/ic_marker_active" />
+
         <activity
                 android:name=".ui.event.selection.EventPickingActivity"
                 android:launchMode="singleTop">
@@ -107,12 +113,17 @@
                   android:theme="@style/AppTheme.ActionBar"/>
 
 
-        <receiver android:name=".repository.impl.NotificationPublisher"/>
+        <receiver android:name=".notifications.NotificationPublisher"/>
 
         <activity android:name=".ui.settings.SettingsActivity"
                   android:label="Settings"
                   android:theme="@style/AppTheme.ActionBar"
         />
+        <service android:name=".notifications.firebase.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
