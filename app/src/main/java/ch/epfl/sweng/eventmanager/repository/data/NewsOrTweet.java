@@ -1,5 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.twitter.sdk.android.core.models.Tweet;

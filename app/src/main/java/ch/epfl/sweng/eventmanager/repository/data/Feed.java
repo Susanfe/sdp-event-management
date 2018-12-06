@@ -19,7 +19,7 @@ public class Feed {
     public Feed(JSONObject object) {
         try {
             String dateStr = object.getString("created_time");
-            time = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.FRANCE).parse(dateStr);
+            time = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault()).parse(dateStr);
             id = object.getString("id");
             if (object.has("message")) {
                 content = object.getString("message");
@@ -27,7 +27,7 @@ public class Feed {
         }
         catch (JSONException e) {
             e.printStackTrace();
-        } catch (ParseException e) { 
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }
