@@ -66,18 +66,23 @@ public final class Event {
      */
     private String twitterName;
 
+    /**
+     * The facebook account screen name
+     */
+    private String facebookName;
+
     private EventTicketingConfiguration ticketingConfiguration;
 
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate,
                  String organizerEmail, Uri imageURI, EventLocation location,
-                 Map<String, String> users, String twitterName) {
-        this(id, name, description, beginDate, endDate, organizerEmail, imageURI, location, users, twitterName, null);
+                 Map<String, String> users, String twitterName, String facebookName) {
+        this(id, name, description, beginDate, endDate, organizerEmail, imageURI, location, users, twitterName, facebookName, null);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate,
                  String organizerEmail, Uri imageURI, EventLocation location,
-                 Map<String, String> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
+                 Map<String, String> users, String twitterName, String facebookName, EventTicketingConfiguration ticketingConfiguration) {
 
         this.ticketingConfiguration = ticketingConfiguration;
 
@@ -94,6 +99,7 @@ public final class Event {
         this.location = location;
         this.users = users;
         this.twitterName = twitterName;
+        this.facebookName = facebookName;
     }
 
     public Event() {}
@@ -144,7 +150,7 @@ public final class Event {
             Role role = Role.valueOf(getUsers().get(uid).toUpperCase());
 
             List<String> users;
-            if (result.get(role) == null) users = Arrays.asList(uid);
+            if (result.get(role) == null) users = Collections.singletonList(uid);
             else users = result.get(role);
 
             result.put(role, users);
@@ -160,6 +166,10 @@ public final class Event {
 
     public String getTwitterName() {
         return this.twitterName;
+    }
+
+    public String getFacebookName() {
+        return this.facebookName;
     }
 
     String beginDateAsString() {
