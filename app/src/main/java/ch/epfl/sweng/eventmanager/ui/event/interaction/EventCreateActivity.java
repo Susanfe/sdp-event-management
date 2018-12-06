@@ -35,7 +35,10 @@ import java.util.*;
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";
     private static final int PICK_IMAGE = 1;
-    public static final String FILE_EXTENSION_WEBP = "webp";
+    private static final String FILE_EXTENSION_WEBP = "webp";
+    private static final int IMAGE_COMPRESS_QUALITY = 70;
+    private static final int MAX_IMAGE_WIDTH = 600;
+    private static final int MAX_IMAGE_HEIGHT = 300;
 
     @Inject
     ViewModelFactory factory;
@@ -273,6 +276,10 @@ public class EventCreateActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handle the cropping and conversion of the image
+     * @param eventImageUri
+     */
     private void cropAndConvertImage(Uri eventImageUri) {
         try {
             File eventImageCropped = File.createTempFile("event_cover", FILE_EXTENSION_WEBP);
@@ -280,9 +287,10 @@ public class EventCreateActivity extends AppCompatActivity {
             Uri eventImageCroppedUri = Uri.fromFile(eventImageCropped);
             UCrop.Options compressOptions = new UCrop.Options();
             compressOptions.setCompressionFormat(Bitmap.CompressFormat.WEBP);
-            compressOptions.setCompressionQuality(50);
-            UCrop.of(eventImageUri, eventImageCroppedUri).withMaxResultSize(600, 300).withAspectRatio(16,9).
-                    withOptions(compressOptions).start(this);
+            compressOptions.setCompressionQuality(IMAGE_COMPRESS_QUALITY);
+            UCrop.of(eventImageUri, eventImageCroppedUri).withMaxResultSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)
+                    .withAspectRatio(16,9)
+                    .withOptions(compressOptions).start(this);
         } catch (IOException e) {
             e.printStackTrace();
             Log.i(TAG,"Unable to create tempFile for cropping event image");
