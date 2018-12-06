@@ -5,6 +5,8 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.ParseException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -13,6 +15,8 @@ public class FeedTest {
     Feed feed2;
     Feed feed3;
     Feed feed4;
+    Feed feed5;
+    JSONObject obj5;
 
     @Before
     public void setUp() throws JSONException {
@@ -48,6 +52,13 @@ public class FeedTest {
     }
 
     @Test
+    public void constructorWorkWithException() throws JSONException {
+        String jStr= "{\"name\":\"hahaha\"}";
+        JSONObject obj5 = new JSONObject(jStr);
+        new Feed(obj5);
+    }
+
+    @Test
     public void dateAsStringWork() {
         assertTrue(feed1.dateAsString().contains("Dec 3,"));
     }
@@ -58,4 +69,5 @@ public class FeedTest {
         assertTrue(!feed1.equals(feed3));
         assertTrue(!feed1.equals(feed4));
     }
+
 }

@@ -47,8 +47,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
     TextView emptyListTextView;
     @BindView(R.id.go_facebook)
     Button facebookButton;
-    //@BindView(R.id.news_create_button)
-    //AppCompatButton newsCreateButton;
 
     private NewsAdapter newsAdapter;
 

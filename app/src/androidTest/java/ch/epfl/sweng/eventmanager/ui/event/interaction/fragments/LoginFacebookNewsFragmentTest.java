@@ -34,4 +34,5 @@ public class LoginFacebookNewsFragmentTest {
         SystemClock.sleep(500);
         onView(withId(R.id.loginButton)).perform(click());
     }
+
 }
