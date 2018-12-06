@@ -152,7 +152,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'test
             '**/*_*ViewBinding*.class',
             '**/repository/impl/*.class',
             '**/ui/event/interaction/fragments/EventMapFragment.class',
-            '**/ui/event/interaction/fragments/EventMapEditionFragment.class'
+            '**/ui/event/interaction/fragments/EventMapEditionFragment.class',
             '**/com/bumptech/glide/*',
             '**/*Glide*'
     ]
