@@ -24,8 +24,6 @@ import javax.inject.Inject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";
@@ -35,6 +33,9 @@ public class EventCreateActivity extends AppCompatActivity {
 
     @Inject
     EventRepository repository;
+
+    @Inject
+    Session session;
 
     @BindView(R.id.create_form_send_button)
     Button sendButton;
@@ -113,7 +114,7 @@ public class EventCreateActivity extends AppCompatActivity {
         if (eventID <= 0) {
             // Create the event and set the user admin of his event
             Map<String, String> users = new HashMap<>();
-            users.put(Session.getCurrentUser().getUid(), "admin");
+            users.put(session.getCurrentUser().getUid(), "admin");
 
             event.setUsers(users);
 

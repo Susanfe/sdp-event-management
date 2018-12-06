@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.SystemClock;
 import android.util.Log;
 
+import ch.epfl.sweng.eventmanager.test.TestApplication;
 import junit.framework.AssertionFailedError;
 
 import org.junit.After;
@@ -20,6 +21,8 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.TestHelper;
 import ch.epfl.sweng.eventmanager.users.Session;
 
+import javax.inject.Inject;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -34,20 +37,22 @@ import static org.hamcrest.CoreMatchers.containsString;
 public class LoginActivityTest {
     private final int MAX_RETRY_COUNT = 10;
 
-    @Before
-    public void disableFirebaseAuth() {
-        Session.enforceDummySessions();
-        Session.logout();
-    }
+    @Inject
+    Session session;
 
     @After
     public void autoLogOut() {
-        Session.logout();
+        session.logout();
     }
 
     @Rule
     public final ActivityTestRule<LoginActivity> mActivityRule =
             new ActivityTestRule<>(LoginActivity.class);
+
+    @Before
+    public void setUp() {
+        TestApplication.component.inject(this);
+    }
 
     @Test
     public void testSuccessfulLogin() {

@@ -6,6 +6,7 @@ import ch.epfl.sweng.eventmanager.repository.data.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
@@ -13,6 +14,7 @@ public class InMemoryFirebaseSession implements InMemorySession {
     private final FirebaseAuth mAuth;
     private FirebaseBackedUser user;
 
+    @Inject
     public InMemoryFirebaseSession() {
         mAuth = FirebaseAuth.getInstance();
     }

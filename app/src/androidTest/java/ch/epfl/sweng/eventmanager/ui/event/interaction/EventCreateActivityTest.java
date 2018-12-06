@@ -10,7 +10,7 @@ import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.TestApplication;
 import ch.epfl.sweng.eventmanager.test.repository.MockEventsRepository;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
-import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
+import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
 import ch.epfl.sweng.eventmanager.users.Session;
 import org.hamcrest.Matchers;
 import org.junit.*;
@@ -30,6 +30,8 @@ public class EventCreateActivityTest {
 
     @Inject
     protected MockEventsRepository repository;
+    @Inject
+    Session session;
 
     public EventCreateActivityTest() {
         TestApplication.component.inject(this);
@@ -37,8 +39,7 @@ public class EventCreateActivityTest {
 
     @Before
     public void setup() {
-        Session.enforceDummySessions();
-        Session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD, null, null);
+        session.login(DummyInMemorySession.DUMMY_EMAIL, DummyInMemorySession.DUMMY_PASSWORD, null, null);
 
         Intents.init();
     }
