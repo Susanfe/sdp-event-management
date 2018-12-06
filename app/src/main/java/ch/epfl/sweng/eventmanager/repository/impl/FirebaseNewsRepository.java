@@ -90,7 +90,7 @@ public class FirebaseNewsRepository implements NewsRepository {
         MutableLiveData<List<Feed>> data = new MutableLiveData<>();
         List<Feed> feedList = new ArrayList<>();
 
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "/793504527660961/feed", null, HttpMethod.GET,
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + screenName + "/feed", null, HttpMethod.GET,
                 response -> {
                     /* handle the result */
                     try {
