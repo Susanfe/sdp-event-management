@@ -7,7 +7,8 @@ import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
-import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweet;
+import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweetOrFacebook;
+
 import com.twitter.sdk.android.core.models.Tweet;
 
 import javax.inject.Inject;
@@ -41,16 +42,16 @@ public class NewsViewModel extends ViewModel {
         return Transformations.switchMap(facebookName, name -> repository.getFacebookNews(name));
     }
 
-    private LiveData<List<NewsOrTweet>> combine(LiveData<List<News>> newsData, LiveData<List<Tweet>> tweetsData, LiveData<List<Feed>> facebookData) {
-        MediatorLiveData<List<NewsOrTweet>> data = new MediatorLiveData<>();
-        data.addSource(newsData, news -> data.setValue(NewsOrTweet.mergeLists(news, tweetsData.getValue(), facebookData.getValue())));
-        data.addSource(tweetsData, tweets -> data.setValue(NewsOrTweet.mergeLists(newsData.getValue(), tweets, facebookData.getValue())));
-        data.addSource(facebookData, facebook -> data.setValue(NewsOrTweet.mergeLists(newsData.getValue(), tweetsData.getValue(), facebook)));
+    private LiveData<List<NewsOrTweetOrFacebook>> combine(LiveData<List<News>> newsData, LiveData<List<Tweet>> tweetsData, LiveData<List<Feed>> facebookData) {
+        MediatorLiveData<List<NewsOrTweetOrFacebook>> data = new MediatorLiveData<>();
+        data.addSource(newsData, news -> data.setValue(NewsOrTweetOrFacebook.mergeLists(news, tweetsData.getValue(), facebookData.getValue())));
+        data.addSource(tweetsData, tweets -> data.setValue(NewsOrTweetOrFacebook.mergeLists(newsData.getValue(), tweets, facebookData.getValue())));
+        data.addSource(facebookData, facebook -> data.setValue(NewsOrTweetOrFacebook.mergeLists(newsData.getValue(), tweetsData.getValue(), facebook)));
 
         return data;
     }
 
-    public LiveData<List<NewsOrTweet>> getNews(LiveData<String> twitterName, LiveData<String> facebookName) {
+    public LiveData<List<NewsOrTweetOrFacebook>> getNews(LiveData<String> twitterName, LiveData<String> facebookName) {
         return combine(news, nameToTweets(twitterName), nameToFacebookNews(facebookName));
     }
 
