@@ -134,6 +134,9 @@
     <!-- Generic text -->
     <string name="undo">Undo</string>
     <string name="welcome">Welcome on &app_name; !</string>
+    <string name="done">Done</string>
+
+    <!-- Creation form text-->
     <string name="create_form_hint_name">Name of the event</string>
     <string name="create_form_hint_description">Description of the event</string>
     <string name="create_form_hint_email">Email of the event organizer</string>
@@ -159,5 +162,9 @@
     <string name="ticket_scanning_sound_switch_title">Sound</string>
     <string name="submit_your_feedback">Submit your Feedback</string>
     <string name="ratings_empty">There is no ratings yet.</string>
+
+    <!-- Edition Fragment text-->
+    <string name="map_edition_add_overlay">Add overlay edge</string>
+    <string name="map_edition_add_spot">Add spot</string>
 
 </resources>

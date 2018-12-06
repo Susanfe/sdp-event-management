@@ -26,7 +26,7 @@ public class CustomMarkerDialog extends DialogFragment {
 
         builder.setView(R.layout.contextual_menu);
 
-        builder.setNegativeButton("Done", (dialog, which) -> {
+        builder.setNegativeButton(getText(R.string.done), (dialog, which) -> {
             // Dismisses the Dialog
         });
 
