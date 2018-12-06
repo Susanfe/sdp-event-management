@@ -35,6 +35,7 @@ import java.util.*;
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";
     private static final int PICK_IMAGE = 1;
+    public static final String FILE_EXTENSION_WEBP = "webp";
 
     @Inject
     ViewModelFactory factory;
@@ -273,13 +274,13 @@ public class EventCreateActivity extends AppCompatActivity {
 
     private void cropAndConvertImage(Uri eventImageUri) {
         try {
-            File eventImageCropped = File.createTempFile("event_cover", "png");
+            File eventImageCropped = File.createTempFile("event_cover", FILE_EXTENSION_WEBP);
             eventImageCropped.deleteOnExit();
             Uri eventImageCroppedUri = Uri.fromFile(eventImageCropped);
             UCrop.Options compressOptions = new UCrop.Options();
             compressOptions.setCompressionFormat(Bitmap.CompressFormat.WEBP);
             compressOptions.setCompressionQuality(50);
-            UCrop.of(eventImageUri, eventImageCroppedUri).withMaxResultSize(533, 300).
+            UCrop.of(eventImageUri, eventImageCroppedUri).withMaxResultSize(600, 300).withAspectRatio(16,9).
                     withOptions(compressOptions).start(this);
         } catch (IOException e) {
             e.printStackTrace();

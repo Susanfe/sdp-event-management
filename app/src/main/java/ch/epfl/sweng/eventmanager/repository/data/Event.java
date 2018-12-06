@@ -255,7 +255,7 @@ public final class Event {
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = fdB.getReference("events").child(String.valueOf(getId()));
         StorageMetadata metadata = new StorageMetadata.Builder()
-                .setContentType("image/png")
+                .setContentType("image/webp")
                 .build();
          FirebaseHelper.uploadFileToStorage(eventsLogoRef,imgSrc, metadata).addOnSuccessListener(taskSnapshot ->
                  eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> {
