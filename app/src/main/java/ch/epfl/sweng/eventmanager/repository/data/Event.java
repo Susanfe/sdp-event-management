@@ -98,7 +98,7 @@ public final class Event {
         this.endDate = endDate.getTime();
         this.description = description;
         this.organizerEmail = organizerEmail;
-        this.imageURL = imageURL.toString();
+        this.imageURL = imageURL == null ? null : imageURL.toString();
         this.location = location;
         this.users = users;
         this.twitterName = twitterName;
