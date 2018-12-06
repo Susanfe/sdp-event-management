@@ -16,13 +16,13 @@ import static org.junit.Assert.*;
 /**
  * @author Louis Vialar
  */
-public class NewsOrTweetTest {
+public class NewsOrTweetOrFacebookTest {
     private Tweet t = new Tweet(null, "Wed Aug 27 13:08:45 +0000 2008", null, null, null, null, false, null, 0, null, null, 0, null, 0, null, null, null, false, null, 0, null, null, 0, false, null, null, null, null, false, null, false, null, null, null);
     private News n = new News("News1", 1540391282000L, "News 1 Content");
     private Feed f;
-    private NewsOrTweet tweet = new NewsOrTweet(t);
-    private NewsOrTweet news = new NewsOrTweet(n);
-    private NewsOrTweet facebookNews;
+    private NewsOrTweetOrFacebook tweet = new NewsOrTweetOrFacebook(t);
+    private NewsOrTweetOrFacebook news = new NewsOrTweetOrFacebook(n);
+    private NewsOrTweetOrFacebook facebookNews;
 
     @Before
     public void setUpFeed() throws JSONException {
@@ -31,7 +31,7 @@ public class NewsOrTweetTest {
         obj.put("created_time", "2018-12-03T16:02:53+0000");
         obj.put("id", "11");
         f = new Feed(obj);
-        facebookNews = new NewsOrTweet(f);
+        facebookNews = new NewsOrTweetOrFacebook(f);
     }
 
 
@@ -75,19 +75,19 @@ public class NewsOrTweetTest {
 
     @Test
     public void getItemType() {
-        assertEquals(NewsOrTweet.TYPE_TWEET, tweet.getItemType());
-        assertEquals(NewsOrTweet.TYPE_NEWS, news.getItemType());
-        assertEquals(NewsOrTweet.TYPE_FACEBOOK, facebookNews.getItemType());
+        assertEquals(NewsOrTweetOrFacebook.TYPE_TWEET, tweet.getItemType());
+        assertEquals(NewsOrTweetOrFacebook.TYPE_NEWS, news.getItemType());
+        assertEquals(NewsOrTweetOrFacebook.TYPE_FACEBOOK, facebookNews.getItemType());
     }
 
     @Test
     public void mergeLists() {
-        List<NewsOrTweet> list = new ArrayList<>();
+        List<NewsOrTweetOrFacebook> list = new ArrayList<>();
         list.add(news);
         list.add(tweet);
         list.add(facebookNews);
 
-        List<NewsOrTweet> test = NewsOrTweet.mergeLists(Collections.singletonList(n), Collections.singletonList(t), Collections.singletonList(f));
+        List<NewsOrTweetOrFacebook> test = NewsOrTweetOrFacebook.mergeLists(Collections.singletonList(n), Collections.singletonList(t), Collections.singletonList(f));
 
         // Sort both
         Collections.sort(test);
@@ -101,7 +101,7 @@ public class NewsOrTweetTest {
 
     @Test
     public void mergeNullLists() {
-        List<NewsOrTweet> test = NewsOrTweet.mergeLists(null, null, null);
+        List<NewsOrTweetOrFacebook> test = NewsOrTweetOrFacebook.mergeLists(null, null, null);
         assertTrue(test.isEmpty());
     }
 }
