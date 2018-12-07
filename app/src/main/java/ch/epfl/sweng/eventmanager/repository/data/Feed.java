@@ -67,10 +67,7 @@ public class Feed {
         if (!(o instanceof Feed)) return false;
 
         Feed that = (Feed) o;
-        if(!id.equals(that.id)) return false;
-        if(!time.equals(that.time)) return false;
-        if(!content.equals(that.content)) return false;
-        return true;
+        return (id.equals(that.id) && time.equals(that.time) && content.equals(that.content));
     }
 
 }
