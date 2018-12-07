@@ -42,6 +42,12 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     // Saved LatLng for the result of CustomAddOptionsDialog
     private LatLng onLongClickSavedLatLng = null;
+
+    // Counters for each MarkerType
+    private int counterSpot = 0;
+    private int counterOverlayEdge = 0;
+
+    // History of actions on the markers
     private Stack<MapEditionAction> history = new Stack<>();
 
     /**
@@ -107,7 +113,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     private void addSpotMarker(String title, String snippet, LatLng position) {
             Marker m = mMap.addMarker(new MarkerOptions().title(title).snippet(snippet)
                     .draggable(true).position(position));
-            m.setTag(MarkerType.SPOT);
+
+            m.setTag(MarkerType.SPOT.setId(++counterSpot));
     }
 
     /**
@@ -133,7 +140,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                 .icon(BitmapDescriptorFactory.defaultMarker(hue))
                 .position(position).draggable(true));
 
-        m.setTag(MarkerType.OVERLAY_EDGE);
+        m.setTag(MarkerType.OVERLAY_EDGE.setId(++counterOverlayEdge));
     }
 
     @Override
