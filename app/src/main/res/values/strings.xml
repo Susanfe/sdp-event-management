@@ -140,6 +140,8 @@
     <string name="undo">Undo</string>
     <string name="welcome">Welcome on &app_name; !</string>
     <string name="done">Done</string>
+    <string name="help">Help</string>
+    <string name="save">Save</string>
 
     <!-- Creation form text-->
     <string name="create_form_hint_name">Name of the event</string>

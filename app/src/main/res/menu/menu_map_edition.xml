@@ -8,4 +8,22 @@
         android:visible="false"
         android:id="@+id/menu_map_edition_edit"/>
 
+    <item android:title="@string/undo"
+        android:icon="@drawable/ic_undo_24dp"
+        app:showAsAction="ifRoom"
+        android:visible="false"
+        android:id="@+id/menu_map_edition_undo"/>
+
+    <item android:title="@string/help"
+        android:icon="@drawable/ic_help_24dp"
+        app:showAsAction="ifRoom"
+        android:visible="false"
+        android:id="@+id/menu_map_edition_help"/>
+
+    <item android:title="@string/save"
+        android:icon="@drawable/ic_save_24dp"
+        app:showAsAction="ifRoom"
+        android:visible="false"
+        android:id="@+id/menu_map_edition_save"/>
+
 </menu>
