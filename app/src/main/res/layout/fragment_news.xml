@@ -6,7 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment"
-    android:layout_marginTop="?attr/actionBarSize">
+    android:layout_marginTop="?android:attr/actionBarSize">
+
+    <Button
+        android:id="@+id/go_facebook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="facebook" />
 
     <RelativeLayout
         android:id="@+id/news_relative_layout"

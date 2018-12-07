@@ -42,13 +42,13 @@ public class SessionTest {
 
         List<Spot> spotList = new ArrayList<>();
         Event ev1 = new Event(1, "Event 1", "Descr 1", new Date(0), new Date(0),
-                null, null, null, emptyUserMapping, null);
+                null, null, null, emptyUserMapping, null, null);
 
         Event ev2 = new Event(2, "Event 2", "Descr 2", new Date(0), new Date(0),
-                null, null, null, adminUserMapping, null);
+                null, null, null, adminUserMapping, null, null);
 
         Event ev3 = new Event(3, "Event 3", "Descr 3", new Date(0), new Date(0),
-                null, null, null, unknownUserMapping, null);
+                null, null, null, unknownUserMapping, null, null);
 
         // The user is not logged in, supposed to fail cleanly
         assert(!session.isClearedFor(Role.ADMIN, ev2));

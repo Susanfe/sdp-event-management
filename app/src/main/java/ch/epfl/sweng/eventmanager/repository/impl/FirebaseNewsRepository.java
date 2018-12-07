@@ -2,9 +2,17 @@ package ch.epfl.sweng.eventmanager.repository.impl;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import android.os.Bundle;
 import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
+import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
+
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -15,8 +23,13 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.TimelineResult;
 import com.twitter.sdk.android.tweetui.UserTimeline;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,6 +82,34 @@ public class FirebaseNewsRepository implements NewsRepository {
             data.setValue(Collections.emptyList());
         }
 
+        return data;
+    }
+
+    @Override
+    public LiveData<List<Feed>> getFacebookNews(String screenName) {
+        MutableLiveData<List<Feed>> data = new MutableLiveData<>();
+        List<Feed> feedList = new ArrayList<>();
+
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + screenName + "/feed", null, HttpMethod.GET,
+                response -> {
+                    /* handle the result */
+                    try {
+                        Log.v("facebook request", "start");
+                        JSONObject jObjResponse = new JSONObject(String.valueOf(response.getJSONObject()));
+                        JSONArray jArray = jObjResponse.getJSONArray("data");
+
+                        for (int i = 0; i < jArray.length(); i++) {
+                            JSONObject jObject = jArray.getJSONObject(i);
+                            Feed feed = new Feed(jObject);
+                            feedList.add(feed);
+                        }
+                        data.setValue(feedList);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        data.setValue(Collections.EMPTY_LIST);
+                    }
+                }
+        ).executeAsync();
         return data;
     }
 }

@@ -112,6 +112,11 @@
     <string name="send_news_send_button">Send</string>
     <string name="news_create">Create a news</string>
 
+    <!-- facebook text -->
+    <string name="facebook_app_id">2089713884652770</string>
+    <string name="fb_login_protocol_scheme">fb2089713884652770</string>
+
+
     <!-- Accessibility text -->
     <string name="event_thumbnail">Event thumbnail</string>
 
@@ -155,6 +160,7 @@
     <string name="ticket_scanning">Ticket scanning</string>
     <string name="ticket_scanning_vibrations_switch_title">Vibrations</string>
     <string name="ticket_scanning_sound_switch_title">Sound</string>
+    <string name="title_activity_login_facebook">LoginFacebookActivity</string>
     <string name="submit_your_feedback">Submit your Feedback</string>
     <string name="ratings_empty">There is no ratings yet.</string>
 
