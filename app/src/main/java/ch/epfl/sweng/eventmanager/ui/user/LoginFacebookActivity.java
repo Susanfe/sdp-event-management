@@ -2,21 +2,15 @@ package ch.epfl.sweng.eventmanager.ui.user;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.widget.Toast;
-
+import androidx.appcompat.app.AppCompatActivity;
+import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
-import androidx.appcompat.app.AppCompatActivity;
-import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
-import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 
 public class LoginFacebookActivity extends AppCompatActivity {
     private static final String TAG = "LoginFacebookActivity";
