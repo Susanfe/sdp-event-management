@@ -23,6 +23,7 @@
     <string name="title_activity_account_display">My account</string>
     <string name="title_activity_event_picking">EventPickingActivity</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_login_facebook">login with facebook</string>
 
     <string name="invalid_email_error">Invalid email address</string>
     <string name="error_field_required">Required field</string>
