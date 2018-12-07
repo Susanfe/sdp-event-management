@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -13,8 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.twitter.sdk.android.core.models.Tweet;
@@ -48,8 +45,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
     RecyclerView recyclerView;
     @BindView(R.id.news_empty_tv)
     TextView emptyListTextView;
-    //@BindView(R.id.go_facebook)
-    //ImageButton facebookButton;
 
     private NewsAdapter newsAdapter;
 
@@ -69,13 +64,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 Objects.requireNonNull(view).getContext()));
         recyclerView.setHasFixedSize(true);
-/*
-        facebookButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), LoginFacebookActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        });
-*/
+
         newsAdapter = new NewsAdapter();
         recyclerView.setAdapter(newsAdapter);
 

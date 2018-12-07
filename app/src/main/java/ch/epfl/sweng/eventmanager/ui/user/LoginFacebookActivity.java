@@ -30,9 +30,8 @@ public class LoginFacebookActivity extends AppCompatActivity {
 
 
         loginButton = findViewById(R.id.loginButton);
+
         callbackManager = CallbackManager.Factory.create();
-
-
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
