@@ -24,6 +24,8 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     public static final Map<Integer, EventTicketingConfiguration> CONFIG_BY_EVENT;
     public static final String EVENT_EMAIL = "events@not-really-epfl.ch";
     private static int CURRENT_EVENT_ID = 1000;
+    private final String facebookToken = "793504527660961";
+    private final String tweeterToken = "JapanImpact";
 
     static {
         Map<Integer, EventTicketingConfiguration> configurationMap = new HashMap<>();
@@ -104,15 +106,15 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         Uri fakeImgUri = Uri.parse("android.resource://ch.epfl.sweng.eventmanager/drawable/event_default_cover");
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, fakeImgUri, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact", "793504527660961",
+                orgaEmail, fakeImgUri, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
                 CONFIG_BY_EVENT.get(1)));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapnImpact", "793504527660961",
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
                 CONFIG_BY_EVENT.get(2)));
 
         addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact", "793504527660961",
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
                 CONFIG_BY_EVENT.get(3)));
 
         addZones(1, new Gson().fromJson(jsonZone, zonesToken.getType()));
