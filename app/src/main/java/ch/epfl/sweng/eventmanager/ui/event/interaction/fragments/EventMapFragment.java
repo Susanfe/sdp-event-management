@@ -134,10 +134,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN,
-                ((EventShowcaseActivity)Objects.requireNonNull(getActivity())).getEvent())) {
-            MenuItem item = menu.getItem(0);
-            item.setVisible(true);
-        }
+                ((EventShowcaseActivity)Objects.requireNonNull(getActivity())).getEvent()))
+            menu.findItem(R.id.menu_map_edition_edit).setVisible(true);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 

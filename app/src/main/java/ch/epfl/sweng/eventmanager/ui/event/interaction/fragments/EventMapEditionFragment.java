@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -49,6 +51,15 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     // History of actions on the markers
     private Stack<MapEditionAction> history = new Stack<>();
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.findItem(R.id.menu_map_edition_save).setVisible(true);
+        menu.findItem(R.id.menu_map_edition_help).setVisible(true);
+        menu.findItem(R.id.menu_map_edition_undo).setVisible(true);
+        menu.findItem(R.id.menu_map_edition_edit).setVisible(false);
+    }
 
     /**
      * Method is here used to do all the additional work without overriding onCreate(..)
