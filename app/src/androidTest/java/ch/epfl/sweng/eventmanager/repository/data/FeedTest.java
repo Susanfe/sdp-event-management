@@ -15,20 +15,19 @@ public class FeedTest {
     Feed feed2;
     Feed feed3;
     Feed feed4;
-    Feed feed5;
-    JSONObject obj5;
 
     @Before
     public void setUp() throws JSONException {
+        String message = "event in blue !";
         JSONObject obj1 = new JSONObject();
         obj1.put("created_time", "2018-12-03T16:02:53+0000");
-        obj1.put("message", "event in blue !");
+        obj1.put("message", message);
         obj1.put("id", "11");
         feed1 = new Feed(obj1);
 
         JSONObject obj2 = new JSONObject();
         obj2.put("created_time", "2018-12-03T16:02:53+0000");
-        obj2.put("message", "event in blue !");
+        obj2.put("message", message);
         obj2.put("id", "11");
         feed2 = new Feed(obj2);
 
@@ -40,7 +39,7 @@ public class FeedTest {
 
         JSONObject obj4 = new JSONObject();
         obj4.put("created_time", "2018-12-03T16:02:53+0000");
-        obj4.put("message", "event in blue !");
+        obj4.put("message", message);
         obj4.put("id", "10");
         feed4 = new Feed(obj4);
     }
