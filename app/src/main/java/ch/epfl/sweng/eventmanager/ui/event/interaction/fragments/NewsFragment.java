@@ -8,9 +8,13 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.twitter.sdk.android.core.models.Tweet;
@@ -44,8 +48,8 @@ public class NewsFragment extends AbstractShowcaseFragment {
     RecyclerView recyclerView;
     @BindView(R.id.news_empty_tv)
     TextView emptyListTextView;
-    @BindView(R.id.go_facebook)
-    Button facebookButton;
+    //@BindView(R.id.go_facebook)
+    //ImageButton facebookButton;
 
     private NewsAdapter newsAdapter;
 
@@ -65,13 +69,13 @@ public class NewsFragment extends AbstractShowcaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(
                 Objects.requireNonNull(view).getContext()));
         recyclerView.setHasFixedSize(true);
-
+/*
         facebookButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), LoginFacebookActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         });
-
+*/
         newsAdapter = new NewsAdapter();
         recyclerView.setAdapter(newsAdapter);
 
@@ -107,6 +111,31 @@ public class NewsFragment extends AbstractShowcaseFragment {
         super.onCreate(savedInstanceState);
 
         model = ViewModelProviders.of(requireActivity()).get(NewsViewModel.class);
+
+        // indicates to the fragment that EventShowcaseActivity has a menu
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem item = menu.getItem(0);
+        item.setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_facebook_login_edit:
+                Intent intent = new Intent(getActivity(), LoginFacebookActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                return true;
+
+            default:
+                // Action was not consumed (calls activity method)
+                return false;
+        }
     }
 
     public static class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
