@@ -5,8 +5,6 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.TestHelper;
-import ch.epfl.sweng.eventmanager.users.Session;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 

@@ -1,17 +1,13 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.net.Uri;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Louis Vialar
@@ -129,9 +125,9 @@ public class EventTest {
 
     @Test
     public void setAndGetImageTest(){
-        Uri uri = Uri.EMPTY;
-        ev1.setImageURL(uri);
-        assertEquals(ev1.getImageURI(), uri);
+        String url = "url";
+        ev1.setImageURL(url);
+        assertEquals(ev1.getImageURL(), url);
     }
 
     @Test

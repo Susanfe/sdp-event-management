@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

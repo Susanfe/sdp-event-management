@@ -2,15 +2,14 @@ package ch.epfl.sweng.eventmanager.test.users;
 
 import android.app.Activity;
 import android.content.Intent;
+import ch.epfl.sweng.eventmanager.repository.data.DummyUser;
+import ch.epfl.sweng.eventmanager.repository.data.User;
+import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.users.InMemorySession;
 import com.google.android.gms.tasks.OnCompleteListener;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import ch.epfl.sweng.eventmanager.repository.data.DummyUser;
-import ch.epfl.sweng.eventmanager.repository.data.User;
-import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
 
 /**
  * Dummy InMemorySession class, only used in tests.

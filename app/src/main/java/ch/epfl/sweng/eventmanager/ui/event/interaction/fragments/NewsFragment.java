@@ -1,10 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,16 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.models.TweetBuilder;
-import com.twitter.sdk.android.tweetui.CompactTweetView;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -33,6 +22,13 @@ import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweetOrFacebook;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.user.LoginFacebookActivity;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.TweetBuilder;
+import com.twitter.sdk.android.tweetui.CompactTweetView;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Display an event's news feed.
