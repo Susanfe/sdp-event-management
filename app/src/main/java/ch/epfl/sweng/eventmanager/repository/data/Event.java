@@ -88,7 +88,7 @@ public final class Event {
         this.ticketingConfiguration = ticketingConfiguration;
 
         if (beginDate.getTime() > endDate.getTime())
-            throw new IllegalArgumentException("The time at the start of the event should be later than the time at " + "the end");
+            throw new IllegalArgumentException("The time at the start of the event should be later than the time at the end");
 
         this.id = id;
         this.name = name;
@@ -288,7 +288,7 @@ public final class Event {
      */
     @Exclude
     public void loadEventImageIntoImageView(Context context, ImageView imageView) {
-        if (getImageURLasURI() != null) {
+        if (haveAnImage()) {
             CircularProgressDrawable progress = new CircularProgressDrawable(context);
             progress.setStrokeWidth(5f);
             progress.setCenterRadius(30f);
@@ -306,7 +306,7 @@ public final class Event {
      */
     @Exclude
     public void loadEventImageIntoImageView(Context context, ImageView imageView, BitmapTransformation transformation) {
-        if (getImageURLasURI() != null) {
+        if (haveAnImage()) {
             CircularProgressDrawable progress = new CircularProgressDrawable(context);
             progress.setStrokeWidth(5f);
             progress.setCenterRadius(30f);

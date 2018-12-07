@@ -288,13 +288,10 @@ public class EventCreateActivity extends AppCompatActivity {
             UCrop.Options compressOptions = new UCrop.Options();
             compressOptions.setCompressionFormat(Bitmap.CompressFormat.WEBP);
             compressOptions.setCompressionQuality(IMAGE_COMPRESS_QUALITY);
-            UCrop.of(eventImageUri, eventImageCroppedUri).withMaxResultSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT)
-                    .withAspectRatio(16,9)
-                    .withOptions(compressOptions).start(this);
+            UCrop.of(eventImageUri, eventImageCroppedUri).withMaxResultSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT).withAspectRatio(16, 9).withOptions(compressOptions).start(this);
         } catch (IOException e) {
             e.printStackTrace();
-            Log.i(TAG,"Unable to create tempFile for cropping event image");
+            Log.i(TAG, "Unable to create tempFile for cropping event image");
         }
-
     }
 }
