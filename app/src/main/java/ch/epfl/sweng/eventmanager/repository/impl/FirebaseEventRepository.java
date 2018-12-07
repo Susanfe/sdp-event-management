@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -57,11 +56,8 @@ public class FirebaseEventRepository implements EventRepository {
             MediatorLiveData<List<Event>> events = new MediatorLiveData<>();
             List<Event> eventList = new ArrayList<>();
             for (Event event : list) {
-                events.addSource(getEventImageURL(event), url -> {
-                    event.setImageURL(url);
-                    eventList.add(event);
-                    events.setValue(eventList);
-                });
+                eventList.add(event);
+                events.setValue(eventList);
             }
             return events;
         });
@@ -70,10 +66,7 @@ public class FirebaseEventRepository implements EventRepository {
     @Override
     public LiveData<Event> getEvent(int eventId) {
         final MutableLiveData<Event> ret = new MutableLiveData<>();
-        DatabaseReference dbRef = FirebaseDatabase
-                .getInstance()
-                .getReference("events")
-                .child(String.valueOf(eventId));
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("events").child(String.valueOf(eventId));
 
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -87,10 +80,7 @@ public class FirebaseEventRepository implements EventRepository {
             }
         });
 
-        return Transformations.switchMap(ret, ev -> Transformations.map(getEventImageURL(ev), url -> {
-            ev.setImageURL(url);
-            return ev;
-        }));
+        return ret;
     }
 
     private String getImageName(Event event) {
@@ -98,18 +88,8 @@ public class FirebaseEventRepository implements EventRepository {
         return event.getName().replace(" ", "_") + ".png";
     }
 
-    @Override
-    public LiveData<Uri> getEventImageURL(Event event) {
-        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
-        StorageReference eventLogoReference = imagesRef.child(getImageName(event));
-
-        return FirebaseHelper.getImageURL(eventLogoReference);
-    }
-
     private <T> LiveData<List<T>> getElems(int eventId, String basePath, Class<T> classOfT) {
-        DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                .getReference(basePath)
-                .child("event_" + eventId);
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(basePath).child("event_" + eventId);
 
         return FirebaseHelper.getList(dbRef, classOfT);
     }
@@ -153,7 +133,6 @@ public class FirebaseEventRepository implements EventRepository {
     public LiveData<Bitmap> getSpotImage(Spot spot) {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("spots-pictures");
         StorageReference spotImageReference = imagesRef.child(getImageName(spot));
-
         return FirebaseHelper.getImage(spotImageReference);
     }
 

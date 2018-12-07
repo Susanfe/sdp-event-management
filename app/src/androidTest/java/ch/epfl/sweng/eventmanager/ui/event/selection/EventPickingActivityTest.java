@@ -2,28 +2,20 @@ package ch.epfl.sweng.eventmanager.ui.event.selection;
 
 import android.app.Activity;
 import android.os.SystemClock;
-
-import ch.epfl.sweng.eventmanager.test.TestApplication;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import java.util.Collection;
-
 import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
+import ch.epfl.sweng.eventmanager.test.TestApplication;
 import ch.epfl.sweng.eventmanager.users.Session;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.Collection;
-
 import javax.inject.Inject;
+import java.util.Collection;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;

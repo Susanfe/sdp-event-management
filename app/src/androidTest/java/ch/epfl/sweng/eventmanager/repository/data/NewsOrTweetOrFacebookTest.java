@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import com.twitter.sdk.android.core.models.Tweet;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
