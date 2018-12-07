@@ -1,14 +1,15 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import android.os.SystemClock;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
 import static android.os.SystemClock.sleep;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;

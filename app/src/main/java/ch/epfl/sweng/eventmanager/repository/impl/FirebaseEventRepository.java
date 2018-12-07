@@ -66,10 +66,7 @@ public class FirebaseEventRepository implements EventRepository {
     @Override
     public LiveData<Event> getEvent(int eventId) {
         final MutableLiveData<Event> ret = new MutableLiveData<>();
-        DatabaseReference dbRef = FirebaseDatabase
-                .getInstance()
-                .getReference("events")
-                .child(String.valueOf(eventId));
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("events").child(String.valueOf(eventId));
 
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -91,18 +88,8 @@ public class FirebaseEventRepository implements EventRepository {
         return event.getName().replace(" ", "_") + ".png";
     }
 
-/*    @Override
-    public LiveData<Uri> getEventImageURL(Event event) {
-        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
-        StorageReference eventLogoReference = imagesRef.child(getImageName(event));
-
-        return FirebaseHelper.getImageURLasURI(eventLogoReference);
-    }*/
-
     private <T> LiveData<List<T>> getElems(int eventId, String basePath, Class<T> classOfT) {
-        DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                .getReference(basePath)
-                .child("event_" + eventId);
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(basePath).child("event_" + eventId);
 
         return FirebaseHelper.getList(dbRef, classOfT);
     }

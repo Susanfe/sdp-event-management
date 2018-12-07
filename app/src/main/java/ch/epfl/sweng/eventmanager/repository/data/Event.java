@@ -180,6 +180,23 @@ public final class Event {
         this.imageURL = imageURL;
     }
 
+    public void setTwitterName(String twitterName) {
+        this.twitterName = twitterName;
+    }
+
+    public List<String> getUsersForRole(Role role) {
+        return getPermissions().get(role);
+    }
+
+    public String getTwitterName() {
+        return this.twitterName;
+    }
+
+    public String getFacebookName() {
+        return this.facebookName;
+    }
+
+
     /**
      * Do not use, only public due to a limitation of our auto-matching with Firebase.
      *
@@ -218,21 +235,6 @@ public final class Event {
     }
 
     // FIXME Use or delete method ?
-    public List<String> getUsersForRole(Role role) {
-        return getPermissions().get(role);
-    }
-
-    public String getTwitterName() {
-        return this.twitterName;
-    }
-
-    public void setTwitterName(String twitterName) {
-        this.twitterName = twitterName;
-    }
-
-    public String getFacebookName() {
-        return this.facebookName;
-    }
 
     public String beginDateAsString() {
         if (beginDate <= 0) {

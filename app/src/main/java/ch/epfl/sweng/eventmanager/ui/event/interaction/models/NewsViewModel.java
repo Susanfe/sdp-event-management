@@ -8,11 +8,9 @@ import ch.epfl.sweng.eventmanager.repository.NewsRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweetOrFacebook;
-
 import com.twitter.sdk.android.core.models.Tweet;
 
 import javax.inject.Inject;
-
 import java.util.List;
 
 public class NewsViewModel extends ViewModel {
