@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.repository.data.MapEditionData;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Describes a simple edition action and its ability to be reverted
@@ -25,7 +26,9 @@ public abstract class MapEditionAction {
      */
     Marker findMarkerByTag(List<Marker> list) {
         for (Marker m : list) {
-            if (m.getTag() == tag) return m;
+            if (m.getTag() == tag &&
+                    ((MarkerType)Objects.requireNonNull(m.getTag())).getId() == tag.getId())
+                return m;
         }
 
         return null;

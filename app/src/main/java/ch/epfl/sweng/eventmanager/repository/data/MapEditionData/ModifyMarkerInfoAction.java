@@ -15,7 +15,7 @@ public class ModifyMarkerInfoAction extends MapEditionAction {
     public ModifyMarkerInfoAction(MarkerType tag, String ancientTitle, String currentTitle,
                                   String ancientSnippet, String currentSnippet) {
 
-        if (ancientTitle == null || currentTitle == null ||
+        if (tag == null || ancientTitle == null || currentTitle == null ||
                 ancientSnippet == null || currentSnippet == null) {
             throw new IllegalArgumentException();
         }
@@ -31,12 +31,12 @@ public class ModifyMarkerInfoAction extends MapEditionAction {
     @Override
     public boolean revert(List<Marker> markers) {
         Marker marker = findMarkerByTag(markers);
-        if (marker == null || !marker.getTitle().equals(title) || !marker.getSnippet().equals(snippet))
-            return false;
-        else {
+        if (marker != null && marker.getTitle().equals(title) && marker.getSnippet().equals(snippet)) {
             marker.setTitle(ancientTitle);
             marker.setSnippet(ancientSnippet);
             return true;
         }
+
+        return false;
     }
 }

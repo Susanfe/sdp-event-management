@@ -22,10 +22,11 @@ public class MoveMarkerAction extends MapEditionAction {
     @Override
     public boolean revert(List<Marker> markers) {
         Marker marker = findMarkerByTag(markers);
-        if (marker == null || !marker.getPosition().equals(pos)) return false;
-        else {
+        if (marker != null && marker.getPosition().equals(pos)) {
             marker.setPosition(ancientPos);
             return true;
         }
+
+        return false;
     }
 }
