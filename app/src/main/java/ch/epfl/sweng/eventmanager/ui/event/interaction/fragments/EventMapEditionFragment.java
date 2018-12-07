@@ -13,10 +13,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Objects;
+import java.util.Stack;
 
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.DialogFragment;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MapEditionAction;
+import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MarkerType;
 import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
@@ -39,6 +42,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     // Saved LatLng for the result of CustomAddOptionsDialog
     private LatLng onLongClickSavedLatLng = null;
+    private Stack<MapEditionAction> history = new Stack<>();
 
     /**
      * Method is here used to do all the additional work without overriding onCreate(..)
@@ -101,8 +105,9 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * @param position LatLng object representing marker's position
      */
     private void addSpotMarker(String title, String snippet, LatLng position) {
-            mMap.addMarker(new MarkerOptions().title(title).snippet(snippet)
+            Marker m = mMap.addMarker(new MarkerOptions().title(title).snippet(snippet)
                     .draggable(true).position(position));
+            m.setTag(MarkerType.SPOT);
     }
 
     /**
@@ -124,18 +129,27 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     }
 
     private void addOverlayEdgeMarker(LatLng position, float hue) {
-        MarkerOptions options = new MarkerOptions()
+        Marker m = mMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.defaultMarker(hue))
-                .position(position).draggable(true);
+                .position(position).draggable(true));
 
-        mMap.addMarker(options);
+        m.setTag(MarkerType.OVERLAY_EDGE);
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        DialogFragment dialogFragment = new CustomMarkerDialog();
-        dialogFragment.show(getChildFragmentManager(), MARKER_DIALOG_TAG);
-        return true;
+        MarkerType markerType = (MarkerType) marker.getTag();
+        if (markerType!=null)
+            switch (markerType) {
+                case SPOT:
+                    DialogFragment dialogFragment = new CustomMarkerDialog();
+                    dialogFragment.show(getChildFragmentManager(), MARKER_DIALOG_TAG);
+                    return true;
+
+                case OVERLAY_EDGE:
+                    return true;
+            }
+        return false;
     }
 
     @Override
