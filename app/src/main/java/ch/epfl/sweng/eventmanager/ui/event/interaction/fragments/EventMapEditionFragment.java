@@ -6,21 +6,24 @@ import android.os.Build;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.List;
 import java.util.Objects;
 
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.DialogFragment;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomAddOptionsDialog;
 import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomMarkerDialog;
 
-public class EventMapEditionFragment extends EventMapFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapLongClickListener {
+public class EventMapEditionFragment extends EventMapFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerDragListener {
 
     // Tag for the style setting error
     private static final String TAG = "MapEdition.STYLE_TAG";
@@ -39,7 +42,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     /**
      * Method is here used to do all the additional work without overriding onCreate(..)
-     * No cluster is wanted in the edition version
+     * No clustering is wanted in the edition version
      */
     @Override
     protected void setUpCluster() {
@@ -56,13 +59,23 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         } catch (Resources.NotFoundException e) {
             Log.e(TAG, "Can't find style. Error: ", e);
         }
+
+        // Set Listeners
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapLongClickListener(this);
+        mMap.setOnMarkerDragListener(this);
+
         addMarkers();
+
+        // Add markers for overlay edge positions
+        float[] overlayHSL = new float[3];
+        ColorUtils.colorToHSL(getResources().getColor(R.color.overlay_blue), overlayHSL);
+        overlayEdgeOnMap(overlayHSL[0]);
+
     }
 
     /**
-     * Adds all the Spot objects contained in the database for this event
+     * Adds all the Spot objects contained in the database for this event at the initialization
      */
     private void addMarkers() {
         if (getActivity() != null){
@@ -74,22 +87,48 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                         // Add new spots
                         for (Spot s : spots) {
                             s.setScheduleList(items);
+                            addSpotMarker(s.getTitle(), s.getSnippet(), s.getPosition());
                         }
-                        addItems(spots);
                     }));
 
         }
     }
 
     /**
-     * Adds all spots to the map
-     * @param spots List of Spot object to add to the map
+     * Adds a spotType marker to the map
+     * @param title title of the marker
+     * @param snippet snippet of the marker
+     * @param position LatLng object representing marker's position
      */
-    private void addItems(List<Spot> spots) {
-        for (Spot s : spots) {
-            mMap.addMarker(new MarkerOptions().title(s.getTitle()).snippet(s.getSnippet())
-                    .draggable(true).position(s.getPosition()));
+    private void addSpotMarker(String title, String snippet, LatLng position) {
+            mMap.addMarker(new MarkerOptions().title(title).snippet(snippet)
+                    .draggable(true).position(position));
+    }
+
+    /**
+     * Adds all overlay edges to the map at the initialization
+     * @param hue float value representing the hue (color) to be applied to the marker
+     */
+    private void overlayEdgeOnMap(float hue) {
+        if (getActivity() != null){
+            this.zonesModel.getZone().observe(getActivity(), zones -> {
+                if (zones != null) {
+                    for (Zone z : zones) {
+                        for (Position p : z.getPositions()){
+                            addOverlayEdgeMarker(p.asLatLng(), hue);
+                        }
+                    }
+                }
+            });
         }
+    }
+
+    private void addOverlayEdgeMarker(LatLng position, float hue) {
+        MarkerOptions options = new MarkerOptions()
+                .icon(BitmapDescriptorFactory.defaultMarker(hue))
+                .position(position).draggable(true);
+
+        mMap.addMarker(options);
     }
 
     @Override
@@ -122,26 +161,44 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
                 // User chose to add a spot
                 case ADD_SPOT:
-                    addSpot(onLongClickSavedLatLng);
+                    addSpotEvent(onLongClickSavedLatLng);
                     break;
 
                 // User chose to add an overlay edge
                 case ADD_OVERLAY_EDGE:
-                    addOverlayEdge(onLongClickSavedLatLng);
+                    addOverlayEdgeEvent(onLongClickSavedLatLng);
                     break;
             }
         }
     }
 
-    private void addSpot(LatLng onLongClickSavedLatLng) {
+    /**
+     * Handles adding a spotType marker event
+     * @param onLongClickSavedLatLng LatLng object representing position to create marker at
+     */
+    private void addSpotEvent(LatLng onLongClickSavedLatLng) {
         DialogFragment createSpotDialog = new CustomMarkerDialog();
         createSpotDialog.show(getChildFragmentManager(), CREATION_MARKER_TAG);
     }
 
-    private void addOverlayEdge(LatLng onLongClickSavedLatLng) {
+    /**
+     * Adds an OverlayEdge type marker at the specufied position
+     * @param onLongClickSavedLatLng LatLng object representing position to create marker at
+     */
+    private void addOverlayEdgeEvent(LatLng onLongClickSavedLatLng) {
     }
 
+    /*
+     * The three following methods are for the onMapMarkerDragListener
+     */
+    @Override
+    public void onMarkerDragStart(Marker marker) { }
 
+    @Override
+    public void onMarkerDrag(Marker marker) { }
 
-
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+        // TODO implement saving the new position of the marker into Firebase
+    }
 }
