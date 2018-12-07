@@ -25,6 +25,7 @@ import org.junit.*;
 
 import javax.inject.Inject;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -104,7 +105,7 @@ public class EventCreateActivityTest {
         Uri src = getPickedImage();
         Parcelable parcelable1 = (Parcelable) src;
         parcels.add(parcelable1);
-        bundle.putParcelableArrayList(Intent.EXTRA_STREAM, parcels);
+        bundle.putParcelableArrayList(Intent.EXTRA_STREAM, parcels);""
         // Create the Intent that will include the bundle.
         resultData.putExtras(bundle);
         return new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
@@ -114,7 +115,12 @@ public class EventCreateActivityTest {
         Bitmap bm = BitmapFactory.decodeResource(mActivityRule.getActivity().getResources(), R.drawable.event_default_cover);
         assertTrue(bm != null);
         File dir = mActivityRule.getActivity().getExternalCacheDir();
-        File file = new File(dir.getPath(), "pickImageResult.jpeg");
+        File file = null;
+        try {
+            file = File.createTempFile("event_image","png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return Uri.fromFile(file);
     }
 }
