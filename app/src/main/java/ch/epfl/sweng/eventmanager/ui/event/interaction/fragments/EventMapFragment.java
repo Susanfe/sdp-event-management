@@ -74,7 +74,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     ViewModelFactory factory;
     private ClusterManager<Spot> mClusterManager;
     SpotsModel spotsModel;
-    private ZoneModel zonesModel;
+    ZoneModel zonesModel;
     ScheduleViewModel scheduleViewModel;
     private Spot clickedClusterItem;
     private SupportMapFragment mapFragment;
@@ -179,7 +179,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
             this.zonesModel.getZone().observe(getActivity(), zones -> {
                 if (zones != null) {
                     for (Zone z : zones) {
-                        mMap.addPolygon(z.addPolygon());
+                        mMap.addPolygon(z.addPolygon(getContext()));
                     }
                 }
             });
