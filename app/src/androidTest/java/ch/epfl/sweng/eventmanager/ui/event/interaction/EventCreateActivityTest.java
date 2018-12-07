@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.widget.DatePicker;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.intent.Intents;
@@ -26,7 +24,6 @@ import org.junit.*;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.*;
@@ -99,15 +96,8 @@ public class EventCreateActivityTest {
     }
 
     private Instrumentation.ActivityResult getCroppedImageResult() {
-        Bundle bundle = new Bundle();
-        ArrayList<Parcelable> parcels = new ArrayList<>();
         Intent resultData = new Intent();
-        Uri src = getPickedImage();
-        Parcelable parcelable1 = (Parcelable) src;
-        parcels.add(parcelable1);
-        bundle.putParcelableArrayList(Intent.EXTRA_STREAM, parcels);
-        // Create the Intent that will include the bundle.
-        resultData.putExtras(bundle);
+        resultData.setData(getPickedImage());
         return new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
     }
 
