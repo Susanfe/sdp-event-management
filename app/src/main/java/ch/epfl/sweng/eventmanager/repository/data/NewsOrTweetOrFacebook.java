@@ -92,7 +92,7 @@ public class NewsOrTweetOrFacebook implements Comparable<NewsOrTweetOrFacebook> 
         return "NewsOrTweetOrFacebook{" +
                 "news=" + news +
                 ", tweet=" + tweet +
-                ", facebook news=" +
+                ", facebook=" +facebook +
                 ", time=" + time +
                 '}';
     }
