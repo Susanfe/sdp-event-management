@@ -4,6 +4,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.twitter.sdk.android.core.models.Tweet;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +17,7 @@ import java.util.Map;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
+import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.test.ObservableList;
 
@@ -21,6 +27,18 @@ import ch.epfl.sweng.eventmanager.test.ObservableList;
 public class MockNewsRepository implements NewsRepository {
     private Map<Integer, ObservableList<News>> news = new HashMap<>();
     private boolean nextWillFail = false;
+    private MutableLiveData<List<Feed>> feedFacebook = new MutableLiveData<>();
+
+    private void addFacebookPost() throws JSONException {
+        JSONObject obj1 = new JSONObject();
+        obj1.put("created_time", "2018-12-03T16:02:53+0000");
+        obj1.put("message", "event in blue !");
+        obj1.put("id", "11");
+        Feed feed = new Feed(obj1);
+        List<Feed> feedList = new ArrayList<>();
+        feedList.add(feed);
+        feedFacebook.setValue(feedList);
+    }
 
     private ObservableList<News> getOrCreateNews(int eventId) {
         if (!news.containsKey(eventId)) {
@@ -56,6 +74,18 @@ public class MockNewsRepository implements NewsRepository {
     @Override
     public LiveData<List<Tweet>> getTweets(String screenName) {
         return new MutableLiveData<>();
+    }
+
+    @Override
+    public LiveData<List<Feed>> getFacebookNews(String screenName) {
+        try {
+            addFacebookPost();
+            return feedFacebook;
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+            return new MutableLiveData<>();
+        }
     }
 
     public void setNextInsertToFail() {

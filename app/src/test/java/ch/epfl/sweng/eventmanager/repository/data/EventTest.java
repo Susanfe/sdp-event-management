@@ -1,8 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.graphics.Bitmap;
+import android.net.Uri;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,12 +11,12 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Louis Vialar
  */
 public class EventTest {
-    private List<Spot> spotList = new ArrayList<>();
     private EventLocation l1 = new EventLocation("Fake1", new Position(10, 10));
     private final Date start = new Calendar.Builder()
             .setFields(Calendar.YEAR, 2018,
@@ -38,9 +37,10 @@ public class EventTest {
     private final String orgaEmail2 = "fancyemail2@google.com";
 
     private final Event ev1 = new Event(1, "Event1", "Event Description 1",
-            start, end,  orgaEmail1, null, null, null, null);
+            start, end,  orgaEmail1, null, null, null, null,null);
     private final Event ev2 = new Event(2, "Event2", "Event Description 2",
-            start, end, orgaEmail2, null, l1, null, null);
+            start, end, orgaEmail2, null, l1, null, null, "faceJapan");
+
 
     @Test
     public void getIdTest() {
@@ -94,7 +94,7 @@ public class EventTest {
     @Test(expected = IllegalArgumentException.class)
     public void getWrongDateTest(){
         new Event(1, "Event1", "Event Description 1", end, start, orgaEmail1,
-                null, null, null, null);
+                null, null, null, null, null);
     }
 
     @Test
@@ -129,8 +129,13 @@ public class EventTest {
 
     @Test
     public void setAndGetImageTest(){
-        Bitmap img = Mockito.mock(Bitmap.class);
-        ev1.setImage(img);
-        assertEquals(ev1.getImage(), img);
+        Uri uri = Uri.EMPTY;
+        ev1.setImageURL(uri);
+        assertEquals(ev1.getImageURI(), uri);
+    }
+
+    @Test
+    public void getFacebookName() {
+        assertEquals("faceJapan", ev2.getFacebookName());
     }
 }

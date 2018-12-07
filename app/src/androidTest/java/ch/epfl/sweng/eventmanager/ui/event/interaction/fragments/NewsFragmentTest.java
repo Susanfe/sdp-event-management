@@ -106,4 +106,5 @@ public class NewsFragmentTest {
 
         onView(withText(R.string.send_news_failed)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
+
 }

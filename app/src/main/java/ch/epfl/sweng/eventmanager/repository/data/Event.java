@@ -1,18 +1,14 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.graphics.Bitmap;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import android.content.Context;
+import android.net.Uri;
+import android.widget.ImageView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
+import ch.epfl.sweng.eventmanager.inject.GlideApp;
 import ch.epfl.sweng.eventmanager.users.Role;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.Exclude;
+import jp.wasabeef.glide.transformations.BitmapTransformation;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -52,9 +48,9 @@ public final class Event {
      */
     private String organizerEmail;
     /**
-     * An image representing the event, may be null
+     * An URI to the image representing the event, may be null
      */
-    private Bitmap image;
+    private Uri imageURI;
     /**
      * The location of the event
      */
@@ -70,18 +66,24 @@ public final class Event {
      */
     private String twitterName;
 
+    /**
+     * The facebook account screen name
+     */
+    private String facebookName;
+
     private EventTicketingConfiguration ticketingConfiguration;
 
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 String organizerEmail, Bitmap image, EventLocation location,
-                 Map<String, String> users, String twitterName) {
-        this(id, name, description, beginDate, endDate, organizerEmail, image, location, users, twitterName, null);
+                 String organizerEmail, Uri imageURI, EventLocation location,
+                 Map<String, String> users, String twitterName, String facebookName) {
+        this(id, name, description, beginDate, endDate, organizerEmail, imageURI, location, users, twitterName, facebookName, null);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate,
-                 String organizerEmail, Bitmap image, EventLocation location,
-                 Map<String, String> users, String twitterName, EventTicketingConfiguration ticketingConfiguration) {
+                 String organizerEmail, Uri imageURI, EventLocation location,
+                 Map<String, String> users, String twitterName, String facebookName, EventTicketingConfiguration ticketingConfiguration) {
+
         this.ticketingConfiguration = ticketingConfiguration;
 
         if (beginDate.getTime() > endDate.getTime())
@@ -93,14 +95,14 @@ public final class Event {
         this.endDate = endDate.getTime();
         this.description = description;
         this.organizerEmail = organizerEmail;
-        this.image = image;
+        this.imageURI = imageURI;
         this.location = location;
         this.users = users;
         this.twitterName = twitterName;
+        this.facebookName = facebookName;
     }
 
-    public Event() {
-    }
+    public Event() {}
 
     public int getId() {
         return id;
@@ -112,23 +114,7 @@ public final class Event {
 
     public long getBeginDate() { return beginDate; }
 
-    public long getEndDate() {return endDate;};
-
-    @Exclude
-    public Date getBeginDateAsDate() {
-        if (beginDate <= 0) {
-            return null;
-        }
-        return new Date(beginDate);
-    }
-
-    @Exclude
-    public Date getEndDateAsDate() {
-        if (endDate <= 0) {
-            return null;
-        }
-        return new Date(endDate);
-    }
+    public long getEndDate() {return endDate;}
 
     public String getDescription() {
         return description;
@@ -136,11 +122,6 @@ public final class Event {
 
     public String getOrganizerEmail() {
         return organizerEmail;
-    }
-
-    @Exclude
-    public Bitmap getImage() {
-        return image;
     }
 
     public EventLocation getLocation() {
@@ -169,7 +150,7 @@ public final class Event {
             Role role = Role.valueOf(getUsers().get(uid).toUpperCase());
 
             List<String> users;
-            if (result.get(role) == null) users = Arrays.asList(uid);
+            if (result.get(role) == null) users = Collections.singletonList(uid);
             else users = result.get(role);
 
             result.put(role, users);
@@ -185,6 +166,10 @@ public final class Event {
 
     public String getTwitterName() {
         return this.twitterName;
+    }
+
+    public String getFacebookName() {
+        return this.facebookName;
     }
 
     String beginDateAsString() {
@@ -203,9 +188,10 @@ public final class Event {
         return f.format(endDate);
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public void setImageURL(Uri imageURI) {
+        this.imageURI = imageURI;
     }
+
 
     public EventTicketingConfiguration getTicketingConfiguration() {
         return ticketingConfiguration;
@@ -251,5 +237,64 @@ public final class Event {
         this.ticketingConfiguration = ticketingConfiguration;
     }
 
-    // TODO put setters ??
+
+    @Exclude
+    public Uri getImageURI() {
+        return imageURI;
+    }
+
+    @Exclude
+    public boolean haveAnImage() {
+        return imageURI != null;
+    }
+
+    /**
+     * Will load the event image into the provided view
+     * @param context
+     * @param imageView
+     */
+    @Exclude
+    public void loadEventImageIntoImageView(Context context, ImageView imageView) {
+        if(getImageURI() != null) {
+            CircularProgressDrawable progress = new CircularProgressDrawable(context);
+            progress.setStrokeWidth(5f);
+            progress.setCenterRadius(30f);
+            progress.start();
+            GlideApp.with(context).load(getImageURI()).placeholder(progress).into(imageView);
+        }
+    }
+
+    /**
+     * Will load the event image into the provided view and apply the requested transformation
+     * @param context
+     * @param imageView
+     * @param transformation
+     */
+    @Exclude
+    public void loadEventImageIntoImageView(Context context, ImageView imageView, BitmapTransformation transformation) {
+        if (getImageURI() != null) {
+            CircularProgressDrawable progress = new CircularProgressDrawable(context);
+            progress.setStrokeWidth(5f);
+            progress.setCenterRadius(30f);
+            progress.start();
+            GlideApp.with(context).load(getImageURI()).apply(RequestOptions.bitmapTransform(transformation)).placeholder(progress).into(imageView);
+        }
+    }
+
+    @Exclude
+    public Date getBeginDateAsDate() {
+        if (beginDate <= 0) {
+            return null;
+        }
+        return new Date(beginDate);
+    }
+
+    @Exclude
+    public Date getEndDateAsDate() {
+        if (endDate <= 0) {
+            return null;
+        }
+        return new Date(endDate);
+    }
+
 }

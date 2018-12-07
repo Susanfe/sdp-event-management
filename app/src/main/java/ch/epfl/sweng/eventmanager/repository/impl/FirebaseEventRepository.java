@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -62,8 +63,8 @@ public class FirebaseEventRepository implements EventRepository {
         events.addSource(Transformations.switchMap(list, evts -> {
             MediatorLiveData<List<Event>> images = new MediatorLiveData<>();
             for (Event event : evts) {
-                images.addSource(getEventImage(event), img -> {
-                    event.setImage(img);
+                images.addSource(getEventImageURL(event), url -> {
+                    event.setImageURL(url);
                     images.setValue(evts); // Use this to update the underlying listeners
                 });
             }
@@ -95,8 +96,8 @@ public class FirebaseEventRepository implements EventRepository {
 
         MediatorLiveData<Event> ret = new MediatorLiveData<>();
         ret.addSource(event, ret::setValue);
-        ret.addSource(Transformations.switchMap(event, ev -> Transformations.map(getEventImage(ev), img -> {
-            ev.setImage(img);
+        ret.addSource(Transformations.switchMap(event, ev -> Transformations.map(getEventImageURL(ev), url -> {
+            ev.setImageURL(url);
             return ev;
         })), ret::setValue);
 
@@ -109,11 +110,11 @@ public class FirebaseEventRepository implements EventRepository {
     }
 
     @Override
-    public LiveData<Bitmap> getEventImage(Event event) {
+    public LiveData<Uri> getEventImageURL(Event event) {
         StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
         StorageReference eventLogoReference = imagesRef.child(getImageName(event));
 
-        return FirebaseHelper.getImage(eventLogoReference);
+        return FirebaseHelper.getImageURL(eventLogoReference);
     }
 
     private <T> LiveData<List<T>> getElems(int eventId, String basePath, Class<T> classOfT) {
