@@ -105,7 +105,7 @@ public class EventCreateActivityTest {
         Uri src = getPickedImage();
         Parcelable parcelable1 = (Parcelable) src;
         parcels.add(parcelable1);
-        bundle.putParcelableArrayList(Intent.EXTRA_STREAM, parcels);""
+        bundle.putParcelableArrayList(Intent.EXTRA_STREAM, parcels);
         // Create the Intent that will include the bundle.
         resultData.putExtras(bundle);
         return new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
