@@ -79,6 +79,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     private Spot clickedClusterItem;
     private SupportMapFragment mapFragment;
 
+    @Inject
+    Session session;
+
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     public EventMapFragment() {
@@ -130,7 +133,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (Session.isLoggedIn() && Session.isClearedFor(Role.ADMIN,
+        if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN,
                 ((EventShowcaseActivity)Objects.requireNonNull(getActivity())).getEvent())) {
             MenuItem item = menu.getItem(0);
             item.setVisible(true);
