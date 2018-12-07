@@ -73,17 +73,22 @@ public final class Event {
      */
     private String twitterName;
 
+    /**
+     * The facebook account screen name
+     */
+    private String facebookName;
+
     private EventTicketingConfiguration ticketingConfiguration;
 
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate, String organizerEmail,
-                 Uri imageURL, EventLocation location, Map<String, String> users, String twitterName) {
-        this(id, name, description, beginDate, endDate, organizerEmail, imageURL, location, users, twitterName, null);
+                 Uri imageURL, EventLocation location, Map<String, String> users, String twitterName, String facebookName) {
+        this(id, name, description, beginDate, endDate, organizerEmail, imageURL, location, users, twitterName, facebookName, null);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate, String organizerEmail,
                  Uri imageURL, EventLocation location, Map<String, String> users, String twitterName,
-                 EventTicketingConfiguration ticketingConfiguration) {
+                String facebookName, EventTicketingConfiguration ticketingConfiguration) {
 
         this.ticketingConfiguration = ticketingConfiguration;
 
@@ -100,6 +105,7 @@ public final class Event {
         this.location = location;
         this.users = users;
         this.twitterName = twitterName;
+        this.facebookName = facebookName;
     }
 
     public Event() {
@@ -222,6 +228,10 @@ public final class Event {
 
     public void setTwitterName(String twitterName) {
         this.twitterName = twitterName;
+    }
+
+    public String getFacebookName() {
+        return this.facebookName;
     }
 
     public String beginDateAsString() {
