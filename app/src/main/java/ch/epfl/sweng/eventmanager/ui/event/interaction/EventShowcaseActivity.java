@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -285,6 +286,22 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                     super.onBackPressed();
                 }
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_facebook_login, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_facebook_login_edit:
+                return false;
+            default:
+                return false;
         }
     }
 
