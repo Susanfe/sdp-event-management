@@ -43,7 +43,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     // Tags for the dialog-fragment communication (cf onActivityResults below)
     public static final int ADD_SPOT = 1;
     public static final int ADD_OVERLAY_EDGE = 2;
-    private static final int ADD_OVERLAY_REQUEST_CODE = 3;
+    private static final int ADD_OVERLAY_OR_SPOT_REQUEST_CODE = 3;
     private static final int ADD_SPOT_REQUEST_CODE = 4;
     public static final int SPOT_INFO_EDITION = 5;
 
@@ -63,6 +63,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     // Utils
     private float hueOverlayBlue;
+    private static final String default_title = "New Spot";
+    private static final String default_snippet = "Amazing description";
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -139,6 +141,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                     .draggable(true).position(position));
 
             m.setTag(MarkerType.SPOT.setId(++counterSpot));
+            onClickSavedMarkerID = counterSpot;
             markerList.add(m);
     }
 
@@ -190,7 +193,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     public void onMapLongClick(LatLng latLng) {
         onLongClickSavedLatLng = latLng;
         DialogFragment dialogFragment = new CustomAddOptionsDialog();
-        dialogFragment.setTargetFragment(this, ADD_OVERLAY_REQUEST_CODE);
+        dialogFragment.setTargetFragment(this, ADD_OVERLAY_OR_SPOT_REQUEST_CODE);
 
         showDialogFragment(dialogFragment, CREATION_MARKER_TAG);
     }
@@ -213,7 +216,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // The method is called by the AddOptionDialog
-        if (requestCode== ADD_OVERLAY_REQUEST_CODE) {
+        if (requestCode== ADD_OVERLAY_OR_SPOT_REQUEST_CODE) {
             switch(resultCode) {
                 // User chose to add a spot
                 case ADD_SPOT:
@@ -257,11 +260,12 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     /**
      * Handles adding a spotType marker event
-     * @param onLongClickSavedLatLng LatLng object representing position to create marker at
      */
     private void addSpotEvent(LatLng onLongClickSavedLatLng) {
+        addSpotMarker(default_title, default_snippet, onLongClickSavedLatLng);
         DialogFragment createSpotDialog = new CustomMarkerDialog();
-        createSpotDialog.show(getChildFragmentManager(), CREATION_MARKER_TAG);
+        createSpotDialog.setTargetFragment(this, ADD_SPOT_REQUEST_CODE);
+        showDialogFragment(createSpotDialog, MARKER_DIALOG_TAG);
         // TODO add matching history actions
     }
 
