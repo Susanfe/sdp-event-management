@@ -1,5 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import android.content.Context;
+import android.graphics.Color;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.Before;
@@ -8,8 +11,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.epfl.sweng.eventmanager.R;
+
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 public class ZoneTest {
     private List<Position> positions = new ArrayList<>();
@@ -34,7 +39,9 @@ public class ZoneTest {
         for(Position p: positions) {
             latLngs.add(p.asLatLng());
         }
-        assertEquals(zone1.addPolygon().getPoints(), latLngs);
+        Context context = mock(Context.class);
+        when(context.getResources().getColor(R.color.overlay_blue)).thenReturn(Color.argb(33, 26, 149, 244));
+        assertEquals(zone1.addPolygon(context).getPoints(), latLngs);
     }
 
 }
