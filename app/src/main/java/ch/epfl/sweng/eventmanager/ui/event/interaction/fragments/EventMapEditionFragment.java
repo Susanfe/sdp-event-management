@@ -205,7 +205,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      */
     private void showDialogFragment(DialogFragment dialogFragment, String tag) {
         // Depending on SDK version, we need to use a different fragmentManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             Objects.requireNonNull(getActivity()).getSupportFragmentManager()
                     .beginTransaction().add(dialogFragment, tag).commit();
         else
@@ -275,6 +275,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      */
     private void addOverlayEdgeEvent(LatLng onLongClickSavedLatLng) {
         addOverlayEdgeMarker(onLongClickSavedLatLng);
+        // TODO link to other overlay edges and reform polygon
     }
 
     /*
