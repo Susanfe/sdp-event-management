@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
 import androidx.annotation.NonNull;
-import ch.epfl.sweng.eventmanager.repository.impl.NotificationPublisher;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
@@ -17,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 class SchedulerHelper {
     private static final AtomicReference<Boolean> isNotificationChannelSet = new AtomicReference<>(false);
-    static final String CHANNEL_ID = "notify_001";
+    static final String CHANNEL_ID =  "notify_001";
     private static final String CHANNEL_NAME = "Scheduled Notifications";
 
     /**

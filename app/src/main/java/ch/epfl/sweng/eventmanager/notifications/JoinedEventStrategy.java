@@ -30,6 +30,6 @@ public class JoinedEventStrategy extends NotificationStrategy<Event> {
     }
 
     private Notification getNotificationFromEvent(Event event) {
-        return NotificationBuilder.getNotificationFromItem(context, event.getName() + titleText, event.getDescription());
+        return NotificationBuilder.getNotificationFrom(context, event.getName() + titleText, event.getDescription());
     }
 }

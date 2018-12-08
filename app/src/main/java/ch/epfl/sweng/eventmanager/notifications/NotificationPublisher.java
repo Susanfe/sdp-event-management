@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.impl;
+package ch.epfl.sweng.eventmanager.notifications;
 
 import android.app.Notification;
 import android.content.BroadcastReceiver;
