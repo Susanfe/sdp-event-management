@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY app_name "Gatsbi">
-    ]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY app_name "Gatsbi">]>
 
 <resources>
     <string name="app_name">&app_name;</string>
@@ -116,6 +113,8 @@
     <!-- facebook text -->
     <string name="facebook_app_id">2089713884652770</string>
     <string name="fb_login_protocol_scheme">fb2089713884652770</string>
+    <string name="cancel_login_facebook">cancel login</string>
+    <string name="error_login_facebook">error login</string>
 
 
     <!-- Accessibility text -->
