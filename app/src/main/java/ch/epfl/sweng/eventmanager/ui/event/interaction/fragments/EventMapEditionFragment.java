@@ -14,6 +14,8 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -24,6 +26,7 @@ import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MapEditionActio
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MarkerType;
 import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
+import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomAddOptionsDialog;
 import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomMarkerDialog;
@@ -40,17 +43,26 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     // Tags for the dialog-fragment communication (cf onActivityResults below)
     public static final int ADD_SPOT = 1;
     public static final int ADD_OVERLAY_EDGE = 2;
-    private static final int ADD_REQUEST_CODE = 3;
+    private static final int ADD_OVERLAY_REQUEST_CODE = 3;
+    private static final int ADD_SPOT_REQUEST_CODE = 4;
+    public static final int SPOT_INFO_EDITION = 5;
 
     // Saved LatLng for the result of CustomAddOptionsDialog
     private LatLng onLongClickSavedLatLng = null;
+    private int onClickSavedMarkerID = 0;
 
     // Counters for each MarkerType
     private int counterSpot = 0;
     private int counterOverlayEdge = 0;
 
+    // List of all added markers
+    private List<Marker> markerList = new LinkedList<>();
+
     // History of actions on the markers
     private Stack<MapEditionAction> history = new Stack<>();
+
+    // Utils
+    private float hueOverlayBlue;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -91,7 +103,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         // Add markers for overlay edge positions
         float[] overlayHSL = new float[3];
         ColorUtils.colorToHSL(getResources().getColor(R.color.overlay_blue), overlayHSL);
-        overlayEdgeOnMap(overlayHSL[0]);
+        hueOverlayBlue = overlayHSL[0];
+        overlayEdgeOnMap();
 
     }
 
@@ -126,19 +139,19 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                     .draggable(true).position(position));
 
             m.setTag(MarkerType.SPOT.setId(++counterSpot));
+            markerList.add(m);
     }
 
     /**
      * Adds all overlay edges to the map at the initialization
-     * @param hue float value representing the hue (color) to be applied to the marker
      */
-    private void overlayEdgeOnMap(float hue) {
+    private void overlayEdgeOnMap() {
         if (getActivity() != null){
             this.zonesModel.getZone().observe(getActivity(), zones -> {
                 if (zones != null) {
                     for (Zone z : zones) {
                         for (Position p : z.getPositions()){
-                            addOverlayEdgeMarker(p.asLatLng(), hue);
+                            addOverlayEdgeMarker(p.asLatLng());
                         }
                     }
                 }
@@ -146,12 +159,13 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         }
     }
 
-    private void addOverlayEdgeMarker(LatLng position, float hue) {
+    private void addOverlayEdgeMarker(LatLng position) {
         Marker m = mMap.addMarker(new MarkerOptions()
-                .icon(BitmapDescriptorFactory.defaultMarker(hue))
+                .icon(BitmapDescriptorFactory.defaultMarker(hueOverlayBlue))
                 .position(position).draggable(true));
 
         m.setTag(MarkerType.OVERLAY_EDGE.setId(++counterOverlayEdge));
+        markerList.add(m);
     }
 
     @Override
@@ -160,8 +174,10 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         if (markerType!=null)
             switch (markerType) {
                 case SPOT:
+                    onClickSavedMarkerID = markerType.getId();
                     DialogFragment dialogFragment = new CustomMarkerDialog();
-                    dialogFragment.show(getChildFragmentManager(), MARKER_DIALOG_TAG);
+                    dialogFragment.setTargetFragment(this, ADD_SPOT_REQUEST_CODE);
+                    showDialogFragment(dialogFragment, MARKER_DIALOG_TAG);
                     return true;
 
                 case OVERLAY_EDGE:
@@ -174,23 +190,31 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     public void onMapLongClick(LatLng latLng) {
         onLongClickSavedLatLng = latLng;
         DialogFragment dialogFragment = new CustomAddOptionsDialog();
-        dialogFragment.setTargetFragment(this, ADD_REQUEST_CODE);
+        dialogFragment.setTargetFragment(this, ADD_OVERLAY_REQUEST_CODE);
 
+        showDialogFragment(dialogFragment, CREATION_MARKER_TAG);
+    }
+
+    /**
+     * Displays the FragmentDialog, code varies according to sdk versions
+     * @param dialogFragment DialogFragment object to display
+     * @param tag String tag to identify the fragment transaction
+     */
+    private void showDialogFragment(DialogFragment dialogFragment, String tag) {
         // Depending on SDK version, we need to use a different fragmentManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             Objects.requireNonNull(getActivity()).getSupportFragmentManager()
-                    .beginTransaction().add(dialogFragment, CREATION_MARKER_TAG).commit();
+                    .beginTransaction().add(dialogFragment, tag).commit();
         else
-            getChildFragmentManager().beginTransaction().add(dialogFragment, CREATION_MARKER_TAG).commit();
+            getChildFragmentManager().beginTransaction().add(dialogFragment, tag).commit();
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // The method is called by the AddOptionDialog
-        if (requestCode==ADD_REQUEST_CODE) {
+        if (requestCode== ADD_OVERLAY_REQUEST_CODE) {
             switch(resultCode) {
-
                 // User chose to add a spot
                 case ADD_SPOT:
                     addSpotEvent(onLongClickSavedLatLng);
@@ -201,7 +225,34 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                     addOverlayEdgeEvent(onLongClickSavedLatLng);
                     break;
             }
+
+        } else if (requestCode== ADD_SPOT_REQUEST_CODE) {
+        // Set the marker to its new infos
+            String title = data.getStringExtra(CustomMarkerDialog.EXTRA_TITLE);
+            String snippet = data.getStringExtra(CustomMarkerDialog.EXTRA_SNIPPET);
+            SpotType type = data.getParcelableExtra(CustomMarkerDialog.EXTRA_TYPE);
+
+            Marker m = findMarkerById(onClickSavedMarkerID);
+            if (m!=null) {
+                m.setTitle(title);
+                m.setSnippet(snippet);
+                // TODO find way to change spot type as marker does not hold info (enum?)
+            }
         }
+    }
+
+    /**
+     * Finds marker with its id among all the placed markers
+     * @param onClickSavedMarkerID id of the marker to find
+     * @return marker with corresponding id or null if none
+     */
+    private Marker findMarkerById(int onClickSavedMarkerID) {
+        for (Marker m : markerList) {
+            if (m.getTag() == MarkerType.SPOT &&
+                    ((MarkerType)Objects.requireNonNull(m.getTag())).getId() == onClickSavedMarkerID)
+                return m;
+        }
+        return null;
     }
 
     /**
@@ -211,6 +262,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     private void addSpotEvent(LatLng onLongClickSavedLatLng) {
         DialogFragment createSpotDialog = new CustomMarkerDialog();
         createSpotDialog.show(getChildFragmentManager(), CREATION_MARKER_TAG);
+        // TODO add matching history actions
     }
 
     /**
@@ -218,6 +270,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * @param onLongClickSavedLatLng LatLng object representing position to create marker at
      */
     private void addOverlayEdgeEvent(LatLng onLongClickSavedLatLng) {
+        addOverlayEdgeMarker(onLongClickSavedLatLng);
     }
 
     /*
