@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +32,10 @@ import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomAddOptionsDialog;
 import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomMarkerDialog;
 
+/**
+ * This fragment handles all map-related editing. It enables to move or create markers of any type, change
+ * SPOT markers infos. This class pushes the edition on Firebase when user saves info.
+ */
 public class EventMapEditionFragment extends EventMapFragment implements GoogleMap.OnMarkerClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerDragListener {
 
     // Tag for the style setting error
@@ -162,6 +167,10 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         }
     }
 
+    /**
+     * Adds a marker that is an overlay edge on the map
+     * @param position LatLng obj as position of the marker
+     */
     private void addOverlayEdgeMarker(LatLng position) {
         Marker m = mMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.defaultMarker(hueOverlayBlue))
@@ -171,6 +180,15 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         markerList.add(m);
     }
 
+
+
+
+
+
+
+
+
+
     @Override
     public boolean onMarkerClick(Marker marker) {
         MarkerType markerType = (MarkerType) marker.getTag();
@@ -179,6 +197,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                 case SPOT:
                     onClickSavedMarkerID = markerType.getId();
                     DialogFragment dialogFragment = new CustomMarkerDialog();
+                    dialogFragment.setArguments(createInfoBundle(marker.getTitle(), marker.getSnippet(), markerType));
                     dialogFragment.setTargetFragment(this, ADD_SPOT_REQUEST_CODE);
                     showDialogFragment(dialogFragment, MARKER_DIALOG_TAG);
                     return true;
@@ -198,20 +217,19 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         showDialogFragment(dialogFragment, CREATION_MARKER_TAG);
     }
 
-    /**
-     * Displays the FragmentDialog, code varies according to sdk versions
-     * @param dialogFragment DialogFragment object to display
-     * @param tag String tag to identify the fragment transaction
+    /*
+     * The three following methods are for the onMapMarkerDragListener
      */
-    private void showDialogFragment(DialogFragment dialogFragment, String tag) {
-        // Depending on SDK version, we need to use a different fragmentManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            Objects.requireNonNull(getActivity()).getSupportFragmentManager()
-                    .beginTransaction().add(dialogFragment, tag).commit();
-        else
-            getChildFragmentManager().beginTransaction().add(dialogFragment, tag).commit();
-    }
+    @Override
+    public void onMarkerDragStart(Marker marker) { }
 
+    @Override
+    public void onMarkerDrag(Marker marker) { }
+
+    @Override
+    public void onMarkerDragEnd(Marker marker) {
+        // TODO implement saving the new position of the marker into Firebase
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -233,7 +251,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         // Set the marker to its new infos
             String title = data.getStringExtra(CustomMarkerDialog.EXTRA_TITLE);
             String snippet = data.getStringExtra(CustomMarkerDialog.EXTRA_SNIPPET);
-            SpotType type = data.getParcelableExtra(CustomMarkerDialog.EXTRA_TYPE);
+            SpotType type = (SpotType) data.getSerializableExtra(CustomMarkerDialog.EXTRA_TYPE);
 
             Marker m = findMarkerById(onClickSavedMarkerID);
             if (m!=null) {
@@ -242,6 +260,58 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                 // TODO find way to change spot type as marker does not hold info (enum?)
             }
         }
+    }
+
+
+
+
+
+
+
+
+
+    /**
+     * Handles adding a spotType marker event
+     */
+    private void addSpotEvent(LatLng onLongClickSavedLatLng) {
+        addSpotMarker(default_title, default_snippet, onLongClickSavedLatLng);
+        DialogFragment createSpotDialog = new CustomMarkerDialog();
+        createSpotDialog.setArguments(createInfoBundle(default_title, default_snippet, MarkerType.SPOT.setId(onClickSavedMarkerID)));
+        createSpotDialog.setTargetFragment(this, ADD_SPOT_REQUEST_CODE);
+        showDialogFragment(createSpotDialog, MARKER_DIALOG_TAG);
+        // TODO add matching history actions
+    }
+
+    /**
+     * Adds an OverlayEdge type marker at the specufied position
+     * @param onLongClickSavedLatLng LatLng object representing position to create marker at
+     */
+    private void addOverlayEdgeEvent(LatLng onLongClickSavedLatLng) {
+        addOverlayEdgeMarker(onLongClickSavedLatLng);
+        // TODO link to other overlay edges and reform polygon
+    }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Displays the FragmentDialog, code varies according to sdk versions
+     * @param dialogFragment DialogFragment object to display
+     * @param tag String tag to identify the fragment transaction
+     */
+    private void showDialogFragment(DialogFragment dialogFragment, String tag) {
+        // Depending on SDK version, we need to use a different fragmentManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            Objects.requireNonNull(getActivity()).getSupportFragmentManager()
+                    .beginTransaction().add(dialogFragment, tag).commit();
+        else
+            getChildFragmentManager().beginTransaction().add(dialogFragment, tag).commit();
     }
 
     /**
@@ -259,36 +329,18 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     }
 
     /**
-     * Handles adding a spotType marker event
+     * Creates a Bundle containing a title, a snippet text and a MarkerType.
+     * @param title String of the title of the marker
+     * @param snippet String of the snippet text of the marker
+     * @param markerType type of the marker
+     * @return Bundle containing marker's attributes
      */
-    private void addSpotEvent(LatLng onLongClickSavedLatLng) {
-        addSpotMarker(default_title, default_snippet, onLongClickSavedLatLng);
-        DialogFragment createSpotDialog = new CustomMarkerDialog();
-        createSpotDialog.setTargetFragment(this, ADD_SPOT_REQUEST_CODE);
-        showDialogFragment(createSpotDialog, MARKER_DIALOG_TAG);
-        // TODO add matching history actions
+    private Bundle createInfoBundle(String title, String snippet, MarkerType markerType) {
+        Bundle b = new Bundle();
+        b.putString(CustomMarkerDialog.EXTRA_TITLE, title);
+        b.putString(CustomMarkerDialog.EXTRA_SNIPPET, snippet);
+        b.putSerializable(CustomMarkerDialog.EXTRA_TYPE, markerType);
+        return b;
     }
 
-    /**
-     * Adds an OverlayEdge type marker at the specufied position
-     * @param onLongClickSavedLatLng LatLng object representing position to create marker at
-     */
-    private void addOverlayEdgeEvent(LatLng onLongClickSavedLatLng) {
-        addOverlayEdgeMarker(onLongClickSavedLatLng);
-        // TODO link to other overlay edges and reform polygon
-    }
-
-    /*
-     * The three following methods are for the onMapMarkerDragListener
-     */
-    @Override
-    public void onMarkerDragStart(Marker marker) { }
-
-    @Override
-    public void onMarkerDrag(Marker marker) { }
-
-    @Override
-    public void onMarkerDragEnd(Marker marker) {
-        // TODO implement saving the new position of the marker into Firebase
-    }
 }
