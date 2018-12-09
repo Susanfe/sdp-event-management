@@ -12,7 +12,7 @@ public class ModifyMarkerInfoAction extends MapEditionAction {
     private String ancientSnippet;
     private String snippet;
 
-    public ModifyMarkerInfoAction(MarkerType tag, String ancientTitle, String currentTitle,
+    public ModifyMarkerInfoAction(EventEditionTag tag, String ancientTitle, String currentTitle,
                                   String ancientSnippet, String currentSnippet) {
 
         if (tag == null || ancientTitle == null || currentTitle == null ||

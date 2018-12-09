@@ -10,7 +10,7 @@ public class MoveMarkerAction extends MapEditionAction {
     private final LatLng ancientPos;
     private final LatLng pos;
 
-    public MoveMarkerAction(MarkerType markerTag, LatLng ancientPosition, LatLng actualPosition) {
+    public MoveMarkerAction(EventEditionTag markerTag, LatLng ancientPosition, LatLng actualPosition) {
         if (markerTag == null || ancientPosition == null || actualPosition == null)
             throw new IllegalArgumentException();
 

@@ -11,7 +11,7 @@ import java.util.Objects;
 public abstract class MapEditionAction {
 
     // Tag with which to find marker
-    protected MarkerType tag;
+    protected EventEditionTag tag;
 
     /**
      * Method that allows reverting the action
@@ -26,8 +26,8 @@ public abstract class MapEditionAction {
      */
     Marker findMarkerByTag(List<Marker> list) {
         for (Marker m : list) {
-            if (m.getTag() == tag &&
-                    ((MarkerType)Objects.requireNonNull(m.getTag())).getId() == tag.getId())
+            EventEditionTag tag = (EventEditionTag) m.getTag();
+            if (tag != null && tag.equals(this.tag))
                 return m;
         }
 

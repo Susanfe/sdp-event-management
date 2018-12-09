@@ -9,7 +9,7 @@ public class MarkerCreationAction extends MapEditionAction {
 
     private LatLng positionofCreation;
 
-    public MarkerCreationAction(MarkerType tag, LatLng position) {
+    public MarkerCreationAction(EventEditionTag tag, LatLng position) {
         if (tag == null || position == null)
             throw new IllegalArgumentException();
 
