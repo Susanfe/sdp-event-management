@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,8 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.tweetui.CompactTweetView;
@@ -65,7 +68,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 Objects.requireNonNull(view).getContext()));
         recyclerView.setHasFixedSize(true);
 
-        newsAdapter = new NewsAdapter();
+        newsAdapter = new NewsAdapter(getActivity());
         recyclerView.setAdapter(newsAdapter);
 
         return view;
@@ -116,9 +119,11 @@ public class NewsFragment extends AbstractShowcaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_facebook_login_edit:
+
                 Intent intent = new Intent(getActivity(), LoginFacebookActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+
                 return true;
 
             default:
@@ -127,12 +132,15 @@ public class NewsFragment extends AbstractShowcaseFragment {
         }
     }
 
+
     public static class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<NewsOrTweetOrFacebook> news;
+        private Context context;
 
-        NewsAdapter() {
+        NewsAdapter(Context context) {
             this.news = Collections.emptyList();
+            this.context = context;
         }
 
         // Create new views (invoked by the layout manager)
@@ -154,7 +162,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
             else {
                 View v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.facebook_item_news, parent, false);
-                return new FacebookViewHolder(v);
+                return new FacebookViewHolder(v, context);
             }
         }
 
@@ -189,19 +197,64 @@ public class NewsFragment extends AbstractShowcaseFragment {
         }
 
         static final class FacebookViewHolder extends RecyclerView.ViewHolder {
-            @BindView(R.id.text_facebook_news_content)
+            @BindView(R.id.facebook_detail_content)
             TextView content;
-            @BindView(R.id.text_facebook_news_date)
+            @BindView(R.id.facebook_detail_time)
             TextView date;
+            @BindView(R.id.facebook_description)
+            TextView description;
+            @BindView(R.id.facebook_detail_author)
+            TextView author;
+            @BindView(R.id.image_from_facebook)
+            ImageView image_facebook_post;
 
-            FacebookViewHolder(View itemView) {
+
+            private Context context;
+
+            FacebookViewHolder(View itemView, Context context) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
+                this.context = context;
             }
 
             final void bind(Feed feed) {
-                this.content.setText(feed.getContent());
+                if(feed.hasName()) {
+                    this.author.setVisibility(View.VISIBLE);
+                    this.author.setText(feed.getAuthor());
+                }
+                else {
+                    author.setVisibility(View.GONE);
+                }
+                if(feed.hasContent()) {
+                    this.content.setVisibility(View.VISIBLE);
+                    this.content.setText(feed.getContent());
+                }
+                else {
+                    content.setVisibility(View.GONE);
+                }
+                if(feed.hasDescription()) {
+                    this.description.setVisibility(View.VISIBLE);
+                    this.description.setText(feed.getDescription());
+                }
+                else {
+                    description.setVisibility(View.GONE);
+                }
+                if(feed.hasImage()) {
+                    loadImageFromUrl(feed.getImageURL(), image_facebook_post);
+                }
                 this.date.setText(feed.dateAsString());
+            }
+
+            private void loadImageFromUrl(String url, ImageView view) {
+                Picasso.with(context).load(url).placeholder(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .into(view, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {}
+
+                            @Override
+                            public void onError() {}
+                        });
             }
         }
 
