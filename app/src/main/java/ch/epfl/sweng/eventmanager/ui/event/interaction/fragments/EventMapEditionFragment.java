@@ -23,6 +23,8 @@ import java.util.Stack;
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.DialogFragment;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MapEditionAction;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MarkerType;
 import ch.epfl.sweng.eventmanager.repository.data.Position;
@@ -31,6 +33,9 @@ import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomAddOptionsDialog;
 import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomMarkerDialog;
+
+import static ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag.createOverlayEdgeTag;
+import static ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag.createSpotTag;
 
 /**
  * This fragment handles all map-related editing. It enables to move or create markers of any type, change
@@ -43,13 +48,13 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     // Tags for the created dialogs
     private static final String MARKER_DIALOG_TAG = "ui.event.interaction.fragments.EventMapEditionFragment.MARKER_DIALOG";
-    private static final String CREATION_MARKER_TAG = "ui.event.interaction.fragments.EventMapEditionFragment.CREATION_MARKER";
+    private static final String ADD_MARKER_DIALOG_TAG = "ui.event.interaction.fragments.EventMapEditionFragment.ADD_MARKER_DIALOG";
 
     // Tags for the dialog-fragment communication (cf onActivityResults below)
     public static final int ADD_SPOT = 1;
     public static final int ADD_OVERLAY_EDGE = 2;
     private static final int ADD_OVERLAY_OR_SPOT_REQUEST_CODE = 3;
-    private static final int ADD_SPOT_REQUEST_CODE = 4;
+    private static final int SPOT_INFO_REQUEST_CODE = 4;
     public static final int SPOT_INFO_EDITION = 5;
 
     // Saved LatLng for the result of CustomAddOptionsDialog
@@ -68,8 +73,9 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     // Utils
     private float hueOverlayBlue;
-    private static final String default_title = "New Spot";
-    private static final String default_snippet = "Amazing description";
+    public static final String defaultTitle = "New Spot";
+    public static final String defaultSnippet = "Amazing description";
+    private final SpotType defaultType = SpotType.ROOM;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -81,7 +87,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     }
 
     /**
-     * Method is here used to do all the additional work without overriding onCreate(..)
+     * Method is here used to do all the onCreate additional work without overriding onCreate()
      * No clustering is wanted in the edition version
      */
     @Override
@@ -102,8 +108,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
         // Set Listeners
         mMap.setOnMarkerClickListener(this);
-        mMap.setOnMapLongClickListener(this);
         mMap.setOnMarkerDragListener(this);
+        mMap.setOnMapLongClickListener(this);
 
         addMarkers();
 
@@ -120,17 +126,15 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      */
     private void addMarkers() {
         if (getActivity() != null){
-            this.scheduleViewModel.getScheduledItems().observe(getActivity(), items ->
-                    this.spotsModel.getSpots().observe(getActivity(), spots -> {
-                        if (spots == null) {
-                            return;
-                        }
-                        // Add new spots
-                        for (Spot s : spots) {
-                            s.setScheduleList(items);
-                            addSpotMarker(s.getTitle(), s.getSnippet(), s.getPosition());
-                        }
-                    }));
+                this.spotsModel.getSpots().observe(getActivity(), spots -> {
+                    if (spots == null) {
+                        return;
+                    }
+                    // Add new spots
+                    for (Spot s : spots) {
+                        addSpotMarker(s.getTitle(), s.getSnippet(), s.getPosition(), s.getSpotType());
+                    }
+                });
 
         }
     }
@@ -141,13 +145,13 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * @param snippet snippet of the marker
      * @param position LatLng object representing marker's position
      */
-    private void addSpotMarker(String title, String snippet, LatLng position) {
-            Marker m = mMap.addMarker(new MarkerOptions().title(title).snippet(snippet)
-                    .draggable(true).position(position));
+    private void addSpotMarker(String title, String snippet, LatLng position, SpotType spotType) {
+        Marker m = mMap.addMarker(new MarkerOptions().title(title).snippet(snippet)
+                .draggable(true).position(position));
 
-            m.setTag(MarkerType.SPOT.setId(++counterSpot));
-            onClickSavedMarkerID = counterSpot;
-            markerList.add(m);
+        m.setTag(createSpotTag(++counterSpot, spotType));
+        //onClickSavedMarkerID = counterSpot;
+        markerList.add(m);
     }
 
     /**
@@ -176,7 +180,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                 .icon(BitmapDescriptorFactory.defaultMarker(hueOverlayBlue))
                 .position(position).draggable(true));
 
-        m.setTag(MarkerType.OVERLAY_EDGE.setId(++counterOverlayEdge));
+        m.setTag(createOverlayEdgeTag(++counterOverlayEdge));
         markerList.add(m);
     }
 
@@ -191,14 +195,14 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        MarkerType markerType = (MarkerType) marker.getTag();
-        if (markerType!=null)
-            switch (markerType) {
+        EventEditionTag tag = (EventEditionTag) marker.getTag();
+        if (tag != null && tag.getMarkerType()!=null)
+            switch (tag.getMarkerType()) {
                 case SPOT:
-                    onClickSavedMarkerID = markerType.getId();
+                    onClickSavedMarkerID = tag.getId();
                     DialogFragment dialogFragment = new CustomMarkerDialog();
-                    dialogFragment.setArguments(createInfoBundle(marker.getTitle(), marker.getSnippet(), markerType));
-                    dialogFragment.setTargetFragment(this, ADD_SPOT_REQUEST_CODE);
+                    dialogFragment.setArguments(createInfoBundle(marker.getTitle(), marker.getSnippet(), tag.getSpotType()));
+                    dialogFragment.setTargetFragment(this, SPOT_INFO_REQUEST_CODE);
                     showDialogFragment(dialogFragment, MARKER_DIALOG_TAG);
                     return true;
 
@@ -214,7 +218,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         DialogFragment dialogFragment = new CustomAddOptionsDialog();
         dialogFragment.setTargetFragment(this, ADD_OVERLAY_OR_SPOT_REQUEST_CODE);
 
-        showDialogFragment(dialogFragment, CREATION_MARKER_TAG);
+        showDialogFragment(dialogFragment, ADD_MARKER_DIALOG_TAG);
     }
 
     /*
@@ -233,7 +237,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // The method is called by the AddOptionDialog
+        // The method is called by the CustomAddOptionsDialog i.e. user longClicked
         if (requestCode== ADD_OVERLAY_OR_SPOT_REQUEST_CODE) {
             switch(resultCode) {
                 // User chose to add a spot
@@ -246,9 +250,12 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                     addOverlayEdgeEvent(onLongClickSavedLatLng);
                     break;
             }
+        }
 
-        } else if (requestCode== ADD_SPOT_REQUEST_CODE) {
-        // Set the marker to its new infos
+        // The method is called by the CustomMarkerDialog i.e. user clicked on Spot marker
+        else if (requestCode== SPOT_INFO_REQUEST_CODE) {
+
+            // Updates the marker's info
             String title = data.getStringExtra(CustomMarkerDialog.EXTRA_TITLE);
             String snippet = data.getStringExtra(CustomMarkerDialog.EXTRA_SNIPPET);
             SpotType type = (SpotType) data.getSerializableExtra(CustomMarkerDialog.EXTRA_TYPE);
@@ -257,7 +264,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
             if (m!=null) {
                 m.setTitle(title);
                 m.setSnippet(snippet);
-                // TODO find way to change spot type as marker does not hold info (enum?)
+                int id = ((EventEditionTag)Objects.requireNonNull(m.getTag())).getId();
+                m.setTag(createSpotTag(id, type));
             }
         }
     }
@@ -274,16 +282,18 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * Handles adding a spotType marker event
      */
     private void addSpotEvent(LatLng onLongClickSavedLatLng) {
-        addSpotMarker(default_title, default_snippet, onLongClickSavedLatLng);
+        addSpotMarker(defaultTitle, defaultSnippet, onLongClickSavedLatLng, defaultType);
+        onClickSavedMarkerID = counterSpot;
         DialogFragment createSpotDialog = new CustomMarkerDialog();
-        createSpotDialog.setArguments(createInfoBundle(default_title, default_snippet, MarkerType.SPOT.setId(onClickSavedMarkerID)));
-        createSpotDialog.setTargetFragment(this, ADD_SPOT_REQUEST_CODE);
+        createSpotDialog.setArguments(createInfoBundle(defaultTitle, defaultSnippet, defaultType));
+
+        createSpotDialog.setTargetFragment(this, SPOT_INFO_REQUEST_CODE);
         showDialogFragment(createSpotDialog, MARKER_DIALOG_TAG);
         // TODO add matching history actions
     }
 
     /**
-     * Adds an OverlayEdge type marker at the specufied position
+     * Adds an OverlayEdge type marker at the specified position
      * @param onLongClickSavedLatLng LatLng object representing position to create marker at
      */
     private void addOverlayEdgeEvent(LatLng onLongClickSavedLatLng) {
@@ -315,14 +325,16 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     }
 
     /**
-     * Finds marker with its id among all the placed markers
-     * @param onClickSavedMarkerID id of the marker to find
-     * @return marker with corresponding id or null if none
+     * Finds SPOT marker with its id among all the placed markers
+     * @param onClickSavedMarkerID id of the SPOT marker to find
+     * @return SPOT marker with corresponding id or null if none
      */
     private Marker findMarkerById(int onClickSavedMarkerID) {
         for (Marker m : markerList) {
-            if (m.getTag() == MarkerType.SPOT &&
-                    ((MarkerType)Objects.requireNonNull(m.getTag())).getId() == onClickSavedMarkerID)
+            EventEditionTag tag = (EventEditionTag) m.getTag();
+            if (tag != null &&
+                    tag.getMarkerType() == MarkerType.SPOT &&
+                    tag.getId() == onClickSavedMarkerID)
                 return m;
         }
         return null;
@@ -332,14 +344,14 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * Creates a Bundle containing a title, a snippet text and a MarkerType.
      * @param title String of the title of the marker
      * @param snippet String of the snippet text of the marker
-     * @param markerType type of the marker
+     * @param spotType type of the marker
      * @return Bundle containing marker's attributes
      */
-    private Bundle createInfoBundle(String title, String snippet, MarkerType markerType) {
+    private Bundle createInfoBundle(String title, String snippet, SpotType spotType) {
         Bundle b = new Bundle();
         b.putString(CustomMarkerDialog.EXTRA_TITLE, title);
         b.putString(CustomMarkerDialog.EXTRA_SNIPPET, snippet);
-        b.putSerializable(CustomMarkerDialog.EXTRA_TYPE, markerType);
+        b.putSerializable(CustomMarkerDialog.EXTRA_TYPE, spotType);
         return b;
     }
 

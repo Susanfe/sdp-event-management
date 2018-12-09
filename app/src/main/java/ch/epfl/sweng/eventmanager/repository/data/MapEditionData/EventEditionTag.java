@@ -29,7 +29,7 @@ public class EventEditionTag {
      * @return overlay-edge-like EventEditionTag
      */
     public static EventEditionTag createOverlayEdgeTag(int id) {
-        return new EventEditionTag(id, null, MarkerType.SPOT);
+        return new EventEditionTag(id, null, MarkerType.OVERLAY_EDGE);
     }
 
     private EventEditionTag(int id, SpotType spotType, MarkerType markerType) {
