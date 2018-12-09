@@ -20,11 +20,7 @@
             android:id="@+id/nav_schedule"
             android:icon="@drawable/ic_event_black_24dp"
             android:title="@string/schedule_nav_item_activity_event_showcase" />
-        <item
-            android:id="@+id/nav_admin"
-            android:icon="@drawable/ic_build_black_24dp"
-            android:title="@string/admin_nav_item_activity_event_showcase"
-            android:visible="false" />
+
         <item
             android:id="@+id/nav_tickets"
             android:icon="@drawable/ic_local_activity_black_24dp"
@@ -44,6 +40,16 @@
             android:icon="@drawable/ic_email_black_24dp"
             android:title="@string/contact_nav_item_activity_event_showcase" />
 
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:menuCategory="system"
+        android:id="@+id/event_showcase_group_system_admin">
+        <item
+            android:id="@+id/nav_admin"
+            android:icon="@drawable/ic_build_black_24dp"
+            android:title="@string/admin_nav_item_activity_event_showcase"
+            android:visible="false" />
     </group>
 
     <group android:checkableBehavior="single"
