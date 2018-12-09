@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -87,6 +89,31 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         menu.findItem(R.id.menu_map_edition_help).setVisible(true);
         menu.findItem(R.id.menu_map_edition_undo).setVisible(true);
         menu.findItem(R.id.menu_map_edition_edit).setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_map_edition_help:
+                // TODO create explanation dialog
+                break;
+
+            case R.id.menu_map_edition_save:
+                // TODO save to Firebase
+                break;
+
+            case R.id.menu_map_edition_undo:
+                if (history.isEmpty())
+                    Toast.makeText(getContext(), getString(R.string.undo_empty), Toast.LENGTH_SHORT).show();
+                else {
+                    MapEditionAction action = history.pop();
+                    action.revert(markerList);
+                    Toast.makeText(getContext(), getString(R.string.undone), Toast.LENGTH_SHORT).show();
+                }
+                return true;
+        }
+
+        return false;
     }
 
     /**
