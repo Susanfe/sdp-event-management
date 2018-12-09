@@ -20,9 +20,9 @@ public class MarkerCreationAction extends MapEditionAction {
     @Override
     public boolean revert(List<Marker> markers) {
         Marker m = findMarkerByTag(markers);
-        if (m != null && m.getPosition() == positionofCreation) {
-            m.setTag(MarkerType.TO_REMOVE);
-            m.setVisible(false);
+        if (m != null && m.getPosition().equals(positionofCreation)) {
+            markers.remove(m);
+            m.remove();
             return true;
         }
 

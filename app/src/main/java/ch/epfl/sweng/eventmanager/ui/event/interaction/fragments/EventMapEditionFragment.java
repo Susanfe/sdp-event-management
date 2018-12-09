@@ -107,7 +107,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                     Toast.makeText(getContext(), getString(R.string.undo_empty), Toast.LENGTH_SHORT).show();
                 else {
                     MapEditionAction action = history.pop();
-                    action.revert(markerList);
+                    if (!action.revert(markerList))
+                        Log.e("TAGTEST", "Action could not be reversed");
                     Toast.makeText(getContext(), getString(R.string.undone), Toast.LENGTH_SHORT).show();
                 }
                 return true;
@@ -267,7 +268,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
-        history.add(new MoveMarkerAction(
+        history.push(new MoveMarkerAction(
                 (EventEditionTag) marker.getTag(),
                 onDragSavedLatLng,
                 marker.getPosition()));
