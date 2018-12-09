@@ -51,13 +51,19 @@ public class CustomMarkerDialog extends DialogFragment {
     public void onStart() {
         super.onStart();
         ButterKnife.bind(this, getDialog());
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         setTypeAdapter(getContext());
+
+        Bundle b = getArguments();
+        assert b != null;
+        String title = b.getString(EXTRA_TITLE, EventMapEditionFragment.defaultTitle);
+        String snippet = b.getString(EXTRA_SNIPPET, EventMapEditionFragment.defaultSnippet);
+        SpotType type = (SpotType) b.getSerializable(EXTRA_TYPE);
+        if (type == null) type = SpotType.ROOM;
+
+        titleEdit.setText(title);
+        snippetEdit.setText(snippet);
+        typeSpinner.setSelection(type.ordinal());
     }
 
     private void setTypeAdapter(Context context) {
