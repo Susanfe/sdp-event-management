@@ -11,6 +11,7 @@
     <dimen name="default_small_padding">8dp</dimen>
     <dimen name="default_medium_padding">12dp</dimen>
     <dimen name="default_big_padding">20dp</dimen>
+    <dimen name="default_very_big_padding">28dp</dimen>
     <dimen name="default_huge_padding">40dp</dimen>
 
     <dimen name="default_small_margin">8dp</dimen>
