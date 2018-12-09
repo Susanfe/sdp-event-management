@@ -202,6 +202,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;
+
+            case R.id.nav_contact:
+                callChangeFragment(FragmentType.FORM, true);
         }
 
         return true;
@@ -256,6 +259,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             if (current instanceof EventMapFragment) navigationView.setCheckedItem(R.id.nav_map);
             if (current instanceof ScheduleParentFragment) navigationView.setCheckedItem(R.id.nav_schedule);
             if (current instanceof EventTicketFragment) navigationView.setCheckedItem(R.id.nav_tickets);
+            if (current instanceof EventFormFragment) navigationView.setCheckedItem(R.id.nav_contact);
         });
     }
 

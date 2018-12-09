@@ -74,6 +74,10 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_map));
         pressBack();
+
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_contact));
+        pressBack();
     }
 
     @Test
