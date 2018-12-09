@@ -15,6 +15,9 @@ public class Feed {
     private String id = "";
     private String content = "";
     private Date time;
+    private String url = "";
+    private String description = "";
+    private String author = "";
 
     /**
      * Stores in class instances components of the facebook post
@@ -26,8 +29,18 @@ public class Feed {
             String dateStr = object.getString("created_time");
             time = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault()).parse(dateStr);
             id = object.getString("id");
+            if (object.has("full_picture")) {
+                url = object.getString("full_picture");
+            }
+
+            if (object.has("description")) {
+                description = object.getString("description");
+            }
             if (object.has("message")) {
                 content = object.getString("message");
+            }
+            if (object.has("name")) {
+                author = object.getString("name");
             }
         }
         catch (JSONException e) {
@@ -59,6 +72,28 @@ public class Feed {
 
     public String getId() {
         return id;
+    }
+
+    public String getAuthor() { return author; }
+
+    public String getImageURL() { return (url); }
+
+    public String getDescription() { return description; }
+
+    public boolean hasImage() {
+        return (url != null && url.length() > 0);
+    }
+
+    public boolean hasName() {
+        return (author != null && author.length() > 0);
+    }
+
+    public boolean hasDescription() {
+        return (description != null && description.length() > 0);
+    }
+
+    public boolean hasContent() {
+        return (content != null && content.length() > 0);
     }
 
     @Override
