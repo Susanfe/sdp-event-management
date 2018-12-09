@@ -23,10 +23,12 @@ import java.util.Stack;
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.DialogFragment;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MapEditionAction;
+import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MarkerCreationAction;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MarkerType;
+import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.ModifyMarkerInfoAction;
+import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MoveMarkerAction;
 import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.SpotType;
@@ -60,6 +62,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     // Saved LatLng for the result of CustomAddOptionsDialog
     private LatLng onLongClickSavedLatLng = null;
     private int onClickSavedMarkerID = 0;
+    private LatLng onDragSavedLatLng = null;
 
     // Counters for each MarkerType
     private int counterSpot = 0;
@@ -145,13 +148,14 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * @param snippet snippet of the marker
      * @param position LatLng object representing marker's position
      */
-    private void addSpotMarker(String title, String snippet, LatLng position, SpotType spotType) {
+    private Marker addSpotMarker(String title, String snippet, LatLng position, SpotType spotType) {
         Marker m = mMap.addMarker(new MarkerOptions().title(title).snippet(snippet)
                 .draggable(true).position(position));
 
         m.setTag(createSpotTag(++counterSpot, spotType));
-        //onClickSavedMarkerID = counterSpot;
         markerList.add(m);
+
+        return m;
     }
 
     /**
@@ -175,13 +179,15 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * Adds a marker that is an overlay edge on the map
      * @param position LatLng obj as position of the marker
      */
-    private void addOverlayEdgeMarker(LatLng position) {
+    private Marker addOverlayEdgeMarker(LatLng position) {
         Marker m = mMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.defaultMarker(hueOverlayBlue))
                 .position(position).draggable(true));
 
         m.setTag(createOverlayEdgeTag(++counterOverlayEdge));
         markerList.add(m);
+
+        return m;
     }
 
 
@@ -225,14 +231,19 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * The three following methods are for the onMapMarkerDragListener
      */
     @Override
-    public void onMarkerDragStart(Marker marker) { }
+    public void onMarkerDragStart(Marker marker) {
+        onDragSavedLatLng = marker.getPosition();
+    }
 
     @Override
     public void onMarkerDrag(Marker marker) { }
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
-        // TODO implement saving the new position of the marker into Firebase
+        history.add(new MoveMarkerAction(
+                (EventEditionTag) marker.getTag(),
+                onDragSavedLatLng,
+                marker.getPosition()));
     }
 
     @Override
@@ -261,7 +272,14 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
             SpotType type = (SpotType) data.getSerializableExtra(CustomMarkerDialog.EXTRA_TYPE);
 
             Marker m = findMarkerById(onClickSavedMarkerID);
+
             if (m!=null) {
+
+                history.push(new ModifyMarkerInfoAction(
+                        (EventEditionTag)m.getTag(),
+                        m.getTitle(), title,
+                        m.getSnippet(), snippet));
+
                 m.setTitle(title);
                 m.setSnippet(snippet);
                 int id = ((EventEditionTag)Objects.requireNonNull(m.getTag())).getId();
@@ -282,7 +300,9 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * Handles adding a spotType marker event
      */
     private void addSpotEvent(LatLng onLongClickSavedLatLng) {
-        addSpotMarker(defaultTitle, defaultSnippet, onLongClickSavedLatLng, defaultType);
+        Marker m = addSpotMarker(defaultTitle, defaultSnippet, onLongClickSavedLatLng, defaultType);
+        history.push(new MarkerCreationAction((EventEditionTag) m.getTag(), m.getPosition()));
+
         onClickSavedMarkerID = counterSpot;
         DialogFragment createSpotDialog = new CustomMarkerDialog();
         createSpotDialog.setArguments(createInfoBundle(defaultTitle, defaultSnippet, defaultType));
@@ -297,7 +317,9 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * @param onLongClickSavedLatLng LatLng object representing position to create marker at
      */
     private void addOverlayEdgeEvent(LatLng onLongClickSavedLatLng) {
-        addOverlayEdgeMarker(onLongClickSavedLatLng);
+        Marker m = addOverlayEdgeMarker(onLongClickSavedLatLng);
+
+        history.push(new MarkerCreationAction((EventEditionTag) m.getTag(), m.getPosition()));
         // TODO link to other overlay edges and reform polygon
     }
 
