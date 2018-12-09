@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -72,6 +74,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     // List of all added markers
     private List<Marker> markerList = new LinkedList<>();
+    private SparseArray<LatLng> positionForMarkerIDList = new SparseArray<>();
 
     // History of actions on the markers
     private Stack<MapEditionAction> history = new Stack<>();
@@ -107,9 +110,10 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                     Toast.makeText(getContext(), getString(R.string.undo_empty), Toast.LENGTH_SHORT).show();
                 else {
                     MapEditionAction action = history.pop();
-                    if (!action.revert(markerList))
-                        Log.e("TAGTEST", "Action could not be reversed");
-                    Toast.makeText(getContext(), getString(R.string.undone), Toast.LENGTH_SHORT).show();
+                    if (!action.revert(markerList, positionForMarkerIDList))
+                        Toast.makeText(getContext(), getString(R.string.map_edition_error_undo), Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(getContext(), getString(R.string.undone), Toast.LENGTH_SHORT).show();
                 }
                 return true;
         }
@@ -182,6 +186,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
         m.setTag(createSpotTag(++counterSpot, spotType));
         markerList.add(m);
+        positionForMarkerIDList.put(counterSpot, m.getPosition());
 
         return m;
     }
@@ -214,6 +219,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
         m.setTag(createOverlayEdgeTag(++counterOverlayEdge));
         markerList.add(m);
+        positionForMarkerIDList.put(counterOverlayEdge, m.getPosition());
 
         return m;
     }
@@ -259,19 +265,21 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * The three following methods are for the onMapMarkerDragListener
      */
     @Override
-    public void onMarkerDragStart(Marker marker) {
-        onDragSavedLatLng = marker.getPosition();
-    }
+    public void onMarkerDragStart(Marker marker) { }
 
     @Override
     public void onMarkerDrag(Marker marker) { }
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
+        EventEditionTag tag = (EventEditionTag) marker.getTag();
+        assert tag != null;
         history.push(new MoveMarkerAction(
-                (EventEditionTag) marker.getTag(),
-                onDragSavedLatLng,
+                tag,
+                positionForMarkerIDList.get(tag.getId()),
                 marker.getPosition()));
+
+        positionForMarkerIDList.put(tag.getId(), marker.getPosition());
     }
 
     @Override

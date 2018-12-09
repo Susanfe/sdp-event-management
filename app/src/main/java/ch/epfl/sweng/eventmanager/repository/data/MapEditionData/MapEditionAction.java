@@ -1,8 +1,12 @@
 package ch.epfl.sweng.eventmanager.repository.data.MapEditionData;
 
+import android.util.SparseArray;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -17,7 +21,7 @@ public abstract class MapEditionAction {
      * Method that allows reverting the action
      * @param markers list of the markers on the map to find marker on which the action was done
      */
-    public abstract boolean revert(List<Marker> markers);
+    public abstract boolean revert(List<Marker> markers, SparseArray<LatLng> positions);
 
     /**
      * Finds the marker with the same tag as the one with the tag registered for the action
