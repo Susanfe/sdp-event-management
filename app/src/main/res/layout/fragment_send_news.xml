@@ -36,7 +36,8 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:ems="10"
-            android:id="@+id/content" android:hint="@string/send_news_content"/>
+            android:id="@+id/content"
+            android:hint="@string/send_news_content"/>
         <androidx.appcompat.widget.AppCompatButton
             android:text="@string/send_news_send_button"
             android:layout_width="match_parent"
