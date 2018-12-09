@@ -89,8 +89,12 @@ public class FirebaseNewsRepository implements NewsRepository {
     public LiveData<List<Feed>> getFacebookNews(String screenName) {
         MutableLiveData<List<Feed>> data = new MutableLiveData<>();
         List<Feed> feedList = new ArrayList<>();
+        Bundle params;
+        params = new Bundle();
+        params.putString("fields", "description, message,created_time,id, full_picture,status_type,source, name, story, icon");
 
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + screenName + "/feed", null, HttpMethod.GET,
+
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + screenName + "/feed", params, HttpMethod.GET,
                 response -> {
                     /* handle the result */
                     try {
