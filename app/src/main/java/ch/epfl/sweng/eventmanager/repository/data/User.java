@@ -1,12 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.*;
 
 public final class User {
-    private final FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private DatabaseReference userEntry;
-
     private String uid;
     private String email;
     private String displayName;
