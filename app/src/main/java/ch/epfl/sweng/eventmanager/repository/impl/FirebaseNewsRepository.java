@@ -90,7 +90,7 @@ public class FirebaseNewsRepository implements NewsRepository {
         List<FacebookPost> facebookPostList = new ArrayList<>();
         Bundle params;
         params = new Bundle();
-        params.putString("fields", "description, message,created_time,id, full_picture,status_type,source, name, story, icon");
+        params.putString("fields", "description, message,created_time,id, full_picture,status_type,source, name");
 
 
         new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + screenName + "/feed", params, HttpMethod.GET,
