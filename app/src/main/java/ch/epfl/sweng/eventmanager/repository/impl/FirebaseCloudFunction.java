@@ -1,8 +1,11 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -43,5 +46,16 @@ public class FirebaseCloudFunction implements CloudFunction {
                     Boolean result = (Boolean) task.getResult().getData();
                     return result;
                 });
+    }
+
+    public Task<Void> sendNotificationToUsers(String title, String body, Event event) {
+
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("title", title);
+        notification.put("body", body);
+        notification.put("eventId", event.getId());
+        notification.put("eventName", event.getName());
+
+        return FirebaseHelper.publishElement(event.getId(), "notificationRequest", notification);
     }
 }
