@@ -6,15 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckedTextView;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RatingBar;
-import android.widget.TextView;
+import android.widget.*;
 
 import javax.inject.Inject;
 
+import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -23,6 +19,10 @@ import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -96,10 +96,15 @@ public class EventMainFragment extends AbstractShowcaseFragment {
                     this.model.joinEvent(ev);
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getContext()));
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
+                    FirebaseMessaging.getInstance().subscribeToTopic(ev.getName() + "_" + ev.getId()).addOnCompleteListener(task -> {
+                        Log.d(TAG, "subscribed to a topic");
+                        Toast.makeText(getContext(), "subscribed to a topic", Toast.LENGTH_SHORT).show();
+                    });
                 } else {
                     this.model.unjoinEvent(ev);
                     NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getContext()));
                     NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(ev.getName());
                 }
             });
         });
