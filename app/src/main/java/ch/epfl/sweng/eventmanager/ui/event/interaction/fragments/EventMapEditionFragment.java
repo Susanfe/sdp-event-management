@@ -18,7 +18,6 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -66,7 +65,6 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     // Saved LatLng for the result of CustomAddOptionsDialog
     private LatLng onLongClickSavedLatLng = null;
     private int onClickSavedMarkerID = 0;
-    private LatLng onDragSavedLatLng = null;
 
     // Counters for each MarkerType
     private int counterSpot = 0;
@@ -75,6 +73,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     // List of all added markers
     private List<Marker> markerList = new LinkedList<>();
     private SparseArray<LatLng> positionForMarkerIDList = new SparseArray<>();
+
+    private static final int overlayEdgeIndexShift = 1000;
 
     // History of actions on the markers
     private Stack<MapEditionAction> history = new Stack<>();
@@ -219,7 +219,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
         m.setTag(createOverlayEdgeTag(++counterOverlayEdge));
         markerList.add(m);
-        positionForMarkerIDList.put(counterOverlayEdge, m.getPosition());
+        positionForMarkerIDList.put(overlayEdgeIndexShift + counterOverlayEdge, m.getPosition());
 
         return m;
     }
@@ -274,12 +274,16 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     public void onMarkerDragEnd(Marker marker) {
         EventEditionTag tag = (EventEditionTag) marker.getTag();
         assert tag != null;
+        Log.i("TAGTEST", "Issued MoveMarkerAction");
+
+        // Index takes a shift depending on type
+        int shift = getShift(tag.getMarkerType());
         history.push(new MoveMarkerAction(
                 tag,
-                positionForMarkerIDList.get(tag.getId()),
+                positionForMarkerIDList.get(shift + tag.getId()),
                 marker.getPosition()));
 
-        positionForMarkerIDList.put(tag.getId(), marker.getPosition());
+        positionForMarkerIDList.put(shift + tag.getId(), marker.getPosition());
     }
 
     @Override
@@ -310,7 +314,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
             Marker m = findMarkerById(onClickSavedMarkerID);
 
             if (m!=null) {
-
+                Log.i("TAGTEST", "Issued ModifyMarkerInfoAction");
                 history.push(new ModifyMarkerInfoAction(
                         (EventEditionTag)m.getTag(),
                         m.getTitle(), title,
@@ -337,6 +341,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      */
     private void addSpotEvent(LatLng onLongClickSavedLatLng) {
         Marker m = addSpotMarker(defaultTitle, defaultSnippet, onLongClickSavedLatLng, defaultType);
+        Log.i("TAGTEST", "Issued MarkerCreationAction");
         history.push(new MarkerCreationAction((EventEditionTag) m.getTag(), m.getPosition()));
 
         onClickSavedMarkerID = counterSpot;
@@ -355,6 +360,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     private void addOverlayEdgeEvent(LatLng onLongClickSavedLatLng) {
         Marker m = addOverlayEdgeMarker(onLongClickSavedLatLng);
 
+        Log.i("TAGTEST", "Issued markerCreationACtion");
         history.push(new MarkerCreationAction((EventEditionTag) m.getTag(), m.getPosition()));
         // TODO link to other overlay edges and reform polygon
     }
@@ -411,6 +417,15 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         b.putString(CustomMarkerDialog.EXTRA_SNIPPET, snippet);
         b.putSerializable(CustomMarkerDialog.EXTRA_TYPE, spotType);
         return b;
+    }
+
+    /**
+     * Methotd that computes shift for index in marker's position tracker depending on marker's type.
+     * @param type type of the marker to get shift for
+     * @return shift acoording to marker's type
+     */
+    public static int getShift(MarkerType type) {
+        return type == MarkerType.SPOT ? 0 : overlayEdgeIndexShift;
     }
 
 }
