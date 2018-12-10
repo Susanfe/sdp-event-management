@@ -1,6 +1,7 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup
 // triggers.
 const functions = require('firebase-functions');
+const request = require('request');
 
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require('firebase-admin');
@@ -53,3 +54,48 @@ exports.addUserToEvent = functions.https.onCall((data, context) => {
       }
     })
 })
+
+const API_KEY = "AAAAlIAvtxI:APA91bHnmNkZWIQzzWcxypS45bpVKBXkLNwtxM-gU6UCfZt2TI-jd02Typ8ACtLpGbHCASrWlwKHDT9EsRpqrUj7hAH8GdhvKp3_UaF_Vx4k3yqgXLqMQv2py-FiUODmG2hy2QuTGdUI"; // Firebase Cloud Messaging Server API key
+
+function listenForNotificationRequests() {
+    var requests = ref.child('notificationRequest');
+    requests.on('child_added', function(requestSnapshot) {
+        var request = requestSnapshot.val();
+        sendNotificationToUsers(
+            request.username,
+            request.message,
+            function() {
+                requestSnapshot.ref.remove();
+            }
+        );
+    }, function(error) {
+        console.error(error);
+    });
+}
+
+function sendNotificationToUsers(title, body, eventId, eventName) {
+    request({
+        url: 'https://fcm.googleapis.com/fcm/send',
+        method: 'POST',
+        headers: {
+            'Content-Type' :' application/json',
+            'Authorization': 'key='+API_KEY
+        },
+        body: JSON.stringify({
+            notification: {
+                title: title,
+                body: body
+            },
+            to : '/topics/' + eventName + '_' + eventId
+        })
+    }, function(error, response, body) {
+        if (error) { console.error(error); }
+        else if (response.statusCode >= 400) {
+            console.error('HTTP Error: '+response.statusCode+' - '+response.statusMessage);
+        }
+    });
+}
+
+// start listening
+listenForNotificationRequests();
+
