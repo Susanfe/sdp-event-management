@@ -1,6 +1,5 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,9 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -19,18 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFormFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.settings.SettingsActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
@@ -38,7 +25,9 @@ import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
-import jp.wasabeef.blurry.Blurry;
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
+import javax.inject.Inject;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
@@ -47,6 +36,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     ViewModelFactory factory;
     @Inject
     TicketingManager ticketingManager;
+    @Inject
+    Session session;
 
     private EventInteractionModel model;
     private ScheduleViewModel scheduleModel;
@@ -98,9 +89,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 return;
             }
 
-            if (ev.getImage() != null){
-                Blurry.with(this).radius(3).from(ev.getImage()).
-                        into(headerView.findViewById(R.id.drawer_header_image));
+            if (ev.haveAnImage()) {
+                ImageView header = headerView.findViewById(R.id.drawer_header_image);
+                ev.loadEventImageIntoImageView(this,header,new BlurTransformation(3));
             }
 
             drawer_header_text.setText(ev.getName());
@@ -133,7 +124,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                     return;
                 }
 
-                if (Session.isLoggedIn() && Session.isClearedFor(Role.ADMIN, ev)) {
+                if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN, ev)) {
                     MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
                     adminMenuItem.setVisible(true);
                 }
@@ -142,8 +133,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             // Set displayed fragment only when no other fragment where previously inflated.
             if (savedInstanceState == null) {
                 String fragment = intent.getStringExtra("fragment");
-                if (fragment!= null && fragment.equals("feedback"))
-                    changeFragment(new EventFeedbackFragment(), true);
+                if (fragment != null && fragment.equals("feedback")) changeFragment(new EventFeedbackFragment(), true);
                 else {
                     eventMainFragment = new EventMainFragment();
                     changeFragment(eventMainFragment, true);
@@ -209,9 +199,12 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case R.id.nav_settings:
-                Intent intent = new Intent(this,SettingsActivity.class);
+                Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;
+
+            case R.id.nav_contact:
+                callChangeFragment(FragmentType.FORM, true);
         }
 
         return true;
@@ -266,6 +259,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             if (current instanceof EventMapFragment) navigationView.setCheckedItem(R.id.nav_map);
             if (current instanceof ScheduleParentFragment) navigationView.setCheckedItem(R.id.nav_schedule);
             if (current instanceof EventTicketFragment) navigationView.setCheckedItem(R.id.nav_tickets);
+            if (current instanceof EventFormFragment) navigationView.setCheckedItem(R.id.nav_contact);
         });
     }
 

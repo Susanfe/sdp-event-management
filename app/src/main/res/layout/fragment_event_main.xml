@@ -68,28 +68,46 @@
             android:orientation="horizontal"
             android:id="@+id/main_fragment_button_bar">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
                 android:id="@+id/main_fragment_news"
+                app:drawableStartCompat="@drawable/ic_chat_yellow_24dp"
+                android:paddingStart="@dimen/default_very_big_padding"
+                android:paddingEnd="@dimen/default_big_padding"
                 style="@style/Button_barButton_left"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="33"
-                android:text="@string/main_fragment_button_news"/>
+                android:text="@string/main_fragment_button_news"
+                android:gravity="center"
+                android:singleLine="true"
+                android:ellipsize="none"/>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
                 android:id="@+id/main_fragment_schedule"
+                app:drawableStartCompat="@drawable/ic_event_yellow_24dp"
+                android:paddingStart="@dimen/default_medium_padding"
+                android:paddingEnd="@dimen/default_medium_padding"
                 style="@style/Button_barButton_middle"
                 android:layout_width="0dp" android:layout_height="wrap_content"
                 android:layout_weight="33"
-                android:text="@string/main_fragment_button_schedule"/>
+                android:text="@string/main_fragment_button_schedule"
+                android:gravity="center"
+                android:singleLine="true"
+                android:ellipsize="none"/>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
                 android:id="@+id/main_fragment_map"
+                app:drawableStartCompat="@drawable/ic_map_yellow_24dp"
+                android:paddingStart="@dimen/default_very_big_padding"
+                android:paddingEnd="@dimen/default_big_padding"
                 style="@style/Button_barButton_right"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="33"
-                android:text="@string/main_fragment_button_map"/>
+                android:text="@string/main_fragment_button_map"
+                android:gravity="center"
+                android:singleLine="true"
+                android:ellipsize="none"/>
         </LinearLayout>
 
         <LinearLayout

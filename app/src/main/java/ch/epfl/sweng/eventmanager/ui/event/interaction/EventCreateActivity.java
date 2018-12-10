@@ -2,39 +2,52 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.inject.GlideApp;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.tasks.Task;
+import com.yalantis.ucrop.UCrop;
 import dagger.android.AndroidInjection;
 
 import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";
+    private static final int PICK_IMAGE = 1;
+    private static final String FILE_EXTENSION_WEBP = "webp";
+    private static final int IMAGE_COMPRESS_QUALITY = 70;
+    private static final int MAX_IMAGE_WIDTH = 600;
+    private static final int MAX_IMAGE_HEIGHT = 300;
 
     @Inject
     ViewModelFactory factory;
 
     @Inject
     EventRepository repository;
+
+    @Inject
+    Session session;
 
     @BindView(R.id.create_form_send_button)
     Button sendButton;
@@ -52,11 +65,17 @@ public class EventCreateActivity extends AppCompatActivity {
     EditText description;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.create_form_upload_image)
+    Button uploadImageBtn;
+    @BindView(R.id.create_form_image_view)
+    ImageView eventImage;
     @BindView(R.id.create_form)
     View createForm;
 
     private int eventID;
     private Event event;
+    private Uri eventImageSrc;
+    private Boolean imageChanged = false;
     private boolean loading = true;
 
     private void populateForm(Event event) {
@@ -67,6 +86,7 @@ public class EventCreateActivity extends AppCompatActivity {
         this.description.setText(event.getDescription(), TextView.BufferType.EDITABLE);
         this.beginDate.setText(formatDate(event.getBeginDateAsDate()));
         this.endDate.setText(formatDate(event.getBeginDateAsDate()));
+        event.loadEventImageIntoImageView(this,this.eventImage);
     }
 
     private void populateEvent() {
@@ -79,9 +99,13 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     private String formatDate(Date date) {
-        String format = "dd/MM/yyyy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-        return dateFormat.format(date);
+        if (date != null) {
+            String format = "dd/MM/yyyy";
+            SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
+            return dateFormat.format(date);
+        } else {
+            return null;
+        }
     }
 
     private long getDateValue(EditText editText) {
@@ -113,7 +137,7 @@ public class EventCreateActivity extends AppCompatActivity {
         if (eventID <= 0) {
             // Create the event and set the user admin of his event
             Map<String, String> users = new HashMap<>();
-            users.put(Session.getCurrentUser().getUid(), "admin");
+            users.put(session.getCurrentUser().getUid(), "admin");
 
             event.setUsers(users);
 
@@ -121,6 +145,14 @@ public class EventCreateActivity extends AppCompatActivity {
         } else {
             return repository.updateEvent(event);
         }
+    }
+
+    @OnClick(R.id.create_form_upload_image)
+    public void setupSelectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE);
     }
 
     private void setupButton() {
@@ -134,6 +166,11 @@ public class EventCreateActivity extends AppCompatActivity {
             populateEvent(); // Update the event object
 
             prepareCreationTask().addOnSuccessListener(event -> {
+                //upload event image to storage if changed
+                if(imageChanged) {
+                    this.event.uploadImage(eventImageSrc);
+                    imageChanged = false;
+                }
                 // Start event administration activity
                 if (eventID <= 0) {
                     Toast.makeText(this, R.string.create_event_success, Toast.LENGTH_LONG).show();
@@ -218,6 +255,43 @@ public class EventCreateActivity extends AppCompatActivity {
                 // FIXME: or maybe we want that actually?
                 event.removeObservers(this);
             });
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri eventImageUri = data.getData();
+            cropAndConvertImage(eventImageUri);
+        }
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+                eventImageSrc = UCrop.getOutput(data);
+                imageChanged = true;
+                GlideApp.with(this).load(eventImageSrc).into(eventImage);
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            final Throwable cropError = UCrop.getError(data);
+            Log.i(TAG,"Unable to crop image");
+            cropError.printStackTrace();
+        }
+    }
+
+    /**
+     * Handle the cropping and conversion of the image
+     * @param eventImageUri
+     */
+    private void cropAndConvertImage(Uri eventImageUri) {
+        try {
+            File eventImageCropped = File.createTempFile("event_cover", FILE_EXTENSION_WEBP);
+            eventImageCropped.deleteOnExit();
+            Uri eventImageCroppedUri = Uri.fromFile(eventImageCropped);
+            UCrop.Options compressOptions = new UCrop.Options();
+            compressOptions.setCompressionFormat(Bitmap.CompressFormat.WEBP);
+            compressOptions.setCompressionQuality(IMAGE_COMPRESS_QUALITY);
+            UCrop.of(eventImageUri, eventImageCroppedUri).withMaxResultSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT).withAspectRatio(16, 9).withOptions(compressOptions).start(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.i(TAG, "Unable to create tempFile for cropping event image");
         }
     }
 }

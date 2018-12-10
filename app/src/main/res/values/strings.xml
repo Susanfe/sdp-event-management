@@ -64,6 +64,7 @@
     <string name="map_nav_item_activity_event_showcase">Map</string>
     <string name="schedule_nav_item_activity_event_showcase">Schedule</string>
     <string name="ticket_nav_item_activity_event_showcase">Tickets</string>
+    <string name="contact_nav_item_activity_event_showcase">Contact</string>
     <string name="admin_nav_item_activity_event_showcase">Admin</string>
     <string name="pick_event_nav_item_activity_event_showcase">Event picker</string>
     <string name="user_management_nav_item_activity_event">User management</string>
@@ -112,6 +113,12 @@
     <string name="send_news_send_button">Send</string>
     <string name="news_create">Create a news</string>
 
+    <!-- facebook text -->
+    <string name="title_activity_login_facebook">LoginFacebookActivity</string>
+    <string name="facebook_app_id">2089713884652770</string>
+    <string name="fb_login_protocol_scheme">fb2089713884652770</string>
+
+
     <!-- Accessibility text -->
     <string name="event_thumbnail">Event thumbnail</string>
 
@@ -140,6 +147,8 @@
     <string name="create_form_hint_twitter_handle">(Optional) Event twitter handle</string>
     <string name="create_form_hint_begin_date">Beginning date</string>
     <string name="create_form_hint_end_date">Ending date</string>
+    <string name="create_form_upload_image">Upload image</string>
+    <string name="image_successfully_uploaded">Event image successfully uploaded !</string>
 
     <string name="create_event_title">Create Event</string>
     <string name="edit_nav_item_activity_event">Event edition</string>
@@ -155,6 +164,7 @@
     <string name="ticket_scanning">Ticket scanning</string>
     <string name="ticket_scanning_vibrations_switch_title">Vibrations</string>
     <string name="ticket_scanning_sound_switch_title">Sound</string>
+
     <string name="submit_your_feedback">Submit your Feedback</string>
     <string name="ratings_empty">There is no ratings yet.</string>
 

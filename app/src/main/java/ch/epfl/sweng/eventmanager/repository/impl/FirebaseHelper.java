@@ -2,17 +2,16 @@ package ch.epfl.sweng.eventmanager.repository.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.annotation.NonNull;
-import android.util.Log;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,11 @@ public class FirebaseHelper {
         return img;
     }
 
-    public static interface Mapper<T> {
+    public static UploadTask uploadFileToStorage(StorageReference ref, Uri fileUri, StorageMetadata metadata) {
+        return ref.putFile(fileUri, metadata);
+    }
+
+    public interface Mapper<T> {
         static <T> Mapper<T> unit() {
             return (in, snapshot) -> in;
         }

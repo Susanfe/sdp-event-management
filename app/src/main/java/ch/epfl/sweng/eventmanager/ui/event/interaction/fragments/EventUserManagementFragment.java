@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import android.util.Log;
-
 import ch.epfl.sweng.eventmanager.R;
 
 /**
