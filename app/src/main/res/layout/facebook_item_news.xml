@@ -26,14 +26,31 @@
             android:orientation="vertical"
             android:background="@drawable/custom_border_news">
 
-            <ImageView
-                android:layout_marginTop="5dp"
-                android:id="@+id/facebook_logo"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/ic_facebook_login"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/facebook_logo"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_facebook_login"/>
+
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/facebook_detail_time"
+                    android:textColor="@color/colorSecondary"/>
+
+            </RelativeLayout>
+
 
             <TextView
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/facebook_detail_author"
@@ -60,12 +77,7 @@
                 android:layout_height="match_parent"
                 android:textColor="@color/colorSecondary"/>
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/facebook_detail_time"
-                android:textColor="@color/colorSecondary"/>
+
 
         </LinearLayout>
 

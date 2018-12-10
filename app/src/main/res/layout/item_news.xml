@@ -27,6 +27,22 @@
                 android:orientation="vertical"
             android:background="@drawable/custom_border_news">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_news_date"
+                    android:textColor="@color/colorSecondary"/>
+
+            </RelativeLayout>
+
             <TextView
                 android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
@@ -35,14 +51,6 @@
                     android:textStyle="bold"
                     android:textSize="18sp"
                 android:textColor="@color/colorSecondary"/>
-
-            <TextView
-                android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/text_news_date"
-                android:textColor="@color/colorSecondary"/>
-
 
             <TextView
                 android:layout_marginTop="5dp"
