@@ -39,9 +39,7 @@ public class ZoneTest {
         for(Position p: positions) {
             latLngs.add(p.asLatLng());
         }
-        Context context = mock(Context.class);
-        when(context.getResources().getColor(R.color.overlay_blue)).thenReturn(Color.argb(33, 26, 149, 244));
-        assertEquals(zone1.addPolygon(context).getPoints(), latLngs);
+        assertEquals(zone1.addPolygon().getPoints(), latLngs);
     }
 
 }

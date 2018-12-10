@@ -1,14 +1,13 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.content.Context;
 import android.graphics.Color;
 import com.google.android.gms.maps.model.PolygonOptions;
 import java.util.List;
 
-import ch.epfl.sweng.eventmanager.R;
-
 public class Zone {
     private List<Position> positions;
+
+    private static final int OVERLAY_INSIDE_COLOR = Color.argb(33, 24, 149, 244);
 
     public Zone(List<Position> positions) {
         this.positions = positions;
@@ -16,9 +15,9 @@ public class Zone {
 
     public Zone() {}
 
-    public PolygonOptions addPolygon(Context context) {
+    public PolygonOptions addPolygon() {
         PolygonOptions options = new PolygonOptions()
-                .fillColor(context.getResources().getColor(R.color.overlay_blue))
+                .fillColor(OVERLAY_INSIDE_COLOR)
                 .strokeWidth(3)
                 .strokeColor(Color.BLUE);
         for(int i = 0; i < positions.size(); ++i) {

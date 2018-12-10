@@ -12,6 +12,8 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import org.hamcrest.Matchers;
 import org.junit.*;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -48,7 +50,7 @@ public class EventUpdateActivityTest {
     @Test
     public void testUpdateEvent() {
         onView(withId(R.id.create_form_name)).perform(clearText(), typeText("Event Test 2"), closeSoftKeyboard());
-        onView(withId(R.id.create_form_send_button)).perform(click());
+        onView(withId(R.id.create_form_send_button)).perform(scrollTo(), click());
 
         Intents.intended(Matchers.allOf(
                 IntentMatchers.hasComponent(EventAdministrationActivity.class.getName()),
@@ -57,6 +59,7 @@ public class EventUpdateActivityTest {
 
         // Find event
 
-        Assert.assertEquals("Event Test 2", repository.getEvent(1).getValue().getName());
+        Assert.assertEquals("Event Test 2",
+                Objects.requireNonNull(repository.getEvent(1).getValue()).getName());
     }
 }
