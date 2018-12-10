@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -17,6 +19,10 @@ import ch.epfl.sweng.eventmanager.repository.data.User;
 public class FirebaseUserRepository implements UserRepository {
     private static final String TAG = "FirebaseUserRepository";
     private static final String FIREBASE_REF = "users";
+
+    @Inject
+    FirebaseUserRepository() {
+    }
 
     @Override
     public LiveData<User> getUser(String uid) {

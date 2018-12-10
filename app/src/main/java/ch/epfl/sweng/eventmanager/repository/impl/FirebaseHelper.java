@@ -60,6 +60,7 @@ public class FirebaseHelper {
             Log.w("FirebaseHelper", "Could not load image " + img.toString());
             img.setValue(null);
         });
+
         return img;
     }
 

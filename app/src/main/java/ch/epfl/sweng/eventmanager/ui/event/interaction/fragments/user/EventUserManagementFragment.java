@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
+import ch.epfl.sweng.eventmanager.repository.UserRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcaseFragment;
 import ch.epfl.sweng.eventmanager.users.Role;
@@ -45,6 +46,9 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
     TextView rightHeader;
 
     @Inject
+    UserRepository repository;
+
+    @Inject
     CloudFunction cloudFunction;
 
     public EventUserManagementFragment() {
@@ -68,7 +72,7 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
             }
 
             // TODO handle null pointer exception
-            mUserListAdapter = new UserListAdapter(this, ev);
+            mUserListAdapter = new UserListAdapter(this, ev, repository);
             mUserList.setAdapter(mUserListAdapter);
 
             // Set handler on addUser form

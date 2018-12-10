@@ -11,25 +11,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.UserRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.data.FirebaseBackedUser;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.users.Role;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
-
-    @Inject
-    UserRepository userRepository;
-
-    private Map<User, Role> mUsers;
+    private Map<LiveData<User>, Role> mUsers;
     public EventUserManagementFragment mContext;
     private Event mEvent;
 
@@ -52,7 +46,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public UserListAdapter(EventUserManagementFragment context, Event event) {
+    public UserListAdapter(EventUserManagementFragment context, Event event, UserRepository repository) {
         this.mContext = context;
         this.mEvent = event;
 
@@ -63,8 +57,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         for (Role role : raw.keySet()) {
             // TODO handle null pointer exception
             for (String uid : raw.get(role)) { // Pair of key to uid
-                // userRepository.getUser(uid); // UserRepository is null!
-                User user = new FirebaseBackedUser(uid);
+                LiveData<User> user = repository.getUser(uid); // UserRepository is null!
                 mUsers.put(user, role);
             }
         }
@@ -84,15 +77,18 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        List<User> index = new ArrayList<>(mUsers.keySet());
-        User user = index.get(position);
-        // FIXME: fetch email instead of Uid once our FirebaseBackedUser suports it
-        holder.userUid.setText(user.getUid());
-        holder.userRole.setText(mUsers.get(user).toString());
+        List<LiveData<User>> index = new ArrayList<>(mUsers.keySet());
+        LiveData<User> user = index.get(position);
+        // FIXME: fetch email instead of Uid once our User suports it
 
-        holder.removeButton.setOnClickListener(
-                v -> mContext.removeUser(v, mEvent, user.getUid(), mUsers.get(user))
-        );
+        user.observe(mContext, u -> {
+            holder.userUid.setText(u.getEmail());
+
+            holder.removeButton.setOnClickListener(
+                    v -> mContext.removeUser(v, mEvent, u.getUid(), mUsers.get(user))
+            );
+        });
+        holder.userRole.setText(mUsers.get(user).toString());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

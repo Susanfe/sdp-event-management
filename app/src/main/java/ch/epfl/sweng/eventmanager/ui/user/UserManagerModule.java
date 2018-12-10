@@ -13,5 +13,4 @@ public abstract class UserManagerModule {
 
     @ContributesAndroidInjector
     abstract DisplayAccountActivity contributeDisplayAccountActivityInjector();
-
 }

@@ -39,7 +39,7 @@ public class EventUserManagementFragmentTest {
     }
 
     /**
-     * Fails due to the FirebaseBackedUser not being injected yet.
+     * Fails due to the User not being injected yet.
     @Test
     public void testAddUser() {
         onView(withId(R.id.user_managament_user_mail_field))
