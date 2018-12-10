@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import androidx.annotation.NonNull;
-
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.sql.Date;
@@ -11,24 +10,35 @@ import java.util.List;
 /**
  * @author Louis Vialar
  */
-public class NewsOrTweet implements Comparable<NewsOrTweet> {
+public class NewsOrTweetOrFacebook implements Comparable<NewsOrTweetOrFacebook> {
     public static final int TYPE_TWEET = 1;
     public static final int TYPE_NEWS = 2;
+    public static final int TYPE_FACEBOOK = 3;
 
     private final News news;
     private final Tweet tweet;
+    private final Feed facebook;
     private final long time;
 
-    NewsOrTweet(News news) {
+    NewsOrTweetOrFacebook(News news) {
         this.news = news;
         this.tweet = null;
+        this.facebook = null;
         this.time = news.getDate();
     }
 
-    NewsOrTweet(Tweet tweet) {
+    NewsOrTweetOrFacebook(Tweet tweet) {
         this.news = null;
         this.tweet = tweet;
+        this.facebook = null;
         this.time = Date.parse(tweet.createdAt);
+    }
+
+    NewsOrTweetOrFacebook(Feed facebook) {
+        this.news = null;
+        this.tweet = null;
+        this.facebook = facebook;
+        this.time = facebook.getTime().getTime();
     }
 
     public News getNews() {
@@ -39,28 +49,40 @@ public class NewsOrTweet implements Comparable<NewsOrTweet> {
         return tweet;
     }
 
+    public Feed getFacebook() {return facebook; }
+
     public long getTime() {
         return time;
     }
 
     @Override
-    public int compareTo(@NonNull NewsOrTweet o) {
+    public int compareTo(@NonNull NewsOrTweetOrFacebook o) {
         return Long.compare(o.time, time);
     }
 
     public int getItemType() {
-        return this.tweet == null ? TYPE_NEWS : TYPE_TWEET;
+        if(this.tweet != null) {
+            return TYPE_TWEET;
+        }
+        else if(this.facebook != null) {
+            return TYPE_FACEBOOK;
+        }
+        return TYPE_NEWS;
     }
 
-    public static List<NewsOrTweet> mergeLists(List<News> news, List<Tweet> tweets) {
-        List<NewsOrTweet> target = new ArrayList<>();
+    public static List<NewsOrTweetOrFacebook> mergeLists(List<News> news, List<Tweet> tweets, List<Feed> facebookNews) {
+        List<NewsOrTweetOrFacebook> target = new ArrayList<>();
         if (news != null)
             for (News n : news)
-                target.add(new NewsOrTweet(n));
+                target.add(new NewsOrTweetOrFacebook(n));
 
         if (tweets != null)
             for (Tweet t : tweets)
-                target.add(new NewsOrTweet(t));
+                target.add(new NewsOrTweetOrFacebook(t));
+
+        if (facebookNews != null)
+            for (Feed f : facebookNews)
+                target.add(new NewsOrTweetOrFacebook(f));
 
         return target;
     }
@@ -68,9 +90,10 @@ public class NewsOrTweet implements Comparable<NewsOrTweet> {
     @Override
     @NonNull
     public String toString() {
-        return "NewsOrTweet{" +
+        return "NewsOrTweetOrFacebook{" +
                 "news=" + news +
                 ", tweet=" + tweet +
+                ", facebook=" +facebook +
                 ", time=" + time +
                 '}';
     }
@@ -78,12 +101,13 @@ public class NewsOrTweet implements Comparable<NewsOrTweet> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof NewsOrTweet)) return false;
+        if (!(o instanceof NewsOrTweetOrFacebook)) return false;
 
-        NewsOrTweet that = (NewsOrTweet) o;
+        NewsOrTweetOrFacebook that = (NewsOrTweetOrFacebook) o;
 
         if (time != that.time) return false;
         if (news != null ? !news.equals(that.news) : that.news != null) return false;
+        if (facebook != null ? !facebook.equals(that.facebook) : that.facebook != null) return false;
         return tweet != null ? tweet.equals(that.tweet) : that.tweet == null;
     }
 }

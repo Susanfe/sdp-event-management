@@ -2,8 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="?attr/actionBarSize">
+    android:layout_height="match_parent">
 
 
     <ProgressBar
@@ -14,58 +13,98 @@
         android:layout_gravity="center"
         />
 
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent"
+                android:id="@+id/create_form"
+                android:visibility="visible">
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_margin="10dp"
-        android:visibility="gone"
-        android:id="@+id/create_form"
-        >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_margin="10dp">
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/create_form_name"
-            android:hint="@string/create_form_hint_name"
-            android:layout_weight="10"
-            android:inputType="text" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/create_form_name"
+                android:hint="@string/create_form_hint_name"
+                android:layout_weight="10"
+                android:inputType="text"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+        <EditText
+                android:hint="@string/create_form_hint_begin_date"
+                android:clickable="true"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/create_form_begin_date"
+                android:inputType="date"/>
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/create_form_email"
-            android:hint="@string/create_form_hint_email"
-            android:layout_weight="10"
-            android:inputType="textEmailAddress" />
+                android:hint="@string/create_form_hint_end_date"
+                android:clickable="true"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/create_form_end_date"
+                android:inputType="date"/>
+
+        </LinearLayout>
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/create_form_twitter_handle"
-            android:hint="@string/create_form_hint_twitter_handle"
-            android:layout_weight="10"
-            android:inputType="text" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/create_form_email"
+                android:hint="@string/create_form_hint_email"
+                android:layout_weight="10"
+                android:inputType="textEmailAddress"/>
 
         <EditText
-            android:id="@+id/create_form_description"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:gravity="top"
-            android:hint="@string/create_form_hint_description"
-            android:inputType="textMultiLine"
-            android:layout_weight="70"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/create_form_twitter_handle"
+                android:hint="@string/create_form_hint_twitter_handle"
+                android:layout_weight="10"
+                android:inputType="text"/>
+
+        <EditText
+                android:id="@+id/create_form_description"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:gravity="top"
+                android:hint="@string/create_form_hint_description"
+                android:inputType="textMultiLine"
+                android:layout_weight="100"/>
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/create_form_image_view"/>
+
+        <com.google.android.material.button.MaterialButton android:layout_width="wrap_content"
+                                                           android:layout_height="wrap_content"
+                                                           android:layout_gravity="center_horizontal"
+        android:text="@string/create_form_upload_image"
+        android:id="@+id/create_form_upload_image"/>
+
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/create_form_send_button"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:text="@string/contact_form_send_button_text"
-            android:layout_weight="10"
-            style="@style/Button_global"/>
+                android:id="@+id/create_form_send_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_form_send_button_text"
+                android:layout_weight="10"
+                style="@style/Button_global"/>
 
 
     </LinearLayout>
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,9 @@ import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.users.Session;
 import com.google.android.gms.tasks.OnCompleteListener;
+import dagger.android.AndroidInjection;
+
+import javax.inject.Inject;
 
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
@@ -31,8 +34,13 @@ public class SignUpActivity extends AppCompatActivity {
     @BindView(R.id.signup_toolbar)
     Toolbar toolbar;
 
+    @Inject
+    Session session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
@@ -66,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
             UserManagerHelper.showProgress(mSignUpButton, mProgressBar, true);
             OnCompleteListener callback = UserManagerHelper.getAuthOnCompleteListener(this, mPasswordView,
                     mSignUpButton, mProgressBar);
-            Session.registerAndLogin(email, password, this, callback);
+            session.registerAndLogin(email, password, this, callback);
         }
     }
 }

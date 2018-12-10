@@ -3,13 +3,7 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.UserListAdapter;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.UserModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelKey;
 import dagger.Binds;
 import dagger.Module;
@@ -59,6 +53,9 @@ public abstract class EventInteractionModule {
 
     @ContributesAndroidInjector
     abstract SendNewsFragment contributeSendNewsFragmentInjector();
+
+    @ContributesAndroidInjector
+    abstract NewsFragment contributeNewsFragmentInjector();
 
     @ContributesAndroidInjector
     abstract EventMapFragment contributeEventMapFragmentInjector();

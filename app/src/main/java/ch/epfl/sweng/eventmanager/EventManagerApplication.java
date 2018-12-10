@@ -1,13 +1,13 @@
 package ch.epfl.sweng.eventmanager;
 
 import android.app.Activity;
-import android.app.Application;
 
 import com.twitter.sdk.android.core.Twitter;
 
 import javax.inject.Inject;
 
 import androidx.fragment.app.Fragment;
+import androidx.multidex.MultiDexApplication;
 import ch.epfl.sweng.eventmanager.inject.DaggerApplicationComponent;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import dagger.android.AndroidInjector;
@@ -18,7 +18,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 /**
  * @author Louis Vialar
  */
-public class EventManagerApplication extends Application implements HasActivityInjector, HasSupportFragmentInjector {
+public class EventManagerApplication extends MultiDexApplication implements HasActivityInjector, HasSupportFragmentInjector {
     @Inject
     DispatchingAndroidInjector<Activity> activityDispatchingAndroidInjector;
     @Inject
