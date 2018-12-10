@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 public class NewsOrTweetOrFacebookTest {
     private Tweet t = new Tweet(null, "Wed Aug 27 13:08:45 +0000 2008", null, null, null, null, false, null, 0, null, null, 0, null, 0, null, null, null, false, null, 0, null, null, 0, false, null, null, null, null, false, null, false, null, null, null);
     private News n = new News("News1", 1540391282000L, "News 1 Content");
-    private Feed f;
+    private FacebookPost f;
     private NewsOrTweetOrFacebook tweet = new NewsOrTweetOrFacebook(t);
     private NewsOrTweetOrFacebook news = new NewsOrTweetOrFacebook(n);
     private NewsOrTweetOrFacebook facebookNews;
@@ -30,7 +30,7 @@ public class NewsOrTweetOrFacebookTest {
         obj.put("message", "event in blue !");
         obj.put("created_time", "2018-12-03T16:02:53+0000");
         obj.put("id", "11");
-        f = new Feed(obj);
+        f = new FacebookPost(obj);
         facebookNews = new NewsOrTweetOrFacebook(f);
     }
 

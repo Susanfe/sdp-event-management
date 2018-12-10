@@ -32,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.data.Feed;
+import ch.epfl.sweng.eventmanager.repository.data.FacebookPost;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweetOrFacebook;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
@@ -217,32 +217,32 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 this.context = context;
             }
 
-            final void bind(Feed feed) {
-                if(feed.hasName()) {
+            final void bind(FacebookPost facebookPost) {
+                if(facebookPost.hasName()) {
                     this.author.setVisibility(View.VISIBLE);
-                    this.author.setText(feed.getAuthor());
+                    this.author.setText(facebookPost.getName());
                 }
                 else {
                     author.setVisibility(View.GONE);
                 }
-                if(feed.hasContent()) {
+                if(facebookPost.hasContent()) {
                     this.content.setVisibility(View.VISIBLE);
-                    this.content.setText(feed.getContent());
+                    this.content.setText(facebookPost.getContent());
                 }
                 else {
                     content.setVisibility(View.GONE);
                 }
-                if(feed.hasDescription()) {
+                if(facebookPost.hasDescription()) {
                     this.description.setVisibility(View.VISIBLE);
-                    this.description.setText(feed.getDescription());
+                    this.description.setText(facebookPost.getDescription());
                 }
                 else {
                     description.setVisibility(View.GONE);
                 }
-                if(feed.hasImage()) {
-                    loadImageFromUrl(feed.getImageURL(), image_facebook_post);
+                if(facebookPost.hasImage()) {
+                    loadImageFromUrl(facebookPost.getImageURL(), image_facebook_post);
                 }
-                this.date.setText(feed.dateAsString());
+                this.date.setText(facebookPost.dateAsString());
             }
 
             private void loadImageFromUrl(String url, ImageView view) {

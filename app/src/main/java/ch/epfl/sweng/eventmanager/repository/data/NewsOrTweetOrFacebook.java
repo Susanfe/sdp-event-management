@@ -16,7 +16,7 @@ public class NewsOrTweetOrFacebook implements Comparable<NewsOrTweetOrFacebook> 
 
     private final News news;
     private final Tweet tweet;
-    private final Feed facebook;
+    private final FacebookPost facebook;
     private final long time;
 
     NewsOrTweetOrFacebook(News news) {
@@ -33,7 +33,7 @@ public class NewsOrTweetOrFacebook implements Comparable<NewsOrTweetOrFacebook> 
         this.time = Date.parse(tweet.createdAt);
     }
 
-    NewsOrTweetOrFacebook(Feed facebook) {
+    NewsOrTweetOrFacebook(FacebookPost facebook) {
         this.news = null;
         this.tweet = null;
         this.facebook = facebook;
@@ -48,7 +48,7 @@ public class NewsOrTweetOrFacebook implements Comparable<NewsOrTweetOrFacebook> 
         return tweet;
     }
 
-    public Feed getFacebook() {return facebook; }
+    public FacebookPost getFacebook() {return facebook; }
 
     public long getTime() {
         return time;
@@ -69,7 +69,7 @@ public class NewsOrTweetOrFacebook implements Comparable<NewsOrTweetOrFacebook> 
         return TYPE_NEWS;
     }
 
-    public static List<NewsOrTweetOrFacebook> mergeLists(List<News> news, List<Tweet> tweets, List<Feed> facebookNews) {
+    public static List<NewsOrTweetOrFacebook> mergeLists(List<News> news, List<Tweet> tweets, List<FacebookPost> facebookNews) {
         List<NewsOrTweetOrFacebook> target = new ArrayList<>();
         if (news != null)
             for (News n : news)
@@ -80,7 +80,7 @@ public class NewsOrTweetOrFacebook implements Comparable<NewsOrTweetOrFacebook> 
                 target.add(new NewsOrTweetOrFacebook(t));
 
         if (facebookNews != null)
-            for (Feed f : facebookNews)
+            for (FacebookPost f : facebookNews)
                 target.add(new NewsOrTweetOrFacebook(f));
 
         return target;

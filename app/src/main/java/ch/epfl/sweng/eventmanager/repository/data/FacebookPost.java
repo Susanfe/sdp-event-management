@@ -11,20 +11,20 @@ import java.util.Locale;
 /*
 This class enable to store every component(message, post time, author) of a facebook post.
  */
-public class Feed {
+public class FacebookPost {
     private String id = "";
     private String content = "";
     private Date time;
     private String url = "";
     private String description = "";
-    private String author = "";
+    private String name = "";
 
     /**
      * Stores in class instances components of the facebook post
      *
      * @param object the JSONObject that contain all the information
      */
-    public Feed(JSONObject object) {
+    public FacebookPost(JSONObject object) {
         try {
             String dateStr = object.getString("created_time");
             time = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault()).parse(dateStr);
@@ -40,7 +40,7 @@ public class Feed {
                 content = object.getString("message");
             }
             if (object.has("name")) {
-                author = object.getString("name");
+                name = object.getString("name");
             }
         }
         catch (JSONException e) {
@@ -74,7 +74,7 @@ public class Feed {
         return id;
     }
 
-    public String getAuthor() { return author; }
+    public String getName() { return name; }
 
     public String getImageURL() { return (url); }
 
@@ -85,7 +85,7 @@ public class Feed {
     }
 
     public boolean hasName() {
-        return (author != null && author.length() > 0);
+        return (name != null && name.length() > 0);
     }
 
     public boolean hasDescription() {
@@ -99,9 +99,9 @@ public class Feed {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Feed)) return false;
+        if (!(o instanceof FacebookPost)) return false;
 
-        Feed that = (Feed) o;
+        FacebookPost that = (FacebookPost) o;
         return (id.equals(that.id) && time.equals(that.time) && content.equals(that.content));
     }
 

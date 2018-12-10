@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
-import ch.epfl.sweng.eventmanager.repository.data.Feed;
+import ch.epfl.sweng.eventmanager.repository.data.FacebookPost;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweetOrFacebook;
 
@@ -38,11 +38,11 @@ public class NewsViewModel extends ViewModel {
         return Transformations.switchMap(twitterName, name -> repository.getTweets(name));
     }
 
-    private LiveData<List<Feed>> nameToFacebookNews(LiveData<String> facebookName) {
+    private LiveData<List<FacebookPost>> nameToFacebookNews(LiveData<String> facebookName) {
         return Transformations.switchMap(facebookName, name -> repository.getFacebookNews(name));
     }
 
-    private LiveData<List<NewsOrTweetOrFacebook>> combine(LiveData<List<News>> newsData, LiveData<List<Tweet>> tweetsData, LiveData<List<Feed>> facebookData) {
+    private LiveData<List<NewsOrTweetOrFacebook>> combine(LiveData<List<News>> newsData, LiveData<List<Tweet>> tweetsData, LiveData<List<FacebookPost>> facebookData) {
         MediatorLiveData<List<NewsOrTweetOrFacebook>> data = new MediatorLiveData<>();
         data.addSource(newsData, news -> data.setValue(NewsOrTweetOrFacebook.mergeLists(news, tweetsData.getValue(), facebookData.getValue())));
         data.addSource(tweetsData, tweets -> data.setValue(NewsOrTweetOrFacebook.mergeLists(newsData.getValue(), tweets, facebookData.getValue())));
