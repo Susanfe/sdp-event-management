@@ -1,6 +1,5 @@
 package ch.epfl.sweng.eventmanager.repository.data.MapEditionData;
 
-import android.util.Log;
 import android.util.SparseArray;
 
 import com.google.android.gms.maps.model.LatLng;
