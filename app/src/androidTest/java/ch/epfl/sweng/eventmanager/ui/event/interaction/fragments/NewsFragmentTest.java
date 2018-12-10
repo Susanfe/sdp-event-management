@@ -2,14 +2,6 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import android.os.SystemClock;
 import android.view.Gravity;
-
-import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import javax.inject.Inject;
-
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
@@ -18,19 +10,22 @@ import ch.epfl.sweng.eventmanager.ToastMatcher;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.TestApplication;
 import ch.epfl.sweng.eventmanager.test.repository.MockNewsRepository;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.EventAdministrationActivity;
 import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventAdministrationActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
+import org.hamcrest.Matchers;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import javax.inject.Inject;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.matcher.ViewMatchers.*;
 
 public class NewsFragmentTest {
     @Rule

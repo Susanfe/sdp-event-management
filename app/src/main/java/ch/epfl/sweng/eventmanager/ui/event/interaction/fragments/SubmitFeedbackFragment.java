@@ -19,6 +19,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventRating;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import dagger.android.support.AndroidSupportInjection;
+
 import javax.inject.Inject;
 import java.util.concurrent.atomic.AtomicReference;
 

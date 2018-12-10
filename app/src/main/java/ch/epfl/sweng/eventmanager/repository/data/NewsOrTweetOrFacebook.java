@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import androidx.annotation.NonNull;
 import com.twitter.sdk.android.core.models.Tweet;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;

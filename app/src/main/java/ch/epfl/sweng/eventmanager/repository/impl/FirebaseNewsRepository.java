@@ -1,14 +1,11 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
+import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import android.os.Bundle;
-import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
 import ch.epfl.sweng.eventmanager.repository.data.FacebookPost;
 import ch.epfl.sweng.eventmanager.repository.data.News;
-
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.HttpMethod;
@@ -21,13 +18,11 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.TimelineResult;
 import com.twitter.sdk.android.tweetui.UserTimeline;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
