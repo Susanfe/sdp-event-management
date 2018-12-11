@@ -34,7 +34,9 @@ public class FirebaseUserRepository implements UserRepository {
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ret.postValue(dataSnapshot.getValue(User.class));
+                User user = dataSnapshot.getValue(User.class);
+                user.setUid(uid);
+                ret.postValue(user);
             }
 
             @Override
