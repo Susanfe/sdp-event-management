@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.data;
+package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -10,6 +10,10 @@ import java.util.List;
 
 /**
  * Draws up to four other drawables.
+ *
+ * Class from the Google Maps Android API.
+ * https://developers.google.com/maps/documentation/android-api/utility/
+ *
  */
 public class MultiDrawable extends Drawable {
 
