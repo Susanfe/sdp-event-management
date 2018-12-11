@@ -57,10 +57,10 @@
     <string name="join_event_event_item_btn">Join Event</string>
     <string name="goto_event_btn">Go to event</string>
     <string name="add_button">Add</string>
-    <string name="add_user_success">The user was added to this event</string>
-    <string name="add_user_failure">Could not add the user to this event</string>
-    <string name="remove_user_success">The user/role was removed from this event</string>
-    <string name="remove_user_failure">Could not remove the user/role from this event</string>
+    <string name="add_user_success">Add request sent</string>
+    <string name="add_user_failure">Could not send add request</string>
+    <string name="remove_user_success">Removal request sent</string>
+    <string name="remove_user_failure">Could not send the removal request</string>
 
     <string name="main_nav_item_activity_event_showcase">Description</string>
     <string name="map_nav_item_activity_event_showcase">Map</string>

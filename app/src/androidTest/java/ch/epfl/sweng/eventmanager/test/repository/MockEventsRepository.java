@@ -226,8 +226,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         if (ev == null)
             return Tasks.call(() -> false);
 
-        ev.getUsers().put(email, role);
-        events.put(eventId, ev);
+        // TODO: we currently only check if this is properly called
 
         return Tasks.call(() -> true);
     }
@@ -238,7 +237,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         if (ev == null)
             return Tasks.call(() -> false);
 
-        // TODO
+        // TODO: we currently only check if this is properly called
 
         return Tasks.call(() -> true);
     }

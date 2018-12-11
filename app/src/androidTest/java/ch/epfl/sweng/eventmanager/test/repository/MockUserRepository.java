@@ -9,6 +9,8 @@ public class MockUserRepository implements UserRepository {
 
     @Override
     public LiveData<User> getUser(String uid) {
-        return new MutableLiveData<>();
+        MutableLiveData<User> output = new MutableLiveData<>();
+        output.setValue(new User(uid, uid, uid));
+        return output;
     }
 }
