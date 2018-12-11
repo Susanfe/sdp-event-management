@@ -29,6 +29,7 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.Ticket;
+import dagger.android.support.AndroidSupportInjection;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -56,6 +57,12 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
     public EventTicketManagementFragment() {
         // Required empty public constructor
         super(R.layout.fragment_event_ticket_management);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
