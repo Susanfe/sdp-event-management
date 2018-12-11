@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.multidex.MultiDexApplication;
 import ch.epfl.sweng.eventmanager.inject.DaggerApplicationComponent;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.twitter.sdk.android.core.Twitter;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -38,6 +40,7 @@ public class EventManagerApplication extends MultiDexApplication implements HasA
         initDaggerComponent();
 
         Twitter.initialize(this);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
     @Override
