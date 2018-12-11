@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.data;
+package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
