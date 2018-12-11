@@ -24,6 +24,11 @@ public class Zone {
     }
 
     /**
+     * empty contructor needed for firebase
+     */
+    public Zone(){}
+
+    /**
      * @return A PolygonOptions instance that represents the overlay
      */
     public PolygonOptions addPolygon() {
