@@ -48,7 +48,7 @@ public class EventUpdateActivityTest {
     @Test
     public void testUpdateEvent() {
         onView(withId(R.id.create_form_name)).perform(clearText(), typeText("Event Test 2"), closeSoftKeyboard());
-        onView(withId(R.id.create_form_send_button)).perform(click());
+        onView(withId(R.id.create_form_send_button)).perform(scrollTo(), click());
 
         Intents.intended(Matchers.allOf(
                 IntentMatchers.hasComponent(EventAdministrationActivity.class.getName()),

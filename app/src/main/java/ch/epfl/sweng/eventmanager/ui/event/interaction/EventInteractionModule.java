@@ -40,6 +40,11 @@ public abstract class EventInteractionModule {
     @ViewModelKey(ZoneModel.class)
     abstract ViewModel provideZonesViewModel(ZoneModel zonesModel);
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(UserModel.class)
+    abstract UserModel provideUserViewModel(UserModel userModel);
+
     @ContributesAndroidInjector
     abstract EventShowcaseActivity contributeEventShowcaseActivityInjector();
 

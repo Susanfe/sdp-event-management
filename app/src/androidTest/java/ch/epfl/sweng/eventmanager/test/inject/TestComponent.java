@@ -9,6 +9,7 @@ import ch.epfl.sweng.eventmanager.test.ticketing.MockTicketingModule;
 import ch.epfl.sweng.eventmanager.test.users.MockUsersModule;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventCreateActivityTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventUpdateActivityTest;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventUserManagementFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivityTest;
@@ -42,6 +43,7 @@ public interface TestComponent extends ApplicationComponent {
     void inject(ScanningTest test);
 
     void inject(EventFeedbackFragmentTest test);
+    void inject(EventUserManagementFragmentTest test);
 
     void inject(LoginActivityTest test);
 
