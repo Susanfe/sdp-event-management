@@ -4,14 +4,13 @@ import android.graphics.Color;
 import com.google.android.gms.maps.model.PolygonOptions;
 import java.util.List;
 
+
 public class Zone {
     private List<Position> positions;
 
     public Zone(List<Position> positions) {
         this.positions = positions;
     }
-
-    public Zone() {}
 
     public PolygonOptions addPolygon() {
         PolygonOptions options = new PolygonOptions()
