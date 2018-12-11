@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
+import android.os.Bundle;
 import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -83,8 +84,8 @@ public class FirebaseNewsRepository implements NewsRepository {
     public LiveData<List<FacebookPost>> getFacebookNews(String screenName) {
         MutableLiveData<List<FacebookPost>> data = new MutableLiveData<>();
         List<FacebookPost> facebookPostList = new ArrayList<>();
-        Bundle params;
-        params = new Bundle();
+
+        Bundle params = new Bundle();
         params.putString("fields", "description, message,created_time,id, full_picture,status_type,source, name");
 
 
