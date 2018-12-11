@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -33,6 +34,8 @@ public class ScheduleParentFragment extends Fragment {
     ViewPager viewPager;
     @BindView(R.id.tabs)
     TabLayout tabLayout;
+    @BindView(R.id.viewpager_empty)
+    TextView emptyText;
     private ScheduleViewModel scheduleViewModel;
     private ViewPagerAdapter viewPagerAdapter;
     private Bundle savedInstanceState;
@@ -77,7 +80,9 @@ public class ScheduleParentFragment extends Fragment {
 
         scheduleViewModel.getScheduleItemsByRoom().observe(this, map -> {
             if (map != null) {
+                viewPager.setVisibility(View.VISIBLE);
                 tabLayout.setVisibility(View.VISIBLE);
+                emptyText.setVisibility(View.GONE);
                 updateTabs(map.keySet());
                 viewPagerAdapter.notifyDataSetChanged();
                 if (savedInstanceState != null) {
@@ -94,8 +99,9 @@ public class ScheduleParentFragment extends Fragment {
                 }
             } else {
                 tabLayout.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
+                emptyText.setVisibility(View.VISIBLE);
                 destroyUnusedFragments(viewPagerAdapter.mFragmentList, Collections.emptySet(), true);
-                viewPagerAdapter.addFragment(new ScheduleFragment(), "");
                 viewPagerAdapter.notifyDataSetChanged();
             }
         });
