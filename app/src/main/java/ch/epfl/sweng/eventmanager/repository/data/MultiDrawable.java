@@ -10,6 +10,10 @@ import java.util.List;
 
 /**
  * Draws up to four other drawables.
+ *
+ * Class from the Google Maps Android API.
+ * https://developers.google.com/maps/documentation/android-api/utility/
+ *
  */
 public class MultiDrawable extends Drawable {
 
