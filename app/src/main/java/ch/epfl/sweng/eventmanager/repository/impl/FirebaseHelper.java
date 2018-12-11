@@ -9,7 +9,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,15 +62,8 @@ public class FirebaseHelper {
         return img;
     }
 
-    public static LiveData<Uri> getImageURL(StorageReference ref) {
-        final MutableLiveData<Uri> url = new MutableLiveData<>();
-        ref.getDownloadUrl().addOnSuccessListener(uri -> {
-            url.setValue(uri);
-        }).addOnFailureListener(exception -> {
-            Log.w("FirebaseHelper", "Could not load image URL " + url.toString());
-            url.setValue(null);
-        });
-        return url;
+    public static UploadTask uploadFileToStorage(StorageReference ref, Uri fileUri, StorageMetadata metadata) {
+        return ref.putFile(fileUri, metadata);
     }
 
     public interface Mapper<T> {

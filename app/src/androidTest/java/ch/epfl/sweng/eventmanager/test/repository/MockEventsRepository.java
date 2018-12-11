@@ -166,7 +166,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
     private void addEvent(Event event) {
         events.put(event.getId(), event);
-        eventImagesUri.put(event.getId(), event.getImageURI());
+        eventImagesUri.put(event.getId(), event.getImageURLasURI());
     }
 
     private void addZones(int event, List<Zone> list) {
@@ -186,11 +186,6 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     @Override
     public LiveData<Event> getEvent(int eventId) {
         return events.get(eventId);
-    }
-
-    @Override
-    public LiveData<Uri> getEventImageURL(Event event) {
-        return eventImagesUri.get(event.getId());
     }
 
     @Override

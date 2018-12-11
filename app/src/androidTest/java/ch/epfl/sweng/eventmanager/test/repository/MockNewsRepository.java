@@ -1,25 +1,18 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.twitter.sdk.android.core.models.Tweet;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.test.ObservableList;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.twitter.sdk.android.core.models.Tweet;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.*;
 
 /**
  * @author Louis Vialar
