@@ -1,7 +1,5 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import java.security.cert.CertPathValidatorException;
-
 /**
  * Represents all type of spot
  *
