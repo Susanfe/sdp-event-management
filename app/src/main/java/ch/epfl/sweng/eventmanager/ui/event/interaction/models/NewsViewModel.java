@@ -5,12 +5,11 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
-import ch.epfl.sweng.eventmanager.repository.data.Feed;
-import ch.epfl.sweng.eventmanager.repository.data.News;
-import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweetOrFacebook;
+import ch.epfl.sweng.eventmanager.repository.data.*;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsViewModel extends ViewModel {
@@ -40,16 +39,33 @@ public class NewsViewModel extends ViewModel {
         return Transformations.switchMap(facebookName, name -> repository.getFacebookNews(name));
     }
 
-    private LiveData<List<NewsOrTweetOrFacebook>> combine(LiveData<List<News>> newsData, LiveData<List<Tweet>> tweetsData, LiveData<List<Feed>> facebookData) {
-        MediatorLiveData<List<NewsOrTweetOrFacebook>> data = new MediatorLiveData<>();
-        data.addSource(newsData, news -> data.setValue(NewsOrTweetOrFacebook.mergeLists(news, tweetsData.getValue(), facebookData.getValue())));
-        data.addSource(tweetsData, tweets -> data.setValue(NewsOrTweetOrFacebook.mergeLists(newsData.getValue(), tweets, facebookData.getValue())));
-        data.addSource(facebookData, facebook -> data.setValue(NewsOrTweetOrFacebook.mergeLists(newsData.getValue(), tweetsData.getValue(), facebook)));
+    private LiveData<List<SocialNetworkPost>> combine(LiveData<List<News>> newsData, LiveData<List<Tweet>> tweetsData, LiveData<List<Feed>> facebookData) {
+        MediatorLiveData<List<SocialNetworkPost>> data = new MediatorLiveData<>();
+        data.addSource(newsData, news -> data.setValue(mergeLists(news, tweetsData.getValue(), facebookData.getValue())));
+        data.addSource(tweetsData, tweets -> data.setValue(mergeLists(newsData.getValue(), tweets, facebookData.getValue())));
+        data.addSource(facebookData, facebook -> data.setValue(mergeLists(newsData.getValue(), tweetsData.getValue(), facebook)));
 
         return data;
     }
 
-    public LiveData<List<NewsOrTweetOrFacebook>> getNews(LiveData<String> twitterName, LiveData<String> facebookName) {
+    private List<SocialNetworkPost> mergeLists(List<News> news, List<Tweet> tweets, List<Feed> fb) {
+        List<SocialNetworkPost> list = new ArrayList<>();
+        if (news != null)
+            for (News n : news)
+                list.add(new NewsPost(n));
+
+        if (tweets != null)
+            for (Tweet t : tweets)
+                list.add(new TwitterPost(t));
+
+        if (fb != null)
+            for (Feed f : fb)
+                list.add(new FacebookPost(f));
+
+        return list;
+    }
+
+    public LiveData<List<SocialNetworkPost>> getNews(LiveData<String> twitterName, LiveData<String> facebookName) {
         return combine(news, nameToTweets(twitterName), nameToFacebookNews(facebookName));
     }
 
