@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager;
 
 import android.app.Activity;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.twitter.sdk.android.core.Twitter;
 
 import javax.inject.Inject;
@@ -40,6 +41,7 @@ public class EventManagerApplication extends MultiDexApplication implements HasA
         initDaggerComponent();
 
         Twitter.initialize(this);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
     @Override
