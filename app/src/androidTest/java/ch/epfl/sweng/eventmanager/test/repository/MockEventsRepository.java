@@ -215,6 +215,11 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     }
 
     @Override
+    public void uploadImage(Event event, Uri imageSrc) {
+        // Do nothing
+    }
+
+    @Override
     public Task<Event> updateEvent(Event event) {
         events.put(event.getId(), event);
         return Tasks.call(() -> event);

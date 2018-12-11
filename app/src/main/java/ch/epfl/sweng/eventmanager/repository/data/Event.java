@@ -1,17 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.content.Context;
 import android.net.Uri;
-import android.widget.ImageView;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
-import ch.epfl.sweng.eventmanager.repository.impl.FirebaseHelper;
 import ch.epfl.sweng.eventmanager.users.Role;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
-import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -262,30 +253,13 @@ public final class Event {
         return imageURL != null;
     }
 
-
-    @Exclude
-    public void uploadImage(Uri imgSrc) {
-        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
-        StorageReference eventsLogoRef = imagesRef.child(getImageName());
-        FirebaseDatabase fdB = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = fdB.getReference("events").child(String.valueOf(getId()));
-        StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/webp").build();
-        FirebaseHelper.uploadFileToStorage(eventsLogoRef, imgSrc, metadata)
-                .addOnSuccessListener(taskSnapshot -> eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            setImageURL(uri.toString());
-            Map<String, Object> updateUrl = new HashMap<>();
-            updateUrl.put("imageURL", uri.toString());
-            dbRef.updateChildren(updateUrl);
-        }));
-    }
-
     /**
      * Return the name for storing the eventImage into firebase
      *
      * @return String imageName
      */
     @Exclude
-    private String getImageName() {
+    public String getImageName() {
         return this.getId() + ".webp";
     }
 

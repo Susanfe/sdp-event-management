@@ -171,7 +171,7 @@ public class EventCreateActivity extends AppCompatActivity {
             prepareCreationTask().addOnSuccessListener(event -> {
                 //upload event image to storage if changed
                 if(imageChanged) {
-                    this.event.uploadImage(eventImageSrc);
+                    this.repository.uploadImage(event, eventImageSrc);
                     imageChanged = false;
                 }
                 // Start event administration activity
