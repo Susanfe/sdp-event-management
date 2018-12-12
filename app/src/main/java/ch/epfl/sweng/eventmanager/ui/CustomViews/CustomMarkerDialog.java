@@ -20,6 +20,11 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapEditionFragment;
 
+/**
+ * Class used to interact with user when he wants to modify a marker in the MapEdition fragment
+ * The dialog displays the current title, snippet and SpotType of the selected spot and allows user
+ * to modify them.
+ */
 public class CustomMarkerDialog extends DialogFragment {
 
     public static final String EXTRA_TITLE = "ui.CustomViews.EXTRA_TITLE";

@@ -15,6 +15,10 @@ import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapEditionFragment;
 
+/**
+ * Class used to interact with user when user wants to add a new marker on the map. The user is
+ * prompted with two choices, add a spot or add an edge to the overlay of the event.
+ */
 public class CustomAddOptionsDialog extends DialogFragment {
 
     @NonNull
