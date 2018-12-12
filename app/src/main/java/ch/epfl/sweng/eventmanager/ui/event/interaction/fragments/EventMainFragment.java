@@ -7,22 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.notifications.*;
-import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
-import com.google.firebase.messaging.FirebaseMessaging;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import dagger.android.support.AndroidSupportInjection;
-
-import java.util.Arrays;
 
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
@@ -32,6 +25,9 @@ public class EventMainFragment extends AbstractShowcaseFragment {
 
     @Inject
     protected FeedbackRepository feedbackRepository;
+
+    @Inject
+    ImageLoader loader;
 
     @BindView(R.id.contact_form_go_button)
     Button contactButton;
@@ -78,7 +74,8 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             eventDescription.setText(ev.getDescription());
             eventDescription.setVisibility(View.VISIBLE);
 
-            ev.loadEventImageIntoImageView(getContext(), eventImage);
+            loader.loadImageWithSpinner(ev, getContext(), eventImage, null);
+
             eventImage.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 

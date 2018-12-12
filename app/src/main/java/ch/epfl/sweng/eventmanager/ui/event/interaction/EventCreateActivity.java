@@ -15,10 +15,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.inject.GlideApp;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.tasks.Task;
@@ -49,6 +49,9 @@ public class EventCreateActivity extends AppCompatActivity {
 
     @Inject
     Session session;
+
+    @Inject
+    ImageLoader imageLoader;
 
     @BindView(R.id.create_form_send_button)
     Button sendButton;
@@ -89,8 +92,8 @@ public class EventCreateActivity extends AppCompatActivity {
         this.description.setText(event.getDescription(), TextView.BufferType.EDITABLE);
         this.beginDate.setText(formatDate(event.getBeginDateAsDate()));
         this.endDate.setText(formatDate(event.getBeginDateAsDate()));
-        event.loadEventImageIntoImageView(this,this.eventImage);
         this.eventVisibility.setChecked(event.isVisibleFromPublic());
+        imageLoader.loadImageWithSpinner(event, this, this.eventImage, null);
     }
 
     private void populateEvent() {
@@ -173,7 +176,7 @@ public class EventCreateActivity extends AppCompatActivity {
             prepareCreationTask().addOnSuccessListener(event -> {
                 //upload event image to storage if changed
                 if(imageChanged) {
-                    this.event.uploadImage(eventImageSrc);
+                    this.repository.uploadImage(event, eventImageSrc);
                     imageChanged = false;
                 }
                 // Start event administration activity
@@ -273,7 +276,8 @@ public class EventCreateActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
                 eventImageSrc = UCrop.getOutput(data);
                 imageChanged = true;
-                GlideApp.with(this).load(eventImageSrc).into(eventImage);
+
+                imageLoader.displayImage(this, eventImageSrc, eventImage);
         } else if (resultCode == UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);
             Log.i(TAG,"Unable to crop image");

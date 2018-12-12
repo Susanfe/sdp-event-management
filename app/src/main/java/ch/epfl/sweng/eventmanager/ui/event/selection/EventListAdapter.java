@@ -23,7 +23,7 @@ import java.util.List;
 
 public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Event> mEvents;
-    private Context context;
+    private EventPickingActivity context;
 
     void update(List<Event> events) {
         class EventDiffCallback extends DiffUtil.Callback {
@@ -64,13 +64,13 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public enum ItemType {JoinedEvents, Event}
     private ItemType itemType;
 
-    private EventListAdapter(List<Event> myEvents, Context context, ItemType itemType) {
+    private EventListAdapter(List<Event> myEvents, EventPickingActivity context, ItemType itemType) {
         mEvents = myEvents;
         this.context = context;
         this.itemType = itemType;
     }
 
-    static EventListAdapter newInstance(ItemType itemType, Context context) {
+    static EventListAdapter newInstance(ItemType itemType, EventPickingActivity context) {
         List<Event> emptyList = new ArrayList<>();
         return new EventListAdapter(emptyList, context, itemType);
     }
@@ -116,13 +116,13 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private void eventOnBindViewHolder(EventViewHolder holder, int position) {
         holder.eventNameTextView.setText(mEvents.get(position).getName());
         holder.eventSummary.setText(mEvents.get(position).getDescription());
-        mEvents.get(position).loadEventImageIntoImageView(context,holder.eventThumbnail);
+        context.getLoader().loadImageWithSpinner(mEvents.get(position), context, holder.eventThumbnail, null);
     }
 
     private void joinedEventOnBindViewHolder(JoinedEventViewHolder holder, int position) {
         holder.eventNameTextView.setText(mEvents.get(position).getName());
         holder.eventSummary.setText(mEvents.get(position).getDescription());
-        mEvents.get(position).loadEventImageIntoImageView(context,holder.eventThumbnail);
+        context.getLoader().loadImageWithSpinner(mEvents.get(position), context, holder.eventThumbnail, null);
     }
 
 
