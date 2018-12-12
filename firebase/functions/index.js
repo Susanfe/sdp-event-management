@@ -1,6 +1,7 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup
 // triggers.
 const functions = require('firebase-functions');
+var request = require('request');
 
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require('firebase-admin');
@@ -68,7 +69,7 @@ exports.removeUserFromEvent = functions.https.onCall((data, context) => {
 
 const API_KEY = "AAAAlIAvtxI:APA91bHnmNkZWIQzzWcxypS45bpVKBXkLNwtxM-gU6UCfZt2TI-jd02Typ8ACtLpGbHCASrWlwKHDT9EsRpqrUj7hAH8GdhvKp3_UaF_Vx4k3yqgXLqMQv2py-FiUODmG2hy2QuTGdUI"; // Firebase Cloud Messaging Server API key
 ref = admin.database().ref();
-
+/*
 function listenForNotificationRequests() {
     var requests = ref.child('notificationRequest');
     requests.on('child_added', function(requestSnapshot) {
@@ -85,9 +86,13 @@ function listenForNotificationRequests() {
     }, function(error) {
         console.error(error);
     });
-}
+}*/
 
-function sendNotificationToUsers(title, body, eventId, eventName, onSuccess) {
+exports.sendNotificationToUsers  = functions.https.onCall((data, context) => {
+    const title = data.title;
+    const body = data.body;
+    const eventId = data.eventId;
+    const eventName = data.eventName;
     request({
         url: 'https://fcm.googleapis.com/fcm/send',
         method: 'POST',
@@ -107,11 +112,8 @@ function sendNotificationToUsers(title, body, eventId, eventName, onSuccess) {
         else if (response.statusCode >= 400) {
             console.error('HTTP Error: '+response.statusCode+' - '+response.statusMessage);
         }
-        else {
-            onSuccess();
-        }
     });
-}
+});
 
 // start listening
-listenForNotificationRequests();
+//listenForNotificationRequests();
