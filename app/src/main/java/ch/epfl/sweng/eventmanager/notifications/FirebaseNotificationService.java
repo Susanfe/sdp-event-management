@@ -49,11 +49,10 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
 
     private static int extractEventId(String to) {
         String topic = to.replace("/topics/", "");
-        String[] nameAndId = topic.split("_");
-        return Integer.parseInt(nameAndId[1]);
+        return Integer.parseInt(topic);
     }
 
     private static String getTopicName(Event ev) {
-        return ev.getName().replace(" ", "") + "_" + ev.getId();
+        return String.valueOf(ev.getId());
     }
 }

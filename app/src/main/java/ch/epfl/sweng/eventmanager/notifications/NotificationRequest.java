@@ -17,10 +17,6 @@ public final class NotificationRequest {
      * Unique identifier of the event
      */
     private int eventId;
-    /**
-     * Name of the event
-     */
-    private String eventName;
 
     /**
      * Empty constructor required by Firebase
@@ -28,11 +24,10 @@ public final class NotificationRequest {
     public NotificationRequest() {
     }
 
-    public NotificationRequest(String title, String body, int eventId, String eventName) {
+    public NotificationRequest(String title, String body, int eventId) {
         this.title = title;
         this.body = body;
         this.eventId = eventId;
-        this.eventName = eventName;
     }
 
     public String getTitle() {
@@ -57,13 +52,5 @@ public final class NotificationRequest {
 
     public void setEventId(int eventId) {
         this.eventId = eventId;
-    }
-
-    public String getEventName() {
-        return eventName;
-    }
-
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
     }
 }

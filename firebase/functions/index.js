@@ -92,7 +92,6 @@ exports.sendNotificationToUsers  = functions.https.onCall((data, context) => {
     const title = data.title;
     const body = data.body;
     const eventId = data.eventId;
-    const eventName = data.eventName;
     request({
         url: 'https://fcm.googleapis.com/fcm/send',
         method: 'POST',
@@ -105,7 +104,7 @@ exports.sendNotificationToUsers  = functions.https.onCall((data, context) => {
                 title: title,
                 body: body
             },
-            to : '/topics/' + eventName + '_' + eventId
+            to : '/topics/' + eventId
         })
     }, function(error, response, body) {
         if (error) { console.error(error); }

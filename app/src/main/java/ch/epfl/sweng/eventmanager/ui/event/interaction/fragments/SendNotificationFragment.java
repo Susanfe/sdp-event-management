@@ -57,7 +57,7 @@ public class SendNotificationFragment extends AbstractShowcaseFragment {
 
         model.getEvent().observe(this, ev -> {
             send.setOnClickListener(l -> {
-                NotificationRequest notificationRequest = new NotificationRequest(title.getText().toString(), body.getText().toString(), ev.getId(), ev.getName());
+                NotificationRequest notificationRequest = new NotificationRequest(title.getText().toString(), body.getText().toString(), ev.getId());
 
                 send.setClickable(false);
 

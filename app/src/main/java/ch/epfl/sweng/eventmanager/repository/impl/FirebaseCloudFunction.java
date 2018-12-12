@@ -88,7 +88,6 @@ public class FirebaseCloudFunction implements CloudFunction {
         data.put("title", notificationRequest.getTitle());
         data.put("body", notificationRequest.getBody());
         data.put("eventId", notificationRequest.getEventId());
-        data.put("eventName", notificationRequest.getEventName());
 
         return FirebaseFunctions.getInstance()
                 .getHttpsCallable("sendNotificationToUsers")
