@@ -17,7 +17,7 @@ import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 class NotificationBuilder {
 
     /**
-     * Provides a {@link PendingIntent} to EventPickingActivity.class when you tap on a notification
+     * Provides a {@link PendingIntent} to EventPickingActivity View
      *
      * @param context non null
      * @return PendingIntent
@@ -28,6 +28,13 @@ class NotificationBuilder {
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
+    /**
+     * Provides a {@link PendingIntent} to EventFeedbackFragment View of a specific event
+     *
+     * @param context non null
+     * @param eventId id of the event
+     * @return PendingIntent
+     */
     private static PendingIntent toEventFeedbackFragment(Context context, int eventId) {
         Intent intent = new Intent(context, EventShowcaseActivity.class);
         intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventId);
@@ -36,6 +43,13 @@ class NotificationBuilder {
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
+    /**
+     * Provides a {@link PendingIntent} to EventMainFragment View of a specific event
+     *
+     * @param context non null
+     * @param eventId id of the event
+     * @return PendingIntent
+     */
     private static PendingIntent toEventMainFragment(Context context, int eventId) {
         Intent intent = new Intent(context, EventShowcaseActivity.class);
         intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventId);
@@ -43,6 +57,12 @@ class NotificationBuilder {
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
+    /**
+     * Build a Notification from {@param title} and {@param description} and sets on tap behavior to EventPickingActivity
+     * @param context non null
+     * @return a instance of Notification.class
+     * @see Notification
+     */
     static Notification getNotificationFrom(@NonNull Context context, String title, String description) {
         // Set up on tap action TODO send to event my_schedule fragment
         PendingIntent pendingIntent = toEventPickingActivity(context);
@@ -51,6 +71,13 @@ class NotificationBuilder {
         return getNotification(context, title, description, pendingIntent);
     }
 
+    /**
+     * Build a Notification from {@param title} and {@param description} and sets on tap behavior to EventFeedbackFragment
+     * of an event from {@param eventId}
+     * @param context non null
+     * @return a instance of Notification.class
+     * @see Notification
+     */
     static Notification getFeedbackNotificationFrom(@NonNull Context context, String title, String description, int eventId) {
         PendingIntent pendingIntent = toEventFeedbackFragment(context, eventId);
 
@@ -58,6 +85,13 @@ class NotificationBuilder {
         return getNotification(context, title, description, pendingIntent);
     }
 
+    /**
+     * Build a Notification from {@param title} and {@param description} and sets on tap behavior to EventMainFragment
+     * of an event from {@param eventId}
+     * @param context non null
+     * @return a instance of Notification.class
+     * @see Notification
+     */
     static Notification getFirebaseNotificationFrom(@NonNull Context context, String title, String description, int eventId) {
         // todo make it send to event showcase activity / bug with event feedback
         PendingIntent pendingIntent = toEventMainFragment(context, eventId);

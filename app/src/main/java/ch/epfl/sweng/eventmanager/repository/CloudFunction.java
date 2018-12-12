@@ -30,5 +30,12 @@ public interface CloudFunction {
      */
     Task<Boolean> removeUserFromEvent(String uid, int eventId, String role);
 
+    /**
+     * Calls a dedicated FireBase Cloud Function allowing an event administrator to send a notification to all users
+     * having joined a specified event
+     * @param notificationRequest request by the event administrator
+     * @return the related task
+     * @see NotificationRequest
+     */
     Task<Boolean> sendNotificationToUsers(NotificationRequest notificationRequest);
 }

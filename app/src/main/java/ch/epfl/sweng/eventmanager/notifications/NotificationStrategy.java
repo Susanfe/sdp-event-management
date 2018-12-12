@@ -7,7 +7,7 @@ import java.util.Objects;
  * A notification strategy defines the scheduling of a notification depending on an {@param <Item>}
  */
 abstract class NotificationStrategy<Item> {
-    protected Context context;
+    Context context;
 
     NotificationStrategy(Context context) {
         this.context = Objects.requireNonNull(context);

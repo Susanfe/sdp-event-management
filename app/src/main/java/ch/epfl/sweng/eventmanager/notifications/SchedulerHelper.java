@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
+import android.util.Log;
 import androidx.annotation.NonNull;
 
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 class SchedulerHelper {
     private static final AtomicReference<Boolean> isNotificationChannelSet = new AtomicReference<>(false);
-    static final String CHANNEL_ID =  "notify_001";
+    static final String CHANNEL_ID = "notify_001";
     private static final String CHANNEL_NAME = "Scheduled Notifications";
 
     /**
@@ -41,8 +42,15 @@ class SchedulerHelper {
         long future = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, future, pendingIntent);
+        Log.d("SchedulerHelper", "Successfully scheduled the notification : ");
     }
 
+    /**
+     * Unschedule a notification with specific (@param itemId)
+     *
+     * @param context non null
+     * @param itemId  unique id to notification
+     */
     static void unscheduleNotification(@NonNull Context context, int itemId) {
         Intent intent = new Intent(context, NotificationPublisher.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), itemId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -52,6 +60,12 @@ class SchedulerHelper {
         pendingIntent.cancel();
     }
 
+    /**
+     * Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel.
+     * @param context non null
+     * @link https://developer.android.com/training/notify-user/channels
+     * @see NotificationChannel
+     */
     private static void setupNotificationChannel(@NonNull Context context) {
 
         if (!isNotificationChannelSet.get()) {
