@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.widget.DatePicker;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.intent.Intents;
@@ -68,6 +69,7 @@ public class EventCreateActivityTest {
         this.setDate(R.id.create_form_end_date, 2018, 12, 4);
         onView(withId(R.id.create_form_description)).perform(typeText("Event Test 1 description"), closeSoftKeyboard());
         onView(withId(R.id.create_form_upload_image)).perform(scrollTo(),click());
+        SystemClock.sleep(200);
         onView(withId(R.id.create_form_send_button)).perform(scrollTo(),click());
 
         Intents.intended(Matchers.allOf(IntentMatchers.hasComponent(EventAdministrationActivity.class.getName()), IntentMatchers.hasExtraWithKey(EventPickingActivity.SELECTED_EVENT_ID)));

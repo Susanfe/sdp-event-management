@@ -100,7 +100,8 @@
         <activity
             android:name=".ui.event.interaction.EventShowcaseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"/>
         <activity android:name=".ui.ticketing.TicketingConfigurationPickerActivity" />
         <activity android:name=".ui.ticketing.TicketingLoginActivity" />
         <activity android:name=".ui.ticketing.TicketingScanActivity" />
