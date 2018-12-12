@@ -52,11 +52,11 @@ public class NewsViewModel extends ViewModel {
         List<SocialNetworkPost> list = new ArrayList<>();
         if (news != null)
             for (News n : news)
-                list.add(new NewsPost(n));
+                list.add(new NewsWrapper(n));
 
         if (tweets != null)
             for (Tweet t : tweets)
-                list.add(new TwitterPost(t));
+                list.add(new TweetWrapper(t));
 
         if (fb != null)
             for (FacebookPost f : fb)

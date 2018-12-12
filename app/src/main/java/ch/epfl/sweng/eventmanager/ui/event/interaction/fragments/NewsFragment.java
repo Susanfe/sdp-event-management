@@ -143,12 +143,12 @@ public class NewsFragment extends AbstractShowcaseFragment {
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                           int viewType) {
 
-            if (viewType == TwitterPost.VIEW_TYPE) {
+            if (viewType == TweetWrapper.VIEW_TYPE) {
                 final Tweet tweet = new TweetBuilder().build();
                 final CompactTweetView compactTweetView = new CompactTweetView(parent.getContext(), tweet);
 
                 return new TweetViewHolder(compactTweetView);
-            } else if(viewType == NewsPost.VIEW_TYPE){
+            } else if(viewType == NewsWrapper.VIEW_TYPE){
                 View v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_news, parent, false);
                 return new NewsViewHolder(v);
