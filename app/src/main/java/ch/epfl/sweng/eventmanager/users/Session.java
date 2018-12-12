@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.users;
 import android.app.Activity;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.User;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 
 import javax.inject.Inject;

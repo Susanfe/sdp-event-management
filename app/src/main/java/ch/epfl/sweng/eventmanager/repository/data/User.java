@@ -1,19 +1,35 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-public interface User {
+import com.google.firebase.auth.FirebaseUser;
 
-    /**
-     * @return an unique ID representing the user
-     */
-    public String getUid();
+public final class User {
+    private String uid;
+    private String email;
+    private String displayName;
 
-    /**
-     * @return a string representation of the user's common name
-     */
-    public String getDisplayName();
+    public User() {
+        // Used for dependency injection
+    }
 
-    /**
-     * @return a string representation of the user's email
-     */
-    public String getEmail();
+    public User(String uid, String email, String displayName) {
+        this.uid = uid;
+        this.email = email;
+        this.displayName = displayName;
+    }
+
+    public User(FirebaseUser firebaseUser) {
+        this.uid = firebaseUser.getUid();
+    }
+
+    public void setUid(String uid) { this.uid = uid; }
+
+    public String getUid() { return uid; }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }

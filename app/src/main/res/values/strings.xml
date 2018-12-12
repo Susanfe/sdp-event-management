@@ -57,8 +57,10 @@
     <string name="join_event_event_item_btn">Join Event</string>
     <string name="goto_event_btn">Go to event</string>
     <string name="add_button">Add</string>
-    <string name="add_user_success">The user was added to this event</string>
-    <string name="add_user_failure">Could not add the user to this event</string>
+    <string name="add_user_success">Add request sent</string>
+    <string name="add_user_failure">Could not send add request</string>
+    <string name="remove_user_success">Removal request sent</string>
+    <string name="remove_user_failure">Could not send the removal request</string>
 
     <string name="main_nav_item_activity_event_showcase">Description</string>
     <string name="map_nav_item_activity_event_showcase">Map</string>
@@ -74,8 +76,8 @@
     <string name="user_management_help_text">This page allows you to add and remove roles specific
         to this event.
     </string>
-    <string name="user_list_left_header">User</string>
-    <string name="user_list_right_header">Roles</string>
+    <string name="user_list_left_header">User/Role</string>
+    <string name="user_list_right_header">Actions</string>
 
     <string name="timeline_view_added_to_own_schedule">Event added to your schedule!</string>
     <string name="timeline_view_removed_from_own_schedule">Event removed from your schedule!</string>
@@ -121,7 +123,6 @@
 
     <!-- Accessibility text -->
     <string name="event_thumbnail">Event thumbnail</string>
-
     <!-- &#160; represents a non-breakable space -->
     <string name="display_account_activity_logged_as">Logged as: &#160;</string>
 
