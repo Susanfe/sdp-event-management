@@ -133,8 +133,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             // Set displayed fragment only when no other fragment where previously inflated.
             if (savedInstanceState == null) {
                 String fragment = intent.getStringExtra("fragment");
-                if (fragment != null && fragment.equals("feedback")) changeFragment(new EventFeedbackFragment(), true);
-                else {
+                if (fragment != null && fragment.equals("feedback")) {
+                    changeFragment(new EventFeedbackFragment(), true);
+                } else {
                     eventMainFragment = new EventMainFragment();
                     changeFragment(eventMainFragment, true);
                 }
