@@ -62,9 +62,12 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     private static final int SPOT_INFO_REQUEST_CODE = 4;
     public static final int SPOT_INFO_EDITION = 5;
 
-    // Saved LatLng for the result of CustomAddOptionsDialog
+    // Saved LatLng for the result of marker add dialog
     private LatLng onLongClickSavedLatLng = null;
+    // Saved marker id for the result of info modifying dialog
     private int onClickSavedMarkerID = 0;
+    // Saved creationAction to link to modifyInfoAction on return of modifying dialog
+    private boolean issuedByCreation;
 
     // Counters for each MarkerType
     private int counterSpot = 0;
@@ -108,14 +111,10 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
             case R.id.menu_map_edition_undo:
                 if (history.isEmpty())
                     Toast.makeText(getContext(), getString(R.string.undo_empty), Toast.LENGTH_SHORT).show();
-                else {
-                    MapEditionAction action = history.pop();
-                    if (!action.revert(markerList, positionForMarkerIDList))
-                        Toast.makeText(getContext(), getString(R.string.map_edition_error_undo), Toast.LENGTH_LONG).show();
-                    else
-                        Toast.makeText(getContext(), getString(R.string.undone), Toast.LENGTH_SHORT).show();
-                }
+                else revertLatestAction();
+
                 return true;
+
         }
 
         return false;
@@ -235,6 +234,10 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        for (Marker m : markerList) {
+            Log.i("TAGTEST", m.getId() + " " + m.getTitle());
+        }
+
         EventEditionTag tag = (EventEditionTag) marker.getTag();
         if (tag != null && tag.getMarkerType()!=null)
             switch (tag.getMarkerType()) {
@@ -315,10 +318,13 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
             if (m!=null) {
                 Log.i("TAGTEST", "Issued ModifyMarkerInfoAction");
+
                 history.push(new ModifyMarkerInfoAction(
-                        (EventEditionTag)m.getTag(),
+                        (EventEditionTag) m.getTag(),
                         m.getTitle(), title,
-                        m.getSnippet(), snippet));
+                        m.getSnippet(), snippet, issuedByCreation));
+
+                issuedByCreation = false; // resetting the indicator
 
                 m.setTitle(title);
                 m.setSnippet(snippet);
@@ -337,11 +343,15 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
 
     /**
-     * Handles adding a spotType marker event
+     * Handles adding a spotType marker event, i.e displays a window to allow user to edit newly
+     * created marker and adds correponding history action.
+     * @param onLongClickSavedLatLng saved position to create the marker at
      */
     private void addSpotEvent(LatLng onLongClickSavedLatLng) {
         Marker m = addSpotMarker(defaultTitle, defaultSnippet, onLongClickSavedLatLng, defaultType);
         Log.i("TAGTEST", "Issued MarkerCreationAction");
+
+        issuedByCreation = true;
         history.push(new MarkerCreationAction((EventEditionTag) m.getTag(), m.getPosition()));
 
         onClickSavedMarkerID = counterSpot;
@@ -350,12 +360,11 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
         createSpotDialog.setTargetFragment(this, SPOT_INFO_REQUEST_CODE);
         showDialogFragment(createSpotDialog, MARKER_DIALOG_TAG);
-        // TODO add matching history actions
     }
 
     /**
      * Adds an OverlayEdge type marker at the specified position
-     * @param onLongClickSavedLatLng LatLng object representing position to create marker at
+     * @param onLongClickSavedLatLng saved position representing position to create marker at
      */
     private void addOverlayEdgeEvent(LatLng onLongClickSavedLatLng) {
         Marker m = addOverlayEdgeMarker(onLongClickSavedLatLng);
@@ -428,4 +437,37 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         return type == MarkerType.SPOT ? 0 : overlayEdgeIndexShift;
     }
 
+    /**
+     * Reverts the latest action in history if not empty and handles linked actions in history
+     */
+    private void revertLatestAction() {
+        MapEditionAction action = history.pop();
+        revertAndCheck(action);
+
+        if (action instanceof ModifyMarkerInfoAction && ((ModifyMarkerInfoAction) action).wasIssudByCreation()) {
+            MapEditionAction linkedAction = history.pop();
+
+            Log.i("TAGTEST", "is an instance of MarkerCreationACtion " + (linkedAction instanceof MarkerCreationAction));
+            if (linkedAction instanceof MarkerCreationAction)
+                revertAndCheck(linkedAction);
+            else
+                history.push(linkedAction);
+        }
+
+    }
+
+    /**
+     * Orders action to revert and notifies user of result
+     * @param action action to be reverted
+     */
+    private void revertAndCheck(MapEditionAction action) {
+        if (!action.revert(markerList, positionForMarkerIDList)) {
+            Toast.makeText(getContext(), getString(R.string.map_edition_error_undo), Toast.LENGTH_LONG).show();
+        }
+        else {
+            Toast.makeText(getContext(), getString(R.string.undone), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
+
