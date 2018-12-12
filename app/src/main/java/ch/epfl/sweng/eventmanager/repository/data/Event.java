@@ -89,14 +89,14 @@ public final class Event {
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate, String organizerEmail,
                  Uri imageURL, EventLocation location, Map<String, String> users, String twitterName,
-                 String facebookName) {
+                 String facebookName, Boolean visibleFromPublic) {
         this(id, name, description, beginDate, endDate, organizerEmail, imageURL, location, users, twitterName,
-                facebookName, null);
+                facebookName, null,visibleFromPublic);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate, String organizerEmail,
                  Uri imageURL, EventLocation location, Map<String, String> users, String twitterName,
-                 String facebookName, EventTicketingConfiguration ticketingConfiguration) {
+                 String facebookName, EventTicketingConfiguration ticketingConfiguration, Boolean visibleFromPublic) {
 
         this.ticketingConfiguration = ticketingConfiguration;
 
@@ -115,6 +115,7 @@ public final class Event {
         this.users = users;
         this.twitterName = twitterName;
         this.facebookName = facebookName;
+        this.visibleFromPublic = visibleFromPublic;
     }
 
     public Event() {

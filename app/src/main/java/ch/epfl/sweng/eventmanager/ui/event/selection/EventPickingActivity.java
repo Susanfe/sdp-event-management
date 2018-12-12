@@ -401,4 +401,13 @@ public class EventPickingActivity extends AppCompatActivity {
 
         bar.show();
     }
+
+    /**
+     * Force refresh the eventList on new intent to handle change of visibility for events
+     * @param intent
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setupObservers();
+    }
 }
