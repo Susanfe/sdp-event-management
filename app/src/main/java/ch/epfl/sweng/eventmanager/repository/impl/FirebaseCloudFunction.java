@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
 import androidx.annotation.NonNull;
+import ch.epfl.sweng.eventmanager.notifications.NotificationRequest;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
@@ -82,6 +83,26 @@ public class FirebaseCloudFunction implements CloudFunction {
                         Boolean result = (Boolean) task.getResult().getData();
                         return result;
                     }
+                });
+    }
+
+    public Task<Boolean> sendNotificationToUsers(NotificationRequest notificationRequest){
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("title", notificationRequest.getTitle());
+        data.put("body", notificationRequest.getBody());
+        data.put("eventId", notificationRequest.getEventId());
+        data.put("eventName", notificationRequest.getEventName());
+
+        return FirebaseFunctions.getInstance()
+                .getHttpsCallable("sendNotificationToUsers")
+                .call(data)
+                .continueWith(task -> {
+                    // This continuation runs on either success or failure, but if the task
+                    // has failed then getResult() will throw an Exception which will be
+                    // propagated down.
+                    Boolean result = (Boolean) task.getResult().getData();
+                    return result;
                 });
     }
 }

@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository;
 
+import ch.epfl.sweng.eventmanager.notifications.NotificationRequest;
 import com.google.android.gms.tasks.Task;
 
 /**
@@ -28,4 +29,6 @@ public interface CloudFunction {
      * @return the related task
      */
     Task<Boolean> removeUserFromEvent(String uid, int eventId, String role);
+
+    Task<Boolean> sendNotificationToUsers(NotificationRequest notificationRequest);
 }
