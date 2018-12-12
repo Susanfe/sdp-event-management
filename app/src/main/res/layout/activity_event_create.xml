@@ -96,6 +96,14 @@
         android:id="@+id/create_form_upload_image"/>
 
 
+        <com.google.android.material.switchmaterial.SwitchMaterial
+                android:text="@string/event_form_button_visibility"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/create_form_switch_visibility"
+                android:layout_weight="10"
+        />
+
         <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/create_form_send_button"
                 android:layout_width="match_parent"
