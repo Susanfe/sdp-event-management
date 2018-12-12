@@ -78,22 +78,31 @@ public final class Event {
      */
     private String facebookName;
 
+    /**
+     * If true, then the event can be seen and accessed by any user. Otherwise, if false, it can only be seen by
+     * the administrators for this event
+     */
+    private boolean visibleFromPublic;
+
     private EventTicketingConfiguration ticketingConfiguration;
 
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate, String organizerEmail,
-                 Uri imageURL, EventLocation location, Map<String, String> users, String twitterName, String facebookName) {
-        this(id, name, description, beginDate, endDate, organizerEmail, imageURL, location, users, twitterName, facebookName, null);
+                 Uri imageURL, EventLocation location, Map<String, String> users, String twitterName,
+                 String facebookName, Boolean visibleFromPublic) {
+        this(id, name, description, beginDate, endDate, organizerEmail, imageURL, location, users, twitterName,
+                facebookName, null,visibleFromPublic);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate, String organizerEmail,
                  Uri imageURL, EventLocation location, Map<String, String> users, String twitterName,
-                String facebookName, EventTicketingConfiguration ticketingConfiguration) {
+                 String facebookName, EventTicketingConfiguration ticketingConfiguration, Boolean visibleFromPublic) {
 
         this.ticketingConfiguration = ticketingConfiguration;
 
         if (beginDate.getTime() > endDate.getTime())
-            throw new IllegalArgumentException("The time at the start of the event should be later than the time at the end");
+            throw new IllegalArgumentException("The time at the start of the event should be later than the time at " +
+                    "the end");
 
         this.id = id;
         this.name = name;
@@ -106,6 +115,7 @@ public final class Event {
         this.users = users;
         this.twitterName = twitterName;
         this.facebookName = facebookName;
+        this.visibleFromPublic = visibleFromPublic;
     }
 
     public Event() {
@@ -161,6 +171,25 @@ public final class Event {
 
     public EventLocation getLocation() {
         return location;
+    }
+
+    /**
+     * Return true if the event is visible for any user. Otherwise, if false, the event can only be accessed
+     * by declared administrators for this event
+     *
+     * @return true if event is visible
+     */
+    public boolean isVisibleFromPublic() {
+        return visibleFromPublic;
+    }
+
+    /**
+     * Allows to change the visibility of the event
+     *
+     * @param visibleFromPublic
+     */
+    public void setVisibleFromPublic(boolean visibleFromPublic) {
+        this.visibleFromPublic = visibleFromPublic;
     }
 
     public void setLocation(EventLocation location) {
@@ -229,8 +258,7 @@ public final class Event {
                 users = new ArrayList<>();
                 users.add(uid);
                 result.put(role, users);
-            }
-            else {
+            } else {
                 result.get(role).add(uid);
             }
         }
@@ -277,8 +305,7 @@ public final class Event {
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = fdB.getReference("events").child(String.valueOf(getId()));
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/webp").build();
-        FirebaseHelper.uploadFileToStorage(eventsLogoRef, imgSrc, metadata)
-                .addOnSuccessListener(taskSnapshot -> eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+        FirebaseHelper.uploadFileToStorage(eventsLogoRef, imgSrc, metadata).addOnSuccessListener(taskSnapshot -> eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> {
             setImageURL(uri.toString());
             Map<String, Object> updateUrl = new HashMap<>();
             updateUrl.put("imageURL", uri.toString());
@@ -327,8 +354,7 @@ public final class Event {
             progress.setStrokeWidth(5f);
             progress.setCenterRadius(30f);
             progress.start();
-            GlideApp.with(context).load(getImageURLasURI()).apply(RequestOptions
-                    .bitmapTransform(transformation)).placeholder(progress).into(imageView);
+            GlideApp.with(context).load(getImageURLasURI()).apply(RequestOptions.bitmapTransform(transformation)).placeholder(progress).into(imageView);
         }
     }
 

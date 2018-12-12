@@ -22,6 +22,7 @@ import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.yalantis.ucrop.UCrop;
 import dagger.android.AndroidInjection;
 
@@ -71,6 +72,8 @@ public class EventCreateActivity extends AppCompatActivity {
     ImageView eventImage;
     @BindView(R.id.create_form)
     View createForm;
+    @BindView(R.id.create_form_switch_visibility)
+    SwitchMaterial eventVisibility;
 
     private int eventID;
     private Event event;
@@ -87,6 +90,7 @@ public class EventCreateActivity extends AppCompatActivity {
         this.beginDate.setText(formatDate(event.getBeginDateAsDate()));
         this.endDate.setText(formatDate(event.getBeginDateAsDate()));
         event.loadEventImageIntoImageView(this,this.eventImage);
+        this.eventVisibility.setChecked(event.isVisibleFromPublic());
     }
 
     private void populateEvent() {
@@ -96,6 +100,7 @@ public class EventCreateActivity extends AppCompatActivity {
         this.event.setDescription(getFieldValue(this.description));
         this.event.setBeginDate(getDateValue(this.beginDate));
         this.event.setEndDate(getDateValue(this.endDate));
+        this.event.setVisibleFromPublic(eventVisibility.isChecked());
     }
 
     private String formatDate(Date date) {
