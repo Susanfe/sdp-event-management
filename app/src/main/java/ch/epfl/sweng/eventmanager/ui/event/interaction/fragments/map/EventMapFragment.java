@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
@@ -44,7 +45,6 @@ import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcaseFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.MultiDrawable;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
@@ -70,6 +70,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     private static final float ZOOMLEVEL = 15.0f; //This goes up to 21
     public static final String TAB_NB_KEY = "ch.epfl.sweng.eventmanager.TAB_NB_KEY";
     GoogleMap mMap;
+
+    Polygon eventOverlay;
 
     @Inject
     public ViewModelFactory factory;
@@ -179,7 +181,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
             this.zonesModel.getZone().observe(getActivity(), zones -> {
                 if (zones != null) {
                     for (Zone z : zones) {
-                        mMap.addPolygon(z.addPolygon());
+                        eventOverlay = mMap.addPolygon(z.addPolygon());
                     }
                 }
             });

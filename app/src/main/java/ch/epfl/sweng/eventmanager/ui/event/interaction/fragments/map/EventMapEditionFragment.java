@@ -76,6 +76,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     // List of all added markers
     private List<Marker> markerList = new LinkedList<>();
     private SparseArray<LatLng> positionForMarkerIDList = new SparseArray<>();
+    private Zone eventZone = null;
 
     private static final int overlayEdgeIndexShift = 1000;
 
@@ -198,6 +199,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
             this.zonesModel.getZone().observe(getActivity(), zones -> {
                 if (zones != null) {
                     for (Zone z : zones) {
+                        eventZone = z;
                         for (Position p : z.getPositions()){
                             addOverlayEdgeMarker(p.asLatLng());
                         }
@@ -369,9 +371,11 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * @param onLongClickSavedLatLng saved position representing position to create marker at
      */
     private void addOverlayEdgeEvent(LatLng onLongClickSavedLatLng) {
+        Log.i("TAGTEST", "longitude " + onLongClickSavedLatLng.longitude + " latitude " + onLongClickSavedLatLng.latitude);
+        eventZone.addPosition(new Position(onLongClickSavedLatLng.latitude, onLongClickSavedLatLng.longitude));
         Marker m = addOverlayEdgeMarker(onLongClickSavedLatLng);
 
-        Log.i("TAGTEST", "Issued markerCreationACtion");
+        Log.i("TAGTEST", "Issued markerCreationAction");
         history.push(new MarkerCreationAction((EventEditionTag) m.getTag(), m.getPosition()));
 
         reformPolygon();
@@ -468,6 +472,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * Reforms the overlay that represents on the event
      */
     private void reformPolygon() {
+        eventOverlay.remove();
+        eventOverlay = mMap.addPolygon(eventZone.addPolygon());
 
     }
 
