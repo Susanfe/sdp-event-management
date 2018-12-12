@@ -18,4 +18,14 @@
         />
     </PreferenceCategory>
 
+    <PreferenceCategory
+            android:title="@string/settings_notifications_title">
+
+        <SwitchPreference
+                android:key="@string/key_settings_notifications_switch"
+                android:title="Enable/Disable Notifications"
+                android:defaultValue="true"
+        />
+    </PreferenceCategory>
+
 </PreferenceScreen>

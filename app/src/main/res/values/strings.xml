@@ -175,5 +175,7 @@
     <string name="send_notification_nav_item_activity_event">Send Notification</string>
     <string name="send_notification_success">Successfully published the notification !</string>
     <string name="send_notification_fails">Cannot publish notifications. Try again later!</string>
+    <string name="settings_notifications_title">Notifications</string>
+    <string name="key_settings_notifications_switch">settings_notifications_switch</string>
 
 </resources>
