@@ -25,6 +25,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.settings.SettingsActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
@@ -46,6 +47,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     TicketingManager ticketingManager;
     @Inject
     Session session;
+    @Inject
+    ImageLoader loader;
 
     private EventInteractionModel model;
     private ScheduleViewModel scheduleModel;
@@ -102,10 +105,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             this.event = ev;
             
-            if (ev.haveAnImage()) {
+            if (ev.hasAnImage()) {
                 ImageView header = headerView.findViewById(R.id.drawer_header_image);
-                ev.loadEventImageIntoImageView(this,header,new BlurTransformation(3));
-
+                loader.loadImageWithSpinner(ev,this,header,new BlurTransformation(3));
             }
 
             drawer_header_text.setText(ev.getName());

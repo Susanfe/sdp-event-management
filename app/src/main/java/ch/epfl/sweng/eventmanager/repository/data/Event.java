@@ -1,20 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.content.Context;
 import android.net.Uri;
-import android.widget.ImageView;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
-import ch.epfl.sweng.eventmanager.inject.GlideApp;
-import ch.epfl.sweng.eventmanager.repository.impl.FirebaseHelper;
 import ch.epfl.sweng.eventmanager.users.Role;
-import com.bumptech.glide.request.RequestOptions;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
-import com.google.firebase.storage.StorageReference;
-import jp.wasabeef.glide.transformations.BitmapTransformation;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -198,7 +186,7 @@ public final class Event {
 
     @Exclude
     public Uri getImageURLasURI() {
-        return haveAnImage() ? Uri.parse(imageURL) : null;
+        return hasAnImage() ? Uri.parse(imageURL) : null;
     }
 
     public String getImageURL() {
@@ -293,24 +281,8 @@ public final class Event {
     }
 
     @Exclude
-    public boolean haveAnImage() {
+    public boolean hasAnImage() {
         return imageURL != null;
-    }
-
-
-    @Exclude
-    public void uploadImage(Uri imgSrc) {
-        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
-        StorageReference eventsLogoRef = imagesRef.child(getImageName());
-        FirebaseDatabase fdB = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = fdB.getReference("events").child(String.valueOf(getId()));
-        StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/webp").build();
-        FirebaseHelper.uploadFileToStorage(eventsLogoRef, imgSrc, metadata).addOnSuccessListener(taskSnapshot -> eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            setImageURL(uri.toString());
-            Map<String, Object> updateUrl = new HashMap<>();
-            updateUrl.put("imageURL", uri.toString());
-            dbRef.updateChildren(updateUrl);
-        }));
     }
 
     /**
@@ -319,43 +291,8 @@ public final class Event {
      * @return String imageName
      */
     @Exclude
-    private String getImageName() {
+    public String getImageName() {
         return this.getId() + ".webp";
-    }
-
-    /**
-     * Will load the event image into the provided view
-     *
-     * @param context
-     * @param imageView
-     */
-    @Exclude
-    public void loadEventImageIntoImageView(Context context, ImageView imageView) {
-        if (haveAnImage()) {
-            CircularProgressDrawable progress = new CircularProgressDrawable(context);
-            progress.setStrokeWidth(5f);
-            progress.setCenterRadius(30f);
-            progress.start();
-            GlideApp.with(context).load(getImageURLasURI()).placeholder(progress).into(imageView);
-        }
-    }
-
-    /**
-     * Will load the event image into the provided view and apply the requested transformation
-     *
-     * @param context
-     * @param imageView
-     * @param transformation
-     */
-    @Exclude
-    public void loadEventImageIntoImageView(Context context, ImageView imageView, BitmapTransformation transformation) {
-        if (haveAnImage()) {
-            CircularProgressDrawable progress = new CircularProgressDrawable(context);
-            progress.setStrokeWidth(5f);
-            progress.setCenterRadius(30f);
-            progress.start();
-            GlideApp.with(context).load(getImageURLasURI()).apply(RequestOptions.bitmapTransform(transformation)).placeholder(progress).into(imageView);
-        }
     }
 
     @Exclude

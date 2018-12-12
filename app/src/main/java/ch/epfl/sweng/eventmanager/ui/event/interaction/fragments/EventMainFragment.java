@@ -15,6 +15,7 @@ import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
@@ -27,6 +28,9 @@ public class EventMainFragment extends AbstractShowcaseFragment {
 
     @Inject
     protected FeedbackRepository feedbackRepository;
+
+    @Inject
+    ImageLoader loader;
 
     @BindView(R.id.contact_form_go_button)
     Button contactButton;
@@ -73,7 +77,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             eventDescription.setText(ev.getDescription());
             eventDescription.setVisibility(View.VISIBLE);
 
-            ev.loadEventImageIntoImageView(getContext(),eventImage);
+            loader.loadImageWithSpinner(ev, getContext(), eventImage, null);
             eventImage.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 

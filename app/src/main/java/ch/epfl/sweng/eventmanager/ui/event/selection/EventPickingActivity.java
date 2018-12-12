@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.user.LoginActivity;
 import ch.epfl.sweng.eventmanager.ui.user.SignUpActivity;
@@ -42,6 +43,10 @@ public class EventPickingActivity extends AppCompatActivity {
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
     @Inject
     ViewModelFactory factory;
+
+    @Inject
+    ImageLoader loader;
+
     @BindView(R.id.event_picking_joined_events_text)
     TextView joinedHelpText;
     @BindView(R.id.event_picking_bottom_sheet_text)
@@ -412,5 +417,9 @@ public class EventPickingActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         setupObservers();
+    }
+
+    public ImageLoader getLoader() {
+        return loader;
     }
 }
