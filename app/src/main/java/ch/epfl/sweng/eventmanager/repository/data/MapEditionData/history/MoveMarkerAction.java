@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.data.MapEditionData;
+package ch.epfl.sweng.eventmanager.repository.data.MapEditionData.history;
 
 import android.util.SparseArray;
 
@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.Marker;
 import java.util.List;
 import java.util.Objects;
 
+import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapEditionFragment;
 
 public class MoveMarkerAction extends MapEditionAction {

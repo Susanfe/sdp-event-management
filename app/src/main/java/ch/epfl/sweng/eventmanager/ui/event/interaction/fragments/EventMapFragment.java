@@ -64,7 +64,7 @@ import dagger.android.support.AndroidSupportInjection;
  */
 public class EventMapFragment extends AbstractShowcaseFragment implements
         ClusterManager.OnClusterClickListener<Spot>,
-        ClusterManager.OnClusterItemInfoWindowClickListener<Spot>  {
+        ClusterManager.OnClusterItemInfoWindowClickListener<Spot> {
 
     private static final float ZOOMLEVEL = 15.0f; //This goes up to 21
     public static final String TAB_NB_KEY = "ch.epfl.sweng.eventmanager.TAB_NB_KEY";
@@ -100,10 +100,10 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         if (spotsModel == null) {
             spotsModel = ViewModelProviders.of(requireActivity(), factory).get(SpotsModel.class);
         }
-        if(zonesModel == null) {
+        if (zonesModel == null) {
             zonesModel = ViewModelProviders.of(requireActivity(), factory).get(ZoneModel.class);
         }
-        if(scheduleViewModel == null) {
+        if (scheduleViewModel == null) {
             scheduleViewModel = ViewModelProviders.of(requireActivity(), factory).get(ScheduleViewModel.class);
         }
 
@@ -134,7 +134,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN,
-                ((EventShowcaseActivity)Objects.requireNonNull(getActivity())).getEvent()))
+                ((EventShowcaseActivity) Objects.requireNonNull(getActivity())).getEvent()))
             menu.findItem(R.id.menu_map_edition_edit).setVisible(true);
 
         super.onCreateOptionsMenu(menu, inflater);
@@ -142,9 +142,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.menu_map_edition_edit:
-                ((EventShowcaseActivity)Objects.requireNonNull(getActivity())).callChangeFragment(
+                ((EventShowcaseActivity) Objects.requireNonNull(getActivity())).callChangeFragment(
                         EventShowcaseActivity.FragmentType.MAP_EDITION, true);
                 return true;
 
@@ -154,8 +154,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         }
     }
 
-    private void setUpMap(){
-        if(getActivity() != null) {
+    private void setUpMap() {
+        if (getActivity() != null) {
             model.getEvent().observe(getActivity(), event -> {
                 if (event == null || event.getLocation() == null) {
                     throw new NullPointerException("event is null");
@@ -174,7 +174,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     }
 
     private void setUpOverlay() {
-        if (getActivity() != null){
+        if (getActivity() != null) {
             this.zonesModel.getZone().observe(getActivity(), zones -> {
                 if (zones != null) {
                     for (Zone z : zones) {
@@ -186,7 +186,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     }
 
     protected void setUpCluster() {
-        if (getActivity() != null){
+        if (getActivity() != null) {
             mClusterManager = new ClusterManager<>(getActivity(), mMap);
             mClusterManager.setOnClusterItemInfoWindowClickListener(this);
             mClusterManager.setOnClusterClickListener(this);
@@ -208,7 +208,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     }
 
     private void addItemToCluster() {
-        if (getActivity() != null){
+        if (getActivity() != null) {
             this.scheduleViewModel.getScheduledItems().observe(getActivity(), items ->
                     this.spotsModel.getSpots().observe(getActivity(), spots -> {
                         if (spots == null) {
@@ -229,7 +229,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     }
 
     private void enableMyLocationIfPermitted() {
-        if (getActivity() != null){
+        if (getActivity() != null) {
             if (ContextCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -275,7 +275,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     @Override
     public void onClusterItemInfoWindowClick(Spot spot) {
         if (getActivity() != null && spot != null) {
-            if(spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
+            if (spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
                 goToSchedule();
             }
         }
@@ -286,7 +286,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         Bundle args = new Bundle();
         args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
         scheduleParentFragment.setArguments(args);
-        ((EventShowcaseActivity)Objects.requireNonNull(getActivity())).changeFragment(
+        ((EventShowcaseActivity) Objects.requireNonNull(getActivity())).changeFragment(
                 scheduleParentFragment, true);
     }
 
@@ -304,7 +304,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         SpotRenderer(Context context) {
             super(Objects.requireNonNull(getActivity()), mMap, mClusterManager);
 
-            if (context == null){
+            if (context == null) {
                 throw new NullPointerException("context is null");
             }
 
@@ -340,7 +340,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
 
             for (Spot p : cluster.getItems()) {
                 // Draw at most 4 images on the same cluster
-                if(spotImages.size() == 4) {
+                if (spotImages.size() == 4) {
                     break;
                 }
                 Drawable drawable = new BitmapDrawable(
@@ -387,7 +387,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
             TextView tvSnippet = myContentsView.findViewById(R.id.details);
             TextView tvClickToSchedule = myContentsView.findViewById(R.id.scheduleClick);
 
-            if(clickedClusterItem.getScheduleList() != null && clickedClusterItem.getScheduleList().size() != 0) {
+            if (clickedClusterItem.getScheduleList() != null && clickedClusterItem.getScheduleList().size() != 0) {
                 tvClickToSchedule.setVisibility(View.VISIBLE);
                 tvClickToSchedule.setText(getResources().getString(R.string.click_to_see_schedule));
             } else {

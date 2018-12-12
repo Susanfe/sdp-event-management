@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.data.MapEditionData;
+package ch.epfl.sweng.eventmanager.repository.data.MapEditionData.history;
 
 import android.util.SparseArray;
 
@@ -6,8 +6,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+
+import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag;
 
 /**
  * Describes a simple edition action and its ability to be reverted
