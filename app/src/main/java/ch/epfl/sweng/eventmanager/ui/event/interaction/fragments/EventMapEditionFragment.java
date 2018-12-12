@@ -316,7 +316,9 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
             Marker m = findMarkerById(onClickSavedMarkerID);
 
-            if (m!=null) {
+            if (m!=null && title.equals(m.getTitle()) && snippet.equals(m.getSnippet()) &&
+                    type == ((EventEditionTag)Objects.requireNonNull(m.getTag())).getSpotType()) {
+
                 Log.i("TAGTEST", "Issued ModifyMarkerInfoAction");
 
                 history.push(new ModifyMarkerInfoAction(
@@ -324,13 +326,13 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                         m.getTitle(), title,
                         m.getSnippet(), snippet, issuedByCreation));
 
-                issuedByCreation = false; // resetting the indicator
-
                 m.setTitle(title);
                 m.setSnippet(snippet);
                 int id = ((EventEditionTag)Objects.requireNonNull(m.getTag())).getId();
                 m.setTag(createSpotTag(id, type));
             }
+
+            issuedByCreation = false; // resetting the indicator
         }
     }
 
