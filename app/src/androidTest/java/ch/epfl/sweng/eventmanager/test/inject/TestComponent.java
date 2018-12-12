@@ -15,6 +15,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragmentTes
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivityTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.activities.NoOpBarcodeViewManagerModule;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoaderModule;
 import ch.epfl.sweng.eventmanager.ui.user.LoginActivityTest;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
@@ -30,6 +31,7 @@ import javax.inject.Singleton;
         RoomModule.class,
         MockRepositoriesModule.class,
         NoOpBarcodeViewManagerModule.class,
+        ImageLoaderModule.class,
         MockUsersModule.class,
         MockTicketingModule.class})
 @Singleton
