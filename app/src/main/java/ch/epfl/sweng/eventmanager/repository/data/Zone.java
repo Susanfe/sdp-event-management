@@ -4,15 +4,33 @@ import android.graphics.Color;
 import com.google.android.gms.maps.model.PolygonOptions;
 import java.util.List;
 
+/**
+ * This class represents a delineated geographical zone that is overlayed by a blue color using the
+ * addPolygon method.
+ *
+ * This zone is delineated using a list of geographical positions, that can be accessed using
+ * the getPositions method.
+ */
 public class Zone {
     private List<Position> positions;
 
+    /**
+     * constructor
+     *
+     * @param positions that delineated the zone
+     */
     public Zone(List<Position> positions) {
         this.positions = positions;
     }
 
-    public Zone() {}
+    /**
+     * empty contructor needed for firebase
+     */
+    public Zone(){}
 
+    /**
+     * @return A PolygonOptions instance that represents the overlay
+     */
     public PolygonOptions addPolygon() {
         PolygonOptions options = new PolygonOptions()
                 .fillColor(Color.argb(33,26, 149,244))
@@ -24,6 +42,9 @@ public class Zone {
         return options;
     }
 
+    /**
+     * @return the geographical positions that delineated the zone
+     */
     public List<Position> getPositions() {
         return positions;
     }

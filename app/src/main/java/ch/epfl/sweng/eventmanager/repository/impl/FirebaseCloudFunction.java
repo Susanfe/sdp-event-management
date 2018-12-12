@@ -2,17 +2,18 @@ package ch.epfl.sweng.eventmanager.repository.impl;
 
 import androidx.annotation.NonNull;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 
 public class FirebaseCloudFunction implements CloudFunction {
 
@@ -55,16 +56,17 @@ public class FirebaseCloudFunction implements CloudFunction {
      * Calls a dedicated FireBase Cloud Function allowing an event administrator to remove a role
      * from an user on its event.
      *
-     * @param uidKey key of the uid of the user to be removed
+     * @param uid key of the uid of the user to be removed
      * @param eventId target event
      * @param role string representation of the role to be removed
      * @return the related task
      */
-    public Task<Boolean> removeUserFromEvent(String uidKey, int eventId, String role) {
+
+    public Task<Boolean> removeUserFromEvent(String uid, int eventId, String role) {
         // Prepare parameters for the Firebase Cloud Function
         Map<String, Object> data = new HashMap<>();
         data.put("eventId", eventId);
-        data.put("userUidKey", uidKey);
+        data.put("uid", uid);
         data.put("role", role);
         data.put("push", true);
 
