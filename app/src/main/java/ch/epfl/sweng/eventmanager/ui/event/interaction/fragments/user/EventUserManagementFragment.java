@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user;
 
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
+import ch.epfl.sweng.eventmanager.repository.UserRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcaseFragment;
 import ch.epfl.sweng.eventmanager.users.Role;
@@ -45,6 +47,9 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
     TextView rightHeader;
 
     @Inject
+    UserRepository repository;
+
+    @Inject
     CloudFunction cloudFunction;
 
     public EventUserManagementFragment() {
@@ -68,7 +73,7 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
             }
 
             // TODO handle null pointer exception
-            mUserListAdapter = new UserListAdapter(ev);
+            mUserListAdapter = new UserListAdapter(this, ev, repository);
             mUserList.setAdapter(mUserListAdapter);
 
             // Set handler on addUser form
@@ -104,17 +109,22 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
         addUserSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAddUserSpinner.setAdapter(addUserSpinnerAdapter);
 
-        setInProgressState(false);
+        mAddUserButton = view.findViewById(R.id.user_management_add_user_button);
+        mAddUserButton.setText(getString(R.string.add_button));
+
+        mAddUserProgressbar = view.findViewById(R.id.user_management_progress_bar);
+        setInProgressState(mAddUserButton, false);
 
         return view;
     }
 
     /**
      * Set the AddUser form in a 'working' state.
+     * @param button button to disable, or null
      * @param state true if a request is being processed, false otherwise
      */
-    private void setInProgressState(boolean state) {
-        mAddUserButton.setEnabled(!state);
+    private void setInProgressState(Button button, boolean state) {
+        button.setEnabled(!state);
         int visibility = View.INVISIBLE;
         if (state) visibility = View.VISIBLE;
         mAddUserProgressbar.setVisibility(visibility);
@@ -124,8 +134,8 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
      * Callback used by the AddUser form to add an user to the current event at a given role.
      * @param ev Event to which to add the user
      */
-    private void addUser(Event ev) {
-        setInProgressState(true);
+    public void addUser(Event ev) {
+        setInProgressState(mAddUserButton, true);
         String email = mAddUserEmailField.getText().toString();
         String role = mAddUserSpinner.getSelectedItem().toString().toLowerCase();
         cloudFunction.addUserToEvent(email, ev.getId(), role)
@@ -134,7 +144,26 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
                     if (task.isSuccessful()) toastText = getString(R.string.add_user_success);
                     else toastText = getString(R.string.add_user_failure);
                     Toast.makeText(getActivity(), toastText, Toast.LENGTH_LONG).show();
-                    setInProgressState(false);
+                    setInProgressState(mAddUserButton, false);
+                });
+    }
+
+    /**
+     * Callback used to remove an user from the current event at a given role.
+     * @param v
+     * @param ev
+     */
+    protected void removeUser(View v, Event ev, String uid, Role role) {
+        Button removeButton = v.findViewById(R.id.remove_button);
+        setInProgressState(removeButton, true);
+
+        cloudFunction.removeUserFromEvent(uid, ev.getId(), role.toString().toLowerCase())
+                .addOnCompleteListener(task -> {
+                    String toastText;
+                    if (task.isSuccessful()) toastText = getString(R.string.remove_user_success);
+                    else toastText = getString(R.string.remove_user_failure);
+                    Toast.makeText(getActivity(), toastText, Toast.LENGTH_LONG).show();
+                    setInProgressState(removeButton, false);
                 });
     }
 }
