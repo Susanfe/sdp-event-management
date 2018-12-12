@@ -114,9 +114,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-        <receiver android:name=".repository.impl.NotificationPublisher" />
-
         <activity android:name=".ui.event.interaction.EventAdministrationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
@@ -153,11 +150,12 @@
                 android:name="com.yalantis.ucrop.UCropActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <service android:name=".notifications.FirebaseNotificationService">
+        <service android:name=".notifications.FirebaseNotificationService" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <receiver android:name=".notifications.NotificationPublisher"/>
     </application>
 
 </manifest>
