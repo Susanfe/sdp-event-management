@@ -102,6 +102,8 @@ public class EventShowcaseActivityTest {
     public void joinEventTest() {
         onView(withId(R.id.join_event_button))
                 .perform(click());
+        onView(withId(R.id.join_event_button))
+                .perform(click());
     }
 
 
