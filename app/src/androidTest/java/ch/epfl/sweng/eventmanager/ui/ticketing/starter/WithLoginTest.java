@@ -1,17 +1,16 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing.starter;
 
-import org.junit.After;
-import org.junit.Test;
-
-import java.util.Collections;
-import java.util.Date;
-
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.test.ticketing.TestingCallback;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingConfigurationPickerActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingLoginActivity;
+import org.junit.After;
+import org.junit.Test;
+
+import java.util.Collections;
+import java.util.Date;
 
 import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.AUTHORIZED_USER;
 import static ch.epfl.sweng.eventmanager.test.ticketing.MockStacks.PASSWORD;
@@ -37,7 +36,8 @@ public class WithLoginTest extends StarterTest {
         ticketingManager.start(
                 new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
                         null, null, new EventLocation("EPFL", Position.EPFL), Collections.emptyMap(), "JapanImpact",
-                        null), mActivityRule.getActivity()
+                        null,true
+                ), mActivityRule.getActivity()
         );
     }
 
