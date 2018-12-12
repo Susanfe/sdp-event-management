@@ -22,6 +22,7 @@ import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.yalantis.ucrop.UCrop;
 import dagger.android.AndroidInjection;
 
@@ -72,7 +73,7 @@ public class EventCreateActivity extends AppCompatActivity {
     @BindView(R.id.create_form)
     View createForm;
     @BindView(R.id.create_form_switch_visibility)
-    Switch eventVisibility;
+    SwitchMaterial eventVisibility;
 
     private int eventID;
     private Event event;

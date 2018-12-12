@@ -253,8 +253,8 @@ public class EventPickingActivity extends AppCompatActivity {
                 break;
 
             case R.id.layout_login_signup_signup_button:
-                Intent intent = new Intent(this, SignUpActivity.class);
-                startActivity(intent);
+                Intent intentLogin = new Intent(this, SignUpActivity.class);
+                startActivity(intentLogin);
                 break;
 
             case R.id.layout_login_signup_logout_button:
@@ -262,6 +262,9 @@ public class EventPickingActivity extends AppCompatActivity {
                 loggedUI.setVisibility(View.GONE);
                 notLoggedUi.setVisibility(View.VISIBLE);
                 revealCircular(true);
+                Intent intentLogout = new Intent(this, EventPickingActivity.class);
+                intentLogout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentLogout);
                 break;
 
             case R.id.layout_login_signup_account_button:
