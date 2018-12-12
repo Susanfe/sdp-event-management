@@ -17,97 +17,104 @@
             android:layout_centerVertical="true"
             android:layout_centerInParent="true"
     />
-
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/event_main_content" android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" android:layout_alignParentLeft="true">
-
-        <androidx.appcompat.widget.AppCompatRatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/feedback_ratingBar"
-                android:numStars="5"
-                android:stepSize="0.25"
-                android:isIndicator="true"/>
-        <ImageView
-                android:id="@+id/event_image"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="35"
-                android:layout_margin="8dp"
-                android:contentDescription="@string/main_fragment_image_contentDescription"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                android:visibility="invisible"
-                app:srcCompat="@android:color/white"/>
-
-        <TextView
-            android:id="@+id/event_description"
-            android:layout_width="367dp"
             android:layout_height="0dp"
-            android:layout_weight="40"
-            android:layout_margin="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_image"/>
+            android:layout_weight="75"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp">
+
+            <LinearLayout
+                android:id="@+id/event_main_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/feedback_ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:stepSize="0.25" />
+
+                <ImageView
+                    android:id="@+id/event_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_very_huge_padding"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/main_fragment_image_contentDescription"
+                    android:visibility="invisible"
+                    app:srcCompat="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/event_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_image" />
+
+
+            </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
+            android:id="@+id/main_fragment_button_bar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="10"
             android:layout_margin="8dp"
-            android:orientation="horizontal"
-            android:id="@+id/main_fragment_button_bar">
+            android:orientation="horizontal">
 
             <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
                 android:id="@+id/main_fragment_news"
-                app:drawableStartCompat="@drawable/ic_chat_yellow_24dp"
-                android:paddingStart="@dimen/default_very_big_padding"
-                android:paddingEnd="@dimen/default_big_padding"
                 style="@style/Button_barButton_left"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="33"
-                android:text="@string/main_fragment_button_news"
+                android:ellipsize="none"
                 android:gravity="center"
+                android:paddingStart="@dimen/default_very_big_padding"
+                android:paddingEnd="@dimen/default_big_padding"
                 android:singleLine="true"
-                android:ellipsize="none"/>
+                android:text="@string/main_fragment_button_news"
+                app:drawableStartCompat="@drawable/ic_chat_yellow_24dp" />
 
             <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
                 android:id="@+id/main_fragment_schedule"
-                app:drawableStartCompat="@drawable/ic_event_yellow_24dp"
+                style="@style/Button_barButton_middle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="33"
+                android:ellipsize="none"
+                android:gravity="center"
                 android:paddingStart="@dimen/default_medium_padding"
                 android:paddingEnd="@dimen/default_medium_padding"
-                style="@style/Button_barButton_middle"
-                android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:text="@string/main_fragment_button_schedule"
-                android:gravity="center"
                 android:singleLine="true"
-                android:ellipsize="none"/>
+                android:text="@string/main_fragment_button_schedule"
+                app:drawableStartCompat="@drawable/ic_event_yellow_24dp" />
 
             <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
                 android:id="@+id/main_fragment_map"
-                app:drawableStartCompat="@drawable/ic_map_yellow_24dp"
-                android:paddingStart="@dimen/default_very_big_padding"
-                android:paddingEnd="@dimen/default_big_padding"
                 style="@style/Button_barButton_right"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="33"
-                android:text="@string/main_fragment_button_map"
+                android:ellipsize="none"
                 android:gravity="center"
+                android:paddingStart="@dimen/default_very_big_padding"
+                android:paddingEnd="@dimen/default_big_padding"
                 android:singleLine="true"
-                android:ellipsize="none"/>
+                android:text="@string/main_fragment_button_map"
+                app:drawableStartCompat="@drawable/ic_map_yellow_24dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -116,30 +123,31 @@
             android:layout_weight="15"
             android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/contact_form_go_button"
-                    style="@style/Button_barButton_middle"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:text="@string/contact_form_main_go_button"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/contact_form_go_button"
+                style="@style/Button_barButton_middle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:text="@string/contact_form_main_go_button" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/feedback_for_go_button"
-                        style="@style/Button_barButton_middle"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="50"
-                        android:text="@string/feedback_form_main_go_button"/>
-                <CheckedTextView
-                    android:id="@+id/join_event_button"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:text="@string/main_fragment_join_event"
-                    android:gravity="center"
-                    android:textAlignment="gravity"
-                    style="@style/Button_barButton_checkable"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/feedback_for_go_button"
+                style="@style/Button_barButton_middle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:text="@string/feedback_form_main_go_button" />
+
+            <CheckedTextView
+                android:id="@+id/join_event_button"
+                style="@style/Button_barButton_checkable"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="50"
+                android:gravity="center"
+                android:text="@string/main_fragment_join_event"
+                android:textAlignment="gravity" />
 
         </LinearLayout>
     </LinearLayout>
