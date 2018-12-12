@@ -236,10 +236,6 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        for (Marker m : markerList) {
-            Log.i("TAGTEST", m.getId() + " " + m.getTitle());
-        }
-
         EventEditionTag tag = (EventEditionTag) marker.getTag();
         if (tag != null && tag.getMarkerType()!=null)
             switch (tag.getMarkerType()) {
@@ -252,6 +248,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                     return true;
 
                 case OVERLAY_EDGE:
+                    // TODO prompt removal of overlay edge
                     return true;
             }
         return false;
