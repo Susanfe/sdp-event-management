@@ -246,6 +246,10 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
     @Override
     public Task<Boolean> sendNotificationToUsers(NotificationRequest notificationRequest) {
+        Event ev = events.get(notificationRequest.getEventId()).getValue();
+        if (ev == null)
+            return Tasks.call(() -> false);
+
         return Tasks.call(() -> true);
     }
 }
