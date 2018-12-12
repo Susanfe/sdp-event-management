@@ -166,8 +166,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             case R.id.nav_admin:
                 Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
                 adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
-                startActivity(adminIntent);
                 menuItem.setCheckable(false);
+                startActivity(adminIntent);
                 break;
 
             case R.id.nav_main:
@@ -202,8 +202,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             case R.id.nav_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
                 menuItem.setCheckable(false);
+                startActivity(intent);
                 break;
 
             case R.id.nav_contact:
