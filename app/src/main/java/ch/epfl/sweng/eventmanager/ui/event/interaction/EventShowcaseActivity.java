@@ -3,21 +3,38 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
+import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
+import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFormFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.settings.SettingsActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
@@ -26,8 +43,6 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 import jp.wasabeef.glide.transformations.BlurTransformation;
-
-import javax.inject.Inject;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
@@ -299,6 +314,39 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
     public int getEventID() {
         return eventID;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_showcase_activity_join, menu);
+        Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_join_id).getActionView();
+        //s.setThumbDrawable(getResources().getDrawable(R.drawable.join_button));
+        model.getEvent().observe(this, ev -> {
+            this.model.isJoined(ev).observe(this, s::setChecked);
+            s.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    this.model.joinEvent(ev);
+                    NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
+                    NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
+                } else {
+                    this.model.unjoinEvent(ev);
+                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
+                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
+                }
+            });
+
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_showcase_activity_join_id:
+                Log.i("tagtest","hello");
+                return false;
+        }
+        return false;
     }
 
     public enum FragmentType {
