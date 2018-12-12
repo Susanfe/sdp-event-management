@@ -316,8 +316,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
             Marker m = findMarkerById(onClickSavedMarkerID);
 
-            if (m!=null && title.equals(m.getTitle()) && snippet.equals(m.getSnippet()) &&
-                    type == ((EventEditionTag)Objects.requireNonNull(m.getTag())).getSpotType()) {
+            if (m!=null && !title.equals(m.getTitle()) && !snippet.equals(m.getSnippet()) &&
+                    type != ((EventEditionTag)Objects.requireNonNull(m.getTag())).getSpotType()) {
 
                 Log.i("TAGTEST", "Issued ModifyMarkerInfoAction");
 
