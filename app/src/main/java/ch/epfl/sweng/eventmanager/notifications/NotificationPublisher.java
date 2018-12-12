@@ -12,8 +12,8 @@ import androidx.core.app.NotificationManagerCompat;
  */
 public class NotificationPublisher extends BroadcastReceiver {
 
-    private static String NOTIFICATION_ID = "notification-id";
-    private static String NOTIFICATION = "notification";
+    private static final String NOTIFICATION_ID = "notification-id";
+    private static final String NOTIFICATION = "notification";
 
     @Override
     public void onReceive(Context context, Intent intent) {

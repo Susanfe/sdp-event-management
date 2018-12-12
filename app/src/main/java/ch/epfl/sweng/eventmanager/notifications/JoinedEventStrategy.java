@@ -11,7 +11,6 @@ public class JoinedEventStrategy extends NotificationStrategy<Event> {
     private static final Integer ONE_DAY = 86_400_000; // 24h in millis
     private static final String titleText = " will start tomorrow";
 
-
     public JoinedEventStrategy(Context context) {
         super(context);
     }
