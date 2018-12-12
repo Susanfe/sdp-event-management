@@ -225,10 +225,14 @@ public final class Event {
             Role role = Role.valueOf(getUsers().get(uid).toUpperCase());
 
             List<String> users;
-            if (result.get(role) == null) users = Arrays.asList(uid);
-            else users = result.get(role);
-
-            result.put(role, users);
+            if (result.get(role) == null) {
+                users = new ArrayList<>();
+                users.add(uid);
+                result.put(role, users);
+            }
+            else {
+                result.get(role).add(uid);
+            }
         }
 
         return result;
