@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -15,14 +16,13 @@ import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author Louis Vialar
@@ -133,6 +133,22 @@ public class FirebaseEventRepository implements EventRepository {
     public Task<Event> createEvent(Event event) {
         event.setId(generateEventId());
         return updateEvent(event);
+    }
+
+    @Override
+    public void uploadImage(Event event, Uri imageSrc) {
+        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
+        StorageReference eventsLogoRef = imagesRef.child(event.getImageName());
+        FirebaseDatabase fdB = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = fdB.getReference("events").child(String.valueOf(event.getId()));
+        StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/webp").build();
+        FirebaseHelper.uploadFileToStorage(eventsLogoRef, imageSrc, metadata)
+                .addOnSuccessListener(taskSnapshot -> eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            event.setImageURL(uri.toString());
+            Map<String, Object> updateUrl = new HashMap<>();
+            updateUrl.put("imageURL", uri.toString());
+            dbRef.updateChildren(updateUrl);
+        }));
     }
 
     @Override
