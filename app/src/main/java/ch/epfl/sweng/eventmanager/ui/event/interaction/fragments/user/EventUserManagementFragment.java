@@ -134,7 +134,7 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
                     if (task.isSuccessful()) toastText = getString(R.string.add_user_success);
                     else toastText = getString(R.string.add_user_failure);
                     Toast.makeText(getActivity(), toastText, Toast.LENGTH_LONG).show();
-                    setInProgressState(mAddUserButton, false);
+                    setInProgressState(false);
                 });
     }
 
