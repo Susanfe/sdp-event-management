@@ -13,7 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapEditionFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.EventMapEditionFragment;
 
 /**
  * Class used to interact with user when user wants to add a new marker on the map. The user is

@@ -18,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.SpotType;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapEditionFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.EventMapEditionFragment;
 
 /**
  * Class used to interact with user when he wants to modify a marker in the MapEdition fragment

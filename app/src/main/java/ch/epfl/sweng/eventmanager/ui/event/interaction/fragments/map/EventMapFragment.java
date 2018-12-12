@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
+package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map;
 
 import android.Manifest;
 import android.content.Context;
@@ -43,6 +43,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcaseFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.MultiDrawable;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
@@ -71,7 +72,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     GoogleMap mMap;
 
     @Inject
-    ViewModelFactory factory;
+    public ViewModelFactory factory;
     private ClusterManager<Spot> mClusterManager;
     SpotsModel spotsModel;
     ZoneModel zonesModel;
@@ -80,7 +81,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     private SupportMapFragment mapFragment;
 
     @Inject
-    Session session;
+    public Session session;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 

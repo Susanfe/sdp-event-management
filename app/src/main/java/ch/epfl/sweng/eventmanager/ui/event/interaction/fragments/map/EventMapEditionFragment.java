@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
+package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -373,16 +373,9 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
         Log.i("TAGTEST", "Issued markerCreationACtion");
         history.push(new MarkerCreationAction((EventEditionTag) m.getTag(), m.getPosition()));
-        // TODO link to other overlay edges and reform polygon
+
+        reformPolygon();
     }
-
-
-
-
-
-
-
-
 
 
     /**
@@ -469,6 +462,13 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         else {
             Toast.makeText(getContext(), getString(R.string.undone), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    /**
+     * Reforms the overlay that represents on the event
+     */
+    private void reformPolygon() {
+
     }
 
 }
