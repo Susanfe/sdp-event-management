@@ -2,6 +2,9 @@ package ch.epfl.sweng.eventmanager.notifications;
 
 import android.app.Notification;
 import android.util.Log;
+import android.widget.Toast;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -27,5 +30,17 @@ public class FirebaseNotificationService extends FirebaseMessagingService {
                 SchedulerHelper.scheduleNotification(getApplicationContext(), notif.hashCode(), notification, 0);
             }
         }
+    }
+
+    public static void subscribeToNotifications(Event ev) {
+        FirebaseMessaging.getInstance().subscribeToTopic(getTopicName(ev));
+    }
+
+    public static void unsubscribeFromNotifications(Event ev) {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(getTopicName(ev));
+    }
+
+    private static String getTopicName(Event ev) {
+        return ev.getName().replace(" ", "") + "_" + ev.getId();
     }
 }

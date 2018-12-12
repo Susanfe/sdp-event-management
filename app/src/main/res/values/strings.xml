@@ -168,5 +168,12 @@
 
     <string name="submit_your_feedback">Submit your Feedback</string>
     <string name="ratings_empty">There is no ratings yet.</string>
+    <string name="send_notification_title">Create a notification</string>
+    <string name="send_notification_title_field">Title</string>
+    <string name="send_notification_content">Notification content</string>
+    <string name="send_notification_send_button">Send</string>
+    <string name="send_notification_nav_item_activity_event">Send Notification</string>
+    <string name="send_notification_success">Successfully published the notification !</string>
+    <string name="send_notification_fails">Cannot publish notifications. Try again later!</string>
 
 </resources>

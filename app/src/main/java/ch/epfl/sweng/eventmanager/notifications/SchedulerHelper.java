@@ -42,7 +42,6 @@ class SchedulerHelper {
         long future = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, future, pendingIntent);
-        Log.d("SchedulerHelper", "Successfully scheduled the notification : ");
     }
 
     /**

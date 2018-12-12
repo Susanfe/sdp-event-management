@@ -7,18 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
-import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
-import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
+import ch.epfl.sweng.eventmanager.notifications.*;
+import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import com.google.firebase.messaging.FirebaseMessaging;
 import dagger.android.support.AndroidSupportInjection;
+
+import java.util.Arrays;
 
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
@@ -74,7 +78,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             eventDescription.setText(ev.getDescription());
             eventDescription.setVisibility(View.VISIBLE);
 
-            ev.loadEventImageIntoImageView(getContext(),eventImage);
+            ev.loadEventImageIntoImageView(getContext(), eventImage);
             eventImage.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 
@@ -91,15 +95,12 @@ public class EventMainFragment extends AbstractShowcaseFragment {
                     this.model.joinEvent(ev);
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getContext()));
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
-                    FirebaseMessaging.getInstance().subscribeToTopic(ev.getName() + "_" + ev.getId()).addOnCompleteListener(task -> {
-                        Log.d(TAG, "subscribed to a topic");
-                        Toast.makeText(getContext(), "subscribed to a topic", Toast.LENGTH_SHORT).show();
-                    });
+                    FirebaseNotificationService.subscribeToNotifications(ev);
                 } else {
                     this.model.unjoinEvent(ev);
                     NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getContext()));
                     NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic(ev.getName());
+                    FirebaseNotificationService.unsubscribeFromNotifications(ev);
                 }
             });
         });
