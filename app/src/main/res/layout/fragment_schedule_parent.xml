@@ -37,8 +37,9 @@
         <TextView
                 android:text="@string/scheduled_items_empty"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/viewpager_empty"
-                android:layout_gravity="center_vertical|center_horizontal|center"
+                android:layout_height="wrap_content"
+                android:id="@+id/viewpager_empty"
+                android:layout_gravity="center_vertical|center_horizontal"
                 android:visibility="invisible"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -90,10 +90,10 @@ public class ScheduleParentFragment extends Fragment {
                     viewPager.setCurrentItem(page);
                 }
                 Bundle args = getArguments();
-                if(args != null) {
+                if (args != null) {
                     String room = getArguments().getString(EventMapFragment.TAB_NB_KEY, "");
                     int cond = viewPagerAdapter.getTitlePage(room);
-                    if(cond != -1) {
+                    if (cond != -1) {
                         viewPager.postDelayed(() -> viewPager.setCurrentItem(cond), 100);
                     }
                 }
