@@ -1,20 +1,18 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
-import android.os.SystemClock;
 import android.view.Gravity;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ToastMatcher;
-import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.TestApplication;
 import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventAdministrationActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
-import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -37,6 +35,8 @@ public class NotificationsFragmentTest {
 
     private String notificationTitle = "Wonderful Event";
     private String notificationBody = "This is a wonderful notification";
+    private String notificationTitleFails = "fails";
+    private String notificationBodyFails = "This is a wonderful notification";
 
     @Before
     public void setup() {
@@ -53,19 +53,38 @@ public class NotificationsFragmentTest {
                 .perform(NavigationViewActions.navigateTo(R.id.nav_send_notification));
     }
 
-    private void createNotification() {
-        SystemClock.sleep(500);
-
+    @Test
+    public void testCreateNotification() {
         onView(withId(R.id.notification_title)).perform(typeText(notificationTitle), closeSoftKeyboard());
         onView(withId(R.id.notification_content)).perform(typeText(notificationBody), closeSoftKeyboard());
         onView(withId(R.id.notification_send)).perform(ViewActions.click());
-    }
-
-    @Test
-    public void testCreateNews() {
-        createNotification();
 
         onView(withText(R.string.send_notification_success)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+    }
+
+    @Ignore
+    @Test
+    public void testCreateNotificationFail(){
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open());
+
+        // Switch displayed fragment
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_send_news));
+
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open());
+
+        // Switch displayed fragment
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_send_notification));
+
+
+        onView(withId(R.id.notification_title)).perform(typeText(notificationTitleFails), closeSoftKeyboard());
+        onView(withId(R.id.notification_content)).perform(typeText(notificationBodyFails), closeSoftKeyboard());
+        onView(withId(R.id.notification_send)).perform(ViewActions.click());
+
+        onView(withText(R.string.send_notification_fails)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
     }
 
 }

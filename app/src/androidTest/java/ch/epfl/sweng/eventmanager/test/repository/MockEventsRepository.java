@@ -113,11 +113,11 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
-                CONFIG_BY_EVENT.get(2),true));
+                CONFIG_BY_EVENT.get(2), true));
 
         addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
                 orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
-                CONFIG_BY_EVENT.get(3),true));
+                CONFIG_BY_EVENT.get(3), true));
 
         addZones(1, new Gson().fromJson(jsonZone, zonesToken.getType()));
         addSpots(1, new Gson().fromJson(jsonSpots, spotsToken.getType()));
@@ -155,8 +155,6 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 "  \"id\" : \"7a9207df-202b-4e83-93a5-8466563466ca\",\n" +
                 "  \"itemLocation\" : \"CO\"\n" +
                 "} ]\n";
-
-
 
 
         TypeToken<List<ScheduledItem>> scheduleToken = new TypeToken<List<ScheduledItem>>() {
@@ -251,9 +249,8 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
     @Override
     public Task<Boolean> sendNotificationToUsers(NotificationRequest notificationRequest) {
-        Event ev = events.get(notificationRequest.getEventId()).getValue();
-        if (ev == null)
-            return Tasks.call(() -> false);
+        if (notificationRequest.getTitle().contains("fails"))
+            return Tasks.forCanceled();
 
         return Tasks.call(() -> true);
     }
