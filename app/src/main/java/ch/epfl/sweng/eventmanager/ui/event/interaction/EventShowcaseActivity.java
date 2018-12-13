@@ -94,7 +94,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             if (ev.hasAnImage()) {
                 ImageView header = headerView.findViewById(R.id.drawer_header_image);
-                loader.loadImageWithSpinner(ev,this,header,new BlurTransformation(3));
+                loader.loadImageWithSpinner(ev, this, header, new BlurTransformation(3));
             }
 
             drawer_header_text.setText(ev.getName());
@@ -135,13 +135,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             // Set displayed fragment only when no other fragment where previously inflated.
             if (savedInstanceState == null) {
-                String fragment = intent.getStringExtra("fragment");
-                if (fragment != null && fragment.equals("feedback")) {
-                    changeFragment(new EventFeedbackFragment(), true);
-                } else {
-                    eventMainFragment = new EventMainFragment();
-                    changeFragment(eventMainFragment, true);
-                }
+                eventMainFragment = new EventMainFragment();
+                changeFragment(eventMainFragment, true);
             }
         }
 

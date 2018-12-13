@@ -29,21 +29,6 @@ class NotificationBuilder {
     }
 
     /**
-     * Provides a {@link PendingIntent} to EventFeedbackFragment View of a specific event
-     *
-     * @param context non null
-     * @param eventId id of the event
-     * @return PendingIntent
-     */
-    private static PendingIntent toEventFeedbackFragment(Context context, int eventId) {
-        Intent intent = new Intent(context, EventShowcaseActivity.class);
-        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventId);
-        intent.putExtra("fragment", "feedback");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        return PendingIntent.getActivity(context, 0, intent, 0);
-    }
-
-    /**
      * Provides a {@link PendingIntent} to EventMainFragment View of a specific event
      *
      * @param context non null
@@ -79,7 +64,7 @@ class NotificationBuilder {
      * @see Notification
      */
     static Notification getFeedbackNotificationFrom(@NonNull Context context, String title, String description, int eventId) {
-        PendingIntent pendingIntent = toEventFeedbackFragment(context, eventId);
+        PendingIntent pendingIntent = toEventMainFragment(context, eventId);
 
         // Create a notification
         return getNotification(context, title, description, pendingIntent);
