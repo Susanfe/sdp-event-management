@@ -16,10 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.data.Feed;
-import ch.epfl.sweng.eventmanager.repository.data.News;
-import ch.epfl.sweng.eventmanager.repository.data.NewsOrTweetOrFacebook;
+import ch.epfl.sweng.eventmanager.repository.data.*;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.user.LoginFacebookActivity;
 import com.twitter.sdk.android.core.models.Tweet;
@@ -107,7 +104,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
     public static class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private List<NewsOrTweetOrFacebook> news;
+        private List<SocialNetworkPost> news;
 
         NewsAdapter() {
             this.news = Collections.emptyList();
@@ -119,17 +116,16 @@ public class NewsFragment extends AbstractShowcaseFragment {
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                           int viewType) {
 
-            if (viewType == NewsOrTweetOrFacebook.TYPE_TWEET) {
+            if (viewType == TwitterPost.VIEW_TYPE) {
                 final Tweet tweet = new TweetBuilder().build();
                 final CompactTweetView compactTweetView = new CompactTweetView(parent.getContext(), tweet);
 
                 return new TweetViewHolder(compactTweetView);
-            } else if(viewType == NewsOrTweetOrFacebook.TYPE_NEWS){
+            } else if(viewType == NewsPost.VIEW_TYPE){
                 View v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_news, parent, false);
                 return new NewsViewHolder(v);
-            }
-            else {
+            } else {
                 View v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.facebook_item_news, parent, false);
                 return new FacebookViewHolder(v);
@@ -140,11 +136,11 @@ public class NewsFragment extends AbstractShowcaseFragment {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof NewsViewHolder)
-                ((NewsViewHolder) holder).bind(news.get(position).getNews());
+                ((NewsViewHolder) holder).bind((News) news.get(position).getPost());
             else if (holder instanceof TweetViewHolder)
-                ((CompactTweetView) ((TweetViewHolder) holder).itemView).setTweet(news.get(position).getTweet());
+                ((CompactTweetView) ((TweetViewHolder) holder).itemView).setTweet((Tweet) news.get(position).getPost());
             else if (holder instanceof FacebookViewHolder)
-                ((FacebookViewHolder) holder).bind(news.get(position).getFacebook());
+                ((FacebookViewHolder) holder).bind((Feed) news.get(position).getPost());
         }
 
         @Override
@@ -157,7 +153,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
             return news.size();
         }
 
-        public void setContent(List<NewsOrTweetOrFacebook> news) {
+        public void setContent(List<SocialNetworkPost> news) {
             this.news = news;
 
             Collections.sort(this.news);
