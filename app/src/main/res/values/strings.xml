@@ -178,5 +178,6 @@
     <string name="send_notification_fails">Cannot publish notifications. Try again later!</string>
     <string name="settings_notifications_title">Notifications</string>
     <string name="key_settings_notifications_switch">settings_notifications_switch</string>
+    <string name="map_location_of_event_null">The organizer hasn\'t provided the location of the event</string>
 
 </resources>
