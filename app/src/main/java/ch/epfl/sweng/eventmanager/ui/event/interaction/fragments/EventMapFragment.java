@@ -39,6 +39,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
+import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.MultiDrawable;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
@@ -124,11 +125,20 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     private void setUpMap(){
         if(getActivity() != null) {
             model.getEvent().observe(getActivity(), event -> {
-                if (event == null || event.getLocation() == null) {
+                if (event == null) {
                     throw new NullPointerException("event is null");
                 }
 
-                EventLocation loc = event.getLocation();
+                EventLocation loc;
+                if(event.getLocation() != null){
+                    loc = event.getLocation();
+                }
+                else{
+                    loc = new EventLocation("EPFL",Position.EPFL);
+                    Toast toast = Toast.makeText(getContext(), getString(R.string.map_location_of_event_null), Toast.LENGTH_LONG);
+                    toast.show();
+                }
+
                 LatLng place = loc.getPosition().asLatLng();
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, ZOOMLEVEL));
                 mMap.getUiSettings().setCompassEnabled(true);
