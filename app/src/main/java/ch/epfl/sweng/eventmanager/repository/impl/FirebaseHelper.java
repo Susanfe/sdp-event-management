@@ -88,4 +88,11 @@ public class FirebaseHelper {
 
         return dbRef.setValue(elem);
     }
+
+    public static Task<Void> removeChild(int eventId, String ref, String child){
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference(ref)
+                .child(child);
+        return dbRef.removeValue();
+    }
 }
