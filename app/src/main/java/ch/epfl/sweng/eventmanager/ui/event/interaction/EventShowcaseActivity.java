@@ -329,20 +329,28 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             s.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     this.model.joinEvent(ev);
-                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.joined_switch_button) +
-                            ev.getName(), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP, 0, Y_OFFSET_TOAST);
-                    toast.show();
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
                 } else {
                     this.model.unjoinEvent(ev);
+
+                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
+                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
+                }
+            });
+
+            s.setOnClickListener(buttonView -> {
+                if(s.isChecked()){
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.joined_switch_button) +
+                            ev.getName(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, Y_OFFSET_TOAST);
+                    toast.show();
+                }
+                else{
                     Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.unjoined_switch_button) +
                             ev.getName(), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP, 0, Y_OFFSET_TOAST);
                     toast.show();
-                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
-                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
                 }
             });
         });

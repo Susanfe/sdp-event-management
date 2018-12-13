@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,14 +140,9 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_showcase_activity_join_id:
-
-
-                return true;
-            default:
-                return false;
-        }
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem menuItem = menu.findItem(R.id.menu_showcase_activity_join_id);
+        menuItem.setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

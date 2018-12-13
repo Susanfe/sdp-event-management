@@ -6,6 +6,7 @@
         android:id="@+id/menu_showcase_activity_join_id"
         android:checkable="true"
         app:showAsAction="ifRoom"
+        android:visible="false"
         app:actionViewClass="android.widget.Switch"/>
 
 </menu>
