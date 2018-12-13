@@ -157,6 +157,8 @@
     <string name="create_event_canceled">Operation was unexpectedly cancelled.</string>
     <string name="create_event_error">An error occurred:</string>
     <string name="create_event_success">The event has been created!</string>
+    <string name="create_event_name_empty">The event name cannot be empty!</string>
+    <string name="create_event_name_too_short">The event name must be at least 4 characters long!</string>
     <string name="create_event_update_success">The event has been updated!</string>
     <string name="feedback_form_main_go_button">Feedback</string>
     <string name="feedback_nav">Feedback</string>
