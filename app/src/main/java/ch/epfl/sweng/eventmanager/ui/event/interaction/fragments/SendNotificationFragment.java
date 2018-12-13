@@ -14,8 +14,7 @@ import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.notifications.NotificationRequest;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
-import ch.epfl.sweng.eventmanager.repository.NewsRepository;
-import ch.epfl.sweng.eventmanager.repository.data.News;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
@@ -61,8 +60,10 @@ public class SendNotificationFragment extends AbstractShowcaseFragment {
 
                 send.setClickable(false);
 
-                cloudFunction.sendNotificationToUsers(notificationRequest).addOnSuccessListener(e ->
-                        Toast.makeText(getContext(), R.string.send_notification_success, Toast.LENGTH_SHORT).show()
+                cloudFunction.sendNotificationToUsers(notificationRequest).addOnSuccessListener(e -> {
+                            Toast.makeText(getContext(), R.string.send_notification_success, Toast.LENGTH_SHORT).show();
+                            getParentActivity().changeFragment(new EventUserManagementFragment(), true);
+                        }
                 ).addOnFailureListener(e -> {
                     Toast.makeText(getContext(), R.string.send_notification_fails, Toast.LENGTH_LONG).show();
                     send.setClickable(true);
