@@ -51,7 +51,7 @@ public class FirebaseEventRepository implements EventRepository {
         dbRef.keepSynced(true);
 
         return FirebaseHelper.getList(dbRef, Event.class, (event, ref) -> {
-            event.setId(Integer.parseInt(ref.getKey()));
+            event.setId(Integer.parseInt(Objects.requireNonNull(ref.getKey())));
             return event;
         });
     }

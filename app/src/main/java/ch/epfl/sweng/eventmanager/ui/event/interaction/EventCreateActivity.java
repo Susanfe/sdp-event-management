@@ -274,20 +274,23 @@ public class EventCreateActivity extends AppCompatActivity {
             cropAndConvertImage(eventImageUri);
         }
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-                eventImageSrc = UCrop.getOutput(data);
-                imageChanged = true;
+            assert data != null;
+            eventImageSrc = UCrop.getOutput(data);
+            imageChanged = true;
 
-                imageLoader.displayImage(this, eventImageSrc, eventImage);
+            imageLoader.displayImage(this, eventImageSrc, eventImage);
         } else if (resultCode == UCrop.RESULT_ERROR) {
+            assert data != null;
             final Throwable cropError = UCrop.getError(data);
             Log.i(TAG,"Unable to crop image");
+            assert cropError != null;
             cropError.printStackTrace();
         }
     }
 
     /**
      * Handle the cropping and conversion of the image
-     * @param eventImageUri
+     * @param eventImageUri image to be cropped and converted
      */
     private void cropAndConvertImage(Uri eventImageUri) {
         try {

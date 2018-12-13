@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -27,7 +30,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     private static final String TAG = "EventMainFragment";
 
     @Inject
-    protected FeedbackRepository feedbackRepository;
+    FeedbackRepository feedbackRepository;
 
     @Inject
     ImageLoader loader;
@@ -70,9 +73,8 @@ public class EventMainFragment extends AbstractShowcaseFragment {
                 return;
             }
 
-            // FIXME handle NullPointerException in setTitle
             // Set window title
-            getActivity().setTitle(ev.getName());
+            Objects.requireNonNull(getActivity()).setTitle(ev.getName());
 
             eventDescription.setText(ev.getDescription());
             eventDescription.setVisibility(View.VISIBLE);

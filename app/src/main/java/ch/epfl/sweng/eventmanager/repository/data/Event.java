@@ -174,13 +174,13 @@ public final class Event {
     /**
      * Allows to change the visibility of the event
      *
-     * @param visibleFromPublic
+     * @param visibleFromPublic states the wanted public visibility
      */
     public void setVisibleFromPublic(boolean visibleFromPublic) {
         this.visibleFromPublic = visibleFromPublic;
     }
 
-    public void setLocation(EventLocation location) {
+    void setLocation(EventLocation location) {
         this.location = location;
     }
 
@@ -189,7 +189,7 @@ public final class Event {
         return hasAnImage() ? Uri.parse(imageURL) : null;
     }
 
-    public String getImageURL() {
+    String getImageURL() {
         return imageURL;
     }
 
@@ -239,7 +239,7 @@ public final class Event {
 
         // The keys of a Java Map are unique
         for (String uid : getUsers().keySet()) {
-            Role role = Role.valueOf(getUsers().get(uid).toUpperCase());
+            Role role = Role.valueOf(Objects.requireNonNull(getUsers().get(uid)).toUpperCase());
 
             List<String> users;
             if (result.get(role) == null) {
@@ -247,7 +247,7 @@ public final class Event {
                 users.add(uid);
                 result.put(role, users);
             } else {
-                result.get(role).add(uid);
+                Objects.requireNonNull(result.get(role)).add(uid);
             }
         }
 
@@ -256,7 +256,7 @@ public final class Event {
 
     // FIXME Use or delete method ?
 
-    public String beginDateAsString() {
+    String beginDateAsString() {
         if (beginDate <= 0) {
             return null;
         }
@@ -264,7 +264,7 @@ public final class Event {
         return f.format(beginDate);
     }
 
-    public String endDateAsString() {
+    String endDateAsString() {
         if (endDate <= 0) {
             return null;
         }
