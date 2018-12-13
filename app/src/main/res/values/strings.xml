@@ -175,5 +175,6 @@
     <string name="submit_your_feedback">Submit your Feedback</string>
     <string name="ratings_empty">There is no ratings yet.</string>
     <string name="delete_successfull">Event successfully deleted !</string>
+    <string name="map_location_of_event_null">The organizer hasn\'t provided the location of the event</string>
 
 </resources>
