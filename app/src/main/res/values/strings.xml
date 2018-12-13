@@ -169,5 +169,7 @@
     <string name="submit_your_feedback">Submit your Feedback</string>
     <string name="ratings_empty">There is no ratings yet.</string>
     <string name="join_switch_button">join</string>
+    <string name="unjoined_switch_button">You have unjoined</string>
+    <string name="joined_switch_button">You have joined</string>
 
 </resources>

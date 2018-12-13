@@ -3,12 +3,14 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -46,6 +48,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
+    private static final int Y_OFFSET_TOAST = 30;
 
     @Inject
     ViewModelFactory factory;
@@ -326,15 +329,22 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             s.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     this.model.joinEvent(ev);
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.joined_switch_button) +
+                            ev.getName(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, Y_OFFSET_TOAST);
+                    toast.show();
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
                     NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
                 } else {
                     this.model.unjoinEvent(ev);
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.unjoined_switch_button) +
+                            ev.getName(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP, 0, Y_OFFSET_TOAST);
+                    toast.show();
                     NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
                     NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
                 }
             });
-
         });
         return true;
     }
