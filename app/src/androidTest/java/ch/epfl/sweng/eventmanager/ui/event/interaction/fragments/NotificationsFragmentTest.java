@@ -6,6 +6,9 @@ import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ToastMatcher;
+import ch.epfl.sweng.eventmanager.notifications.CloudMessageEventStrategy;
+import ch.epfl.sweng.eventmanager.notifications.NotificationRequestResponse;
+import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.TestApplication;
 import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
@@ -54,7 +57,7 @@ public class NotificationsFragmentTest {
     }
 
     @Test
-    public void testCreateNotification() {
+    public void createNotificationTest() {
         onView(withId(R.id.notification_title)).perform(typeText(notificationTitle), closeSoftKeyboard());
         onView(withId(R.id.notification_content)).perform(typeText(notificationBody), closeSoftKeyboard());
         onView(withId(R.id.notification_send)).perform(ViewActions.click());
@@ -64,7 +67,7 @@ public class NotificationsFragmentTest {
 
     @Ignore
     @Test
-    public void testCreateNotificationFail(){
+    public void createNotificationFailTest(){
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
 
@@ -85,6 +88,11 @@ public class NotificationsFragmentTest {
         onView(withId(R.id.notification_send)).perform(ViewActions.click());
 
         onView(withText(R.string.send_notification_fails)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void scheduleNotificationDoesntThrowExceptionTest(){
+        NotificationScheduler.scheduleNotification(new NotificationRequestResponse("title", "body", "Sysmic"), new CloudMessageEventStrategy(mActivityRule.getActivity().getApplicationContext()));
     }
 
 }
