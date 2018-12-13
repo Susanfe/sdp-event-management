@@ -101,6 +101,7 @@ public class EventCreateActivityTest {
 
     @Test
     public void testDeleteEventNo() {
+        Espresso.closeSoftKeyboard();
         onView(withId(R.id.create_form)).perform(swipeUp());
         onView(withId(R.id.create_form_delete_event_button)).perform(click());
         onView(withText(R.string.button_no)).perform(click());
