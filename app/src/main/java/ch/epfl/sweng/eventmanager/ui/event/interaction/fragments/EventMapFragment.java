@@ -135,6 +135,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 }
                 else{
                     loc = new EventLocation("EPFL",Position.EPFL);
+                    Toast toast = Toast.makeText(getContext(), getString(R.string.map_location_of_event_null), Toast.LENGTH_LONG);
+                    toast.show();
                 }
 
                 LatLng place = loc.getPosition().asLatLng();
