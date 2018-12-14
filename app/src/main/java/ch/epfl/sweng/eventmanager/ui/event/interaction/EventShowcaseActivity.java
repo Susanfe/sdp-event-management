@@ -15,6 +15,7 @@ import android.widget.Toast;
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
@@ -374,10 +375,13 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_showcase_activity_join_id:
-                Log.i("tagtest","hello");
+                return false;
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            default:
                 return false;
         }
-        return false;
     }
 
     public enum FragmentType {
