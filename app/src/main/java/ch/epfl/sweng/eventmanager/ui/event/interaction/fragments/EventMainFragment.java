@@ -54,6 +54,10 @@ public class EventMainFragment extends AbstractFeedbackFragment {
 
     @BindView(R.id.event_feedback_recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.recent_feedback_text)
+    TextView textView;
+    @BindView(R.id.separation_feedback)
+    ImageView imageView;
 
     private EventShowcaseActivity showcaseActivity;
 
@@ -102,9 +106,15 @@ public class EventMainFragment extends AbstractFeedbackFragment {
         model.getEvent().observe(this, ev -> {
             repository.getRatings(ev.getId()).observe(this, ratings -> {
                 if (ratings != null && ratings.size() > 0) {
-                    recyclerView.setVisibility(View.VISIBLE);
                     //display only the most recent feedback
                     ratingsRecyclerViewAdapter.setContent(ratings.subList(0,1));
+                    feedback.setVisibility(View.VISIBLE);
+                    textView.setVisibility(View.VISIBLE);
+                    imageView.setVisibility(View.VISIBLE);
+                }else{
+                    feedback.setVisibility(View.GONE);
+                    textView.setVisibility(View.GONE);
+                    imageView.setVisibility(View.GONE);
                 }
             });
         });

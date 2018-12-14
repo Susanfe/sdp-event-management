@@ -174,5 +174,6 @@
     <string name="unjoined_switch_button">You have unjoined</string>
     <string name="joined_switch_button">You have joined</string>
     <string name="more_feedback">More feedback</string>
+    <string name="recent_feedback_from_user">Recent feedback from user:</string>
 
 </resources>

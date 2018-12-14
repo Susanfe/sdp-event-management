@@ -113,10 +113,35 @@
                         app:drawableStartCompat="@drawable/ic_map_yellow_24dp" />
                 </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/default_medium_padding"
                     android:id="@+id/event_feedback_relative_layout">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:visibility="gone"
+                        android:id="@+id/separation_feedback"
+                        android:layout_marginStart="4dp"
+                        android:background="@drawable/separation_black"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/recent_feedback_text"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="@dimen/default_medium_padding"
+
+                        android:textSize="20sp"
+                        android:text="@string/recent_feedback_from_user"
+                        android:visibility="gone"
+                        />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/event_feedback_recycler_view"
                         android:layout_width="match_parent"
@@ -125,6 +150,13 @@
                         android:padding="10dp"
                         tools:listitem="@layout/item_feedback" android:visibility="visible">
                     </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center">
 
                     <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
                         android:text="@string/more_feedback"
@@ -132,12 +164,10 @@
                         style="@style/Button_global"
                         android:layout_width="@dimen/default_very_huge_padding"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
                         android:gravity="center"
                         app:layout_anchorGravity="bottom"
-                        android:layout_alignParentStart="true" android:layout_alignParentBottom="true"
-                        android:layout_alignParentLeft="true"/>
-                </RelativeLayout>
+                        android:visibility="gone"/>
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>
