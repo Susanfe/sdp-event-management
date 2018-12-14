@@ -169,6 +169,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             case R.id.nav_admin:
                 Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
                 adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
+                adminIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 menuItem.setCheckable(false);
                 startActivity(adminIntent);
                 break;

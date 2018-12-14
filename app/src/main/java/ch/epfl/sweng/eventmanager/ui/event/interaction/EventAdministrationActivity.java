@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
@@ -18,6 +15,8 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
+
+import javax.inject.Inject;
 
 public class EventAdministrationActivity extends MultiFragmentActivity {
     private static final String TAG = "EventAdministration";
@@ -80,6 +79,7 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
             case R.id.nav_showcase :
                 Intent showcaseIntent = new Intent(this, EventShowcaseActivity.class);
                 showcaseIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
+                showcaseIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(showcaseIntent);
                 break;
 
@@ -99,5 +99,14 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
         }
 
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, EventShowcaseActivity.class);
+        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        super.onBackPressed();
     }
 }
