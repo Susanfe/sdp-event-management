@@ -41,6 +41,8 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     Button schedule;
     @BindView(R.id.main_fragment_map)
     Button map;
+    @BindView(R.id.more_feedback_button)
+    Button feedback;
     @BindView(R.id.feedback_ratingBar)
     RatingBar feedbackBar;
     @BindView(R.id.event_description)
@@ -100,6 +102,9 @@ public class EventMainFragment extends AbstractShowcaseFragment {
 
         schedule.setOnClickListener(v -> showcaseActivity.callChangeFragment(
                 EventShowcaseActivity.FragmentType.SCHEDULE, true));
+
+        feedback.setOnClickListener(v -> ((EventShowcaseActivity) getActivity())
+                .changeFragment(new EventFeedbackFragment(), true));
 
         return view;
     }

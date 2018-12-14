@@ -113,6 +113,32 @@
                         app:drawableStartCompat="@drawable/ic_map_yellow_24dp" />
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/event_feedback_relative_layout">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/event_feedback_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:padding="10dp"
+                        tools:listitem="@layout/item_feedback" android:visibility="visible">
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
+                        android:text="@string/more_feedback"
+                        android:id="@+id/more_feedback_button"
+                        style="@style/Button_global"
+                        android:layout_width="@dimen/default_very_huge_padding"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        android:gravity="center"
+                        app:layout_anchorGravity="bottom"
+                        android:layout_alignParentStart="true" android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"/>
+                </RelativeLayout>
+
             </LinearLayout>
         </ScrollView>
 
