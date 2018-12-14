@@ -26,19 +26,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class EventFeedbackFragment extends AbstractShowcaseFragment {
+public class EventFeedbackFragment extends AbstractFeedbackFragment {
     private static final String TAG = "EventFeedbackFragment";
     private String UNIQUE_DEVICE_ID;
 
-    @Inject
-    protected FeedbackRepository repository;
-
     @BindView(R.id.feedback_submit_feedback)
     Button submitFeedback;
-    @BindView(R.id.feedback_recycler_view)
-    RecyclerView recyclerView;
     @BindView(R.id.ratings_empty_tv)
     TextView emptyRatingsTextView;
+    @BindView(R.id.feedback_recycler_view)
+    RecyclerView recyclerView;
 
     private RatingsRecyclerViewAdapter ratingsRecyclerViewAdapter = new RatingsRecyclerViewAdapter();
 
@@ -97,57 +94,5 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         super.onAttach(context);
     }
 
-    public class RatingsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        private List<EventRating> ratingList = Collections.emptyList();
-
-        @NonNull
-        @Override
-        public RatingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // create a new view
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_feedback, parent, false);
-
-            return new RatingViewHolder(v);
-        }
-
-        public void setContent(List<EventRating> ratings) {
-            this.ratingList = ratings;
-
-            Collections.sort(ratingList, (o1, o2) -> -1 * Long.compare(o1.getDate(), o2.getDate()));
-
-            this.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            if (holder instanceof RatingsRecyclerViewAdapter.RatingViewHolder)
-                ((RatingsRecyclerViewAdapter.RatingViewHolder) holder).bind(ratingList.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return ratingList.size();
-        }
-
-        final class RatingViewHolder extends RecyclerView.ViewHolder {
-            @BindView(R.id.item_feedback_rating)
-            RatingBar rating;
-            @BindView(R.id.item_feedback_description)
-            TextView comment;
-            @BindView(R.id.item_feedback_date)
-            TextView date;
-
-            RatingViewHolder(View v) {
-                super(v);
-                ButterKnife.bind(this, v);
-            }
-
-            public void bind(EventRating rating) {
-                this.rating.setRating(rating.getRating());
-                this.comment.setText(rating.getDescription());
-                this.date.setText(new Date(rating.getDate()).toString());
-            }
-        }
-    }
 
 }

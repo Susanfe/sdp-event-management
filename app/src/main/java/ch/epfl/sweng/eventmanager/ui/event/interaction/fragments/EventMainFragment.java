@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -26,11 +28,8 @@ import javax.inject.Inject;
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
  */
-public class EventMainFragment extends AbstractShowcaseFragment {
+public class EventMainFragment extends AbstractFeedbackFragment {
     private static final String TAG = "EventMainFragment";
-
-    @Inject
-    protected FeedbackRepository feedbackRepository;
 
     @Inject
     ImageLoader loader;
@@ -81,7 +80,7 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             progressBar.setVisibility(View.GONE);
 
             feedbackBar.setIsIndicator(true);
-            feedbackRepository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
+            repository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
 
         });
     }
