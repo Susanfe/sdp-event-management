@@ -35,20 +35,14 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     @Inject
     ImageLoader loader;
 
-    @BindView(R.id.contact_form_go_button)
-    Button contactButton;
     @BindView(R.id.main_fragment_news)
     Button news;
     @BindView(R.id.main_fragment_schedule)
     Button schedule;
     @BindView(R.id.main_fragment_map)
     Button map;
-    @BindView(R.id.feedback_for_go_button)
-    Button feedbackButton;
     @BindView(R.id.feedback_ratingBar)
     RatingBar feedbackBar;
-    @BindView(R.id.join_event_button)
-    CheckedTextView joinEventButton;
     @BindView(R.id.event_description)
     TextView eventDescription;
     @BindView(R.id.event_image)
@@ -87,22 +81,6 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             feedbackBar.setIsIndicator(true);
             feedbackRepository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
 
-            // Binds the 'joined event' switch to the database
-            CheckedTextView joinEventButton = view.findViewById(R.id.join_event_button);
-
-            // State of the switch depends on if the user joined the event
-            this.model.isJoined(ev).observe(this, joinEventButton::setChecked);
-            joinEventButton.setOnClickListener(v -> {
-                if (!joinEventButton.isChecked()) {
-                    this.model.joinEvent(ev);
-                    NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getContext()));
-                    NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
-                } else {
-                    this.model.unjoinEvent(ev);
-                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getContext()));
-                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
-                }
-            });
         });
     }
 
@@ -114,9 +92,6 @@ public class EventMainFragment extends AbstractShowcaseFragment {
         showcaseActivity = (EventShowcaseActivity) getParentActivity();
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
-        contactButton.setOnClickListener(v -> showcaseActivity.callChangeFragment(
-                EventShowcaseActivity.FragmentType.FORM, true));
-
         news.setOnClickListener(v -> showcaseActivity.callChangeFragment(
                 EventShowcaseActivity.FragmentType.NEWS, true));
 
@@ -125,8 +100,6 @@ public class EventMainFragment extends AbstractShowcaseFragment {
 
         schedule.setOnClickListener(v -> showcaseActivity.callChangeFragment(
                 EventShowcaseActivity.FragmentType.SCHEDULE, true));
-
-        feedbackButton.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFeedbackFragment(), true));
 
         return view;
     }
