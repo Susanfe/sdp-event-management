@@ -7,15 +7,14 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
@@ -29,17 +28,13 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
-import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -51,9 +46,8 @@ import java.util.List;
  * @author Robin Zbinden (274236)
  * @author Stanislas Jouven (260580)
  */
-public class EventMapFragment extends AbstractShowcaseFragment implements
-        ClusterManager.OnClusterClickListener<Spot>,
-        ClusterManager.OnClusterItemInfoWindowClickListener<Spot>, OnMapReadyCallback {
+public class EventMapFragment extends AbstractShowcaseFragment implements ClusterManager.OnClusterClickListener<Spot>
+        , ClusterManager.OnClusterItemInfoWindowClickListener<Spot>, OnMapReadyCallback {
 
     @Inject
     ViewModelFactory factory;
@@ -68,73 +62,67 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     private ScheduleViewModel scheduleViewModel;
     private Spot clickedClusterItem;
     private SupportMapFragment mapFragment;
-    private GoogleMap googleMap;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private MapView mapView;
+    private GoogleMap googleMap;
 
-    public EventMapFragment() {
-        // Required empty public constructor
-        super(R.layout.fragment_event_map);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        FragmentManager fm = getChildFragmentManager();
-        mapFragment = (SupportMapFragment) fm.findFragmentById(R.id.mapFragment);
-        if (mapFragment == null) {
-            mapFragment = SupportMapFragment.newInstance();
-            fm.beginTransaction().replace(R.id.mapFragment, mapFragment).commit();
-        }
+    protected EventMapFragment(int resource) {
+        super(resource);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
-
         if (spotsModel == null) {
             spotsModel = ViewModelProviders.of(requireActivity(), factory).get(SpotsModel.class);
         }
-        if(zonesModel == null) {
+        if (zonesModel == null) {
             zonesModel = ViewModelProviders.of(requireActivity(), factory).get(ZoneModel.class);
         }
-        if(scheduleViewModel == null) {
+        if (scheduleViewModel == null) {
             scheduleViewModel = ViewModelProviders.of(requireActivity(), factory).get(ScheduleViewModel.class);
         }
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_event_map, container, false);
+        mapView = v.findViewById(R.id.mapview);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+        return v;
+    }
 
+    private void setUpMap() {
+        this.model.getEvent().observe(this, event -> {
+            if (event == null) {
+                throw new NullPointerException("event is null");
+            }
 
-    private void setUpMap(){
-            this.model.getEvent().observe(this, event -> {
-                if (event == null) {
-                    throw new NullPointerException("event is null");
-                }
+            EventLocation loc;
+            if (event.getLocation() != null) {
+                loc = event.getLocation();
+            } else {
+                loc = new EventLocation("EPFL", Position.EPFL);
+                Toast toast = Toast.makeText(getContext(), getString(R.string.map_location_of_event_null),
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
 
-                EventLocation loc;
-                if(event.getLocation() != null){
-                    loc = event.getLocation();
-                }
-                else{
-                    loc = new EventLocation("EPFL",Position.EPFL);
-                    Toast toast = Toast.makeText(getContext(), getString(R.string.map_location_of_event_null), Toast.LENGTH_LONG);
-                    toast.show();
-                }
-
-                LatLng place = loc.getPosition().asLatLng();
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, ZOOMLEVEL));
-                googleMap.getUiSettings().setCompassEnabled(true);
-                googleMap.getUiSettings().setZoomControlsEnabled(true);
-                googleMap.getUiSettings().setMapToolbarEnabled(true);
-                enableMyLocationIfPermitted();
-                googleMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
-                googleMap.setOnMyLocationClickListener(onMyLocationClickListener);
-            });
+            LatLng place = loc.getPosition().asLatLng();
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, ZOOMLEVEL));
+            googleMap.getUiSettings().setCompassEnabled(true);
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            googleMap.getUiSettings().setMapToolbarEnabled(true);
+            enableMyLocationIfPermitted();
+            googleMap.setOnMyLocationButtonClickListener(onMyLocationButtonClickListener);
+            googleMap.setOnMyLocationClickListener(onMyLocationClickListener);
+        });
     }
 
     private void setUpOverlay() {
-        if (getActivity() != null){
+        if (getActivity() != null) {
             this.zonesModel.getZone().observe(getActivity(), zones -> {
                 if (zones != null) {
                     for (Zone z : zones) {
@@ -146,52 +134,49 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     }
 
     private void setUpCluster() {
-            mClusterManager = new ClusterManager<>(getActivity(), googleMap);
-            mClusterManager.setOnClusterItemInfoWindowClickListener(this);
-            mClusterManager.setOnClusterClickListener(this);
-            mClusterManager.setRenderer(new SpotRenderer(getActivity()));
-            mClusterManager.setOnClusterItemClickListener(spot -> {
-                clickedClusterItem = spot;
-                return false;
-            });
-            mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
-            mClusterManager.setAnimation(true);
+        mClusterManager = new ClusterManager<>(getActivity(), googleMap);
+        mClusterManager.setOnClusterItemInfoWindowClickListener(this);
+        mClusterManager.setOnClusterClickListener(this);
+        mClusterManager.setRenderer(new SpotRenderer(getActivity()));
+        mClusterManager.setOnClusterItemClickListener(spot -> {
+            clickedClusterItem = spot;
+            return false;
+        });
+        mClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
+        mClusterManager.setAnimation(true);
 
-            googleMap.setOnMarkerClickListener(mClusterManager);
-            googleMap.setOnInfoWindowClickListener(mClusterManager);
-            googleMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
-            googleMap.setOnCameraIdleListener(mClusterManager);
-            addItemToCluster();
+        googleMap.setOnMarkerClickListener(mClusterManager);
+        googleMap.setOnInfoWindowClickListener(mClusterManager);
+        googleMap.setInfoWindowAdapter(mClusterManager.getMarkerManager());
+        googleMap.setOnCameraIdleListener(mClusterManager);
+        addItemToCluster();
     }
 
     private void addItemToCluster() {
-            this.scheduleViewModel.getScheduledItems().observe(this, items ->
-                    this.spotsModel.getSpots().observe(getActivity(), spots -> {
-                        if (spots == null) {
-                            return;
-                        }
-                        // 1. clear old spots
-                        mClusterManager.clearItems();
+        this.scheduleViewModel.getScheduledItems().observe(this,
+                items -> this.spotsModel.getSpots().observe(getActivity(), spots -> {
+            if (spots == null) {
+                return;
+            }
+            // 1. clear old spots
+            mClusterManager.clearItems();
 
-                        // 2. Add new spots
-                        for (Spot s : spots) {
-                            s.setScheduleList(items);
-                        }
-                        mClusterManager.addItems(spots);
-                        mClusterManager.cluster();
-                    }));
+            // 2. Add new spots
+            for (Spot s : spots) {
+                s.setScheduleList(items);
+            }
+            mClusterManager.addItems(spots);
+            mClusterManager.cluster();
+        }));
 
     }
 
     private void enableMyLocationIfPermitted() {
-        if (getActivity() != null){
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
+        if (getActivity() != null) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_FINE_LOCATION},
-                        LOCATION_PERMISSION_REQUEST_CODE);
+                                Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
             } else if (googleMap != null) {
                 googleMap.setMyLocationEnabled(true);
             }
@@ -203,8 +188,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         return false;
     };
 
-    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener = location ->
-        Toast.makeText(getActivity(), "" + location, Toast.LENGTH_LONG).show();
+    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener = location -> Toast.makeText(getActivity(),
+            "" + location, Toast.LENGTH_LONG).show();
 
     @Override
     public boolean onClusterClick(Cluster<Spot> cluster) {
@@ -233,7 +218,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     @Override
     public void onClusterItemInfoWindowClick(Spot spot) {
         if (getActivity() != null && spot != null) {
-            if(spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
+            if (spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
                 goToSchedule();
             }
         }
@@ -244,16 +229,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         Bundle args = new Bundle();
         args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
         scheduleParentFragment.setArguments(args);
-        ((EventShowcaseActivity)getActivity()).changeFragment(
-                scheduleParentFragment, true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(googleMap == null) {
-            mapFragment.getMapAsync(this);
-        }
+        ((EventShowcaseActivity) getActivity()).changeFragment(scheduleParentFragment, true);
     }
 
     @Override
@@ -262,6 +238,24 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         setUpMap();
         setUpCluster();
         setUpOverlay();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 
     /**
@@ -277,7 +271,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         public SpotRenderer(Context context) {
             super(context, googleMap, mClusterManager);
 
-            if (context == null){
+            if (context == null) {
                 throw new NullPointerException("context is null");
             }
 
@@ -312,7 +306,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
 
             for (Spot p : cluster.getItems()) {
                 // Draw at most 4 images on the same cluster
-                if(spotImages.size() == 4) {
+                if (spotImages.size() == 4) {
                     break;
                 }
                 Drawable drawable = new BitmapDrawable(p.getBitmap());
@@ -356,7 +350,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
             TextView tvSnippet = myContentsView.findViewById(R.id.details);
             TextView tvClickToSchedule = myContentsView.findViewById(R.id.scheduleClick);
 
-            if(clickedClusterItem.getScheduleList() != null && clickedClusterItem.getScheduleList().size() != 0) {
+            if (clickedClusterItem.getScheduleList() != null && clickedClusterItem.getScheduleList().size() != 0) {
                 tvClickToSchedule.setVisibility(View.VISIBLE);
                 tvClickToSchedule.setText(getResources().getString(R.string.click_to_see_schedule));
             } else {
