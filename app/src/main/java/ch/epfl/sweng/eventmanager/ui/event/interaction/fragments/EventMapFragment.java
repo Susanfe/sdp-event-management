@@ -80,7 +80,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mapView.onCreate(savedInstanceState);
+        if(mapView != null) {
+            mapView.onCreate(savedInstanceState);
+        }
         if (spotsModel == null) {
             spotsModel = ViewModelProviders.of(requireActivity(), factory).get(SpotsModel.class);
         }
@@ -97,6 +99,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         View v = inflater.inflate(R.layout.fragment_event_map, container, false);
         ButterKnife.bind(this,v);
         mapView.onCreate(savedInstanceState);
+        //get the map asynchronously
         mapView.getMapAsync(this);
         return v;
     }
@@ -239,6 +242,10 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         ((EventShowcaseActivity) getActivity()).changeFragment(scheduleParentFragment, true);
     }
 
+    /**
+     * Callback when the map is ready : we setup location, clusters and overlay
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
