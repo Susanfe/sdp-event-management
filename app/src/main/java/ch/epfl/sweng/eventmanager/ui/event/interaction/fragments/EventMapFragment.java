@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 import ch.epfl.sweng.eventmanager.repository.data.Position;
@@ -28,7 +30,10 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
-import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.*;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterItem;
@@ -46,8 +51,9 @@ import java.util.List;
  * @author Robin Zbinden (274236)
  * @author Stanislas Jouven (260580)
  */
-public class EventMapFragment extends AbstractShowcaseFragment implements ClusterManager.OnClusterClickListener<Spot>
-        , ClusterManager.OnClusterItemInfoWindowClickListener<Spot>, OnMapReadyCallback {
+public class EventMapFragment extends AbstractShowcaseFragment implements
+        ClusterManager.OnClusterClickListener<Spot>,
+        ClusterManager.OnClusterItemInfoWindowClickListener<Spot>, OnMapReadyCallback {
 
     @Inject
     ViewModelFactory factory;
@@ -61,19 +67,20 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     private ZoneModel zonesModel;
     private ScheduleViewModel scheduleViewModel;
     private Spot clickedClusterItem;
-    private SupportMapFragment mapFragment;
-
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private MapView mapView;
     private GoogleMap googleMap;
 
-    protected EventMapFragment(int resource) {
-        super(resource);
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    @BindView(R.id.mapview)
+    MapView mapView;
+
+    public EventMapFragment() {
+        super(R.layout.fragment_event_map);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mapView.onCreate(savedInstanceState);
         if (spotsModel == null) {
             spotsModel = ViewModelProviders.of(requireActivity(), factory).get(SpotsModel.class);
         }
@@ -88,7 +95,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_event_map, container, false);
-        mapView = v.findViewById(R.id.mapview);
+        ButterKnife.bind(this,v);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         return v;
@@ -256,6 +263,24 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
     }
 
     /**
