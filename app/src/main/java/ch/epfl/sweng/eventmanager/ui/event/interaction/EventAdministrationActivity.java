@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNewsFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
@@ -83,8 +82,8 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
                 startActivity(showcaseIntent);
                 break;
 
-            case R.id.nav_schedule :
-                changeFragment(new ScheduleParentFragment(), true);
+            case R.id.nav_user_management :
+                changeFragment(new EventUserManagementFragment(), true);
                 break;
 
             case R.id.nav_send_news :
