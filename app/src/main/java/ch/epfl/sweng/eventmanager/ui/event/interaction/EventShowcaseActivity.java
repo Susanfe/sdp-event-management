@@ -50,6 +50,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private Fragment eventMainFragment;
     private Fragment newsFragment;
     private Fragment scheduleParentFragment;
+    private Fragment eventMapFragment;
 
     private void initModels() {
         this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
@@ -235,7 +236,10 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case MAP:
-                changeFragment(new EventMapFragment(), saveToBackstack);
+                if (eventMapFragment == null) {
+                    eventMapFragment = new EventMapFragment();
+                }
+                changeFragment(eventMapFragment, saveToBackstack);
                 break;
 
             case SCHEDULE:
