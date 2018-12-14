@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
@@ -40,6 +41,11 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     TicketingManager ticketingManager;
     @Inject
     Session session;
+
+    public ImageLoader getLoader() {
+        return loader;
+    }
+
     @Inject
     ImageLoader loader;
 
@@ -318,7 +324,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             case R.id.menu_facebook_login_edit:
                 return false;
             default:
-                return false;
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
         }
     }
 
