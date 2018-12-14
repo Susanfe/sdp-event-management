@@ -179,7 +179,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
-                        android:padding="10dp"
+                        android:padding="@dimen/default_small_padding"
                         tools:listitem="@layout/item_feedback"/>
 
                     <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
@@ -188,8 +188,7 @@
                         style="@style/Button_global"
                         android:layout_width="@dimen/default_very_huge_padding"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        app:layout_anchorGravity="bottom" />
+                        android:layout_gravity="center"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
