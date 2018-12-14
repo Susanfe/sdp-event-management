@@ -40,6 +40,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.settings.SettingsActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
@@ -56,6 +57,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     TicketingManager ticketingManager;
     @Inject
     Session session;
+    @Inject
+    ImageLoader loader;
 
     private EventInteractionModel model;
     private ScheduleViewModel scheduleModel;
@@ -107,9 +110,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 return;
             }
 
-            if (ev.haveAnImage()) {
+            if (ev.hasAnImage()) {
                 ImageView header = headerView.findViewById(R.id.drawer_header_image);
-                ev.loadEventImageIntoImageView(this,header,new BlurTransformation(3));
+                loader.loadImageWithSpinner(ev,this,header,new BlurTransformation(3));
             }
 
             drawer_header_text.setText(ev.getName());
@@ -184,6 +187,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             case R.id.nav_admin:
                 Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
                 adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
+                menuItem.setCheckable(false);
                 startActivity(adminIntent);
                 break;
 
@@ -214,15 +218,18 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             case R.id.nav_scan:
                 // TODO Handle null pointer exception
                 startActivity(ticketingManager.start(model.getEvent().getValue(), this));
+                menuItem.setCheckable(false);
                 break;
 
             case R.id.nav_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
+                menuItem.setCheckable(false);
                 startActivity(intent);
                 break;
 
             case R.id.nav_contact:
                 callChangeFragment(FragmentType.FORM, true);
+                break;
         }
 
         return true;
@@ -239,7 +246,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         if (type == null) type = FragmentType.MAIN;
         switch (type) {
             case MAIN:
-                if (eventMainFragment == null) eventMainFragment = new EventMainFragment();
+                if (eventMainFragment == null) {
+                    eventMainFragment = new EventMainFragment();
+                }
                 changeFragment(eventMainFragment, saveToBackstack);
                 break;
 
@@ -248,7 +257,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case SCHEDULE:
-                if (scheduleParentFragment == null) scheduleParentFragment = new ScheduleParentFragment();
+                if (scheduleParentFragment == null) {
+                    scheduleParentFragment = new ScheduleParentFragment();
+                }
                 changeFragment(scheduleParentFragment, saveToBackstack);
                 break;
 
@@ -257,7 +268,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case NEWS:
-                if (newsFragment == null) newsFragment = new NewsFragment();
+                if (newsFragment == null) {
+                    newsFragment = new NewsFragment();
+                }
                 changeFragment(newsFragment, saveToBackstack);
                 break;
             default:

@@ -107,15 +107,15 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orgaEmail, fakeImgUri, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
-                CONFIG_BY_EVENT.get(1)));
+                CONFIG_BY_EVENT.get(1), true));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
-                CONFIG_BY_EVENT.get(2)));
+                CONFIG_BY_EVENT.get(2),true));
 
         addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
                 orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
-                CONFIG_BY_EVENT.get(3)));
+                CONFIG_BY_EVENT.get(3),true));
 
         addZones(1, new Gson().fromJson(jsonZone, zonesToken.getType()));
         addSpots(1, new Gson().fromJson(jsonSpots, spotsToken.getType()));
@@ -212,6 +212,11 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     public Task<Event> createEvent(Event event) {
         event.setId(CURRENT_EVENT_ID++);
         return updateEvent(event);
+    }
+
+    @Override
+    public void uploadImage(Event event, Uri imageSrc) {
+        // Do nothing
     }
 
     @Override

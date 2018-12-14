@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.user.LoginActivity;
 import ch.epfl.sweng.eventmanager.ui.user.SignUpActivity;
@@ -42,6 +43,10 @@ public class EventPickingActivity extends AppCompatActivity {
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
     @Inject
     ViewModelFactory factory;
+
+    @Inject
+    ImageLoader loader;
+
     @BindView(R.id.event_picking_joined_events_text)
     TextView joinedHelpText;
     @BindView(R.id.event_picking_bottom_sheet_text)
@@ -253,8 +258,8 @@ public class EventPickingActivity extends AppCompatActivity {
                 break;
 
             case R.id.layout_login_signup_signup_button:
-                Intent intent = new Intent(this, SignUpActivity.class);
-                startActivity(intent);
+                Intent intentLogin = new Intent(this, SignUpActivity.class);
+                startActivity(intentLogin);
                 break;
 
             case R.id.layout_login_signup_logout_button:
@@ -262,6 +267,9 @@ public class EventPickingActivity extends AppCompatActivity {
                 loggedUI.setVisibility(View.GONE);
                 notLoggedUi.setVisibility(View.VISIBLE);
                 revealCircular(true);
+                Intent intentLogout = new Intent(this, EventPickingActivity.class);
+                intentLogout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentLogout);
                 break;
 
             case R.id.layout_login_signup_account_button:
@@ -400,5 +408,18 @@ public class EventPickingActivity extends AppCompatActivity {
         button.setTextColor(getResources().getColor(R.color.colorPrimary));
 
         bar.show();
+    }
+
+    /**
+     * Force refresh the eventList on new intent to handle change of visibility for events
+     * @param intent
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setupObservers();
+    }
+
+    public ImageLoader getLoader() {
+        return loader;
     }
 }

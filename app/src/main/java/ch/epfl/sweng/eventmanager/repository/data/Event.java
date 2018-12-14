@@ -1,20 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.content.Context;
 import android.net.Uri;
-import android.widget.ImageView;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
-import ch.epfl.sweng.eventmanager.inject.GlideApp;
-import ch.epfl.sweng.eventmanager.repository.impl.FirebaseHelper;
 import ch.epfl.sweng.eventmanager.users.Role;
-import com.bumptech.glide.request.RequestOptions;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
-import com.google.firebase.storage.StorageReference;
-import jp.wasabeef.glide.transformations.BitmapTransformation;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -78,22 +66,31 @@ public final class Event {
      */
     private String facebookName;
 
+    /**
+     * If true, then the event can be seen and accessed by any user. Otherwise, if false, it can only be seen by
+     * the administrators for this event
+     */
+    private boolean visibleFromPublic;
+
     private EventTicketingConfiguration ticketingConfiguration;
 
     // TODO define if an event can have only empty and null atributes
     public Event(int id, String name, String description, Date beginDate, Date endDate, String organizerEmail,
-                 Uri imageURL, EventLocation location, Map<String, String> users, String twitterName, String facebookName) {
-        this(id, name, description, beginDate, endDate, organizerEmail, imageURL, location, users, twitterName, facebookName, null);
+                 Uri imageURL, EventLocation location, Map<String, String> users, String twitterName,
+                 String facebookName, Boolean visibleFromPublic) {
+        this(id, name, description, beginDate, endDate, organizerEmail, imageURL, location, users, twitterName,
+                facebookName, null,visibleFromPublic);
     }
 
     public Event(int id, String name, String description, Date beginDate, Date endDate, String organizerEmail,
                  Uri imageURL, EventLocation location, Map<String, String> users, String twitterName,
-                String facebookName, EventTicketingConfiguration ticketingConfiguration) {
+                 String facebookName, EventTicketingConfiguration ticketingConfiguration, Boolean visibleFromPublic) {
 
         this.ticketingConfiguration = ticketingConfiguration;
 
         if (beginDate.getTime() > endDate.getTime())
-            throw new IllegalArgumentException("The time at the start of the event should be later than the time at the end");
+            throw new IllegalArgumentException("The time at the start of the event should be later than the time at " +
+                    "the end");
 
         this.id = id;
         this.name = name;
@@ -106,6 +103,7 @@ public final class Event {
         this.users = users;
         this.twitterName = twitterName;
         this.facebookName = facebookName;
+        this.visibleFromPublic = visibleFromPublic;
     }
 
     public Event() {
@@ -163,13 +161,32 @@ public final class Event {
         return location;
     }
 
+    /**
+     * Return true if the event is visible for any user. Otherwise, if false, the event can only be accessed
+     * by declared administrators for this event
+     *
+     * @return true if event is visible
+     */
+    public boolean isVisibleFromPublic() {
+        return visibleFromPublic;
+    }
+
+    /**
+     * Allows to change the visibility of the event
+     *
+     * @param visibleFromPublic
+     */
+    public void setVisibleFromPublic(boolean visibleFromPublic) {
+        this.visibleFromPublic = visibleFromPublic;
+    }
+
     public void setLocation(EventLocation location) {
         this.location = location;
     }
 
     @Exclude
     public Uri getImageURLasURI() {
-        return haveAnImage() ? Uri.parse(imageURL) : null;
+        return hasAnImage() ? Uri.parse(imageURL) : null;
     }
 
     public String getImageURL() {
@@ -229,8 +246,7 @@ public final class Event {
                 users = new ArrayList<>();
                 users.add(uid);
                 result.put(role, users);
-            }
-            else {
+            } else {
                 result.get(role).add(uid);
             }
         }
@@ -265,25 +281,8 @@ public final class Event {
     }
 
     @Exclude
-    public boolean haveAnImage() {
+    public boolean hasAnImage() {
         return imageURL != null;
-    }
-
-
-    @Exclude
-    public void uploadImage(Uri imgSrc) {
-        StorageReference imagesRef = FirebaseStorage.getInstance().getReference("events-logo");
-        StorageReference eventsLogoRef = imagesRef.child(getImageName());
-        FirebaseDatabase fdB = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = fdB.getReference("events").child(String.valueOf(getId()));
-        StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/webp").build();
-        FirebaseHelper.uploadFileToStorage(eventsLogoRef, imgSrc, metadata)
-                .addOnSuccessListener(taskSnapshot -> eventsLogoRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            setImageURL(uri.toString());
-            Map<String, Object> updateUrl = new HashMap<>();
-            updateUrl.put("imageURL", uri.toString());
-            dbRef.updateChildren(updateUrl);
-        }));
     }
 
     /**
@@ -292,44 +291,8 @@ public final class Event {
      * @return String imageName
      */
     @Exclude
-    private String getImageName() {
+    public String getImageName() {
         return this.getId() + ".webp";
-    }
-
-    /**
-     * Will load the event image into the provided view
-     *
-     * @param context
-     * @param imageView
-     */
-    @Exclude
-    public void loadEventImageIntoImageView(Context context, ImageView imageView) {
-        if (haveAnImage()) {
-            CircularProgressDrawable progress = new CircularProgressDrawable(context);
-            progress.setStrokeWidth(5f);
-            progress.setCenterRadius(30f);
-            progress.start();
-            GlideApp.with(context).load(getImageURLasURI()).placeholder(progress).into(imageView);
-        }
-    }
-
-    /**
-     * Will load the event image into the provided view and apply the requested transformation
-     *
-     * @param context
-     * @param imageView
-     * @param transformation
-     */
-    @Exclude
-    public void loadEventImageIntoImageView(Context context, ImageView imageView, BitmapTransformation transformation) {
-        if (haveAnImage()) {
-            CircularProgressDrawable progress = new CircularProgressDrawable(context);
-            progress.setStrokeWidth(5f);
-            progress.setCenterRadius(30f);
-            progress.start();
-            GlideApp.with(context).load(getImageURLasURI()).apply(RequestOptions
-                    .bitmapTransform(transformation)).placeholder(progress).into(imageView);
-        }
     }
 
     @Exclude
