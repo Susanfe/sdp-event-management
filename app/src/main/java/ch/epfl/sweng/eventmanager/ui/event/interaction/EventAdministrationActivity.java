@@ -56,6 +56,7 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
 
             // Set default administration fragment
             changeFragment(new EventUserManagementFragment(), false);
+            navigationView.setCheckedItem(R.id.nav_user_management);
         }
 
         // Initialize News model
@@ -68,9 +69,6 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        // set item as selected to persist highlight
-        menuItem.setChecked(true);
-
         // close drawer when item is tapped
         mDrawerLayout.closeDrawers();
 
@@ -80,23 +78,26 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
                 showcaseIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
                 showcaseIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(showcaseIntent);
+                menuItem.setChecked(false);
                 break;
 
             case R.id.nav_user_management :
                 changeFragment(new EventUserManagementFragment(), true);
+                menuItem.setChecked(true);
                 break;
 
             case R.id.nav_send_news :
                 changeFragment(new SendNewsFragment(), true);
+                menuItem.setChecked(true);
                 break;
 
             case R.id.nav_edit_event :
                 Intent editIntent = new Intent(this, EventCreateActivity.class);
                 editIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
                 startActivity(editIntent);
+                menuItem.setChecked(false);
                 break;
         }
-
-        return true;
+        return false;
     }
 }
