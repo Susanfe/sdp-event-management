@@ -56,7 +56,7 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
             });
 
             // Set default administration fragment
-            changeFragment(new EventUserManagementFragment(), true);
+            changeFragment(new EventUserManagementFragment(), false);
         }
 
         // Initialize News model
@@ -99,14 +99,5 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
         }
 
         return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, EventShowcaseActivity.class);
-        intent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        super.onBackPressed();
     }
 }
