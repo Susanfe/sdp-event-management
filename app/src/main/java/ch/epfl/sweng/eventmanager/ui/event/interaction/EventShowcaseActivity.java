@@ -343,13 +343,20 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             s.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     this.model.joinEvent(ev);
-                    NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
-                    NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
+                    if(ev.getBeginDateAsDate() != null){
+                        NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
+                    }
+                    if(ev.getEndDateAsDate() != null){
+                        NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
+                    }
                 } else {
                     this.model.unjoinEvent(ev);
-
-                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
-                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
+                    if(ev.getBeginDateAsDate() != null){
+                        NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
+                    }
+                    if(ev.getEndDateAsDate() != null){
+                        NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
+                    }
                 }
             });
 
