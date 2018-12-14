@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
+import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -52,12 +53,17 @@ public class EventMainFragment extends AbstractFeedbackFragment {
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
+    @BindView(R.id.event_begin_date)
+    TextView beginDate;
+    @BindView(R.id.event_end_date)
+    TextView endDate;
+    @BindView(R.id.event_date_linear_layout)
+    LinearLayout dateLinearLayout;
+
+    @BindView(R.id.event_feedback_linear_layout)
+    LinearLayout eventFeedback;
     @BindView(R.id.event_feedback_recycler_view)
     RecyclerView recyclerView;
-    @BindView(R.id.recent_feedback_text)
-    TextView textView;
-    @BindView(R.id.separation_feedback)
-    ImageView imageView;
 
     private EventShowcaseActivity showcaseActivity;
 
@@ -92,6 +98,15 @@ public class EventMainFragment extends AbstractFeedbackFragment {
             feedbackBar.setIsIndicator(true);
             repository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
 
+            if(ev.getBeginDateAsDate() != null){
+                beginDate.setText("Starts: " + ev.beginDateAsString());
+                dateLinearLayout.setVisibility(View.VISIBLE);
+            }
+            if(ev.getEndDateAsDate() != null){
+                endDate.setText("Ends:   " + ev.endDateAsString());
+                dateLinearLayout.setVisibility(View.VISIBLE);
+            }
+
         });
     }
 
@@ -108,13 +123,11 @@ public class EventMainFragment extends AbstractFeedbackFragment {
                 if (ratings != null && ratings.size() > 0) {
                     //display only the most recent feedback
                     ratingsRecyclerViewAdapter.setContent(ratings.subList(0,1));
-                    feedback.setVisibility(View.VISIBLE);
-                    textView.setVisibility(View.VISIBLE);
-                    imageView.setVisibility(View.VISIBLE);
+                    eventFeedback.setVisibility(View.VISIBLE);
+                    feedbackBar.setVisibility(View.VISIBLE);
                 }else{
-                    feedback.setVisibility(View.GONE);
-                    textView.setVisibility(View.GONE);
-                    imageView.setVisibility(View.GONE);
+                    eventFeedback.setVisibility(View.GONE);
+                    feedbackBar.setVisibility(View.GONE);
                 }
             });
         });
