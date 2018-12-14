@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +52,12 @@ public class EventMainFragment extends AbstractFeedbackFragment {
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
+    @BindView(R.id.event_feedback_recycler_view)
+    RecyclerView recyclerView;
+
     private EventShowcaseActivity showcaseActivity;
+
+    private RatingsRecyclerViewAdapter ratingsRecyclerViewAdapter = new RatingsRecyclerViewAdapter();
 
     public EventMainFragment() {
         // Required empty public constructor
@@ -89,6 +95,19 @@ public class EventMainFragment extends AbstractFeedbackFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) ButterKnife.bind(this, view);
+
+        recyclerView.setAdapter(ratingsRecyclerViewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        model.getEvent().observe(this, ev -> {
+            repository.getRatings(ev.getId()).observe(this, ratings -> {
+                if (ratings != null && ratings.size() > 0) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    //display only the most recent feedback
+                    ratingsRecyclerViewAdapter.setContent(ratings.subList(0,1));
+                }
+            });
+        });
 
         showcaseActivity = (EventShowcaseActivity) getParentActivity();
 
