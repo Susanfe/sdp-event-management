@@ -1,7 +1,8 @@
 // The Cloud Functions for Firebase SDK to create Cloud Functions and setup
 // triggers.
 const functions = require('firebase-functions');
-var request = require('request');
+
+const request = require('request');
 
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require('firebase-admin');
@@ -69,24 +70,6 @@ exports.removeUserFromEvent = functions.https.onCall((data, context) => {
 
 const API_KEY = "AAAAlIAvtxI:APA91bHnmNkZWIQzzWcxypS45bpVKBXkLNwtxM-gU6UCfZt2TI-jd02Typ8ACtLpGbHCASrWlwKHDT9EsRpqrUj7hAH8GdhvKp3_UaF_Vx4k3yqgXLqMQv2py-FiUODmG2hy2QuTGdUI"; // Firebase Cloud Messaging Server API key
 ref = admin.database().ref();
-/*
-function listenForNotificationRequests() {
-    var requests = ref.child('notificationRequest');
-    requests.on('child_added', function(requestSnapshot) {
-        var request = requestSnapshot.val();
-        sendNotificationToUsers(
-            request.title,
-            request.body,
-            request.eventId,
-            request.eventName,
-            function() {
-                requestSnapshot.ref.remove();
-            }
-        );
-    }, function(error) {
-        console.error(error);
-    });
-}*/
 
 exports.sendNotificationToUsers  = functions.https.onCall((data, context) => {
     const title = data.title;
@@ -113,6 +96,3 @@ exports.sendNotificationToUsers  = functions.https.onCall((data, context) => {
         }
     });
 });
-
-// start listening
-//listenForNotificationRequests();
