@@ -198,10 +198,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 switchFragment(FragmentType.MAP, true);
                 break;
 
-            case R.id.nav_tickets:
-                switchFragment(null, true);
-                break;
-
             case R.id.nav_news:
                 switchFragment(FragmentType.NEWS, true);
                 break;
@@ -211,7 +207,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case R.id.nav_feedback:
-                changeFragment(new EventFeedbackFragment(), true);
+                switchFragment(FragmentType.EVENT_FEEDBACK,true);
                 break;
 
             case R.id.nav_scan:
@@ -299,6 +295,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             if (current instanceof ScheduleParentFragment) navigationView.setCheckedItem(R.id.nav_schedule);
             if (current instanceof EventTicketFragment) navigationView.setCheckedItem(R.id.nav_tickets);
             if (current instanceof EventFormFragment) navigationView.setCheckedItem(R.id.nav_contact);
+            if (current instanceof EventFeedbackFragment) navigationView.setCheckedItem(R.id.nav_feedback);
         });
     }
 
