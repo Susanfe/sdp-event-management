@@ -160,4 +160,26 @@ public class FirebaseEventRepository implements EventRepository {
             return event;
         });
     }
+
+    public Task deleteEvent(Event event) {
+        if(event == null) {
+            throw new IllegalArgumentException("Event to delete cannot be null");
+        }
+        String eventMainRef = String.valueOf(event.getId());
+        String eventSubRef = "event_" + eventMainRef;
+        FirebaseDatabase fdb = FirebaseDatabase.getInstance();
+        String[] dbPaths = {"news","spots","zones","schedule_items","ratings","notificationRequest"};
+        return fdb.getReference("events").child(eventMainRef).removeValue().addOnSuccessListener(s -> {
+            for(String path : dbPaths) {
+                fdb.getReference(path).child(eventSubRef).removeValue();
+            }
+            if(event.hasAnImage()) {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(event.getImageURL());
+                storageReference.delete().addOnFailureListener( m -> {
+                    Log.d(TAG,"Failed to delete image for event" + eventMainRef);
+                    m.getMessage();
+                        });
+            }
+        });
+    }
 }
