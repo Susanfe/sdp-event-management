@@ -99,8 +99,10 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item = menu.getItem(0);
-        item.setVisible(true);
+        if (menu.size() > 0) {
+            MenuItem item = menu.getItem(0);
+            item.setVisible(true);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
