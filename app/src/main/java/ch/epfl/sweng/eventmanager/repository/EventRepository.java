@@ -37,4 +37,7 @@ public interface EventRepository {
      * @param event the event to update
      */
     Task<Event> updateEvent(Event event);
+
+    Task deleteEvent(Event event);
+
 }
