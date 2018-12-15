@@ -41,11 +41,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     TicketingManager ticketingManager;
     @Inject
     Session session;
-
-    public ImageLoader getLoader() {
-        return loader;
-    }
-
     @Inject
     ImageLoader loader;
 
@@ -341,4 +336,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     public enum FragmentType {
         MAIN, MAP, SCHEDULE, NEWS, FORM
     }
+
+    public ImageLoader getLoader() {
+        return loader;
+    }
+
 }

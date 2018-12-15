@@ -74,7 +74,7 @@
                 android:layout_marginTop="5dp"
                 android:id="@+id/image_from_facebook"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:textColor="@color/colorSecondary"/>
 
         </LinearLayout>

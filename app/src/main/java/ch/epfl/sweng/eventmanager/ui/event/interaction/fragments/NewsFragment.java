@@ -2,12 +2,11 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.*;
 import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
@@ -18,15 +17,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.user.LoginFacebookActivity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.tweetui.CompactTweetView;
-import com.squareup.picasso.Picasso;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import java.util.Collections;
 import java.util.List;
@@ -128,7 +124,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
 
     public static class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
         private List<SocialNetworkPost> news;
         private Context context;
 
@@ -162,12 +157,16 @@ public class NewsFragment extends AbstractShowcaseFragment {
         // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            if (holder instanceof NewsViewHolder)
+            if (holder instanceof NewsViewHolder) {
                 ((NewsViewHolder) holder).bind((News) news.get(position).getPost());
-            else if (holder instanceof TweetViewHolder)
+            }
+            else if (holder instanceof TweetViewHolder) {
                 ((CompactTweetView) ((TweetViewHolder) holder).itemView).setTweet((Tweet) news.get(position).getPost());
-            else if (holder instanceof FacebookViewHolder)
+            }
+            else if (holder instanceof FacebookViewHolder) {
                 ((FacebookViewHolder) holder).bind((FacebookPost) news.get(position).getPost());
+            }
+
         }
 
         @Override
@@ -233,21 +232,10 @@ public class NewsFragment extends AbstractShowcaseFragment {
                     description.setVisibility(View.GONE);
                 }
                 if(facebookPost.hasImage()) {
-                    loadImageFromUrl(facebookPost.getImageURL(), image_facebook_post);
+                    ((EventShowcaseActivity) context).getLoader()
+                            .displayImage(context,Uri.parse(facebookPost.getImageURL()),image_facebook_post);
                 }
                 this.date.setText(facebookPost.dateAsString());
-            }
-
-            private void loadImageFromUrl(String url, ImageView view) {
-                Picasso.with(context).load(url).placeholder(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
-                        .into(view, new com.squareup.picasso.Callback() {
-                            @Override
-                            public void onSuccess() {}
-
-                            @Override
-                            public void onError() {}
-                        });
             }
         }
 
