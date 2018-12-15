@@ -35,11 +35,11 @@ public class NewsViewModel extends ViewModel {
         return Transformations.switchMap(twitterName, name -> repository.getTweets(name));
     }
 
-    private LiveData<List<Feed>> nameToFacebookNews(LiveData<String> facebookName) {
+    private LiveData<List<FacebookPost>> nameToFacebookNews(LiveData<String> facebookName) {
         return Transformations.switchMap(facebookName, name -> repository.getFacebookNews(name));
     }
 
-    private LiveData<List<SocialNetworkPost>> combine(LiveData<List<News>> newsData, LiveData<List<Tweet>> tweetsData, LiveData<List<Feed>> facebookData) {
+    private LiveData<List<SocialNetworkPost>> combine(LiveData<List<News>> newsData, LiveData<List<Tweet>> tweetsData, LiveData<List<FacebookPost>> facebookData) {
         MediatorLiveData<List<SocialNetworkPost>> data = new MediatorLiveData<>();
         data.addSource(newsData, news -> data.setValue(mergeLists(news, tweetsData.getValue(), facebookData.getValue())));
         data.addSource(tweetsData, tweets -> data.setValue(mergeLists(newsData.getValue(), tweets, facebookData.getValue())));
@@ -48,7 +48,7 @@ public class NewsViewModel extends ViewModel {
         return data;
     }
 
-    private List<SocialNetworkPost> mergeLists(List<News> news, List<Tweet> tweets, List<Feed> fb) {
+    private List<SocialNetworkPost> mergeLists(List<News> news, List<Tweet> tweets, List<FacebookPost> fb) {
         List<SocialNetworkPost> list = new ArrayList<>();
         if (news != null)
             for (News n : news)
@@ -59,7 +59,7 @@ public class NewsViewModel extends ViewModel {
                 list.add(new TweetWrapper(t));
 
         if (fb != null)
-            for (Feed f : fb)
+            for (FacebookPost f : fb)
                 list.add(new FacebookPostWrapper(f));
 
         return list;

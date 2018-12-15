@@ -3,10 +3,10 @@ package ch.epfl.sweng.eventmanager.repository.data;
 /**
  * @author Louis Vialar
  */
-public final class FacebookPostWrapper extends SocialNetworkPost<Feed> {
+public final class FacebookPostWrapper extends SocialNetworkPost<FacebookPost> {
     public static final int VIEW_TYPE = 3;
 
-    public FacebookPostWrapper(Feed facebook) {
+    public FacebookPostWrapper(FacebookPost facebook) {
         super(facebook.getTime().getTime(), facebook);
     }
 

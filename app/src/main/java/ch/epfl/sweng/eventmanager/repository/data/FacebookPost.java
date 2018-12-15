@@ -13,7 +13,7 @@ import java.util.Locale;
 /*
 This class enable to store every component(message, post time, author) of a facebook post.
  */
-public class Feed {
+public class FacebookPost {
     private String id = "";
     private String content = "";
     private Date time;
@@ -26,7 +26,7 @@ public class Feed {
      *
      * @param object the JSONObject that contain all the information
      */
-    public Feed(JSONObject object) {
+    public FacebookPost(JSONObject object) {
         try {
             String dateStr = object.getString("created_time");
             time = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault()).parse(dateStr);
@@ -101,9 +101,9 @@ public class Feed {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Feed)) return false;
+        if (!(o instanceof FacebookPost)) return false;
 
-        Feed that = (Feed) o;
+        FacebookPost that = (FacebookPost) o;
         return (id.equals(that.id) && time.equals(that.time) && content.equals(that.content));
     }
 
