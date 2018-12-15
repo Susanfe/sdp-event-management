@@ -123,6 +123,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
 
     public static class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
         private List<SocialNetworkPost> news;
         private Context context;
 
@@ -183,7 +184,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
             Collections.sort(this.news);
 
-
             this.notifyDataSetChanged();
         }
 
@@ -199,8 +199,8 @@ public class NewsFragment extends AbstractShowcaseFragment {
             @BindView(R.id.image_from_facebook)
             ImageView image_facebook_post;
 
-
             private Context context;
+            private FacebookPost facebookPost;
 
             FacebookViewHolder(View itemView, Context context) {
                 super(itemView);
@@ -209,6 +209,17 @@ public class NewsFragment extends AbstractShowcaseFragment {
             }
 
             final void bind(FacebookPost facebookPost) {
+                this.facebookPost = facebookPost;
+
+                postNameIfNotNull();
+                postContentIfNotNull();
+                postdescriptionIfNotNull();
+                postPhotoIfNotNull();
+
+                this.date.setText(facebookPost.dateAsString());
+            }
+
+            private void postNameIfNotNull() {
                 if(facebookPost.hasName()) {
                     this.author.setVisibility(View.VISIBLE);
                     this.author.setText(facebookPost.getName());
@@ -216,6 +227,9 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 else {
                     author.setVisibility(View.GONE);
                 }
+            }
+
+            private void postContentIfNotNull() {
                 if(facebookPost.hasContent()) {
                     this.content.setVisibility(View.VISIBLE);
                     this.content.setText(facebookPost.getContent());
@@ -223,6 +237,16 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 else {
                     content.setVisibility(View.GONE);
                 }
+            }
+
+            private void postPhotoIfNotNull() {
+                if(facebookPost.hasImage()) {
+                    ((EventShowcaseActivity) context).getLoader()
+                            .displayImage(context,facebookPost.getImageURL(),image_facebook_post);
+                }
+            }
+
+            private void postdescriptionIfNotNull() {
                 if(facebookPost.hasDescription()) {
                     this.description.setVisibility(View.VISIBLE);
                     this.description.setText(facebookPost.getDescription());
@@ -230,12 +254,8 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 else {
                     description.setVisibility(View.GONE);
                 }
-                if(facebookPost.hasImage()) {
-                    ((EventShowcaseActivity) context).getLoader()
-                            .displayImage(context,facebookPost.getImageURL(),image_facebook_post);
-                }
-                this.date.setText(facebookPost.dateAsString());
             }
+
         }
 
         static final class TweetViewHolder extends RecyclerView.ViewHolder {
