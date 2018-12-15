@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
+import java.util.Collections;
+
 import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -99,11 +101,11 @@ public class EventMainFragment extends AbstractFeedbackFragment {
             repository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
 
             if(ev.getBeginDateAsDate() != null){
-                beginDate.setText(String.format("%s%s", getString(R.string.starts_on), ev.beginDateAsString().substring(0, 1)));
+                beginDate.setText(String.format("%s %s", getString(R.string.starts_on), ev.beginDateAsString()));
                 dateLinearLayout.setVisibility(View.VISIBLE);
             }
             if(ev.getEndDateAsDate() != null){
-                endDate.setText(String.format("%s%s", getString(R.string.Ends_on), ev.endDateAsString()));
+                endDate.setText(String.format("%s   %s", getString(R.string.Ends_on), ev.endDateAsString()));
                 dateLinearLayout.setVisibility(View.VISIBLE);
             }
 
@@ -122,7 +124,8 @@ public class EventMainFragment extends AbstractFeedbackFragment {
             repository.getRatings(ev.getId()).observe(this, ratings -> {
                 if (ratings != null && ratings.size() > 0) {
                     //display only the most recent feedback
-                    ratingsRecyclerViewAdapter.setContent(ratings.subList(0,1));
+                    Collections.sort(ratings, (o1, o2) -> -1 * Long.compare(o1.getDate(), o2.getDate()));
+                    ratingsRecyclerViewAdapter.setContent(ratings.subList(0,Math.min(3, ratings.size())));
                     eventFeedback.setVisibility(View.VISIBLE);
                     feedbackBar.setVisibility(View.VISIBLE);
                 }else{

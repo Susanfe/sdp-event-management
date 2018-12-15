@@ -47,7 +47,7 @@
                 <ImageView
                     android:id="@+id/event_image"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/default_very_huge_padding"
+                    android:layout_height="@dimen/default_very_pretty_huge_padding"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/main_fragment_image_contentDescription"
                     android:visibility="invisible"
@@ -171,7 +171,7 @@
                         android:layout_marginTop="@dimen/default_medium_padding"
 
                         android:textSize="@dimen/big_size_text"
-                        android:text="@string/recent_feedback_from_user"
+                        android:text="@string/recent_feedback_from_users"
                         />
 
                     <androidx.recyclerview.widget.RecyclerView
