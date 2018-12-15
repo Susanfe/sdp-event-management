@@ -16,16 +16,11 @@ import java.util.Objects;
 
 import java.util.Collections;
 
-import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
-import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
-import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
-import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import dagger.android.support.AndroidSupportInjection;
@@ -122,20 +117,18 @@ public class EventMainFragment extends AbstractFeedbackFragment {
         recyclerView.setAdapter(ratingsRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        model.getEvent().observe(this, ev -> {
-            repository.getRatings(ev.getId()).observe(this, ratings -> {
-                if (ratings != null && ratings.size() > 0) {
-                    //display only the most recent feedback
-                    Collections.sort(ratings, (o1, o2) -> -1 * Long.compare(o1.getDate(), o2.getDate()));
-                    ratingsRecyclerViewAdapter.setContent(ratings.subList(0,Math.min(3, ratings.size())));
-                    eventFeedback.setVisibility(View.VISIBLE);
-                    feedbackBar.setVisibility(View.VISIBLE);
-                }else{
-                    eventFeedback.setVisibility(View.GONE);
-                    feedbackBar.setVisibility(View.GONE);
-                }
-            });
-        });
+        model.getEvent().observe(this, ev -> repository.getRatings(ev.getId()).observe(this, ratings -> {
+            if (ratings != null && ratings.size() > 0) {
+                //display only the most recent feedback
+                Collections.sort(ratings, (o1, o2) -> -1 * Long.compare(o1.getDate(), o2.getDate()));
+                ratingsRecyclerViewAdapter.setContent(ratings.subList(0,Math.min(3, ratings.size())));
+                eventFeedback.setVisibility(View.VISIBLE);
+                feedbackBar.setVisibility(View.VISIBLE);
+            }else{
+                eventFeedback.setVisibility(View.GONE);
+                feedbackBar.setVisibility(View.GONE);
+            }
+        }));
 
         showcaseActivity = (EventShowcaseActivity) getParentActivity();
 
@@ -149,7 +142,7 @@ public class EventMainFragment extends AbstractFeedbackFragment {
         schedule.setOnClickListener(v -> showcaseActivity.callChangeFragment(
                 EventShowcaseActivity.FragmentType.SCHEDULE, true));
 
-        feedback.setOnClickListener(v -> ((EventShowcaseActivity) getActivity())
+        feedback.setOnClickListener(v -> ((EventShowcaseActivity) Objects.requireNonNull(getActivity()))
                 .changeFragment(new EventFeedbackFragment(), true));
 
         return view;
@@ -169,7 +162,7 @@ public class EventMainFragment extends AbstractFeedbackFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem menuItem = menu.findItem(R.id.menu_showcase_activity_join_id);
+        MenuItem menuItem = menu.findItem(R.id.menu_showcase_activity_id);
         menuItem.setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }

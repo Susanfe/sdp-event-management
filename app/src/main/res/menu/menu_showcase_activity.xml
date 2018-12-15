@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="@string/join_switch_button"
+        android:id="@+id/menu_showcase_activity_id"
+        android:checkable="true"
+        app:showAsAction="ifRoom"
+        android:visible="false"
+        app:actionViewClass="android.widget.Switch"/>
 
     <item android:title="@string/simple_edit_text"
         android:icon="@drawable/ic_mode_edit_24dp"
         app:showAsAction="ifRoom"
         android:visible="false"
-        android:id="@+id/menu_map_edition_edit"/>
+        android:id="@+id/menu_showcase_activity_map_edition_edit"/>
 
     <item android:title="@string/undo"
         android:icon="@drawable/ic_undo_24dp"
         app:showAsAction="ifRoom"
         android:visible="false"
-        android:id="@+id/menu_map_edition_undo"/>
+        android:id="@+id/menu_showcase_activity_map_edition_undo"/>
 
     <item android:title="@string/help"
         android:icon="@drawable/ic_help_24dp"
         app:showAsAction="ifRoom"
         android:visible="false"
-        android:id="@+id/menu_map_edition_help"/>
+        android:id="@+id/menu_showcase_activity_map_edition_help"/>
 
     <item android:title="@string/save"
         android:icon="@drawable/ic_save_24dp"
         app:showAsAction="ifRoom"
         android:visible="false"
-        android:id="@+id/menu_map_edition_save"/>
+        android:id="@+id/menu_showcase_activity_map_edition_save"/>
 
 </menu>

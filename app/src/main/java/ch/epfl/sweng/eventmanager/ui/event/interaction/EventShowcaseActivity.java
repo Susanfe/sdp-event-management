@@ -27,6 +27,8 @@ import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.EventMapEditionFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
@@ -223,7 +225,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 startActivity(ticketingManager.start(
                         Objects.requireNonNull(model.getEvent().getValue()),
                         this));
-                menuItem.setChecked(false)
+                menuItem.setChecked(false);
                 break;
 
             case R.id.nav_settings:
@@ -312,24 +314,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         return getSupportFragmentManager().findFragmentById(R.id.content_frame);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_map_edition, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-
-            default :
-                // Action was not consumed
-                return false;
-        }
-    }
 
     /**
      * Handles back button
@@ -366,8 +350,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_showcase_activity_join, menu);
-        Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_join_id).getActionView();
+        getMenuInflater().inflate(R.menu.menu_showcase_activity, menu);
+        Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_id).getActionView();
         model.getEvent().observe(this, ev -> {
             this.model.isJoined(ev).observe(this, s::setChecked);
             s.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -415,6 +399,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
             default:
+                // Action was not consumed
                 return false;
         }
     }

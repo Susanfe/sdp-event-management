@@ -140,7 +140,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN,
                 ((EventShowcaseActivity) Objects.requireNonNull(getActivity())).getEvent()))
-            menu.findItem(R.id.menu_map_edition_edit).setVisible(true);
+            menu.findItem(R.id.menu_showcase_activity_map_edition_edit).setVisible(true);
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -148,7 +148,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_map_edition_edit:
+            case R.id.menu_showcase_activity_map_edition_edit:
                 ((EventShowcaseActivity) Objects.requireNonNull(getActivity())).callChangeFragment(
                         EventShowcaseActivity.FragmentType.MAP_EDITION, true);
                 return true;

@@ -189,7 +189,7 @@ public final class Event {
         return hasAnImage() ? Uri.parse(imageURL) : null;
     }
 
-    String getImageURL() {
+    public String getImageURL() {
         return imageURL;
     }
 
@@ -256,7 +256,7 @@ public final class Event {
 
     // FIXME Use or delete method ?
 
-    String beginDateAsString() {
+    public String beginDateAsString() {
         if (beginDate <= 0) {
             return null;
         }
@@ -264,7 +264,7 @@ public final class Event {
         return f.format(beginDate);
     }
 
-    String endDateAsString() {
+    public String endDateAsString() {
         if (endDate <= 0) {
             return null;
         }

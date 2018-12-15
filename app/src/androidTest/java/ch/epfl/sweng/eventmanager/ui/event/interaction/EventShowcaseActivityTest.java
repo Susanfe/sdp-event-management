@@ -100,7 +100,7 @@ public class EventShowcaseActivityTest {
 
     @Test
     public void joinEventTest() {
-        onView(withId(R.id.menu_showcase_activity_join_id))
+        onView(withId(R.id.menu_showcase_activity_id))
                 .perform(click());
     }
 
