@@ -13,11 +13,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class FacebookPostTest {
-    private FacebookPost facebookPost1;
-    private FacebookPost facebookPost2;
-    private FacebookPost facebookPost3;
-    private FacebookPost facebookPost4;
+public class FeedTest {
+    private Feed feed1;
+    private Feed feed2;
+    private Feed feed3;
+    private Feed feed4;
 
     @Before
     public void setUp() throws JSONException {
@@ -30,65 +30,65 @@ public class FacebookPostTest {
         obj1.put("full_picture", "url");
         obj1.put("description", "Come with happiness");
         obj1.put("name", "title");
-        facebookPost1 = new FacebookPost(obj1);
+        feed1 = new Feed(obj1);
 
         JSONObject obj2 = new JSONObject();
         obj2.put("created_time", createdTime);
         obj2.put("message", message);
         obj2.put("id", "11");
-        facebookPost2 = new FacebookPost(obj2);
+        feed2 = new Feed(obj2);
 
         JSONObject obj3 = new JSONObject();
         obj3.put("created_time", createdTime);
         obj3.put("message", "event in blue");
         obj3.put("id", "11");
-        facebookPost3 = new FacebookPost(obj3);
+        feed3 = new Feed(obj3);
 
         JSONObject obj4 = new JSONObject();
         obj4.put("created_time", createdTime);
         obj4.put("message", message);
         obj4.put("id", "10");
-        facebookPost4 = new FacebookPost(obj4);
+        feed4 = new Feed(obj4);
     }
 
     @Test
     public void constructorMakeParsingCorrectly() {
-        assertEquals("event in blue !", facebookPost1.getContent());
-        assertEquals("11", facebookPost1.getId());
-        assertEquals("title", facebookPost1.getName());
-        assertEquals("Come with happiness", facebookPost1.getDescription());
-        assertThat(facebookPost1.getImageURL(), is(Uri.parse("url")));
+        assertEquals("event in blue !", feed1.getContent());
+        assertEquals("11", feed1.getId());
+        assertEquals("title", feed1.getName());
+        assertEquals("Come with happiness", feed1.getDescription());
+        assertThat(feed1.getImageURL(), is(Uri.parse("url")));
     }
 
     @Test
     public void constructorWorkWithException() throws JSONException {
         String jStr= "{\"name\":\"hahaha\"}";
         JSONObject obj5 = new JSONObject(jStr);
-        new FacebookPost(obj5);
+        new Feed(obj5);
     }
 
     @Test
     public void dateAsStringWork() {
-        assertTrue(facebookPost1.dateAsString().contains("Dec 3,"));
+        assertTrue(feed1.dateAsString().contains("Dec 3,"));
     }
 
     @Test
     public void equalMethodWork() {
-        assertTrue(facebookPost1.equals(facebookPost2));
-        assertTrue(!facebookPost1.equals(facebookPost3));
-        assertTrue(!facebookPost1.equals(facebookPost4));
+        assertTrue(feed1.equals(feed2));
+        assertTrue(!feed1.equals(feed3));
+        assertTrue(!feed1.equals(feed4));
     }
 
     @Test
     public void containsTypesWork() {
-        assertTrue(facebookPost1.hasContent());
-        assertTrue(facebookPost1.hasDescription());
-        assertTrue(facebookPost1.hasImage());
-        assertTrue(facebookPost1.hasName());
+        assertTrue(feed1.hasContent());
+        assertTrue(feed1.hasDescription());
+        assertTrue(feed1.hasImage());
+        assertTrue(feed1.hasName());
 
-        assertFalse(facebookPost2.hasImage());
-        assertFalse(facebookPost2.hasDescription());
-        assertFalse(facebookPost2.hasName());
+        assertFalse(feed2.hasImage());
+        assertFalse(feed2.hasDescription());
+        assertFalse(feed2.hasName());
     }
 
 }

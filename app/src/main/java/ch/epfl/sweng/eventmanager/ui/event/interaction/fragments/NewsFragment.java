@@ -164,7 +164,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 ((CompactTweetView) ((TweetViewHolder) holder).itemView).setTweet((Tweet) news.get(position).getPost());
             }
             else if (holder instanceof FacebookViewHolder) {
-                ((FacebookViewHolder) holder).bind((FacebookPost) news.get(position).getPost());
+                ((FacebookViewHolder) holder).bind((Feed) news.get(position).getPost());
             }
 
         }
@@ -200,7 +200,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
             ImageView image_facebook_post;
 
             private Context context;
-            private FacebookPost facebookPost;
+            private Feed feed;
 
             FacebookViewHolder(View itemView, Context context) {
                 super(itemView);
@@ -208,21 +208,21 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 this.context = context;
             }
 
-            final void bind(FacebookPost facebookPost) {
-                this.facebookPost = facebookPost;
+            final void bind(Feed feed) {
+                this.feed = feed;
 
                 postNameIfNotNull();
                 postContentIfNotNull();
                 postdescriptionIfNotNull();
                 postPhotoIfNotNull();
 
-                this.date.setText(facebookPost.dateAsString());
+                this.date.setText(feed.dateAsString());
             }
 
             private void postNameIfNotNull() {
-                if(facebookPost.hasName()) {
+                if(feed.hasName()) {
                     this.author.setVisibility(View.VISIBLE);
-                    this.author.setText(facebookPost.getName());
+                    this.author.setText(feed.getName());
                 }
                 else {
                     author.setVisibility(View.GONE);
@@ -230,9 +230,9 @@ public class NewsFragment extends AbstractShowcaseFragment {
             }
 
             private void postContentIfNotNull() {
-                if(facebookPost.hasContent()) {
+                if(feed.hasContent()) {
                     this.content.setVisibility(View.VISIBLE);
-                    this.content.setText(facebookPost.getContent());
+                    this.content.setText(feed.getContent());
                 }
                 else {
                     content.setVisibility(View.GONE);
@@ -240,16 +240,16 @@ public class NewsFragment extends AbstractShowcaseFragment {
             }
 
             private void postPhotoIfNotNull() {
-                if(facebookPost.hasImage()) {
+                if(feed.hasImage()) {
                     ((EventShowcaseActivity) context).getLoader()
-                            .displayImage(context,facebookPost.getImageURL(),image_facebook_post);
+                            .displayImage(context, feed.getImageURL(),image_facebook_post);
                 }
             }
 
             private void postdescriptionIfNotNull() {
-                if(facebookPost.hasDescription()) {
+                if(feed.hasDescription()) {
                     this.description.setVisibility(View.VISIBLE);
-                    this.description.setText(facebookPost.getDescription());
+                    this.description.setText(feed.getDescription());
                 }
                 else {
                     description.setVisibility(View.GONE);

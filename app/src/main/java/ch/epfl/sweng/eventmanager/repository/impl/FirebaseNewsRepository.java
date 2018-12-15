@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
-import ch.epfl.sweng.eventmanager.repository.data.FacebookPost;
+import ch.epfl.sweng.eventmanager.repository.data.Feed;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -81,9 +81,9 @@ public class FirebaseNewsRepository implements NewsRepository {
     }
 
     @Override
-    public LiveData<List<FacebookPost>> getFacebookNews(String screenName) {
-        MutableLiveData<List<FacebookPost>> data = new MutableLiveData<>();
-        List<FacebookPost> facebookPostList = new ArrayList<>();
+    public LiveData<List<Feed>> getFacebookNews(String screenName) {
+        MutableLiveData<List<Feed>> data = new MutableLiveData<>();
+        List<Feed> feedList = new ArrayList<>();
 
         Bundle params = new Bundle();
         params.putString("fields", "description, message,created_time,id, full_picture,status_type,source, name");
@@ -99,10 +99,10 @@ public class FirebaseNewsRepository implements NewsRepository {
 
                         for (int i = 0; i < jArray.length(); i++) {
                             JSONObject jObject = jArray.getJSONObject(i);
-                            FacebookPost facebookPost = new FacebookPost(jObject);
-                            facebookPostList.add(facebookPost);
+                            Feed feed = new Feed(jObject);
+                            feedList.add(feed);
                         }
-                        data.setValue(facebookPostList);
+                        data.setValue(feedList);
                     } catch (Exception e) {
                         e.printStackTrace();
                         data.setValue(Collections.EMPTY_LIST);
