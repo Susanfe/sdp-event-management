@@ -51,9 +51,8 @@ import java.util.List;
  * @author Robin Zbinden (274236)
  * @author Stanislas Jouven (260580)
  */
-public class EventMapFragment extends AbstractShowcaseFragment implements
-        ClusterManager.OnClusterClickListener<Spot>,
-        ClusterManager.OnClusterItemInfoWindowClickListener<Spot>, OnMapReadyCallback {
+public class EventMapFragment extends AbstractShowcaseFragment implements ClusterManager.OnClusterClickListener<Spot>
+        , ClusterManager.OnClusterItemInfoWindowClickListener<Spot>, OnMapReadyCallback {
 
     @Inject
     ViewModelFactory factory;
@@ -76,14 +75,14 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         super(R.layout.fragment_event_map);
     }
 
-     public static EventMapFragment newInstance() {
+    public static EventMapFragment newInstance() {
         return new EventMapFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(mapView != null) {
+        if (mapView != null) {
             mapView.onCreate(savedInstanceState);
         }
         if (spotsModel == null) {
@@ -100,13 +99,16 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_event_map, container, false);
-        ButterKnife.bind(this,v);
+        ButterKnife.bind(this, v);
         mapView.onCreate(savedInstanceState);
         //get the map asynchronously
         mapView.getMapAsync(this);
         return v;
     }
 
+    /**
+     * Setup the map : location, camera and controls
+     */
     private void setUpMap() {
         this.model.getEvent().observe(this, event -> {
             if (event == null) {
@@ -118,9 +120,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 loc = event.getLocation();
             } else {
                 loc = new EventLocation("EPFL", Position.EPFL);
-                Toast toast = Toast.makeText(getContext(), getString(R.string.map_location_of_event_null),
-                        Toast.LENGTH_LONG);
-                toast.show();
+                Toast.makeText(getContext(), getString(R.string.map_location_of_event_null), Toast.LENGTH_LONG).show();
             }
 
             LatLng place = loc.getPosition().asLatLng();
@@ -134,16 +134,22 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         });
     }
 
+    /**
+     * Setup the overlay which represent the event
+     */
     private void setUpOverlay() {
-            this.zonesModel.getZone().observe(requireActivity(), zones -> {
-                if (zones != null) {
-                    for (Zone z : zones) {
-                        googleMap.addPolygon(z.addPolygon());
-                    }
+        this.zonesModel.getZone().observe(this, zones -> {
+            if (zones != null) {
+                for (Zone z : zones) {
+                    googleMap.addPolygon(z.addPolygon());
                 }
-            });
+            }
+        });
     }
 
+    /**
+     * Setup the cluster manager
+     */
     private void setUpCluster() {
         mClusterManager = new ClusterManager<>(requireActivity(), googleMap);
         mClusterManager.setOnClusterItemInfoWindowClickListener(this);
@@ -163,15 +169,17 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         addItemToCluster();
     }
 
+    /**
+     * Add the spots to the cluster on the map
+     */
     private void addItemToCluster() {
         this.scheduleViewModel.getScheduledItems().observe(this,
-                items -> this.spotsModel.getSpots().observe(requireActivity(), spots -> {
+                items -> this.spotsModel.getSpots().observe(this, spots -> {
             if (spots == null) {
                 return;
             }
             // 1. clear old spots
             mClusterManager.clearItems();
-
             // 2. Add new spots
             for (Spot s : spots) {
                 s.setScheduleList(items);
@@ -182,14 +190,17 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
 
     }
 
+    /**
+     * Enable location if location permissions are allowed by the user for the app
+     */
     private void enableMyLocationIfPermitted() {
-            if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(),
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
-            } else if (googleMap != null) {
-                googleMap.setMyLocationEnabled(true);
-            }
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
+        } else if (googleMap != null) {
+            googleMap.setMyLocationEnabled(true);
+        }
     }
 
     private GoogleMap.OnMyLocationButtonClickListener onMyLocationButtonClickListener = () -> {
@@ -197,8 +208,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         return false;
     };
 
-    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener = location -> Toast.makeText(requireActivity(),
-            "" + location, Toast.LENGTH_LONG).show();
+    private GoogleMap.OnMyLocationClickListener onMyLocationClickListener =
+            location -> Toast.makeText(requireActivity(), "" + location, Toast.LENGTH_LONG).show();
 
     @Override
     public boolean onClusterClick(Cluster<Spot> cluster) {
@@ -223,17 +234,19 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     @Override
     public void onClusterItemInfoWindowClick(Spot spot) {
         if (spot != null && spot.getScheduleList() != null && spot.getScheduleList().size() != 0) {
-                goToSchedule();
+            goToSchedule();
         }
     }
 
     private void goToSchedule() {
-        ScheduleParentFragment scheduleParentFragment = ScheduleParentFragment.newInstance(clickedClusterItem.getTitle());
+        ScheduleParentFragment scheduleParentFragment =
+                ScheduleParentFragment.newInstance(clickedClusterItem.getTitle());
         ((EventShowcaseActivity) requireActivity()).changeFragment(scheduleParentFragment, true);
     }
 
     /**
      * Callback when the map is ready : we setup location, clusters and overlay
+     *
      * @param googleMap
      */
     @Override
@@ -285,7 +298,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
      */
     private class SpotRenderer extends DefaultClusterRenderer<Spot> {
         private final IconGenerator mIconGenerator = new IconGenerator(requireActivity().getApplicationContext());
-        private final IconGenerator mClusterIconGenerator = new IconGenerator(requireActivity().getApplicationContext());
+        private final IconGenerator mClusterIconGenerator =
+                new IconGenerator(requireActivity().getApplicationContext());
         private final ImageView mImageView;
         private final ImageView mClusterImageView;
         private final int mDimension;
@@ -331,7 +345,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
                 if (spotImages.size() == 4) {
                     break;
                 }
-                Drawable drawable = new BitmapDrawable(requireContext().getResources(),p.getBitmap());
+                Drawable drawable = new BitmapDrawable(requireContext().getResources(), p.getBitmap());
                 drawable.setBounds(0, 0, width, height);
                 spotImages.add(drawable);
             }
