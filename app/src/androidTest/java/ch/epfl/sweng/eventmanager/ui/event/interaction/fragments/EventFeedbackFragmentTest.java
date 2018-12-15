@@ -48,7 +48,10 @@ public class EventFeedbackFragmentTest {
     @Test
     public void submitFeedbackTest() {
         repository.cleanRatings();
-        onView(withId(R.id.feedback_for_go_button)).check(matches(isClickable())).perform(click());
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open());
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_feedback));
         onView(withId(R.id.feedback_submit_feedback)).check(matches(isClickable())).perform(click());
 
         submitRating(DESCRIPTION_1, RATING_1);
@@ -66,7 +69,10 @@ public class EventFeedbackFragmentTest {
 
         submitRating(DESCRIPTION_1, RATING_1);
 
-        onView(withId(R.id.feedback_for_go_button)).check(matches(isClickable())).perform(click());
+        onView(withId(R.id.drawer_layout))
+                .perform(DrawerActions.open());
+        onView(withId(R.id.nav_view))
+                .perform(NavigationViewActions.navigateTo(R.id.nav_feedback));
 
         onView(withId(R.id.feedback_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
                 RecyclerViewButtonClick.clickChildViewWithId(R.id.item_feedback_date)));

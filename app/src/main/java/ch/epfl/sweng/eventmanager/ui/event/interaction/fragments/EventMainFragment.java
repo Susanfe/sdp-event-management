@@ -4,9 +4,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
+import java.util.Collections;
+
+import androidx.appcompat.widget.AppCompatRatingBar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -23,29 +32,22 @@ import javax.inject.Inject;
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
  */
-public class EventMainFragment extends AbstractShowcaseFragment {
+public class EventMainFragment extends AbstractFeedbackFragment {
     private static final String TAG = "EventMainFragment";
-
-    @Inject
-    protected FeedbackRepository feedbackRepository;
 
     @Inject
     ImageLoader loader;
 
-    @BindView(R.id.contact_form_go_button)
-    Button contactButton;
     @BindView(R.id.main_fragment_news)
     Button news;
     @BindView(R.id.main_fragment_schedule)
     Button schedule;
     @BindView(R.id.main_fragment_map)
     Button map;
-    @BindView(R.id.feedback_for_go_button)
-    Button feedbackButton;
+    @BindView(R.id.more_feedback_button)
+    Button feedback;
     @BindView(R.id.feedback_ratingBar)
     RatingBar feedbackBar;
-    @BindView(R.id.join_event_button)
-    CheckedTextView joinEventButton;
     @BindView(R.id.event_description)
     TextView eventDescription;
     @BindView(R.id.event_image)
@@ -53,7 +55,21 @@ public class EventMainFragment extends AbstractShowcaseFragment {
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
+    @BindView(R.id.event_begin_date)
+    TextView beginDate;
+    @BindView(R.id.event_end_date)
+    TextView endDate;
+    @BindView(R.id.event_date_linear_layout)
+    LinearLayout dateLinearLayout;
+
+    @BindView(R.id.event_feedback_linear_layout)
+    LinearLayout eventFeedback;
+    @BindView(R.id.event_feedback_recycler_view)
+    RecyclerView recyclerView;
+
     private EventShowcaseActivity showcaseActivity;
+
+    private RatingsRecyclerViewAdapter ratingsRecyclerViewAdapter = new RatingsRecyclerViewAdapter();
 
     public EventMainFragment() {
         // Required empty public constructor
@@ -82,24 +98,17 @@ public class EventMainFragment extends AbstractShowcaseFragment {
             progressBar.setVisibility(View.GONE);
 
             feedbackBar.setIsIndicator(true);
-            feedbackRepository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
+            repository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
 
-            // Binds the 'joined event' switch to the database
-            CheckedTextView joinEventButton = view.findViewById(R.id.join_event_button);
+            if(ev.getBeginDateAsDate() != null){
+                beginDate.setText(String.format("%s %s", getString(R.string.starts_on), ev.beginDateAsString()));
+                dateLinearLayout.setVisibility(View.VISIBLE);
+            }
+            if(ev.getEndDateAsDate() != null){
+                endDate.setText(String.format("%s   %s", getString(R.string.Ends_on), ev.endDateAsString()));
+                dateLinearLayout.setVisibility(View.VISIBLE);
+            }
 
-            // State of the switch depends on if the user joined the event
-            this.model.isJoined(ev).observe(this, joinEventButton::setChecked);
-            joinEventButton.setOnClickListener(v -> {
-                if (!joinEventButton.isChecked()) {
-                    this.model.joinEvent(ev);
-                    NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getContext()));
-                    NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
-                } else {
-                    this.model.unjoinEvent(ev);
-                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getContext()));
-                    NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getContext()));
-                }
-            });
         });
     }
 
@@ -108,12 +117,27 @@ public class EventMainFragment extends AbstractShowcaseFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) ButterKnife.bind(this, view);
 
+        recyclerView.setAdapter(ratingsRecyclerViewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        model.getEvent().observe(this, ev -> {
+            repository.getRatings(ev.getId()).observe(this, ratings -> {
+                if (ratings != null && ratings.size() > 0) {
+                    //display only the most recent feedback
+                    Collections.sort(ratings, (o1, o2) -> -1 * Long.compare(o1.getDate(), o2.getDate()));
+                    ratingsRecyclerViewAdapter.setContent(ratings.subList(0,Math.min(3, ratings.size())));
+                    eventFeedback.setVisibility(View.VISIBLE);
+                    feedbackBar.setVisibility(View.VISIBLE);
+                }else{
+                    eventFeedback.setVisibility(View.GONE);
+                    feedbackBar.setVisibility(View.GONE);
+                }
+            });
+        });
+
         showcaseActivity = (EventShowcaseActivity) getParentActivity();
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
-        contactButton.setOnClickListener(v -> showcaseActivity.callChangeFragment(
-                EventShowcaseActivity.FragmentType.FORM, true));
-
         news.setOnClickListener(v -> showcaseActivity.callChangeFragment(
                 EventShowcaseActivity.FragmentType.NEWS, true));
 
@@ -123,9 +147,16 @@ public class EventMainFragment extends AbstractShowcaseFragment {
         schedule.setOnClickListener(v -> showcaseActivity.callChangeFragment(
                 EventShowcaseActivity.FragmentType.SCHEDULE, true));
 
-        feedbackButton.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFeedbackFragment(), true));
+        feedback.setOnClickListener(v -> ((EventShowcaseActivity) getActivity())
+                .changeFragment(new EventFeedbackFragment(), true));
 
         return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -134,4 +165,10 @@ public class EventMainFragment extends AbstractShowcaseFragment {
         super.onAttach(context);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem menuItem = menu.findItem(R.id.menu_showcase_activity_join_id);
+        menuItem.setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 }
