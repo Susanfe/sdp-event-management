@@ -53,6 +53,12 @@
         <item name="android:layout_margin">8dp</item>
     </style>
 
+    <style name="Button_important">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:background">@drawable/button_important</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
     <!-- App buttonbar button style (see fragment_event_main) -->
     <style name="Button_barButton_middle">
         <item name="android:textColor">@color/colorSecondary</item>
