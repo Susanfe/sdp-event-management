@@ -162,6 +162,9 @@ public class FirebaseEventRepository implements EventRepository {
     }
 
     public Task deleteEvent(Event event) {
+        if(event == null) {
+            throw new IllegalArgumentException("Event to delete cannot be null");
+        }
         String eventMainRef = String.valueOf(event.getId());
         String eventSubRef = "event_" + eventMainRef;
         FirebaseDatabase fdb = FirebaseDatabase.getInstance();
