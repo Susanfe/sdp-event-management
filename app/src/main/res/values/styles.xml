@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorSecondary</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.OverFlow</item>
 
     </style>
@@ -50,6 +50,12 @@
     <style name="Button_global">
         <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:background">@drawable/button_lateral_navigation</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
+    <style name="Button_important">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:background">@drawable/button_important</item>
         <item name="android:layout_margin">8dp</item>
     </style>
 

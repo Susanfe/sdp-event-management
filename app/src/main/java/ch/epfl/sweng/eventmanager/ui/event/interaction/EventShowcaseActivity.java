@@ -3,11 +3,17 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
@@ -15,13 +21,18 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
+import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
+import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.EventMapEditionFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.settings.SettingsActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
@@ -34,12 +45,9 @@ import dagger.android.AndroidInjection;
 import java.util.Objects;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
-import javax.inject.Inject;
-
-
-
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
+    private static final int Y_OFFSET_TOAST = 30;
 
     @Inject
     ViewModelFactory factory;
@@ -182,7 +190,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             case R.id.nav_admin:
                 Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
                 adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
-                menuItem.setCheckable(false);
+                adminIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                menuItem.setChecked(false);
                 startActivity(adminIntent);
                 break;
 
@@ -214,12 +223,12 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 startActivity(ticketingManager.start(
                         Objects.requireNonNull(model.getEvent().getValue()),
                         this));
-                menuItem.setCheckable(false);
+                menuItem.setChecked(false)
                 break;
 
             case R.id.nav_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
-                menuItem.setCheckable(false);
+                menuItem.setChecked(false);
                 startActivity(intent);
                 break;
 
@@ -228,7 +237,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
         }
 
-        return true;
+        return false;
     }
 
     /**
@@ -354,6 +363,61 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     }
 
     public Event getEvent() {return event;}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_showcase_activity_join, menu);
+        Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_join_id).getActionView();
+        model.getEvent().observe(this, ev -> {
+            this.model.isJoined(ev).observe(this, s::setChecked);
+            s.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    this.model.joinEvent(ev);
+                    if(ev.getBeginDateAsDate() != null){
+                        NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
+                    }
+                    if(ev.getEndDateAsDate() != null){
+                        NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
+                    }
+                } else {
+                    this.model.unjoinEvent(ev);
+                    if(ev.getBeginDateAsDate() != null){
+                        NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
+                    }
+                    if(ev.getEndDateAsDate() != null){
+                        NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
+                    }
+                }
+            });
+
+            s.setOnClickListener(buttonView -> {
+                if(s.isChecked()){
+                    tellUser(String.format("%s %s", getString(R.string.joined_switch_button),  ev.getName()));
+                }
+                else{
+                    tellUser(String.format("%s %s", getString(R.string.unjoined_switch_button),ev.getName()));
+                }
+            });
+        });
+        return true;
+    }
+
+    private void tellUser(String message) {
+        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP, 0, Y_OFFSET_TOAST);
+        toast.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            default:
+                return false;
+        }
+    }
 
     public enum FragmentType {
         // Every registered type here needs to be used in the callChangeFragment method
