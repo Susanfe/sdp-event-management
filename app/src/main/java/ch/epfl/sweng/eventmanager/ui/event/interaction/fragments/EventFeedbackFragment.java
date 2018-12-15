@@ -60,10 +60,6 @@ public class EventFeedbackFragment extends AbstractFeedbackFragment {
             AtomicReference<Boolean> ratingExists = new AtomicReference<>();
             repository.ratingFromDeviceExists(ev.getId(), UNIQUE_DEVICE_ID).observe(this, ratingExists::set);
 
-            if (ratingExists.get() != null && ratingExists.get()) {
-                submitFeedback.setVisibility(View.GONE);
-            } else submitFeedback.setVisibility(View.VISIBLE);
-
             repository.getRatings(ev.getId()).observe(this, ratings -> {
                 if (ratings != null && ratings.size() > 0) {
                     recyclerView.setVisibility(View.VISIBLE);
