@@ -278,6 +278,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                     eventFeedbackFragment = EventFeedbackFragment.newInstance();
                 }
                 changeFragment(eventFeedbackFragment,saveToBackstack);
+                break;
             default:
                 break;
         }
