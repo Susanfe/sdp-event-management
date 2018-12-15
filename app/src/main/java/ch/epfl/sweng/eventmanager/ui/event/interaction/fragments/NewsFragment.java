@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Display an event's news facebookPost.
+ * Display an event's news feed.
  */
 public class NewsFragment extends AbstractShowcaseFragment {
     private static String TAG = "NewsFragment";
