@@ -165,7 +165,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             case R.id.nav_admin:
                 Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
                 adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
-                menuItem.setCheckable(false);
+                adminIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                menuItem.setChecked(false);
                 startActivity(adminIntent);
                 break;
 
@@ -196,12 +197,12 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             case R.id.nav_scan:
                 // TODO Handle null pointer exception
                 startActivity(ticketingManager.start(model.getEvent().getValue(), this));
-                menuItem.setCheckable(false);
+                menuItem.setChecked(false);
                 break;
 
             case R.id.nav_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
-                menuItem.setCheckable(false);
+                menuItem.setChecked(false);
                 startActivity(intent);
                 break;
 
@@ -210,7 +211,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
         }
 
-        return true;
+        return false;
     }
 
     /**
