@@ -3,8 +3,6 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import android.os.SystemClock;
 import android.view.Gravity;
 
-import androidx.test.espresso.action.ScrollToAction;
-import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
 import ch.epfl.sweng.eventmanager.R;
@@ -23,8 +21,8 @@ import org.junit.Test;
 import javax.inject.Inject;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
@@ -61,10 +59,9 @@ public class NewsFragmentTest {
     private void createNews() {
         SystemClock.sleep(500);
 
-
         onView(withId(R.id.title)).perform(typeText(newsTitle), closeSoftKeyboard());
         onView(withId(R.id.content)).perform(typeText(newsContent), closeSoftKeyboard());
-        onView(withId(R.id.send)).perform(scrollTo(), ViewActions.click());
+        onView(withId(R.id.send)).perform(click());
     }
 
     private void openNewsListing() {
