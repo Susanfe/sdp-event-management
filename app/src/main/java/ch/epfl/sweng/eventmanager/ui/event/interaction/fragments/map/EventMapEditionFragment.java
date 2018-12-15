@@ -276,7 +276,6 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     public void onMarkerDragEnd(Marker marker) {
         EventEditionTag tag = (EventEditionTag) marker.getTag();
         assert tag != null;
-        Log.i("TAGTEST", "Issued MoveMarkerAction");
 
         // Index takes a shift depending on type
         int shift = getShift(tag.getMarkerType());
@@ -335,8 +334,6 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
             if (m!=null && !title.equals(m.getTitle()) && !snippet.equals(m.getSnippet()) &&
                     type != ((EventEditionTag)Objects.requireNonNull(m.getTag())).getSpotType()) {
 
-                Log.i("TAGTEST", "Issued ModifyMarkerInfoAction");
-
                 history.push(new ModifyMarkerInfoAction(
                         (EventEditionTag) m.getTag(),
                         m.getTitle(), title,
@@ -367,7 +364,6 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      */
     private void addSpotEvent(LatLng onLongClickSavedLatLng) {
         Marker m = addSpotMarker(defaultTitle, defaultSnippet, onLongClickSavedLatLng, defaultType);
-        Log.i("TAGTEST", "Issued MarkerCreationAction");
 
         issuedByCreation = true;
         history.push(new MarkerCreationAction((EventEditionTag) m.getTag(), m.getPosition()));
@@ -385,11 +381,9 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * @param onLongClickSavedLatLng saved position representing position to create marker at
      */
     private void addOverlayEdgeEvent(LatLng onLongClickSavedLatLng) {
-        Log.i("TAGTEST", "longitude " + onLongClickSavedLatLng.longitude + " latitude " + onLongClickSavedLatLng.latitude);
         eventZone.addPosition(new Position(onLongClickSavedLatLng.latitude, onLongClickSavedLatLng.longitude));
         Marker m = addOverlayEdgeMarker(onLongClickSavedLatLng);
 
-        Log.i("TAGTEST", "Issued markerCreationAction");
         history.push(new MarkerCreationAction((EventEditionTag) m.getTag(), m.getPosition()));
 
         reformPolygon();
@@ -457,10 +451,10 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         MapEditionAction action = history.pop();
         revertAndCheck(action);
 
+        // If the action has a linked action to undo as well
         if (action instanceof ModifyMarkerInfoAction && ((ModifyMarkerInfoAction) action).wasIssudByCreation()) {
             MapEditionAction linkedAction = history.pop();
 
-            Log.i("TAGTEST", "is an instance of MarkerCreationACtion " + (linkedAction instanceof MarkerCreationAction));
             if (linkedAction instanceof MarkerCreationAction)
                 revertAndCheck(linkedAction);
             else
