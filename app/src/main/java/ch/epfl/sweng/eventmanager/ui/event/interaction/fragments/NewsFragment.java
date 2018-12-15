@@ -46,6 +46,10 @@ public class NewsFragment extends AbstractShowcaseFragment {
         super(R.layout.fragment_news);
     }
 
+    public static NewsFragment newInstance() {
+        return new NewsFragment();
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

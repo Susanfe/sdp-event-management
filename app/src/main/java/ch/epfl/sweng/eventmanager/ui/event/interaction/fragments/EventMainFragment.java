@@ -60,6 +60,10 @@ public class EventMainFragment extends AbstractShowcaseFragment {
         super(R.layout.fragment_event_main);
     }
 
+    public static EventMainFragment newInstance(){
+        return new EventMainFragment();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -111,16 +115,16 @@ public class EventMainFragment extends AbstractShowcaseFragment {
         showcaseActivity = (EventShowcaseActivity) getParentActivity();
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
-        contactButton.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+        contactButton.setOnClickListener(v -> showcaseActivity.switchFragment(
                 EventShowcaseActivity.FragmentType.FORM, true));
 
-        news.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+        news.setOnClickListener(v -> showcaseActivity.switchFragment(
                 EventShowcaseActivity.FragmentType.NEWS, true));
 
-        map.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+        map.setOnClickListener(v -> showcaseActivity.switchFragment(
                 EventShowcaseActivity.FragmentType.MAP, true));
 
-        schedule.setOnClickListener(v -> showcaseActivity.callChangeFragment(
+        schedule.setOnClickListener(v -> showcaseActivity.switchFragment(
                 EventShowcaseActivity.FragmentType.SCHEDULE, true));
 
         feedbackButton.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFeedbackFragment(), true));

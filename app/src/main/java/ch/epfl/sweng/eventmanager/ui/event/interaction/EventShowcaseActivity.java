@@ -51,6 +51,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private Fragment newsFragment;
     private Fragment scheduleParentFragment;
     private Fragment eventMapFragment;
+    private EventFormFragment eventFormFragment;
 
     private void initModels() {
         this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
@@ -176,23 +177,23 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case R.id.nav_main:
-                callChangeFragment(FragmentType.MAIN, true);
+                switchFragment(FragmentType.MAIN, true);
                 break;
 
             case R.id.nav_map:
-                callChangeFragment(FragmentType.MAP, true);
+                switchFragment(FragmentType.MAP, true);
                 break;
 
             case R.id.nav_tickets:
-                callChangeFragment(null, true);
+                switchFragment(null, true);
                 break;
 
             case R.id.nav_news:
-                callChangeFragment(FragmentType.NEWS, true);
+                switchFragment(FragmentType.NEWS, true);
                 break;
 
             case R.id.nav_schedule:
-                callChangeFragment(FragmentType.SCHEDULE, true);
+                switchFragment(FragmentType.SCHEDULE, true);
                 break;
 
             case R.id.nav_feedback:
@@ -212,7 +213,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case R.id.nav_contact:
-                callChangeFragment(FragmentType.FORM, true);
+                switchFragment(FragmentType.FORM, true);
                 break;
         }
 
@@ -220,48 +221,48 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     }
 
     /**
-     * Prepares the call to changeFragment by verifying if an existing fragment was stored and can
-     * be reused.
-     *
+     * Switch the current fragment to the required one. Instatiate the new fragment if not already instantiated.
      * @param type            type of the fragment to switch to
      * @param saveToBackstack save the fragment in the backstack to access it later on
      */
-    public void callChangeFragment(FragmentType type, boolean saveToBackstack) {
+    public void switchFragment(FragmentType type, boolean saveToBackstack) {
         if (type == null) type = FragmentType.MAIN;
         switch (type) {
             case MAIN:
                 if (eventMainFragment == null) {
-                    eventMainFragment = new EventMainFragment();
+                    eventMainFragment = EventMainFragment.newInstance();
                 }
                 changeFragment(eventMainFragment, saveToBackstack);
                 break;
 
             case MAP:
                 if (eventMapFragment == null) {
-                    eventMapFragment = new EventMapFragment();
+                    eventMapFragment = EventMapFragment.newInstance();
                 }
                 changeFragment(eventMapFragment, saveToBackstack);
                 break;
 
             case SCHEDULE:
                 if (scheduleParentFragment == null) {
-                    scheduleParentFragment = new ScheduleParentFragment();
+                    scheduleParentFragment = ScheduleParentFragment.newInstance();
                 }
                 changeFragment(scheduleParentFragment, saveToBackstack);
                 break;
 
             case FORM:
+                if(eventFormFragment == null) {
+                    eventFormFragment = EventFormFragment.newInstance();
+                }
                 changeFragment(new EventFormFragment(), saveToBackstack);
                 break;
 
             case NEWS:
                 if (newsFragment == null) {
-                    newsFragment = new NewsFragment();
+                    newsFragment = NewsFragment.newInstance();
                 }
                 changeFragment(newsFragment, saveToBackstack);
                 break;
             default:
-                changeFragment(new EventMainFragment(), saveToBackstack);
                 break;
         }
     }
@@ -295,7 +296,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     public void onBackPressed() {
         Fragment fragment = getCurrentFragment();
         if (fragment instanceof EventTicketFragment || fragment instanceof EventMapFragment || fragment instanceof ScheduleParentFragment || fragment instanceof NewsFragment) {
-            callChangeFragment(FragmentType.MAIN, true);
+            switchFragment(FragmentType.MAIN, true);
         } else {
             int fragments = getSupportFragmentManager().getBackStackEntryCount();
             if (fragments == 1) {

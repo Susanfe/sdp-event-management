@@ -60,7 +60,6 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
 
     private static final String TAG = "EventMapFragment";
     private static final float ZOOMLEVEL = 15.0f; //This goes up to 21
-    public static final String TAB_NB_KEY = "ch.epfl.sweng.eventmanager.TAB_NB_KEY";
 
     private ClusterManager<Spot> mClusterManager;
     private SpotsModel spotsModel;
@@ -75,6 +74,10 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
 
     public EventMapFragment() {
         super(R.layout.fragment_event_map);
+    }
+
+     public static EventMapFragment newInstance() {
+        return new EventMapFragment();
     }
 
     @Override
@@ -225,10 +228,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
     }
 
     private void goToSchedule() {
-        ScheduleParentFragment scheduleParentFragment = new ScheduleParentFragment();
-        Bundle args = new Bundle();
-        args.putString(TAB_NB_KEY, clickedClusterItem.getTitle());
-        scheduleParentFragment.setArguments(args);
+        ScheduleParentFragment scheduleParentFragment = ScheduleParentFragment.newInstance(clickedClusterItem.getTitle());
         ((EventShowcaseActivity) requireActivity()).changeFragment(scheduleParentFragment, true);
     }
 
