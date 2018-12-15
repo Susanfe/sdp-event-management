@@ -337,7 +337,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_showcase_activity_join, menu);
         Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_join_id).getActionView();
-        //s.setThumbDrawable(getResources().getDrawable(R.drawable.join_button));
         model.getEvent().observe(this, ev -> {
             this.model.isJoined(ev).observe(this, s::setChecked);
             s.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -362,27 +361,25 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             s.setOnClickListener(buttonView -> {
                 if(s.isChecked()){
-                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.joined_switch_button) +
-                            ev.getName(), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP, 0, Y_OFFSET_TOAST);
-                    toast.show();
+                    tellUser(String.format("%s %s", getString(R.string.joined_switch_button),  ev.getName()));
                 }
                 else{
-                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.unjoined_switch_button) +
-                            ev.getName(), Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP, 0, Y_OFFSET_TOAST);
-                    toast.show();
+                    tellUser(String.format("%s %s", getString(R.string.unjoined_switch_button),ev.getName()));
                 }
             });
         });
         return true;
     }
 
+    private void tellUser(String message) {
+        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP, 0, Y_OFFSET_TOAST);
+        toast.show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.menu_showcase_activity_join_id:
-                return false;
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
