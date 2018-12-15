@@ -36,8 +36,8 @@ import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
-import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomAddOptionsDialog;
-import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomMarkerDialog;
+import ch.epfl.sweng.eventmanager.ui.customViews.CustomAddOptionsDialog;
+import ch.epfl.sweng.eventmanager.ui.customViews.CustomMarkerDialog;
 
 import static ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag.createOverlayEdgeTag;
 import static ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag.createSpotTag;
@@ -75,7 +75,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     // List of all added markers
     private List<Marker> markerList = new LinkedList<>();
-    private SparseArray<LatLng> positionForMarkerIDList = new SparseArray<>();
+    private SparseArray<LatLng> positionForMarkerIDMap = new SparseArray<>();
     private Zone eventZone = null;
 
     private static final int overlayEdgeIndexShift = 1000;
@@ -186,7 +186,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
         m.setTag(createSpotTag(++counterSpot, spotType));
         markerList.add(m);
-        positionForMarkerIDList.put(counterSpot, m.getPosition());
+        positionForMarkerIDMap.put(counterSpot, m.getPosition());
 
         return m;
     }
@@ -220,7 +220,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
         m.setTag(createOverlayEdgeTag(++counterOverlayEdge));
         markerList.add(m);
-        positionForMarkerIDList.put(overlayEdgeIndexShift + counterOverlayEdge, m.getPosition());
+        positionForMarkerIDMap.put(overlayEdgeIndexShift + counterOverlayEdge, m.getPosition());
 
         return m;
     }
@@ -280,12 +280,29 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
         // Index takes a shift depending on type
         int shift = getShift(tag.getMarkerType());
+        LatLng ancientPosition = positionForMarkerIDMap.get(shift + tag.getId());
+        LatLng newPosition = marker.getPosition();
+
         history.push(new MoveMarkerAction(
                 tag,
-                positionForMarkerIDList.get(shift + tag.getId()),
-                marker.getPosition()));
+                ancientPosition,
+                newPosition));
 
-        positionForMarkerIDList.put(shift + tag.getId(), marker.getPosition());
+        positionForMarkerIDMap.put(shift + tag.getId(), marker.getPosition());
+
+        if (tag.getMarkerType()==MarkerType.OVERLAY_EDGE)
+
+            // If updating the edge's position did not work
+            if (!eventZone.changePositionOfElement(
+                    new Position(ancientPosition.latitude, ancientPosition.longitude),
+                    new Position(newPosition.latitude, newPosition.longitude))){
+
+                history.pop();
+                Toast.makeText(getContext(), getText(R.string.map_edition_error_not_done),
+                        Toast.LENGTH_LONG).show();
+            }
+
+            reformPolygon();
     }
 
     @Override
@@ -457,7 +474,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * @param action action to be reverted
      */
     private void revertAndCheck(MapEditionAction action) {
-        if (!action.revert(markerList, positionForMarkerIDList)) {
+        if (!action.revert(markerList, positionForMarkerIDMap)) {
             Toast.makeText(getContext(), getString(R.string.map_edition_error_undo), Toast.LENGTH_LONG).show();
         }
         else {

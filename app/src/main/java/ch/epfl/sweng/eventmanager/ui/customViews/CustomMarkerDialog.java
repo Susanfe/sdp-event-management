@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.CustomViews;
+package ch.epfl.sweng.eventmanager.ui.customViews;
 
 import android.app.Dialog;
 import android.content.Context;

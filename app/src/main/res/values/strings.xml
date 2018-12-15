@@ -197,5 +197,6 @@
     <string name="map_edition_add_overlay">Add overlay edge</string>
     <string name="map_edition_add_spot">Add spot</string>
     <string name="map_edition_error_undo">Could not undo action. Dismissed it.</string>
+    <string name="map_edition_error_not_done">Could not perform action. Dismissed it.</string>
 
 </resources>

@@ -109,5 +109,27 @@ public class Zone {
                         (p1.getLatitude() - p2.getLatitude())*(p1.getLatitude() - p2.getLatitude()));
     }
 
+    /**
+     * Enables updating the position of one element on the list. The position is removed from the
+     * list and an element with the new position is reinserted using the addPosition method.
+     * @param ancientPosition position element to find
+     * @param newPosition position element to insert in place of ancient one
+     * @return false if no position was found for the given ancient position
+     */
+    public boolean changePositionOfElement(Position ancientPosition, Position newPosition) {
+        if (ancientPosition == null || newPosition == null)
+            throw new IllegalArgumentException();
+
+        for (Position p : positions) {
+            if (p.equals(ancientPosition)) {
+                positions.remove(p);
+                addPosition(newPosition);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 }
