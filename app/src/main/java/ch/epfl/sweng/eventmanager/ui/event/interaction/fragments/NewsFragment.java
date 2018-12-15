@@ -2,7 +2,6 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.ImageView;
@@ -233,7 +232,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 }
                 if(facebookPost.hasImage()) {
                     ((EventShowcaseActivity) context).getLoader()
-                            .displayImage(context,Uri.parse(facebookPost.getImageURL()),image_facebook_post);
+                            .displayImage(context,facebookPost.getImageURL(),image_facebook_post);
                 }
                 this.date.setText(facebookPost.dateAsString());
             }
