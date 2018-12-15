@@ -44,7 +44,15 @@ public class ScheduleParentFragment extends Fragment {
         return new ScheduleParentFragment();
     }
 
+    /**
+     * Returns a new ScheduleParentFragment with the given room displayed.
+     * @param roomName The name of the room we want do display
+     * @return ScheduleParentFragment
+     */
     public static ScheduleParentFragment newInstance(String roomName) {
+        if(roomName == null) {
+            throw new IllegalArgumentException("The name of the room cannot be null");
+        }
          Bundle args = new Bundle();
          args.putString(TAB_NB_KEY,roomName);
          ScheduleParentFragment fragment = new ScheduleParentFragment();
