@@ -3,6 +3,8 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import android.os.SystemClock;
 import android.view.Gravity;
 
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
 import ch.epfl.sweng.eventmanager.R;
@@ -61,7 +63,7 @@ public class NewsFragmentTest {
 
         onView(withId(R.id.title)).perform(typeText(newsTitle), closeSoftKeyboard());
         onView(withId(R.id.content)).perform(typeText(newsContent), closeSoftKeyboard());
-        onView(withId(R.id.send)).perform(click());
+        onView(withId(R.id.send)).perform(ViewActions.click());
     }
 
     private void openNewsListing() {
