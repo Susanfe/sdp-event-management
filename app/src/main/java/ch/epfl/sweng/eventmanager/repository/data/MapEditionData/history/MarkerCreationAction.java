@@ -11,20 +11,20 @@ import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag
 
 public class MarkerCreationAction extends MapEditionAction {
 
-    private LatLng positionofCreation;
+    private LatLng positionOfCreation;
 
     public MarkerCreationAction(EventEditionTag tag, LatLng position) {
         if (tag == null || position == null)
             throw new IllegalArgumentException();
 
         this.tag = tag;
-        this.positionofCreation = position;
+        this.positionOfCreation = position;
     }
 
     @Override
     public boolean revert(List<Marker> markers, SparseArray<LatLng> positions) {
         Marker m = findMarkerByTag(markers);
-        if (m != null && m.getPosition().equals(positionofCreation)) {
+        if (m != null && m.getPosition().equals(positionOfCreation)) {
             markers.remove(m);
             m.remove();
             return true;
