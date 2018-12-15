@@ -449,16 +449,23 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      */
     private void revertLatestAction() {
         MapEditionAction action = history.pop();
-        revertAndCheck(action);
+        checkAndRevert(action);
 
         // If the action has a linked action to undo as well
         if (action instanceof ModifyMarkerInfoAction && ((ModifyMarkerInfoAction) action).wasIssudByCreation()) {
             MapEditionAction linkedAction = history.pop();
 
             if (linkedAction instanceof MarkerCreationAction)
-                revertAndCheck(linkedAction);
+                checkAndRevert(linkedAction);
             else
                 history.push(linkedAction);
+        }
+
+        // If it is a creation action it may have been an overlay edge, we need to redraw the overlay
+        else if (action instanceof MarkerCreationAction){
+            LatLng positionOfCreation = ((MarkerCreationAction)action).getPositionOfCreation();
+            eventZone.removePosition(new Position(positionOfCreation.latitude, positionOfCreation.longitude));
+            reformPolygon();
         }
 
     }
@@ -467,7 +474,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * Orders action to revert and notifies user of result
      * @param action action to be reverted
      */
-    private void revertAndCheck(MapEditionAction action) {
+    private void checkAndRevert(MapEditionAction action) {
         if (!action.revert(markerList, positionForMarkerIDMap)) {
             Toast.makeText(getContext(), getString(R.string.map_edition_error_undo), Toast.LENGTH_LONG).show();
         }

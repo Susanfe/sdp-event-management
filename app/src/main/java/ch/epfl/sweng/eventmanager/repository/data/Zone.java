@@ -120,15 +120,15 @@ public class Zone {
         if (ancientPosition == null || newPosition == null)
             throw new IllegalArgumentException();
 
-        for (Position p : positions) {
-            if (p.equals(ancientPosition)) {
-                positions.remove(p);
-                addPosition(newPosition);
-                return true;
-            }
+        if(removePosition(ancientPosition)) {
+            addPosition(newPosition);
+            return true;
         }
-
         return false;
+    }
+
+    public boolean removePosition(Position position) {
+        return positions.remove(position);
     }
 
 

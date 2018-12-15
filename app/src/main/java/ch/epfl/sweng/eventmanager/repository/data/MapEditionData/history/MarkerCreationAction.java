@@ -32,4 +32,8 @@ public class MarkerCreationAction extends MapEditionAction {
 
         return false;
     }
+
+    public LatLng getPositionOfCreation() {
+        return positionOfCreation;
+    }
 }
