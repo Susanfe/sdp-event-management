@@ -46,6 +46,10 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
         super(R.layout.fragment_display_feedback);
     }
 
+    public static EventFeedbackFragment newInstance() {
+        return new EventFeedbackFragment();
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,7 +91,7 @@ public class EventFeedbackFragment extends AbstractShowcaseFragment {
             });
         });
 
-        submitFeedback.setOnClickListener(l -> ((EventShowcaseActivity) getActivity()).changeFragment(new SubmitFeedbackFragment(), true));
+        submitFeedback.setOnClickListener(l -> ((EventShowcaseActivity) requireActivity()).changeFragment(new SubmitFeedbackFragment(), true));
     }
 
     @Override

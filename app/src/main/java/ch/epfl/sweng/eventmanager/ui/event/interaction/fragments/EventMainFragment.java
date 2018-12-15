@@ -127,7 +127,8 @@ public class EventMainFragment extends AbstractShowcaseFragment {
         schedule.setOnClickListener(v -> showcaseActivity.switchFragment(
                 EventShowcaseActivity.FragmentType.SCHEDULE, true));
 
-        feedbackButton.setOnClickListener(v -> ((EventShowcaseActivity) getActivity()).changeFragment(new EventFeedbackFragment(), true));
+        feedbackButton.setOnClickListener(v -> showcaseActivity.switchFragment(
+                EventShowcaseActivity.FragmentType.EVENT_FEEDBACK,true));
 
         return view;
     }

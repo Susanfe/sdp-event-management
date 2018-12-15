@@ -33,6 +33,10 @@ import javax.inject.Inject;
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
 
+    public static enum FragmentType {
+        MAIN, MAP, SCHEDULE, NEWS, FORM, EVENT_FEEDBACK
+    }
+
     @Inject
     ViewModelFactory factory;
     @Inject
@@ -51,7 +55,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private Fragment newsFragment;
     private Fragment scheduleParentFragment;
     private Fragment eventMapFragment;
-    private EventFormFragment eventFormFragment;
+    private Fragment eventFormFragment;
+    private Fragment eventFeedbackFragment;
 
     private void initModels() {
         this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
@@ -138,10 +143,10 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             // Set displayed fragment only when no other fragment where previously inflated.
             if (savedInstanceState == null) {
                 String fragment = intent.getStringExtra("fragment");
-                if (fragment != null && fragment.equals("feedback")) changeFragment(new EventFeedbackFragment(), true);
+                if (fragment != null && fragment.equals("feedback"))
+                    switchFragment(FragmentType.EVENT_FEEDBACK,true);
                 else {
-                    eventMainFragment = new EventMainFragment();
-                    changeFragment(eventMainFragment, true);
+                    switchFragment(FragmentType.MAIN,true);
                 }
             }
         }
@@ -253,7 +258,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 if(eventFormFragment == null) {
                     eventFormFragment = EventFormFragment.newInstance();
                 }
-                changeFragment(new EventFormFragment(), saveToBackstack);
+                changeFragment(eventFormFragment, saveToBackstack);
                 break;
 
             case NEWS:
@@ -262,6 +267,11 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 }
                 changeFragment(newsFragment, saveToBackstack);
                 break;
+            case EVENT_FEEDBACK:
+                if(eventFeedbackFragment == null) {
+                    eventFeedbackFragment = EventFeedbackFragment.newInstance();
+                }
+                changeFragment(eventFeedbackFragment,saveToBackstack);
             default:
                 break;
         }
@@ -318,9 +328,5 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
     public int getEventID() {
         return eventID;
-    }
-
-    public enum FragmentType {
-        MAIN, MAP, SCHEDULE, NEWS, FORM
     }
 }
