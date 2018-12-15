@@ -71,7 +71,7 @@ public class SubmitFeedbackFragment extends AbstractShowcaseFragment {
         super.onAttach(context);
     }
 
-    public void submitEventRating(Boolean ratingExists, Event ev){
+    private void submitEventRating(Boolean ratingExists, Event ev){
         EventRating newEventRating = new EventRating(UNIQUE_DEVICE_ID, rating.getRating(), description.getText().toString(), System.currentTimeMillis());
         if (!ratingExists) {
             //Publish the rating and shows that feedback has been published
