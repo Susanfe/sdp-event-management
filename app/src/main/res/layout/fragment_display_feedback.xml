@@ -14,26 +14,26 @@
                     android:layout_height="match_parent"
                     android:id="@+id/feedback_relative_layout"
                     tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.MultiFragmentActivity">
-        <androidx.recyclerview.widget.RecyclerView
-                android:scrollbars="vertical"
-                android:id="@+id/feedback_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:padding="10dp"
-                tools:listitem="@layout/item_feedback" android:visibility="visible">
-        </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.appcompat.widget.AppCompatButton
                 android:text="@string/submit_your_feedback"
                 android:id="@+id/feedback_submit_feedback"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:visibility="visible"
                 android:gravity="center"
                 app:layout_anchorGravity="bottom"
-                android:layout_alignParentStart="true" android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"/>
+                android:layout_alignParentStart="true" android:layout_alignParentBottom="true"/>
+        <androidx.recyclerview.widget.RecyclerView
+                android:scrollbars="vertical"
+                android:id="@+id/feedback_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:padding="10dp"
+                tools:listitem="@layout/item_feedback" android:visibility="visible"
+                android:layout_alignParentStart="true" android:layout_alignParentTop="true">
+        </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
 
     <TextView
