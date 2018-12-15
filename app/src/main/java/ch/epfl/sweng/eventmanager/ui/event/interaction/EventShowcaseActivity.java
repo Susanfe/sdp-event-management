@@ -318,9 +318,11 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         switch (item.getItemId()) {
             case R.id.menu_facebook_login_edit:
                 return false;
-            default:
+            case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            default:
+               return false;
         }
     }
 
