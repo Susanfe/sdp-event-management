@@ -99,11 +99,11 @@ public class EventMainFragment extends AbstractFeedbackFragment {
             repository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
 
             if(ev.getBeginDateAsDate() != null){
-                beginDate.setText("Starts: " + ev.beginDateAsString());
+                beginDate.setText(String.format("%s%s", getString(R.string.starts_on), ev.beginDateAsString().substring(0, 1)));
                 dateLinearLayout.setVisibility(View.VISIBLE);
             }
             if(ev.getEndDateAsDate() != null){
-                endDate.setText("Ends:   " + ev.endDateAsString());
+                endDate.setText(String.format("%s%s", getString(R.string.Ends_on), ev.endDateAsString()));
                 dateLinearLayout.setVisibility(View.VISIBLE);
             }
 
