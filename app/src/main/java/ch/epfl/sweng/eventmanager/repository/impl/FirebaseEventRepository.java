@@ -81,12 +81,6 @@ public class FirebaseEventRepository implements EventRepository {
         return event.getName().replace(" ", "_") + ".png";
     }
 
-    private <T> LiveData<List<T>> getElems(int eventId, String basePath, Class<T> classOfT) {
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(basePath).child("event_" + eventId);
-
-        return FirebaseHelper.getList(dbRef, classOfT);
-    }
-
 
     @Override
     public LiveData<List<Spot>> getSpots(int eventId) {
@@ -109,12 +103,19 @@ public class FirebaseEventRepository implements EventRepository {
 
     @Override
     public LiveData<List<ScheduledItem>> getScheduledItems(int eventId) {
-        return this.getElems(eventId, "schedule_items", ScheduledItem.class);
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("schedule_items").child("event_" + eventId);
+
+        return FirebaseHelper.getList(dbRef, ScheduledItem.class, (item, ref) -> {
+            item.setId(ref.getKey());
+            return item;
+        });
     }
 
     @Override
     public LiveData<List<Zone>> getZones(int eventId) {
-        return this.getElems(eventId, "zones", Zone.class);
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("zones").child("event_" + eventId);
+
+        return FirebaseHelper.getList(dbRef, Zone.class);
     }
 
     private String getImageName(Spot spot) {
