@@ -287,6 +287,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
                 case OVERLAY_EDGE:
                     // TODO prompt removal of overlay edge
+
                     return true;
             }
         return false;
@@ -508,14 +509,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
             if (action instanceof MarkerCreationAction) {
                 LatLng positionOfCreation = ((MarkerCreationAction) action).getPositionOfCreation();
 
-                // If the removal was successful
-                if (eventZone.removePosition(new Position(positionOfCreation.latitude, positionOfCreation.longitude)))
-                    reformPolygon();
-                else {
-                    // TODO transform every toast in snackbar because they are displayed for too long
-                    Toast.makeText(getContext(), getText(R.string.map_edition_error_not_done), Toast.LENGTH_SHORT).show();
-                    return; // stops action from being reverted
-                }
+                if(!removeOverlay(positionOfCreation)) return; // stops action from being reverted
             }
         }
 
@@ -566,6 +560,24 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         return eventZone.changePositionOfElement(
                 new Position(ancientPosition.latitude, ancientPosition.longitude),
                 new Position(newPosition.latitude, newPosition.longitude));
+    }
+
+    /**
+     * Removes an overlay edge, reforms overlay on success, makes toast on failure.
+     * @param positionOfCreation position of the edge to remove
+     * @return true if the edge was removed and the overlay was reformed, false otherwise.
+     */
+    private boolean removeOverlay(LatLng positionOfCreation) {
+        // If the removal was successful
+        if (eventZone.removePosition(new Position(positionOfCreation.latitude, positionOfCreation.longitude))) {
+            reformPolygon();
+            return true;
+        }
+        else {
+            // TODO transform every toast in snackbar because they are displayed for too long
+            Toast.makeText(getContext(), getText(R.string.map_edition_error_not_done), Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
 
