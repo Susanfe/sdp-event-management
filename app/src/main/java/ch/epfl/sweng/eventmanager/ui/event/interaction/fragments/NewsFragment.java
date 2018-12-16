@@ -1,11 +1,10 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.*;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -17,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.user.LoginFacebookActivity;
 import com.twitter.sdk.android.core.models.Tweet;
@@ -36,8 +36,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
     RecyclerView recyclerView;
     @BindView(R.id.news_empty_tv)
     TextView emptyListTextView;
-    @BindView(R.id.go_facebook)
-    Button facebookButton;
 
     private NewsAdapter newsAdapter;
 
@@ -58,13 +56,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 Objects.requireNonNull(view).getContext()));
         recyclerView.setHasFixedSize(true);
 
-        facebookButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), LoginFacebookActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        });
-
-        newsAdapter = new NewsAdapter();
+        newsAdapter = new NewsAdapter(getActivity());
         recyclerView.setAdapter(newsAdapter);
 
         return view;
@@ -99,14 +91,46 @@ public class NewsFragment extends AbstractShowcaseFragment {
         super.onCreate(savedInstanceState);
 
         model = ViewModelProviders.of(requireActivity()).get(NewsViewModel.class);
+
+        // indicates to the fragment that EventShowcaseActivity has a menu
+        setHasOptionsMenu(true);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (menu.size() > 0) {
+            MenuItem item = menu.getItem(0);
+            item.setVisible(true);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_facebook_login_edit:
+
+                Intent intent = new Intent(getActivity(), LoginFacebookActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+                return true;
+
+            default:
+                // Action was not consumed (calls activity method)
+                return false;
+        }
+    }
+
 
     public static class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private List<SocialNetworkPost> news;
+        private Context context;
 
-        NewsAdapter() {
+        NewsAdapter(Context context) {
             this.news = Collections.emptyList();
+            this.context = context;
         }
 
         // Create new views (invoked by the layout manager)
@@ -115,31 +139,35 @@ public class NewsFragment extends AbstractShowcaseFragment {
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                           int viewType) {
 
-            if (viewType == TwitterPost.VIEW_TYPE) {
+            if (viewType == TweetWrapper.VIEW_TYPE) {
                 final Tweet tweet = new TweetBuilder().build();
                 final CompactTweetView compactTweetView = new CompactTweetView(parent.getContext(), tweet);
 
                 return new TweetViewHolder(compactTweetView);
-            } else if(viewType == NewsPost.VIEW_TYPE){
+            } else if(viewType == NewsWrapper.VIEW_TYPE){
                 View v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_news, parent, false);
                 return new NewsViewHolder(v);
             } else {
                 View v = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.facebook_item_news, parent, false);
-                return new FacebookViewHolder(v);
+                return new FacebookViewHolder(v, context);
             }
         }
 
         // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            if (holder instanceof NewsViewHolder)
+            if (holder instanceof NewsViewHolder) {
                 ((NewsViewHolder) holder).bind((News) news.get(position).getPost());
-            else if (holder instanceof TweetViewHolder)
+            }
+            else if (holder instanceof TweetViewHolder) {
                 ((CompactTweetView) ((TweetViewHolder) holder).itemView).setTweet((Tweet) news.get(position).getPost());
-            else if (holder instanceof FacebookViewHolder)
-                ((FacebookViewHolder) holder).bind((Feed) news.get(position).getPost());
+            }
+            else if (holder instanceof FacebookViewHolder) {
+                ((FacebookViewHolder) holder).bind((FacebookPost) news.get(position).getPost());
+            }
+
         }
 
         @Override
@@ -157,25 +185,78 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
             Collections.sort(this.news);
 
-
             this.notifyDataSetChanged();
         }
 
         static final class FacebookViewHolder extends RecyclerView.ViewHolder {
-            @BindView(R.id.text_facebook_news_content)
+            @BindView(R.id.facebook_detail_content)
             TextView content;
-            @BindView(R.id.text_facebook_news_date)
+            @BindView(R.id.facebook_detail_time)
             TextView date;
+            @BindView(R.id.facebook_description)
+            TextView description;
+            @BindView(R.id.facebook_detail_author)
+            TextView author;
+            @BindView(R.id.image_from_facebook)
+            ImageView image_facebook_post;
 
-            FacebookViewHolder(View itemView) {
+            private Context context;
+            private FacebookPost facebookPost;
+
+            FacebookViewHolder(View itemView, Context context) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
+                this.context = context;
             }
 
-            final void bind(Feed feed) {
-                this.content.setText(feed.getContent());
-                this.date.setText(feed.dateAsString());
+            final void bind(FacebookPost facebookPost) {
+                this.facebookPost = facebookPost;
+
+                postNameIfNotNull();
+                postContentIfNotNull();
+                postdescriptionIfNotNull();
+                postPhotoIfNotNull();
+
+                this.date.setText(facebookPost.dateAsString());
             }
+
+            private void postNameIfNotNull() {
+                if(facebookPost.hasName()) {
+                    this.author.setVisibility(View.VISIBLE);
+                    this.author.setText(facebookPost.getName());
+                }
+                else {
+                    author.setVisibility(View.GONE);
+                }
+            }
+
+            private void postContentIfNotNull() {
+                if(facebookPost.hasContent()) {
+                    this.content.setVisibility(View.VISIBLE);
+                    this.content.setText(facebookPost.getContent());
+                }
+                else {
+                    content.setVisibility(View.GONE);
+                }
+            }
+
+            private void postPhotoIfNotNull() {
+                if(facebookPost.hasImage()) {
+                    ((EventShowcaseActivity) context).getLoader()
+                            .displayImage(context, facebookPost.getImageURL(),image_facebook_post);
+                }
+            }
+
+            private void postdescriptionIfNotNull() {
+                if(facebookPost.hasDescription()) {
+                    this.description.setVisibility(View.VISIBLE);
+                    this.description.setText(facebookPost.getDescription());
+                }
+                else {
+                    description.setVisibility(View.GONE);
+                }
+            }
+
         }
 
         static final class TweetViewHolder extends RecyclerView.ViewHolder {

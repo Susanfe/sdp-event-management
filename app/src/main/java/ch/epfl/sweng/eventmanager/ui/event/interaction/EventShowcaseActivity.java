@@ -351,7 +351,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_showcase_activity, menu);
-        Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_id).getActionView();
+        getMenuInflater().inflate(R.menu.menu_facebook_login, menu);
+        Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_join_id).getActionView();
+
         model.getEvent().observe(this, ev -> {
             this.model.isJoined(ev).observe(this, s::setChecked);
             s.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -403,9 +405,27 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 return false;
         }
     }
+  
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_facebook_login_edit:
+                return false;
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            default:
+               return false;
+        }
+    }
 
     public enum FragmentType {
         // Every registered type here needs to be used in the callChangeFragment method
         MAIN, MAP, SCHEDULE, NEWS, FORM, MAP_EDITION
     }
+
+    public ImageLoader getLoader() {
+        return loader;
+    }
+
 }

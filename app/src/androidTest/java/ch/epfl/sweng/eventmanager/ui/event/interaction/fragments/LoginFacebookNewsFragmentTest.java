@@ -31,7 +31,7 @@ public class LoginFacebookNewsFragmentTest {
     @Test
     public void loginFacebookTest() {
         SystemClock.sleep(500);
-        onView(withId(R.id.go_facebook)).perform(click());
+        onView(withId(R.id.menu_facebook_login_edit)).perform(click());
         SystemClock.sleep(500);
         onView(withId(R.id.loginButton)).perform(click());
     }
