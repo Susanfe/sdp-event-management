@@ -71,15 +71,12 @@ public class FirebaseCloudFunction implements CloudFunction {
         return FirebaseFunctions.getInstance()
                 .getHttpsCallable("removeUserFromEvent")
                 .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, Boolean>() {
-                    @Override
-                    public Boolean then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        // This continuation runs on either success or failure, but if the task
-                        // has failed then getResult() will throw an Exception which will be
-                        // propagated down.
-                        Boolean result = (Boolean) task.getResult().getData();
-                        return result;
-                    }
+                .continueWith(task -> {
+                    // This continuation runs on either success or failure, but if the task
+                    // has failed then getResult() will throw an Exception which will be
+                    // propagated down.
+                    Boolean result = (Boolean) task.getResult().getData();
+                    return result;
                 });
     }
 

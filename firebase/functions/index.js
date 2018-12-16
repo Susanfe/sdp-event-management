@@ -66,8 +66,21 @@ exports.removeUserFromEvent = functions.https.onCall((data, context) => {
       return false;
     }
   });
-})
+});
 
-exports.importTickets = function.https.onCall((data, context) => {
-  return false;
-})
+exports.importTickets = functions.https.onCall((data, context) => {
+  const tickets = data.tickets;
+  const eventId = data.eventId;
+
+  var ref = admin.database().ref('/events/' + eventId + '/users/');
+  ref.orderByValue().equalTo('admin').once("value", adminUidMap => {
+    var adminUids = Object.keys(adminUidMap.val());
+    if (adminUids.includes(currentUserUid)) { // current user is admin
+      var ticketsRef = admin.database().ref('/events/' + eventId).child('tickets');
+      return ticketsRef.set(tickets);
+    } else {
+      console.log('Current user ' + currentUserUid + ' is not allowed to write event ' + eventId);
+      return false;
+    }
+  });
+});
