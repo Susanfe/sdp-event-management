@@ -27,7 +27,7 @@ public class JoinedScheduleItemTestUtils extends AbstractTestUtils<JoinedSchedul
 
         List<JoinedScheduleItem> events = new ArrayList<>();
         for (int i = 0; i < numItems; i++) {
-            events.add(new JoinedScheduleItem(Converters.fromString(RANDOM_FIXED_UUID_TAG + i), i));
+            events.add(new JoinedScheduleItem(RANDOM_FIXED_UUID_TAG + i, i));
         }
 
         return Collections.unmodifiableList(events);

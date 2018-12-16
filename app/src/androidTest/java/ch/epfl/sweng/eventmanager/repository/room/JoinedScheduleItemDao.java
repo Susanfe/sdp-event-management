@@ -34,12 +34,12 @@ public class JoinedScheduleItemDao extends JoinedScheduleItemTestUtils {
 
         //Testing for findById
         for (int i = 0; i < numEvents; i++) {
-            JoinedScheduleItem joinedScheduleItem = LiveDataTestUtil.getValue(dao.findById(Converters.fromString(RANDOM_FIXED_UUID_TAG + i)));
+            JoinedScheduleItem joinedScheduleItem = LiveDataTestUtil.getValue(dao.findById(RANDOM_FIXED_UUID_TAG + i));
             assertEquals(joinedScheduleItem, joinedScheduleItems.get(i));
         }
 
         //Testing for null
-        assertNull(LiveDataTestUtil.getValue(dao.findById(Converters.fromString("223e4567-e89b-12d3-a456-556642440000"))));
+        assertNull(LiveDataTestUtil.getValue(dao.findById("223e4567-e89b-12d3-a456-556642440000")));
 
 
         //Testing for getAll
@@ -47,19 +47,20 @@ public class JoinedScheduleItemDao extends JoinedScheduleItemTestUtils {
         assertEquals(joinedScheduleItems1, joinedScheduleItems);
 
         //Testing for getAllIds
-        List<UUID> uuids = LiveDataTestUtil.getValue(dao.getAllIds());
-        List<UUID> expectedUuids = new ArrayList<>();
+        List<String> uuids = LiveDataTestUtil.getValue(dao.getAllIds());
+        List<String> expectedUuids = new ArrayList<>();
         for (JoinedScheduleItem joinedScheduleItem : joinedScheduleItems) expectedUuids.add(joinedScheduleItem.getUid());
         assertEquals(expectedUuids, uuids);
 
         //Testing for loadAllByIds
-        UUID[] lookFor = {Converters.fromString(RANDOM_FIXED_UUID_TAG + 1)
-                , Converters.fromString(RANDOM_FIXED_UUID_TAG + 3),
-                Converters.fromString(RANDOM_FIXED_UUID_TAG + 5),
-                Converters.fromString(RANDOM_FIXED_UUID_TAG + 7),
-                Converters.fromString(RANDOM_FIXED_UUID_TAG + 9),
-                Converters.fromString(RANDOM_FIXED_UUID_TAG + 11)};
-        Set<UUID> lookForSet = new HashSet<>(Arrays.asList(lookFor));
+        String[] lookFor = {
+                RANDOM_FIXED_UUID_TAG + 1,
+                RANDOM_FIXED_UUID_TAG + 3,
+                RANDOM_FIXED_UUID_TAG + 5,
+                RANDOM_FIXED_UUID_TAG + 7,
+                RANDOM_FIXED_UUID_TAG + 9,
+                RANDOM_FIXED_UUID_TAG + 11};
+        Set<String> lookForSet = new HashSet<>(Arrays.asList(lookFor));
         List<JoinedScheduleItem> someEvents = LiveDataTestUtil.getValue(dao.loadAllByIds(lookFor));
         List<JoinedScheduleItem> expectedScheduleItems = new ArrayList<>();
         for (JoinedScheduleItem it : joinedScheduleItems)
@@ -76,11 +77,11 @@ public class JoinedScheduleItemDao extends JoinedScheduleItemTestUtils {
         int numEvents = 10;
         insertItems(numEvents);
 
-        dao.delete(new JoinedScheduleItem(Converters.fromString(RANDOM_FIXED_UUID_TAG + 3), 3));
+        dao.delete(new JoinedScheduleItem(RANDOM_FIXED_UUID_TAG + 3, 3));
 
         //Testing for findById
-        JoinedScheduleItem nullEvent = LiveDataTestUtil.getValue(dao.findById(Converters.fromString(RANDOM_FIXED_UUID_TAG + 3)));
-        JoinedScheduleItem notNullEvent = LiveDataTestUtil.getValue(dao.findById(Converters.fromString(RANDOM_FIXED_UUID_TAG + 4)));
+        JoinedScheduleItem nullEvent = LiveDataTestUtil.getValue(dao.findById(RANDOM_FIXED_UUID_TAG + 3));
+        JoinedScheduleItem notNullEvent = LiveDataTestUtil.getValue(dao.findById(RANDOM_FIXED_UUID_TAG + 4));
 
         assertNull(nullEvent);
         assertNotNull(notNullEvent);
@@ -91,11 +92,11 @@ public class JoinedScheduleItemDao extends JoinedScheduleItemTestUtils {
         int numEvents = 10;
         List<JoinedScheduleItem> joinedScheduleItems1 = insertItems(numEvents);
 
-        JoinedScheduleItem newScheduleItem = new JoinedScheduleItem(Converters.fromString(RANDOM_FIXED_UUID_TAG + 3), 4);
+        JoinedScheduleItem newScheduleItem = new JoinedScheduleItem(RANDOM_FIXED_UUID_TAG + 3, 4);
         dao.insert(newScheduleItem);
 
         //Testing for findById
-        JoinedScheduleItem updatedEvent = LiveDataTestUtil.getValue(dao.findById(Converters.fromString(RANDOM_FIXED_UUID_TAG + 3)));
+        JoinedScheduleItem updatedEvent = LiveDataTestUtil.getValue(dao.findById(RANDOM_FIXED_UUID_TAG + 3));
         assertEquals(updatedEvent, newScheduleItem);
 
     }

@@ -53,13 +53,19 @@ public final class ScheduledItem {
      */
     private String itemLocation;
 
+    @Deprecated
     public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre, @NonNull String description,
-                         double duration, @NonNull UUID id, @NonNull String itemType, @NonNull String itemLocation) {
+                     double duration, @NonNull UUID uuid, @NonNull String itemType, @NonNull String itemLocation) {
+        this(date, artist, genre, description, duration, uuid.toString(), itemType, itemLocation);
+    }
+
+    public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre, @NonNull String description,
+                         double duration, @NonNull String id, @NonNull String itemType, @NonNull String itemLocation) {
         this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
         this.description = description;
-        this.id = id.toString();
+        this.id = id;
         this.itemType = itemType;
         this.itemLocation = itemLocation;
 
@@ -93,8 +99,12 @@ public final class ScheduledItem {
         return duration;
     }
 
-    public UUID getId() {
-        return UUID.fromString(id);
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override

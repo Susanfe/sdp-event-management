@@ -10,14 +10,4 @@ import java.util.UUID;
 public final class Converters {
     private Converters() {}
 
-    @TypeConverter
-    public static UUID fromString(String value) {
-        return UUID.fromString(value);
-    }
-
-    @TypeConverter
-    public static String toString(UUID value) {
-        return value.toString();
-    }
-
 }

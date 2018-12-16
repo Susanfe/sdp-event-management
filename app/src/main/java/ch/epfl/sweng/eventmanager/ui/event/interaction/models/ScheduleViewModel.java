@@ -65,11 +65,11 @@ public class ScheduleViewModel extends ViewModel {
         return joinedItems;
     }
 
-    public void toggleMySchedule(UUID scheduledItemId) {
+    public void toggleMySchedule(String scheduledItemId) {
         toggleMySchedule(scheduledItemId, null);
     }
 
-    public void toggleMySchedule(UUID scheduledItemId, JoinedScheduleItemRepository.ToggleCallback wasAdded) {
+    public void toggleMySchedule(String scheduledItemId, JoinedScheduleItemRepository.ToggleCallback wasAdded) {
         joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), wasAdded);
     }
 
