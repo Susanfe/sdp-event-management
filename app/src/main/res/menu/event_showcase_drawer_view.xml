@@ -22,10 +22,6 @@
             android:title="@string/schedule_nav_item_activity_event_showcase" />
 
         <item
-            android:id="@+id/nav_tickets"
-            android:icon="@drawable/ic_local_activity_black_24dp"
-            android:title="@string/ticket_nav_item_activity_event_showcase" />
-        <item
             android:id="@+id/nav_scan"
             android:icon="@drawable/ic_photo_camera_black_24dp"
             android:title="@string/scan_nav_item_activity_event_showcase"

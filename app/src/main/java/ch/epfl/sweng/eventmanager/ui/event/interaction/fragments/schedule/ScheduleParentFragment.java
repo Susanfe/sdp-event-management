@@ -15,7 +15,6 @@ import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import com.google.android.material.tabs.TabLayout;
 
@@ -39,6 +38,27 @@ public class ScheduleParentFragment extends Fragment {
     private ScheduleViewModel scheduleViewModel;
     private ViewPagerAdapter viewPagerAdapter;
     private Bundle savedInstanceState;
+    private static final String TAB_NB_KEY = "TAB_NB_KEY";
+
+    public static ScheduleParentFragment newInstance() {
+        return new ScheduleParentFragment();
+    }
+
+    /**
+     * Returns a new ScheduleParentFragment with the given room displayed.
+     * @param roomName The name of the room we want do display
+     * @return ScheduleParentFragment
+     */
+    public static ScheduleParentFragment newInstance(String roomName) {
+        if(roomName == null) {
+            throw new IllegalArgumentException("The name of the room cannot be null");
+        }
+         Bundle args = new Bundle();
+         args.putString(TAB_NB_KEY,roomName);
+         ScheduleParentFragment fragment = new ScheduleParentFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,7 +111,7 @@ public class ScheduleParentFragment extends Fragment {
                 }
                 Bundle args = getArguments();
                 if (args != null) {
-                    String room = getArguments().getString(EventMapFragment.TAB_NB_KEY, "");
+                    String room = getArguments().getString(TAB_NB_KEY, "");
                     int cond = viewPagerAdapter.getTitlePage(room);
                     if (cond != -1) {
                         viewPager.postDelayed(() -> viewPager.setCurrentItem(cond), 100);

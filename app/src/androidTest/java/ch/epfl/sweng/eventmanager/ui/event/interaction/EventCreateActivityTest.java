@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.widget.DatePicker;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.intent.matcher.IntentMatchers;
@@ -30,8 +31,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.*;
 import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static junit.framework.TestCase.assertTrue;
 
 public class EventCreateActivityTest {
@@ -89,6 +89,22 @@ public class EventCreateActivityTest {
         }
 
         Assert.assertTrue("Event was not found in repository after creation", found);
+    }
+
+    @Test
+    public void testDeleteEventYes() {
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.create_form)).perform(swipeUp());
+        onView(withId(R.id.create_form_delete_event_button)).perform(click());
+        onView(withText(R.string.button_yes)).perform(click());
+    }
+
+    @Test
+    public void testDeleteEventNo() {
+        Espresso.closeSoftKeyboard();
+        onView(withId(R.id.create_form)).perform(swipeUp());
+        onView(withId(R.id.create_form_delete_event_button)).perform(click());
+        onView(withText(R.string.button_no)).perform(click());
     }
 
     private void setDate(int datePickerLaunchViewId, int year, int monthOfYear, int dayOfMonth) {

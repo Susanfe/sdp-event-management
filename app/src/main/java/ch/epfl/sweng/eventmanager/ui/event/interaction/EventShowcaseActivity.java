@@ -3,16 +3,24 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
+import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
+import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
@@ -32,6 +40,11 @@ import javax.inject.Inject;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
+    private static final int Y_OFFSET_TOAST = 30;
+
+    public static enum FragmentType {
+        MAIN, MAP, SCHEDULE, NEWS, FORM, EVENT_FEEDBACK
+    }
 
     @Inject
     ViewModelFactory factory;
@@ -50,6 +63,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private Fragment eventMainFragment;
     private Fragment newsFragment;
     private Fragment scheduleParentFragment;
+    private Fragment eventMapFragment;
+    private Fragment eventFormFragment;
+    private Fragment eventFeedbackFragment;
 
     private void initModels() {
         this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
@@ -136,10 +152,10 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             // Set displayed fragment only when no other fragment where previously inflated.
             if (savedInstanceState == null) {
                 String fragment = intent.getStringExtra("fragment");
-                if (fragment != null && fragment.equals("feedback")) changeFragment(new EventFeedbackFragment(), true);
+                if (fragment != null && fragment.equals("feedback"))
+                    switchFragment(FragmentType.EVENT_FEEDBACK,true);
                 else {
-                    eventMainFragment = new EventMainFragment();
-                    changeFragment(eventMainFragment, true);
+                    switchFragment(FragmentType.MAIN,true);
                 }
             }
         }
@@ -169,94 +185,101 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             case R.id.nav_admin:
                 Intent adminIntent = new Intent(this, EventAdministrationActivity.class);
                 adminIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
-                menuItem.setCheckable(false);
+                adminIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                menuItem.setChecked(false);
                 startActivity(adminIntent);
                 break;
 
             case R.id.nav_main:
-                callChangeFragment(FragmentType.MAIN, true);
+                switchFragment(FragmentType.MAIN, true);
                 break;
 
             case R.id.nav_map:
-                callChangeFragment(FragmentType.MAP, true);
-                break;
-
-            case R.id.nav_tickets:
-                callChangeFragment(null, true);
+                switchFragment(FragmentType.MAP, true);
                 break;
 
             case R.id.nav_news:
-                callChangeFragment(FragmentType.NEWS, true);
+                switchFragment(FragmentType.NEWS, true);
                 break;
 
             case R.id.nav_schedule:
-                callChangeFragment(FragmentType.SCHEDULE, true);
+                switchFragment(FragmentType.SCHEDULE, true);
                 break;
 
             case R.id.nav_feedback:
-                changeFragment(new EventFeedbackFragment(), true);
+                switchFragment(FragmentType.EVENT_FEEDBACK,true);
                 break;
 
             case R.id.nav_scan:
-                // TODO Handle null pointer exception
-                startActivity(ticketingManager.start(model.getEvent().getValue(), this));
-                menuItem.setCheckable(false);
+                if(model.getEvent().getValue() != null) {
+                    startActivity(ticketingManager.start(model.getEvent().getValue(), this));
+                    menuItem.setChecked(false);
+                }
                 break;
 
             case R.id.nav_settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
-                menuItem.setCheckable(false);
+                menuItem.setChecked(false);
                 startActivity(intent);
                 break;
 
             case R.id.nav_contact:
-                callChangeFragment(FragmentType.FORM, true);
+                switchFragment(FragmentType.FORM, true);
                 break;
         }
 
-        return true;
+        return false;
     }
 
     /**
-     * Prepares the call to changeFragment by verifying if an existing fragment was stored and can
-     * be reused.
-     *
+     * Switch the current fragment to the required one. Instatiate the new fragment if not already instantiated.
      * @param type            type of the fragment to switch to
      * @param saveToBackstack save the fragment in the backstack to access it later on
      */
-    public void callChangeFragment(FragmentType type, boolean saveToBackstack) {
+    public void switchFragment(FragmentType type, boolean saveToBackstack) {
         if (type == null) type = FragmentType.MAIN;
         switch (type) {
             case MAIN:
                 if (eventMainFragment == null) {
-                    eventMainFragment = new EventMainFragment();
+                    eventMainFragment = EventMainFragment.newInstance();
                 }
                 changeFragment(eventMainFragment, saveToBackstack);
                 break;
 
             case MAP:
-                changeFragment(new EventMapFragment(), saveToBackstack);
+                if (eventMapFragment == null) {
+                    eventMapFragment = EventMapFragment.newInstance();
+                }
+                changeFragment(eventMapFragment, saveToBackstack);
                 break;
 
             case SCHEDULE:
                 if (scheduleParentFragment == null) {
-                    scheduleParentFragment = new ScheduleParentFragment();
+                    scheduleParentFragment = ScheduleParentFragment.newInstance();
                 }
                 changeFragment(scheduleParentFragment, saveToBackstack);
                 break;
 
             case FORM:
-                changeFragment(new EventFormFragment(), saveToBackstack);
+                if(eventFormFragment == null) {
+                    eventFormFragment = EventFormFragment.newInstance();
+                }
+                changeFragment(eventFormFragment, saveToBackstack);
                 break;
 
             case NEWS:
                 if (newsFragment == null) {
-                    newsFragment = new NewsFragment();
+                    newsFragment = NewsFragment.newInstance();
                 }
                 changeFragment(newsFragment, saveToBackstack);
                 break;
+            case EVENT_FEEDBACK:
+                if(eventFeedbackFragment == null) {
+                    eventFeedbackFragment = EventFeedbackFragment.newInstance();
+                }
+                changeFragment(eventFeedbackFragment,saveToBackstack);
+                break;
             default:
-                changeFragment(new EventMainFragment(), saveToBackstack);
                 break;
         }
     }
@@ -271,8 +294,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             if (current instanceof NewsFragment) navigationView.setCheckedItem(R.id.nav_news);
             if (current instanceof EventMapFragment) navigationView.setCheckedItem(R.id.nav_map);
             if (current instanceof ScheduleParentFragment) navigationView.setCheckedItem(R.id.nav_schedule);
-            if (current instanceof EventTicketFragment) navigationView.setCheckedItem(R.id.nav_tickets);
             if (current instanceof EventFormFragment) navigationView.setCheckedItem(R.id.nav_contact);
+            if (current instanceof EventFeedbackFragment) navigationView.setCheckedItem(R.id.nav_feedback);
         });
     }
 
@@ -290,7 +313,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     public void onBackPressed() {
         Fragment fragment = getCurrentFragment();
         if (fragment instanceof EventTicketFragment || fragment instanceof EventMapFragment || fragment instanceof ScheduleParentFragment || fragment instanceof NewsFragment) {
-            callChangeFragment(FragmentType.MAIN, true);
+            switchFragment(FragmentType.MAIN, true);
         } else {
             int fragments = getSupportFragmentManager().getBackStackEntryCount();
             if (fragments == 1) {
@@ -306,6 +329,19 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_facebook_login_edit:
+                return false;
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            default:
+               return false;
+        }
+    }
+
+    @Override
     public void setTitle(CharSequence title) {
         toolbar.setTitle(title);
     }
@@ -314,7 +350,52 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         return eventID;
     }
 
-    public enum FragmentType {
-        MAIN, MAP, SCHEDULE, NEWS, FORM
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_facebook_login, menu);
+        getMenuInflater().inflate(R.menu.menu_showcase_activity_join, menu);
+        Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_join_id).getActionView();
+        model.getEvent().observe(this, ev -> {
+            this.model.isJoined(ev).observe(this, s::setChecked);
+            s.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    this.model.joinEvent(ev);
+                    if(ev.getBeginDateAsDate() != null){
+                        NotificationScheduler.scheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
+                    }
+                    if(ev.getEndDateAsDate() != null){
+                        NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
+                    }
+                } else {
+                    this.model.unjoinEvent(ev);
+                    if(ev.getBeginDateAsDate() != null){
+                        NotificationScheduler.unscheduleNotification(ev, new JoinedEventStrategy(getApplicationContext()));
+                    }
+                    if(ev.getEndDateAsDate() != null){
+                        NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
+                    }
+                }
+            });
+
+            s.setOnClickListener(buttonView -> {
+                if(s.isChecked()){
+                    tellUser(String.format("%s %s", getString(R.string.joined_switch_button),  ev.getName()));
+                }
+                else{
+                    tellUser(String.format("%s %s", getString(R.string.unjoined_switch_button),ev.getName()));
+                }
+            });
+        });
+        return true;
+    }
+
+    private void tellUser(String message) {
+        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP, 0, Y_OFFSET_TOAST);
+        toast.show();
+    }
+
+    public ImageLoader getLoader() {
+        return loader;
     }
 }
