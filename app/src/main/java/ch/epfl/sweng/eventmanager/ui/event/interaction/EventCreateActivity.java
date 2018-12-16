@@ -109,6 +109,23 @@ public class EventCreateActivity extends AppCompatActivity {
         this.event.setVisibleFromPublic(eventVisibility.isChecked());
     }
 
+    private boolean checkForm() {
+        String name = getFieldValue(this.name);
+
+        Log.i("EventCreateActivity", "name='" + name + "'");
+        if (name == null) {
+            Toast.makeText(this, R.string.create_event_name_empty, Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (name.length() < 4) {
+            Toast.makeText(this, R.string.create_event_name_too_short, Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
+    }
+
     private String formatDate(Date date) {
         if (date != null) {
             String format = "dd/MM/yyyy";
@@ -172,13 +189,17 @@ public class EventCreateActivity extends AppCompatActivity {
                 return; // The button should not be displayed anyway
             }
 
+            if (!checkForm()) {
+                return; // Cannot process if the form is not valid
+            }
+
             this.sendButton.setEnabled(false);
 
             populateEvent(); // Update the event object
 
             prepareCreationTask().addOnSuccessListener(event -> {
                 //upload event image to storage if changed
-                if(imageChanged) {
+                if (imageChanged) {
                     this.repository.uploadImage(event, eventImageSrc);
                     imageChanged = false;
                 }
@@ -229,15 +250,8 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
-
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_event_create);
-
-        ButterKnife.bind(this);
-        this.setupButton();
+    protected void onResume() {
+        super.onResume();
 
         // Fetch event from passed ID
         Intent intent = getIntent();
@@ -270,6 +284,19 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_event_create);
+
+        ButterKnife.bind(this);
+        this.setupButton();
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
@@ -277,19 +304,20 @@ public class EventCreateActivity extends AppCompatActivity {
             cropAndConvertImage(eventImageUri);
         }
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-                eventImageSrc = UCrop.getOutput(data);
-                imageChanged = true;
+            eventImageSrc = UCrop.getOutput(data);
+            imageChanged = true;
 
-                imageLoader.displayImage(this, eventImageSrc, eventImage);
+            imageLoader.displayImage(this, eventImageSrc, eventImage);
         } else if (resultCode == UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);
-            Log.i(TAG,"Unable to crop image");
+            Log.i(TAG, "Unable to crop image");
             cropError.printStackTrace();
         }
     }
 
     /**
      * Handle the cropping and conversion of the image
+     *
      * @param eventImageUri
      */
     private void cropAndConvertImage(Uri eventImageUri) {
