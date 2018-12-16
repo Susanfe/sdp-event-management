@@ -99,10 +99,8 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (menu.size() > 0) {
-            MenuItem item = menu.getItem(0);
-            item.setVisible(true);
-        }
+        MenuItem item = menu.findItem(R.menu.menu_facebook_login);
+        item.setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
