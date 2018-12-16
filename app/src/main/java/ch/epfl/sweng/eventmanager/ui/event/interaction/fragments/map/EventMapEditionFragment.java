@@ -37,6 +37,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.customViews.CustomAddOptionsDialog;
+import ch.epfl.sweng.eventmanager.ui.customViews.CustomInfoDialog;
 import ch.epfl.sweng.eventmanager.ui.customViews.CustomMarkerDialog;
 
 import static ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag.createOverlayEdgeTag;
@@ -54,6 +55,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     // Tags for the created dialogs
     private static final String MARKER_DIALOG_TAG = "ui.event.interaction.fragments.EventMapEditionFragment.MARKER_DIALOG";
     private static final String ADD_MARKER_DIALOG_TAG = "ui.event.interaction.fragments.EventMapEditionFragment.ADD_MARKER_DIALOG";
+    private static final String HELP_DIALOG_TAG =  "ui.event.interaction.fragments.EventMapEditionFragment.HELP_DIALOG_TAG";
 
     // Tags for the dialog-fragment communication (cf onActivityResults below)
     public static final int ADD_SPOT = 1;
@@ -102,7 +104,11 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_showcase_activity_map_edition_help:
-                // TODO create explanation dialog
+                Bundle bundle = new Bundle();
+                bundle.putString(CustomInfoDialog.CUSTOM_DIALOG_INFO_STRING, getString(R.string.map_edition_info_text));
+                DialogFragment dialog = new CustomInfoDialog();
+                dialog.setArguments(bundle);
+                showDialogFragment(dialog, HELP_DIALOG_TAG);
                 break;
 
             case R.id.menu_showcase_activity_map_edition_save:

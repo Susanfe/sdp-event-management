@@ -13,7 +13,7 @@ import ch.epfl.sweng.eventmanager.R;
 
 public class CustomInfoDialog extends DialogFragment {
 
-    private static final String CUSTOM_DIALOG_INFO_STRING = "ui.customViews.CUSTOM_DIALOG_INFO_STRING";
+    public static final String CUSTOM_DIALOG_INFO_STRING = "ui.customViews.CUSTOM_DIALOG_INFO_STRING";
     private static final String DEFAULT_INFO = "No info";
     private String info;
 
@@ -24,6 +24,11 @@ public class CustomInfoDialog extends DialogFragment {
                 Objects.requireNonNull(getActivity()),
                 R.style.CustomDialog_TransparentBackground);
 
+        Bundle bundle = getArguments();
+
+        assert bundle!=null;
+        info = bundle.getString(CUSTOM_DIALOG_INFO_STRING);
+
         if (info == null)
             builder.setMessage(DEFAULT_INFO);
         else
@@ -33,15 +38,5 @@ public class CustomInfoDialog extends DialogFragment {
         builder.setNeutralButton(R.string.ok, (dialog, which) -> {});
 
         return builder.create();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        Bundle bundle = getArguments();
-        assert bundle!=null;
-
-        info = bundle.getString(CUSTOM_DIALOG_INFO_STRING);
     }
 }

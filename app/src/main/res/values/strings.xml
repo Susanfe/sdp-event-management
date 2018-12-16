@@ -199,5 +199,10 @@
     <string name="map_edition_add_spot">Add spot</string>
     <string name="map_edition_error_undo">Could not undo action. Dismissed it.</string>
     <string name="map_edition_error_not_done">Could not perform action. Dismissed it.</string>
+    <string name="map_edition_info_text">To add a new SPOT or an EDGE to the OVERLAY, please LONG
+        PRESS on the desired location.\n\n To move a SPOT or an EDGE of the OVERLAY, please CLICK
+        and HOLD to drag it to the desired position.\n\n To edit a SPOT\'s information, please CLICK
+        on the desired spot.\n\n To remove a SPOT or an EDGE of the OVERLAY, please click on the
+        desired item.</string>
 
 </resources>
