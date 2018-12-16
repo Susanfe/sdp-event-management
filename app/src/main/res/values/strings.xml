@@ -147,6 +147,7 @@
     <string name="save">Save</string>
     <string name="undone">Undone</string>
     <string name="undo_empty">Nothing to undo</string>
+    <string name="ok">OK</string>
 
     <!-- Creation form text-->
     <string name="create_form_hint_name">Name of the event</string>
