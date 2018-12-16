@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY app_name "Gatsbi">
-    ]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY app_name "Gatsbi">]>
 
 <resources>
     <string name="app_name">&app_name;</string>
@@ -23,6 +20,7 @@
     <string name="title_activity_account_display">My account</string>
     <string name="title_activity_event_picking">EventPickingActivity</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_login_facebook">login with facebook</string>
 
     <string name="invalid_email_error">Invalid email address</string>
     <string name="error_field_required">Required field</string>
@@ -119,6 +117,8 @@
     <string name="title_activity_login_facebook">LoginFacebookActivity</string>
     <string name="facebook_app_id">2089713884652770</string>
     <string name="fb_login_protocol_scheme">fb2089713884652770</string>
+    <string name="cancel_login_facebook">cancel login</string>
+    <string name="error_login_facebook">error login</string>
 
 
     <!-- Accessibility text -->

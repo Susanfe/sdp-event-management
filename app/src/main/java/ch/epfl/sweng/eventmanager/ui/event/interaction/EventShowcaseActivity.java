@@ -326,6 +326,19 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_facebook_login_edit:
+                return false;
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            default:
+               return false;
+        }
+    }
+
+    @Override
     public void setTitle(CharSequence title) {
         toolbar.setTitle(title);
     }
@@ -336,6 +349,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_facebook_login, menu);
         getMenuInflater().inflate(R.menu.menu_showcase_activity_join, menu);
         Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_join_id).getActionView();
         model.getEvent().observe(this, ev -> {
@@ -378,18 +392,13 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         toast.show();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            default:
-                return false;
-        }
-    }
 
     public enum FragmentType {
         MAIN, MAP, SCHEDULE, NEWS, FORM
     }
+
+    public ImageLoader getLoader() {
+        return loader;
+    }
+
 }
