@@ -352,8 +352,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_facebook_login, menu);
-        getMenuInflater().inflate(R.menu.menu_showcase_activity_join, menu);
+        getMenuInflater().inflate(R.menu.menu_showcase_activity, menu);
         Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_join_id).getActionView();
         model.getEvent().observe(this, ev -> {
             this.model.isJoined(ev).observe(this, s::setChecked);
