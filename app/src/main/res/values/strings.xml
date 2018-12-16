@@ -160,6 +160,8 @@
     <string name="create_event_canceled">Operation was unexpectedly cancelled.</string>
     <string name="create_event_error">An error occurred:</string>
     <string name="create_event_success">The event has been created!</string>
+    <string name="create_event_name_empty">The event name cannot be empty!</string>
+    <string name="create_event_name_too_short">The event name must be at least 4 characters long!</string>
     <string name="create_event_update_success">The event has been updated!</string>
     <string name="create_event_delete_dialog_title">Delete event</string>
     <string name="create_event_delete_dialog_content">Deleting this event is irreversible ! Are you sure you still want to delete it?</string>
