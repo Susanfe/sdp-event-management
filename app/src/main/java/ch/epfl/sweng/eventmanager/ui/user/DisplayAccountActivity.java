@@ -55,10 +55,7 @@ public class DisplayAccountActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(this::logoutThenRedirectToEventSelector);
         createButton.setOnClickListener(this::redirectToEventCreator);
 
-        // We inject an user (via UserModel) since the user returned by session.getCurrentUser()
-        // won't be filled in time to be displayed (it only contains the Uid). We should deprecate
-        // session.getCurrentUser but this solution was the most time-efficient.
-        LiveData<User> liveUser = repository.getUser(session.getCurrentUser().getUid());
+        LiveData<User> liveUser = repository.getUser(session.getCurrentUserUid());
         liveUser.observe(this, u -> {
                     loggedAs = String.format("%s %s", loggedAs, u.getEmail());
                     helpText.setText(loggedAs);
