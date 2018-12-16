@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE resources [
-    <!ENTITY app_name "Gatsbi">
-    ]>
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY app_name "Gatsbi">]>
 
 <resources>
     <string name="app_name">&app_name;</string>
@@ -23,6 +20,7 @@
     <string name="title_activity_account_display">My account</string>
     <string name="title_activity_event_picking">EventPickingActivity</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_login_facebook">login with facebook</string>
 
     <string name="invalid_email_error">Invalid email address</string>
     <string name="error_field_required">Required field</string>
@@ -119,6 +117,8 @@
     <string name="title_activity_login_facebook">LoginFacebookActivity</string>
     <string name="facebook_app_id">2089713884652770</string>
     <string name="fb_login_protocol_scheme">fb2089713884652770</string>
+    <string name="cancel_login_facebook">cancel login</string>
+    <string name="error_login_facebook">error login</string>
 
 
     <!-- Accessibility text -->
@@ -151,6 +151,9 @@
     <string name="create_form_upload_image">Upload image</string>
     <string name="image_successfully_uploaded">Event image successfully uploaded !</string>
     <string name="event_form_button_visibility">Allow access to event</string>
+    <string name="create_form_delete_event_button">Delete this event !</string>
+    <string name="button_yes">YES !</string>
+    <string name="button_no">NO !</string>
 
     <string name="create_event_title">Create Event</string>
     <string name="edit_nav_item_activity_event">Event edition</string>
@@ -158,6 +161,8 @@
     <string name="create_event_error">An error occurred:</string>
     <string name="create_event_success">The event has been created!</string>
     <string name="create_event_update_success">The event has been updated!</string>
+    <string name="create_event_delete_dialog_title">Delete event</string>
+    <string name="create_event_delete_dialog_content">Deleting this event is irreversible ! Are you sure you still want to delete it?</string>
     <string name="feedback_form_main_go_button">Feedback</string>
     <string name="feedback_nav">Feedback</string>
 
@@ -169,6 +174,7 @@
 
     <string name="submit_your_feedback">Submit your Feedback</string>
     <string name="ratings_empty">There is no ratings yet.</string>
+    <string name="delete_successfull">Event successfully deleted !</string>
     <string name="send_notification_title">Create a notification</string>
     <string name="send_notification_title_field">Title</string>
     <string name="send_notification_content">Notification content</string>
@@ -179,5 +185,12 @@
     <string name="settings_notifications_title">Notifications</string>
     <string name="key_settings_notifications_switch">settings_notifications_switch</string>
     <string name="map_location_of_event_null">The organizer hasn\'t provided the location of the event</string>
+    <string name="join_switch_button">join</string>
+    <string name="unjoined_switch_button">You have unjoined</string>
+    <string name="joined_switch_button">You have joined</string>
+    <string name="more_feedback">More feedback</string>
+    <string name="recent_feedback_from_users">Recent feedback from users:</string>
+    <string name="starts_on">Starts:</string>
+    <string name="Ends_on">Ends:</string>
 
 </resources>

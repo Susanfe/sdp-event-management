@@ -71,14 +71,14 @@ public class SubmitFeedbackFragment extends AbstractShowcaseFragment {
         super.onAttach(context);
     }
 
-    public void submitEventRating(Boolean ratingExists, Event ev){
+    private void submitEventRating(Boolean ratingExists, Event ev){
         EventRating newEventRating = new EventRating(UNIQUE_DEVICE_ID, rating.getRating(), description.getText().toString(), System.currentTimeMillis());
         if (!ratingExists) {
             //Publish the rating and shows that feedback has been published
             repository.publishRating(ev.getId(), newEventRating).addOnSuccessListener(aVoid -> {
                 Toast.makeText(getActivity(), R.string.event_feedback_submitted, Toast.LENGTH_SHORT).show();
                 // Returns to main showcase event screen
-                ((EventShowcaseActivity) getActivity()).changeFragment(new EventMainFragment(), true);
+                ((EventShowcaseActivity) getActivity()).switchFragment(EventShowcaseActivity.FragmentType.MAIN,true);
             });
         } else {
             Toast.makeText(getActivity(), R.string.event_feedback_already_submitted, Toast.LENGTH_SHORT).show();

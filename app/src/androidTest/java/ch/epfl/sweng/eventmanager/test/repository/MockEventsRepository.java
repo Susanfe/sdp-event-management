@@ -226,6 +226,11 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     }
 
     @Override
+    public Task deleteEvent(Event event) {
+        return Tasks.call(()->true);
+    }
+
+    @Override
     public Task<Boolean> addUserToEvent(String email, int eventId, String role) {
         Event ev = events.get(eventId).getValue();
         if (ev == null)

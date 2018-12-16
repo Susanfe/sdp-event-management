@@ -13,6 +13,7 @@
     <dimen name="default_big_padding">20dp</dimen>
     <dimen name="default_very_big_padding">28dp</dimen>
     <dimen name="default_huge_padding">40dp</dimen>
+    <dimen name="default_very_huge_padding">160dp</dimen>
 
     <dimen name="default_small_margin">8dp</dimen>
     <dimen name="default_medium_margin">12dp</dimen>
@@ -33,4 +34,6 @@
     <dimen name="ite_timeline_description_height">28dp</dimen>
 
     <dimen name="default_big_toolbar_height">150dp</dimen>
+    <dimen name="big_size_text">20sp</dimen>
+    <dimen name="default_very_pretty_huge_padding">220dp</dimen>
 </resources>
