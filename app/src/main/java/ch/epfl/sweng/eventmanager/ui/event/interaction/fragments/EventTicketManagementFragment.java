@@ -128,8 +128,8 @@ public class EventTicketManagementFragment extends AbstractShowcaseFragment {
         cloudFunction.importTickets(ticketList, event.getId())
                 .addOnCompleteListener(task -> {
                     String toastText;
-                    if (task.isSuccessful()) toastText = "OK";
-                    else toastText = "ERR";
+                    if (task.isSuccessful()) toastText = getString(R.string.tickets_upload_success);
+                    else toastText = getString(R.string.tickets_upload_failure);
                     Toast.makeText(getActivity(), toastText, Toast.LENGTH_LONG).show();
                     setInProgressState(false);
                 });
