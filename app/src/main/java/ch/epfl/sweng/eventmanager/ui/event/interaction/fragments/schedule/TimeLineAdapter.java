@@ -28,7 +28,7 @@ import java.util.Locale;
 import ch.epfl.sweng.eventmanager.R;
 
 
-public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
+public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLineViewHolder> {
 
     /*
      * Triggers the Line.NORMAL view id to be returned by `TimelineView.getTimeLineViewType/2`.
@@ -39,10 +39,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
     private List<ScheduledItem> dataList;
     private Context context;
     private LayoutInflater mLayoutInflater;
-    private ScheduleViewModel model;
+    private AbstractScheduleFragment fragment;
 
-    TimeLineAdapter(ScheduleViewModel model) {
-        this.model = model;
+    TimeLineAdapter(AbstractScheduleFragment fragment) {
+        this.fragment = fragment;
     }
 
     /**
@@ -67,22 +67,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TimeLineViewHolder holder, int position) {
-
         ScheduledItem scheduledItem = dataList.get(position);
-
-        String artistText = scheduledItem.getArtist() == null ? context.getString(R.string.scheduled_item_no_artist) : scheduledItem.getArtist();
-        String dateText = scheduledItem.dateAsString() == null ? context.getString(R.string.scheduled_item_no_date) : scheduledItem.dateAsString();
-        String genreText = scheduledItem.getGenre() == null ? context.getString(R.string.scheduled_item_no_genre) : scheduledItem.getGenre();
-        String descriptionText = scheduledItem.getDescription() == null ? context.getString(R.string.scheduled_item_no_description) : scheduledItem.getDescription();
-        String durationText = transformDuration(scheduledItem.getDuration());
-        String room = scheduledItem.getItemLocation() == null ? "" : scheduledItem.getItemLocation();
-
-        holder.mArtist.setText(artistText);
-        holder.mDate.setText(dateText);
-        holder.mGenre.setText(genreText);
-        holder.mDescription.setText(descriptionText);
-        holder.mDuration.setText(durationText);
-        holder.mItemRoom.setText(room);
+        holder.setItem(scheduledItem);
 
         ScheduledItem.ScheduledItemStatus status = scheduledItem.getStatus();
 
@@ -94,17 +80,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
         } else {
             holder.mTimelineView.setMarker(ContextCompat.getDrawable(context, R.drawable.ic_marker), ContextCompat.getColor(context, R.color.colorPrimary));
         }
-
-        holder.setOnToggle(() -> model.toggleMySchedule(scheduledItem.getId(), wasAdded -> {
-
-            if (wasAdded) {
-                Toast.makeText(context, R.string.timeline_view_added_to_own_schedule, Toast.LENGTH_SHORT).show();
-                NotificationScheduler.scheduleNotification(scheduledItem, new JoinedScheduledItemStrategy(context));
-            } else {
-                Toast.makeText(context, R.string.timeline_view_removed_from_own_schedule, Toast.LENGTH_SHORT).show();
-                NotificationScheduler.unscheduleNotification(scheduledItem, new JoinedScheduledItemStrategy(context));
-            }
-        }));
     }
 
     @Override
@@ -134,40 +109,58 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineViewHolder> {
         this.dataList = dataList;
         this.notifyDataSetChanged();
     }
-}
-
-class TimeLineViewHolder extends RecyclerView.ViewHolder {
-
-    @BindView(R.id.text_timeline_date)
-    TextView mDate;
-    @BindView(R.id.text_timeline_artist)
-    TextView mArtist;
-    @BindView(R.id.text_timeline_genre)
-    TextView mGenre;
-    @BindView(R.id.text_timeline_description)
-    TextView mDescription;
-    @BindView(R.id.text_timeline_duration)
-    TextView mDuration;
-    @BindView(R.id.text_item_room)
-    TextView mItemRoom;
-    @BindView(R.id.time_marker)
-    TimelineView mTimelineView;
-    private Runnable onToggle;
 
 
-    TimeLineViewHolder(View itemView, int viewType) {
-        super(itemView);
+    class TimeLineViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.text_timeline_date)
+        TextView mDate;
+        @BindView(R.id.text_timeline_artist)
+        TextView mArtist;
+        @BindView(R.id.text_timeline_genre)
+        TextView mGenre;
+        @BindView(R.id.text_timeline_description)
+        TextView mDescription;
+        @BindView(R.id.text_timeline_duration)
+        TextView mDuration;
+        @BindView(R.id.text_item_room)
+        TextView mItemRoom;
+        @BindView(R.id.time_marker)
+        TimelineView mTimelineView;
+        private ScheduledItem item;
 
-        ButterKnife.bind(this, itemView);
-        mTimelineView.initLine(viewType);
 
-        itemView.setOnLongClickListener(v -> {
-            onToggle.run();
-            return true;
-        });
-    }
+        TimeLineViewHolder(View itemView, int viewType) {
+            super(itemView);
 
-    void setOnToggle(Runnable onToggle) {
-        this.onToggle = onToggle;
+            ButterKnife.bind(this, itemView);
+            mTimelineView.initLine(viewType);
+
+            itemView.setOnLongClickListener(v -> {
+                fragment.onLongPress(item);
+                return true;
+            });
+
+            itemView.setOnClickListener(v -> {
+                fragment.onShortPress(item);
+            });
+        }
+
+        void setItem(ScheduledItem item) {
+            this.item = item;
+
+            String artistText = item.getArtist() == null ? context.getString(R.string.scheduled_item_no_artist) : item.getArtist();
+            String dateText = item.dateAsString() == null ? context.getString(R.string.scheduled_item_no_date) : item.dateAsString();
+            String genreText = item.getGenre() == null ? context.getString(R.string.scheduled_item_no_genre) : item.getGenre();
+            String descriptionText = item.getDescription() == null ? context.getString(R.string.scheduled_item_no_description) : item.getDescription();
+            String durationText = transformDuration(item.getDuration());
+            String room = item.getItemLocation() == null ? "" : item.getItemLocation();
+
+            mArtist.setText(artistText);
+            mDate.setText(dateText);
+            mGenre.setText(genreText);
+            mDescription.setText(descriptionText);
+            mDuration.setText(durationText);
+            mItemRoom.setText(room);
+        }
     }
 }
