@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.repository;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseCloudFunction;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseEventRepository;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseFeedbackRepository;
+import ch.epfl.sweng.eventmanager.repository.impl.FirebaseMapEditionRepository;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseNewsRepository;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseUserRepository;
 import dagger.Binds;
@@ -34,4 +35,8 @@ public abstract class RepositoriesModule {
     @Binds
     @Singleton
     abstract CloudFunction providesCloudFunction(FirebaseCloudFunction impl);
+
+    @Binds
+    @Singleton
+    abstract MapEditionRepository providesMapEditionRepository(FirebaseMapEditionRepository repository);
 }
