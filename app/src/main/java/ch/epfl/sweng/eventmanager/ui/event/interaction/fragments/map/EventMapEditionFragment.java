@@ -485,6 +485,12 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     }
 
+    /**
+     * Checks if the overlay needs to be reformed i.e. if it was an action on an OVERLAY_EDGE and if it
+     * xas a creation or move action.
+     * @param action action to be verified
+     * @return true if the overlay will need to be reformed
+     */
     private boolean needToReformOverlayFor(MapEditionAction action) {
         return (action instanceof MarkerCreationAction || action instanceof MoveMarkerAction)
                 && action.getMarkerType()==MarkerType.OVERLAY_EDGE;
