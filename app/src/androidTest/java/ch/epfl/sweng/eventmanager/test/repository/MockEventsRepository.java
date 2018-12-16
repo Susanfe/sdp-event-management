@@ -111,11 +111,11 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
                 orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
-                CONFIG_BY_EVENT.get(2),true));
+                CONFIG_BY_EVENT.get(2), true));
 
         addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
                 orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
-                CONFIG_BY_EVENT.get(3),true));
+                CONFIG_BY_EVENT.get(3), true));
 
         addZones(1, new Gson().fromJson(jsonZone, zonesToken.getType()));
         addSpots(1, new Gson().fromJson(jsonSpots, spotsToken.getType()));
@@ -153,8 +153,6 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 "  \"id\" : \"7a9207df-202b-4e83-93a5-8466563466ca\",\n" +
                 "  \"itemLocation\" : \"CO\"\n" +
                 "} ]\n";
-
-
 
 
         TypeToken<List<ScheduledItem>> scheduleToken = new TypeToken<List<ScheduledItem>>() {
@@ -227,7 +225,46 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
     @Override
     public Task deleteEvent(Event event) {
-        return Tasks.call(()->true);
+        return Tasks.call(() -> true);
+    }
+
+    @Override
+    public Task<ScheduledItem> updateScheduledItem(int eventId, ScheduledItem item) {
+        deleteScheduledItem(eventId, item);
+        return createScheduledItem(eventId, item);
+    }
+
+    @Override
+    public Task<ScheduledItem> createScheduledItem(int eventId, ScheduledItem item) {
+        if (item.getId() == null)
+            item.setId(UUID.randomUUID().toString());
+
+        if (!scheduledItems.getMap().containsKey(eventId))
+            scheduledItems.put(eventId, new ArrayList<>());
+
+        scheduledItems.get(eventId).getValue().add(item);
+        scheduledItems.notifyChanged(eventId);
+
+        return Tasks.forResult(item);
+    }
+
+    @Override
+    public Task deleteScheduledItem(int eventId, ScheduledItem item) {
+        ScheduledItem i;
+        Iterator<ScheduledItem> iterator = scheduledItems.get(eventId).getValue().iterator();
+
+        if (!scheduledItems.getMap().containsKey(eventId))
+            scheduledItems.put(eventId, new ArrayList<>());
+
+        while ((i = iterator.next()) != null) {
+            if (i.getId().equalsIgnoreCase(item.getId())) {
+                iterator.remove();
+            }
+        }
+
+        scheduledItems.notifyChanged(eventId);
+
+        return Tasks.forResult(null);
     }
 
     @Override
