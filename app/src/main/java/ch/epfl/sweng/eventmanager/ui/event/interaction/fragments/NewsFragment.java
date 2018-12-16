@@ -3,11 +3,9 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.*;
 import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
@@ -18,15 +16,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
 import ch.epfl.sweng.eventmanager.ui.user.LoginFacebookActivity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.tweetui.CompactTweetView;
-import com.squareup.picasso.Picasso;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +42,10 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
     public NewsFragment() {
         super(R.layout.fragment_news);
+    }
+
+    public static NewsFragment newInstance() {
+        return new NewsFragment();
     }
 
     @Override
@@ -104,8 +103,10 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item = menu.getItem(0);
-        item.setVisible(true);
+        if (menu.size() > 0) {
+            MenuItem item = menu.getItem(0);
+            item.setVisible(true);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -162,12 +163,16 @@ public class NewsFragment extends AbstractShowcaseFragment {
         // Replace the contents of a view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            if (holder instanceof NewsViewHolder)
+            if (holder instanceof NewsViewHolder) {
                 ((NewsViewHolder) holder).bind((News) news.get(position).getPost());
-            else if (holder instanceof TweetViewHolder)
+            }
+            else if (holder instanceof TweetViewHolder) {
                 ((CompactTweetView) ((TweetViewHolder) holder).itemView).setTweet((Tweet) news.get(position).getPost());
-            else if (holder instanceof FacebookViewHolder)
+            }
+            else if (holder instanceof FacebookViewHolder) {
                 ((FacebookViewHolder) holder).bind((FacebookPost) news.get(position).getPost());
+            }
+
         }
 
         @Override
@@ -185,7 +190,6 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
             Collections.sort(this.news);
 
-
             this.notifyDataSetChanged();
         }
 
@@ -201,8 +205,8 @@ public class NewsFragment extends AbstractShowcaseFragment {
             @BindView(R.id.image_from_facebook)
             ImageView image_facebook_post;
 
-
             private Context context;
+            private FacebookPost facebookPost;
 
             FacebookViewHolder(View itemView, Context context) {
                 super(itemView);
@@ -211,6 +215,17 @@ public class NewsFragment extends AbstractShowcaseFragment {
             }
 
             final void bind(FacebookPost facebookPost) {
+                this.facebookPost = facebookPost;
+
+                postNameIfNotNull();
+                postContentIfNotNull();
+                postdescriptionIfNotNull();
+                postPhotoIfNotNull();
+
+                this.date.setText(facebookPost.dateAsString());
+            }
+
+            private void postNameIfNotNull() {
                 if(facebookPost.hasName()) {
                     this.author.setVisibility(View.VISIBLE);
                     this.author.setText(facebookPost.getName());
@@ -218,6 +233,9 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 else {
                     author.setVisibility(View.GONE);
                 }
+            }
+
+            private void postContentIfNotNull() {
                 if(facebookPost.hasContent()) {
                     this.content.setVisibility(View.VISIBLE);
                     this.content.setText(facebookPost.getContent());
@@ -225,6 +243,16 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 else {
                     content.setVisibility(View.GONE);
                 }
+            }
+
+            private void postPhotoIfNotNull() {
+                if(facebookPost.hasImage()) {
+                    ((EventShowcaseActivity) context).getLoader()
+                            .displayImage(context, facebookPost.getImageURL(),image_facebook_post);
+                }
+            }
+
+            private void postdescriptionIfNotNull() {
                 if(facebookPost.hasDescription()) {
                     this.description.setVisibility(View.VISIBLE);
                     this.description.setText(facebookPost.getDescription());
@@ -232,23 +260,8 @@ public class NewsFragment extends AbstractShowcaseFragment {
                 else {
                     description.setVisibility(View.GONE);
                 }
-                if(facebookPost.hasImage()) {
-                    loadImageFromUrl(facebookPost.getImageURL(), image_facebook_post);
-                }
-                this.date.setText(facebookPost.dateAsString());
             }
 
-            private void loadImageFromUrl(String url, ImageView view) {
-                Picasso.with(context).load(url).placeholder(R.mipmap.ic_launcher)
-                        .error(R.mipmap.ic_launcher)
-                        .into(view, new com.squareup.picasso.Callback() {
-                            @Override
-                            public void onSuccess() {}
-
-                            @Override
-                            public void onError() {}
-                        });
-            }
         }
 
         static final class TweetViewHolder extends RecyclerView.ViewHolder {

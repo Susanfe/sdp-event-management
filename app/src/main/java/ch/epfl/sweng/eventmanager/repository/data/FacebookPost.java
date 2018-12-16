@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import android.net.Uri;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,7 +78,7 @@ public class FacebookPost {
 
     public String getName() { return name; }
 
-    public String getImageURL() { return (url); }
+    public Uri getImageURL() { return url != null ? Uri.parse(url) : null; }
 
     public String getDescription() { return description; }
 

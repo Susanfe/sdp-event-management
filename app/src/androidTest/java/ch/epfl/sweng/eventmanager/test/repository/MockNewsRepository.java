@@ -27,9 +27,8 @@ public class MockNewsRepository implements NewsRepository {
         obj1.put("created_time", "2018-12-03T16:02:53+0000");
         obj1.put("message", "event in blue !");
         obj1.put("id", "11");
-        obj1.put("full_picture", "https://www.google.com/search?q=photo&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjMoc-EtZXfAhU5VBUIHXqWBrgQ_AUIDigB&biw=1439&bih=674&dpr=2#imgrc=ZcP5MOOiyNu2iM:");
-        obj1.put("description", "black or white tie");
-        obj1.put("name", "fake event");
+        //obj1.put("description", "black or white tie");
+        //obj1.put("name", "fake event");
         FacebookPost facebookPost = new FacebookPost(obj1);
         List<FacebookPost> facebookPostList = new ArrayList<>();
         facebookPostList.add(facebookPost);

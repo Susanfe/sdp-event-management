@@ -1,12 +1,16 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import android.net.Uri;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class FacebookPostTest {
@@ -53,7 +57,7 @@ public class FacebookPostTest {
         assertEquals("11", facebookPost1.getId());
         assertEquals("title", facebookPost1.getName());
         assertEquals("Come with happiness", facebookPost1.getDescription());
-        assertEquals("url", facebookPost1.getImageURL());
+        assertThat(facebookPost1.getImageURL(), is(Uri.parse("url")));
     }
 
     @Test

@@ -176,5 +176,12 @@
     <string name="ratings_empty">There is no ratings yet.</string>
     <string name="delete_successfull">Event successfully deleted !</string>
     <string name="map_location_of_event_null">The organizer hasn\'t provided the location of the event</string>
+    <string name="join_switch_button">join</string>
+    <string name="unjoined_switch_button">You have unjoined</string>
+    <string name="joined_switch_button">You have joined</string>
+    <string name="more_feedback">More feedback</string>
+    <string name="recent_feedback_from_users">Recent feedback from users:</string>
+    <string name="starts_on">Starts:</string>
+    <string name="Ends_on">Ends:</string>
 
 </resources>
