@@ -112,6 +112,7 @@ public class EventCreateActivity extends AppCompatActivity {
     private boolean checkForm() {
         String name = getFieldValue(this.name);
 
+        Log.i("EventCreateActivity", "name='" + name + "'");
         if (name == null) {
             Toast.makeText(this, R.string.create_event_name_empty, Toast.LENGTH_LONG).show();
             return false;
@@ -249,15 +250,8 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
-
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_event_create);
-
-        ButterKnife.bind(this);
-        this.setupButton();
+    protected void onResume() {
+        super.onResume();
 
         // Fetch event from passed ID
         Intent intent = getIntent();
@@ -287,6 +281,19 @@ public class EventCreateActivity extends AppCompatActivity {
                 event.removeObservers(this);
             });
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_event_create);
+
+        ButterKnife.bind(this);
+        this.setupButton();
+
     }
 
     @Override
