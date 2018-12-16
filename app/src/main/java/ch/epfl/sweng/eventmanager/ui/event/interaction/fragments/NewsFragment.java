@@ -31,7 +31,6 @@ import java.util.Objects;
  * Display an event's news feed.
  */
 public class NewsFragment extends AbstractShowcaseFragment {
-    private static String TAG = "NewsFragment";
     protected NewsViewModel model;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
