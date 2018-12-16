@@ -162,7 +162,7 @@ public class EventMainFragment extends AbstractFeedbackFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem menuItem = menu.findItem(R.id.menu_showcase_activity_id);
+        MenuItem menuItem = menu.findItem(R.id.menu_showcase_activity_join_switch);
         menuItem.setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }

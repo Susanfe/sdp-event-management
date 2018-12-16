@@ -98,17 +98,15 @@ public class NewsFragment extends AbstractShowcaseFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (menu.size() > 0) {
-            MenuItem item = menu.getItem(0);
-            item.setVisible(true);
-        }
+        MenuItem item = menu.findItem(R.id.menu_showcase_activity_news_facebook_login);
+        item.setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_facebook_login_edit:
+            case R.id.menu_showcase_activity_news_facebook_login:
 
                 Intent intent = new Intent(getActivity(), LoginFacebookActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
