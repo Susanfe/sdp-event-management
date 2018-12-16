@@ -150,10 +150,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             });
 
             // Set displayed fragment only when no other fragment where previously inflated.
-            if (savedInstanceState == null) {
-                switchFragment(FragmentType.MAIN, true);
-                }
-            }
+            if (savedInstanceState == null)
+                    switchFragment(FragmentType.MAIN,true);
         }
 
         // Handle drawer events
@@ -162,6 +160,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         //Handle highlighting in drawer menu according to currently displayed fragment
         setHighlightedItemInNavigationDrawer();
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
