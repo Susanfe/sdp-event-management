@@ -21,12 +21,9 @@ public class LoginFacebookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_facebook);
-
-
         loginButton = findViewById(R.id.loginButton);
+
         callbackManager = CallbackManager.Factory.create();
-
-
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -36,20 +33,17 @@ public class LoginFacebookActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                //FIXME: use ressource
-                Toast.makeText(getApplicationContext(), "cancel login", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.cancel_login_facebook), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                //FIXME: use ressource
-                Toast.makeText(getApplicationContext(), "error login", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_login_facebook), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void changeScreen() {
-        //FIXME: which screen to go ?
         Intent intent = new Intent(this, EventPickingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -59,6 +53,11 @@ public class LoginFacebookActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+        changeScreen();
     }
 
 }

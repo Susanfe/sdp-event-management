@@ -3,7 +3,7 @@ package ch.epfl.sweng.eventmanager.test.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
-import ch.epfl.sweng.eventmanager.repository.data.Feed;
+import ch.epfl.sweng.eventmanager.repository.data.FacebookPost;
 import ch.epfl.sweng.eventmanager.repository.data.News;
 import ch.epfl.sweng.eventmanager.test.ObservableList;
 import com.google.android.gms.tasks.Task;
@@ -20,17 +20,19 @@ import java.util.*;
 public class MockNewsRepository implements NewsRepository {
     private Map<Integer, ObservableList<News>> news = new HashMap<>();
     private boolean nextWillFail = false;
-    private MutableLiveData<List<Feed>> feedFacebook = new MutableLiveData<>();
+    private MutableLiveData<List<FacebookPost>> feedFacebook = new MutableLiveData<>();
 
     private void addFacebookPost() throws JSONException {
         JSONObject obj1 = new JSONObject();
         obj1.put("created_time", "2018-12-03T16:02:53+0000");
         obj1.put("message", "event in blue !");
         obj1.put("id", "11");
-        Feed feed = new Feed(obj1);
-        List<Feed> feedList = new ArrayList<>();
-        feedList.add(feed);
-        feedFacebook.setValue(feedList);
+        //obj1.put("description", "black or white tie");
+        //obj1.put("name", "fake event");
+        FacebookPost facebookPost = new FacebookPost(obj1);
+        List<FacebookPost> facebookPostList = new ArrayList<>();
+        facebookPostList.add(facebookPost);
+        feedFacebook.setValue(facebookPostList);
     }
 
     private ObservableList<News> getOrCreateNews(int eventId) {
@@ -70,7 +72,7 @@ public class MockNewsRepository implements NewsRepository {
     }
 
     @Override
-    public LiveData<List<Feed>> getFacebookNews(String screenName) {
+    public LiveData<List<FacebookPost>> getFacebookNews(String screenName) {
         try {
             addFacebookPost();
             return feedFacebook;
