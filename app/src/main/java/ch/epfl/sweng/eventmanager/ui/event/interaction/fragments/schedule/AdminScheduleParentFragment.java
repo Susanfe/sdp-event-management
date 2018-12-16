@@ -2,6 +2,8 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule;
 
 import android.os.Bundle;
 
+import java.util.HashMap;
+
 /**
  * @author Louis Vialar
  */
@@ -27,8 +29,19 @@ public class AdminScheduleParentFragment extends ScheduleParentFragment {
      */
     protected ViewPagerAdapter createViewPagerAdapter() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragment(new MyScheduleFragment(), "Schedule new item"); // TODO: add create instead
+        viewPagerAdapter.addFragment(new ScheduleEditFragment(), "Schedule new item");
         return viewPagerAdapter;
     }
 
+    @Override
+    protected void clearPager() {
+        super.fillPager(new HashMap<>());
+    }
+
+    @Override
+    protected ScheduleFragment createFragmentForRoom(String room) {
+        ScheduleFragment fragment = new AdminScheduleFragment();
+        fragment.setRoom(room);
+        return fragment;
+    }
 }

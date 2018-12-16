@@ -86,7 +86,7 @@ public abstract class AbstractScheduleFragment extends Fragment {
             if (items != null && items.size() > 0) {
                 emptyListTextView.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
-                Collections.sort(items, (c1, c2) -> Objects.requireNonNull(c1.getDate()).compareTo(c2.getDate()));
+                Collections.sort(items, (c1, c2) -> Objects.requireNonNull(c1.getJavaDate()).compareTo(c2.getJavaDate()));
                 timeLineAdapter.setDataList(items);
             } else {
                 emptyListTextView.setVisibility(View.VISIBLE);

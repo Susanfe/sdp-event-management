@@ -7,6 +7,7 @@ import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import com.google.android.gms.tasks.Task;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -113,5 +114,17 @@ public class ScheduleViewModel extends ViewModel {
             }
             return scheduleItemsByRoom;
         });
+    }
+
+    public Task<ScheduledItem> updateOrCreateScheduledItem(ScheduledItem item) {
+        if (item.getId() == null) {
+            return repository.createScheduledItem(eventId, item);
+        } else {
+            return repository.updateScheduledItem(eventId, item);
+        }
+    }
+
+    public Task deleteScheduledItem(ScheduledItem item) {
+        return repository.deleteScheduledItem(eventId, item);
     }
 }
