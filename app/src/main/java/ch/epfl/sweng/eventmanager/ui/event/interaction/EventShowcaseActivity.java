@@ -11,9 +11,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
@@ -26,18 +23,9 @@ import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFormFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.settings.SettingsActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
@@ -48,9 +36,15 @@ import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
+import javax.inject.Inject;
+
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
     private static final int Y_OFFSET_TOAST = 30;
+
+    public static enum FragmentType {
+        MAIN, MAP, SCHEDULE, NEWS, FORM, EVENT_FEEDBACK
+    }
 
     @Inject
     ViewModelFactory factory;
@@ -69,6 +63,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private Fragment eventMainFragment;
     private Fragment newsFragment;
     private Fragment scheduleParentFragment;
+    private Fragment eventMapFragment;
+    private Fragment eventFormFragment;
+    private Fragment eventFeedbackFragment;
 
     private void initModels() {
         this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
@@ -155,10 +152,10 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             // Set displayed fragment only when no other fragment where previously inflated.
             if (savedInstanceState == null) {
                 String fragment = intent.getStringExtra("fragment");
-                if (fragment != null && fragment.equals("feedback")) changeFragment(new EventFeedbackFragment(), true);
+                if (fragment != null && fragment.equals("feedback"))
+                    switchFragment(FragmentType.EVENT_FEEDBACK,true);
                 else {
-                    eventMainFragment = new EventMainFragment();
-                    changeFragment(eventMainFragment, true);
+                    switchFragment(FragmentType.MAIN,true);
                 }
             }
         }
@@ -194,33 +191,30 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case R.id.nav_main:
-                callChangeFragment(FragmentType.MAIN, true);
+                switchFragment(FragmentType.MAIN, true);
                 break;
 
             case R.id.nav_map:
-                callChangeFragment(FragmentType.MAP, true);
-                break;
-
-            case R.id.nav_tickets:
-                callChangeFragment(null, true);
+                switchFragment(FragmentType.MAP, true);
                 break;
 
             case R.id.nav_news:
-                callChangeFragment(FragmentType.NEWS, true);
+                switchFragment(FragmentType.NEWS, true);
                 break;
 
             case R.id.nav_schedule:
-                callChangeFragment(FragmentType.SCHEDULE, true);
+                switchFragment(FragmentType.SCHEDULE, true);
                 break;
 
             case R.id.nav_feedback:
-                changeFragment(new EventFeedbackFragment(), true);
+                switchFragment(FragmentType.EVENT_FEEDBACK,true);
                 break;
 
             case R.id.nav_scan:
-                // TODO Handle null pointer exception
-                startActivity(ticketingManager.start(model.getEvent().getValue(), this));
-                menuItem.setChecked(false);
+                if(model.getEvent().getValue() != null) {
+                    startActivity(ticketingManager.start(model.getEvent().getValue(), this));
+                    menuItem.setChecked(false);
+                }
                 break;
 
             case R.id.nav_settings:
@@ -230,7 +224,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 break;
 
             case R.id.nav_contact:
-                callChangeFragment(FragmentType.FORM, true);
+                switchFragment(FragmentType.FORM, true);
                 break;
         }
 
@@ -238,45 +232,54 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     }
 
     /**
-     * Prepares the call to changeFragment by verifying if an existing fragment was stored and can
-     * be reused.
-     *
+     * Switch the current fragment to the required one. Instatiate the new fragment if not already instantiated.
      * @param type            type of the fragment to switch to
      * @param saveToBackstack save the fragment in the backstack to access it later on
      */
-    public void callChangeFragment(FragmentType type, boolean saveToBackstack) {
+    public void switchFragment(FragmentType type, boolean saveToBackstack) {
         if (type == null) type = FragmentType.MAIN;
         switch (type) {
             case MAIN:
                 if (eventMainFragment == null) {
-                    eventMainFragment = new EventMainFragment();
+                    eventMainFragment = EventMainFragment.newInstance();
                 }
                 changeFragment(eventMainFragment, saveToBackstack);
                 break;
 
             case MAP:
-                changeFragment(new EventMapFragment(), saveToBackstack);
+                if (eventMapFragment == null) {
+                    eventMapFragment = EventMapFragment.newInstance();
+                }
+                changeFragment(eventMapFragment, saveToBackstack);
                 break;
 
             case SCHEDULE:
                 if (scheduleParentFragment == null) {
-                    scheduleParentFragment = new ScheduleParentFragment();
+                    scheduleParentFragment = ScheduleParentFragment.newInstance();
                 }
                 changeFragment(scheduleParentFragment, saveToBackstack);
                 break;
 
             case FORM:
-                changeFragment(new EventFormFragment(), saveToBackstack);
+                if(eventFormFragment == null) {
+                    eventFormFragment = EventFormFragment.newInstance();
+                }
+                changeFragment(eventFormFragment, saveToBackstack);
                 break;
 
             case NEWS:
                 if (newsFragment == null) {
-                    newsFragment = new NewsFragment();
+                    newsFragment = NewsFragment.newInstance();
                 }
                 changeFragment(newsFragment, saveToBackstack);
                 break;
+            case EVENT_FEEDBACK:
+                if(eventFeedbackFragment == null) {
+                    eventFeedbackFragment = EventFeedbackFragment.newInstance();
+                }
+                changeFragment(eventFeedbackFragment,saveToBackstack);
+                break;
             default:
-                changeFragment(new EventMainFragment(), saveToBackstack);
                 break;
         }
     }
@@ -291,8 +294,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             if (current instanceof NewsFragment) navigationView.setCheckedItem(R.id.nav_news);
             if (current instanceof EventMapFragment) navigationView.setCheckedItem(R.id.nav_map);
             if (current instanceof ScheduleParentFragment) navigationView.setCheckedItem(R.id.nav_schedule);
-            if (current instanceof EventTicketFragment) navigationView.setCheckedItem(R.id.nav_tickets);
             if (current instanceof EventFormFragment) navigationView.setCheckedItem(R.id.nav_contact);
+            if (current instanceof EventFeedbackFragment) navigationView.setCheckedItem(R.id.nav_feedback);
         });
     }
 
@@ -310,7 +313,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     public void onBackPressed() {
         Fragment fragment = getCurrentFragment();
         if (fragment instanceof EventTicketFragment || fragment instanceof EventMapFragment || fragment instanceof ScheduleParentFragment || fragment instanceof NewsFragment) {
-            callChangeFragment(FragmentType.MAIN, true);
+            switchFragment(FragmentType.MAIN, true);
         } else {
             int fragments = getSupportFragmentManager().getBackStackEntryCount();
             if (fragments == 1) {
@@ -391,13 +394,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         toast.show();
     }
 
-
-    public enum FragmentType {
-        MAIN, MAP, SCHEDULE, NEWS, FORM
-    }
-
     public ImageLoader getLoader() {
         return loader;
     }
-
 }

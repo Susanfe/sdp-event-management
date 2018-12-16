@@ -3,31 +3,19 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
-
-import java.util.Collections;
-
-import androidx.appcompat.widget.AppCompatRatingBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
-import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
-import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
-import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
+import java.util.Collections;
 
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
@@ -76,6 +64,10 @@ public class EventMainFragment extends AbstractFeedbackFragment {
         super(R.layout.fragment_event_main);
     }
 
+    public static EventMainFragment newInstance() {
+        return new EventMainFragment();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -88,7 +80,7 @@ public class EventMainFragment extends AbstractFeedbackFragment {
 
             // FIXME handle NullPointerException in setTitle
             // Set window title
-            getActivity().setTitle(ev.getName());
+            requireActivity().setTitle(ev.getName());
 
             eventDescription.setText(ev.getDescription());
             eventDescription.setVisibility(View.VISIBLE);
@@ -100,11 +92,11 @@ public class EventMainFragment extends AbstractFeedbackFragment {
             feedbackBar.setIsIndicator(true);
             repository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
 
-            if(ev.getBeginDateAsDate() != null){
+            if (ev.getBeginDateAsDate() != null) {
                 beginDate.setText(String.format("%s %s", getString(R.string.starts_on), ev.beginDateAsString()));
                 dateLinearLayout.setVisibility(View.VISIBLE);
             }
-            if(ev.getEndDateAsDate() != null){
+            if (ev.getEndDateAsDate() != null) {
                 endDate.setText(String.format("%s   %s", getString(R.string.Ends_on), ev.endDateAsString()));
                 dateLinearLayout.setVisibility(View.VISIBLE);
             }
@@ -120,35 +112,30 @@ public class EventMainFragment extends AbstractFeedbackFragment {
         recyclerView.setAdapter(ratingsRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        model.getEvent().observe(this, ev -> {
-            repository.getRatings(ev.getId()).observe(this, ratings -> {
-                if (ratings != null && ratings.size() > 0) {
-                    //display only the most recent feedback
-                    Collections.sort(ratings, (o1, o2) -> -1 * Long.compare(o1.getDate(), o2.getDate()));
-                    ratingsRecyclerViewAdapter.setContent(ratings.subList(0,Math.min(3, ratings.size())));
-                    eventFeedback.setVisibility(View.VISIBLE);
-                    feedbackBar.setVisibility(View.VISIBLE);
-                }else{
-                    eventFeedback.setVisibility(View.GONE);
-                    feedbackBar.setVisibility(View.GONE);
-                }
-            });
-        });
+        model.getEvent().observe(this, ev -> repository.getRatings(ev.getId()).observe(this, ratings -> {
+            if (ratings != null && ratings.size() > 0) {
+                //display only the most recent feedback
+                Collections.sort(ratings, (o1, o2) -> -1 * Long.compare(o1.getDate(), o2.getDate()));
+                ratingsRecyclerViewAdapter.setContent(ratings.subList(0, Math.min(3, ratings.size())));
+                eventFeedback.setVisibility(View.VISIBLE);
+                feedbackBar.setVisibility(View.VISIBLE);
+            } else {
+                eventFeedback.setVisibility(View.GONE);
+                feedbackBar.setVisibility(View.GONE);
+            }
+        }));
 
         showcaseActivity = (EventShowcaseActivity) getParentActivity();
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
-        news.setOnClickListener(v -> showcaseActivity.callChangeFragment(
-                EventShowcaseActivity.FragmentType.NEWS, true));
+        news.setOnClickListener(v -> showcaseActivity.switchFragment(EventShowcaseActivity.FragmentType.NEWS, true));
 
-        map.setOnClickListener(v -> showcaseActivity.callChangeFragment(
-                EventShowcaseActivity.FragmentType.MAP, true));
+        map.setOnClickListener(v -> showcaseActivity.switchFragment(EventShowcaseActivity.FragmentType.MAP, true));
 
-        schedule.setOnClickListener(v -> showcaseActivity.callChangeFragment(
-                EventShowcaseActivity.FragmentType.SCHEDULE, true));
+        schedule.setOnClickListener(v -> showcaseActivity.switchFragment(EventShowcaseActivity.FragmentType.SCHEDULE,
+                true));
 
-        feedback.setOnClickListener(v -> ((EventShowcaseActivity) getActivity())
-                .changeFragment(new EventFeedbackFragment(), true));
+        feedback.setOnClickListener(v -> showcaseActivity.switchFragment(EventShowcaseActivity.FragmentType.EVENT_FEEDBACK, true));
 
         return view;
     }

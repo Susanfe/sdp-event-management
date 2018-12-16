@@ -49,7 +49,7 @@ class UserManagerHelper {
      * @param displayed   state of the 'in progress' view
      */
     static void showProgress(Button loginButton, ProgressBar progressBar, boolean displayed) {
-        loginButton.setEnabled(!displayed);
+        loginButton.setEnabled(displayed);
         progressBar.setVisibility(displayed ? View.VISIBLE : View.INVISIBLE);
     }
 
