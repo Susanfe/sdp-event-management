@@ -8,10 +8,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.UserRepository;
+import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventCreateActivity;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
@@ -33,6 +36,9 @@ public class DisplayAccountActivity extends AppCompatActivity {
     @Inject
     Session session;
 
+    @Inject
+    UserRepository repository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
@@ -45,10 +51,19 @@ public class DisplayAccountActivity extends AppCompatActivity {
             ActionBar actionbar = getSupportActionBar();
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
-        loggedAs = String.format("%s %s", loggedAs, session.getCurrentUser().getEmail());
+
         logoutButton.setOnClickListener(this::logoutThenRedirectToEventSelector);
         createButton.setOnClickListener(this::redirectToEventCreator);
-        helpText.setText(loggedAs);
+
+        // We inject an user (via UserModel) since the user returned by session.getCurrentUser()
+        // won't be filled in time to be displayed (it only contains the Uid). We should deprecate
+        // session.getCurrentUser but this solution was the most time-efficient.
+        LiveData<User> liveUser = repository.getUser(session.getCurrentUser().getUid());
+        liveUser.observe(this, u -> {
+                    loggedAs = String.format("%s %s", loggedAs, u.getEmail());
+                    helpText.setText(loggedAs);
+                }
+        );
     }
 
     private void logoutThenRedirectToEventSelector(View view) {
