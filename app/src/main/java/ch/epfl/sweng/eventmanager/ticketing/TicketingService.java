@@ -16,6 +16,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Represents a ticketing backend
+ * <p>
+ * FIXME: this should be an interface
+ *
  * @author Louis Vialar
  */
 public class TicketingService {
@@ -38,6 +42,13 @@ public class TicketingService {
         return configuration.getConfigurationsUrl() != null;
     }
 
+    /**
+     * Login against the ticketing backend
+     *
+     * @param email    the email to login with
+     * @param password the password to login with
+     * @param callback a callback to handle login success/failure
+     */
     public void login(String email, String password, ApiCallback<Void> callback) {
         if (!requiresLogin()) {
             callback.onSuccess(null);
@@ -117,6 +128,10 @@ public class TicketingService {
         return !requiresLogin() || storage.isLoggedIn();
     }
 
+    public void logout() {
+        storage.setToken(null);
+    }
+
     public interface ApiCallback<T> {
         static <T> void failure(ApiCallback callback, String error) {
             callback.onFailure(Collections.singletonList(new ApiResult.ApiError(error)));
@@ -133,10 +148,6 @@ public class TicketingService {
 
         void onFailure(List<ApiResult.ApiError> errors);
 
-    }
-
-    public void logout() {
-        storage.setToken(null);
     }
 
 }
