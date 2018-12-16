@@ -1,5 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
@@ -112,7 +113,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                 break;
 
             case R.id.menu_showcase_activity_map_edition_save:
-                // TODO save to Firebase
+                confirmSaveAndQuit(getEditedSpots());
                 break;
 
             case R.id.menu_showcase_activity_map_edition_undo:
@@ -125,6 +126,37 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         }
 
         return false;
+    }
+
+    /**
+     * Collects every spot that the admin wants to display on the event map.
+     * This is dine by iterating over the markers and adding Spot object created out of SPOT markers
+     * @return the list of Spots the user wants for his event.
+     */
+    private List<Spot> getEditedSpots() {
+        List<Spot> result = new LinkedList<>();
+        for (Marker m : markerList) {
+            EventEditionTag tag = (EventEditionTag) m.getTag();
+            if (tag != null && tag.getMarkerType() == MarkerType.SPOT) {
+                LatLng pos = m.getPosition();
+                result.add(new Spot(m.getTitle(), tag.getSpotType(), pos.latitude, pos.longitude, null));
+                // TODO allow user to pick image when he edits SPOT
+            }
+        }
+
+        return result;
+    }
+
+    private void confirmSaveAndQuit(List<Spot> updatedSpots) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setPositiveButton(R.string.button_yes, (dialog1, which) -> {
+            //TODO add the firebase upload beahvior
+        });
+        builder.setNegativeButton(R.string.button_no, (dialog, which) -> {
+           // Action is dismissed
+        });
+        builder.setMessage(R.string.save_and_exit);
+        builder.create().show();
     }
 
     /**
