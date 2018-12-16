@@ -9,4 +9,10 @@
         android:visible="false"
         app:actionViewClass="android.widget.Switch"/>
 
+    <item android:title="@string/title_login_facebook"
+        android:icon="@drawable/ic_facebook_login"
+        android:visible="false"
+        android:id="@+id/menu_facebook_login_edit"
+        app:showAsAction="ifRoom" />
+
 </menu>

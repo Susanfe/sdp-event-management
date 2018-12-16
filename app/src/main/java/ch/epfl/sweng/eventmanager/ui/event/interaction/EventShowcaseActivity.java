@@ -110,7 +110,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             if (ev.hasAnImage()) {
                 ImageView header = headerView.findViewById(R.id.drawer_header_image);
-                loader.loadImageWithSpinner(ev,this,header,new BlurTransformation(3));
+                loader.loadImageWithSpinner(ev, this, header, new BlurTransformation(3));
             }
 
             drawer_header_text.setText(ev.getName());
@@ -150,14 +150,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             });
 
             // Set displayed fragment only when no other fragment where previously inflated.
-            if (savedInstanceState == null) {
-                String fragment = intent.getStringExtra("fragment");
-                if (fragment != null && fragment.equals("feedback"))
-                    switchFragment(FragmentType.EVENT_FEEDBACK,true);
-                else {
+            if (savedInstanceState == null)
                     switchFragment(FragmentType.MAIN,true);
-                }
-            }
         }
 
         // Handle drawer events
@@ -166,6 +160,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         //Handle highlighting in drawer menu according to currently displayed fragment
         setHighlightedItemInNavigationDrawer();
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -352,8 +347,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_facebook_login, menu);
-        getMenuInflater().inflate(R.menu.menu_showcase_activity_join, menu);
+        getMenuInflater().inflate(R.menu.menu_showcase_activity, menu);
         Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_join_id).getActionView();
         model.getEvent().observe(this, ev -> {
             this.model.isJoined(ev).observe(this, s::setChecked);
