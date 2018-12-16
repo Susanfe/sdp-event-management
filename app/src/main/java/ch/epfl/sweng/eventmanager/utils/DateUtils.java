@@ -52,8 +52,8 @@ public class DateUtils {
         return formatTime(hours, minutes, " h ");
     }
 
-    public static long getDateValue(EditText editText) {
-        String format = "dd/MM/yyyy";
+
+    private static long getStringValue(EditText editText, String format) {
         long date = 0L;
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
         try {
@@ -65,17 +65,14 @@ public class DateUtils {
         return date;
     }
 
+    public static long getDateValue(EditText editText) {
+        String format = "dd/MM/yyyy";
+        return getStringValue(editText, format);
+    }
+
     public static long getTimeValue(EditText editText) {
         String format = "HH:mm";
-        long date = 0L;
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-        try {
-            date = dateFormat.parse(editText.getText().toString()).getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.i("DateUtils", "unable to parse dateTime");
-        }
-        return date;
+        return getStringValue(editText, format);
     }
 
     public static double getDurationValue(EditText duration) {
