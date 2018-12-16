@@ -19,7 +19,8 @@
             android:layout_margin="16dp"
             android:layout_gravity="center|bottom"
             android:visibility="gone"
-            android:backgroundTint="@color/colorSecondary"
+            android:textColor="@color/colorSecondary"
+            android:backgroundTint="@color/colorPrimary"
             app:cornerRadius="56dp"/>
 
 

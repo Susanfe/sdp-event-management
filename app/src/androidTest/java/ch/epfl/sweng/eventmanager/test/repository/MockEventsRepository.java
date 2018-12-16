@@ -1,32 +1,21 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
 import android.graphics.Bitmap;
-
+import android.net.Uri;
+import androidx.lifecycle.LiveData;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
+import ch.epfl.sweng.eventmanager.repository.EventRepository;
+import ch.epfl.sweng.eventmanager.repository.data.*;
+import ch.epfl.sweng.eventmanager.test.ObservableMap;
+import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
+import ch.epfl.sweng.eventmanager.test.users.DummyInMemorySession;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import androidx.lifecycle.LiveData;
-import ch.epfl.sweng.eventmanager.repository.EventRepository;
-import ch.epfl.sweng.eventmanager.repository.data.Event;
-import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
-import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.repository.data.Position;
-import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
-import ch.epfl.sweng.eventmanager.repository.data.Spot;
-import ch.epfl.sweng.eventmanager.repository.data.Zone;
-import ch.epfl.sweng.eventmanager.test.ObservableMap;
-import ch.epfl.sweng.eventmanager.test.ticketing.MockStacks;
-import ch.epfl.sweng.eventmanager.users.DummyInMemorySession;
 
 /**
  * @author Louis Vialar
@@ -35,6 +24,8 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     public static final Map<Integer, EventTicketingConfiguration> CONFIG_BY_EVENT;
     public static final String EVENT_EMAIL = "events@not-really-epfl.ch";
     private static int CURRENT_EVENT_ID = 1000;
+    private final String facebookToken = "793504527660961";
+    private final String tweeterToken = "JapanImpact";
 
     static {
         Map<Integer, EventTicketingConfiguration> configurationMap = new HashMap<>();
@@ -46,7 +37,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     }
 
     private final ObservableMap<Integer, Event> events = new ObservableMap<>();
-    private final ObservableMap<Integer, Bitmap> eventImages = new ObservableMap<>();
+    private final ObservableMap<Integer, Uri> eventImagesUri = new ObservableMap<>();
     private final ObservableMap<Integer, List<Spot>> spots = new ObservableMap<>();
     private final ObservableMap<Integer, List<ScheduledItem>> scheduledItems = new ObservableMap<>();
     private final ObservableMap<Integer, List<Zone>> zones = new ObservableMap<>();
@@ -112,17 +103,19 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         Map<String, String> usersMap = new HashMap<>();
         usersMap.put(DummyInMemorySession.DUMMY_UID, "admin");
 
+        Uri fakeImgUri = Uri.parse("android.resource://ch.epfl.sweng.eventmanager/drawable/event_default_cover");
+
         addEvent(new Event(1, "Event with scheduled items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact",
-                CONFIG_BY_EVENT.get(1)));
+                orgaEmail, fakeImgUri, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
+                CONFIG_BY_EVENT.get(1), true));
 
         addEvent(new Event(2, "Event without items", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapnImpact",
-                CONFIG_BY_EVENT.get(2)));
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
+                CONFIG_BY_EVENT.get(2),true));
 
         addEvent(new Event(3, "Event without items B", "Description", new Date(1550307600L), new Date(1550422800L),
-                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, "JapanImpact",
-                CONFIG_BY_EVENT.get(3)));
+                orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
+                CONFIG_BY_EVENT.get(3),true));
 
         addZones(1, new Gson().fromJson(jsonZone, zonesToken.getType()));
         addSpots(1, new Gson().fromJson(jsonSpots, spotsToken.getType()));
@@ -173,7 +166,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
     private void addEvent(Event event) {
         events.put(event.getId(), event);
-        eventImages.put(event.getId(), event.getImage());
+        eventImagesUri.put(event.getId(), event.getImageURLasURI());
     }
 
     private void addZones(int event, List<Zone> list) {
@@ -193,11 +186,6 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     @Override
     public LiveData<Event> getEvent(int eventId) {
         return events.get(eventId);
-    }
-
-    @Override
-    public LiveData<Bitmap> getEventImage(Event event) {
-        return eventImages.get(event.getId());
     }
 
     @Override
@@ -227,9 +215,19 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     }
 
     @Override
+    public void uploadImage(Event event, Uri imageSrc) {
+        // Do nothing
+    }
+
+    @Override
     public Task<Event> updateEvent(Event event) {
         events.put(event.getId(), event);
         return Tasks.call(() -> event);
+    }
+
+    @Override
+    public Task deleteEvent(Event event) {
+        return Tasks.call(()->true);
     }
 
     @Override
@@ -238,8 +236,29 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         if (ev == null)
             return Tasks.call(() -> false);
 
-        ev.getUsers().put(email, role);
-        events.put(eventId, ev);
+        // TODO: we currently only check if this is properly called
+
+        return Tasks.call(() -> true);
+    }
+
+    @Override
+    public Task<Boolean> removeUserFromEvent(String uidKey, int eventId, String role) {
+        Event ev = events.get(eventId).getValue();
+        if (ev == null)
+            return Tasks.call(() -> false);
+
+        // TODO: we currently only check if this is properly called
+
+        return Tasks.call(() -> true);
+    }
+
+    @Override
+    public Task<Boolean> importTickets(List<Ticket> tickets, int eventId) {
+        Event ev = events.get(eventId).getValue();
+        if (ev == null)
+            return Tasks.call(() -> false);
+
+        // TODO: we currently only check if this is properly called
 
         return Tasks.call(() -> true);
     }

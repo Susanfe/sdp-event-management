@@ -1,13 +1,14 @@
 package ch.epfl.sweng.eventmanager.test.repository;
 
-import javax.inject.Singleton;
-
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
+import ch.epfl.sweng.eventmanager.repository.UserRepository;
 import dagger.Module;
 import dagger.Provides;
+
+import javax.inject.Singleton;
 
 /**
  * @author Louis Vialar
@@ -25,7 +26,6 @@ public class MockRepositoriesModule {
     public NewsRepository providesNewsRepository(MockNewsRepository repository) {
         return repository;
     }
-
 
     @Provides
     @Singleton
@@ -52,4 +52,16 @@ public class MockRepositoriesModule {
     @Provides
     @Singleton
     public MockFeedbackRepository providesMockFeedbackRepository() {return new MockFeedbackRepository();}
+
+    @Provides
+    @Singleton
+    public UserRepository providesUserRepository(MockUserRepository repository) {
+        return repository;
+    }
+
+    @Provides
+    @Singleton
+    public MockUserRepository providesMockUserRepository() {
+        return new MockUserRepository();
+    }
 }

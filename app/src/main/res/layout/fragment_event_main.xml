@@ -17,112 +17,178 @@
             android:layout_centerVertical="true"
             android:layout_centerInParent="true"
     />
-
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/event_main_content" android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" android:layout_alignParentLeft="true">
+            android:layout_height="0dp"
+            android:layout_weight="75">
 
-        <androidx.appcompat.widget.AppCompatRatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/feedback_ratingBar"
-                android:numStars="5"
-                android:stepSize="0.25"
-                android:isIndicator="true"/>
-        <ImageView
-                android:id="@+id/event_image"
+            <LinearLayout
+                android:id="@+id/event_main_content"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="35"
-                android:layout_margin="8dp"
-                android:contentDescription="@string/main_fragment_image_contentDescription"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                android:visibility="invisible"
-                app:srcCompat="@android:color/white"/>
-
-        <TextView
-            android:id="@+id/event_description"
-            android:layout_width="367dp"
-            android:layout_height="0dp"
-            android:layout_weight="40"
-            android:layout_margin="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/event_image"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:layout_margin="8dp"
-            android:orientation="horizontal"
-            android:id="@+id/main_fragment_button_bar">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/main_fragment_news"
-                style="@style/Button_barButton_left"
-                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:text="@string/main_fragment_button_news"/>
+                android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/main_fragment_schedule"
-                style="@style/Button_barButton_middle"
-                android:layout_width="0dp" android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:text="@string/main_fragment_button_schedule"/>
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/feedback_ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:visibility="gone"
+                    android:stepSize="0.25" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/main_fragment_map"
-                style="@style/Button_barButton_right"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="33"
-                android:text="@string/main_fragment_button_map"/>
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/event_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/default_very_pretty_huge_padding"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/main_fragment_image_contentDescription"
+                    android:visibility="invisible"
+                    app:srcCompat="@android:color/white" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="15"
-            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/event_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/event_image" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/contact_form_go_button"
-                    style="@style/Button_barButton_middle"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:text="@string/contact_form_main_go_button"/>
+                <LinearLayout
+                    android:id="@+id/main_fragment_button_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="10"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/feedback_for_go_button"
+                    <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
+                        android:id="@+id/main_fragment_news"
+                        style="@style/Button_barButton_left"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="33"
+                        android:ellipsize="none"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/default_very_big_padding"
+                        android:paddingEnd="@dimen/default_big_padding"
+                        android:singleLine="true"
+                        android:text="@string/main_fragment_button_news"
+                        app:drawableStartCompat="@drawable/ic_chat_yellow_24dp" />
+
+                    <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
+                        android:id="@+id/main_fragment_schedule"
                         style="@style/Button_barButton_middle"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="50"
-                        android:text="@string/feedback_form_main_go_button"/>
-                <CheckedTextView
-                    android:id="@+id/join_event_button"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:text="@string/main_fragment_join_event"
-                    android:gravity="center"
-                    android:textAlignment="gravity"
-                    style="@style/Button_barButton_checkable"/>
+                        android:layout_height="wrap_content"
+                        android:layout_weight="33"
+                        android:ellipsize="none"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/default_medium_padding"
+                        android:paddingEnd="@dimen/default_medium_padding"
+                        android:singleLine="true"
+                        android:text="@string/main_fragment_button_schedule"
+                        app:drawableStartCompat="@drawable/ic_event_yellow_24dp" />
 
-        </LinearLayout>
+                    <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
+                        android:id="@+id/main_fragment_map"
+                        style="@style/Button_barButton_right"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="33"
+                        android:ellipsize="none"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/default_very_big_padding"
+                        android:paddingEnd="@dimen/default_big_padding"
+                        android:singleLine="true"
+                        android:text="@string/main_fragment_button_map"
+                        app:drawableStartCompat="@drawable/ic_map_yellow_24dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/event_date_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:id="@+id/separation_date"
+                        android:layout_height="1dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="4dp"
+                        android:background="@drawable/separation_black"
+                        />
+
+                    <TextView
+                        android:layout_marginTop="@dimen/default_small_padding"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/event_begin_date"
+                        android:layout_marginStart="8dp"
+                        android:textSize="@dimen/big_size_text"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/event_end_date"
+                        android:layout_marginStart="8dp"
+                        android:textSize="@dimen/big_size_text"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/default_medium_padding"
+                    android:visibility="gone"
+                    android:id="@+id/event_feedback_linear_layout">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginEnd="4dp"
+                        android:id="@+id/separation_feedback"
+                        android:layout_marginStart="4dp"
+                        android:background="@drawable/separation_black"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/recent_feedback_text"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="@dimen/default_medium_padding"
+
+                        android:textSize="@dimen/big_size_text"
+                        android:text="@string/recent_feedback_from_users"
+                        />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/event_feedback_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:padding="@dimen/default_small_padding"
+                        tools:listitem="@layout/item_feedback"/>
+
+                    <ch.epfl.sweng.eventmanager.ui.vectorsupport.CustomButtonView
+                        android:text="@string/more_feedback"
+                        android:id="@+id/more_feedback_button"
+                        style="@style/Button_global"
+                        android:layout_width="@dimen/default_very_huge_padding"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </RelativeLayout>

@@ -1,26 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single"
-        android:menuCategory="container"
-        android:id="@+id/event_showcase_group_container">
+    <group
+        android:id="@+id/event_showcase_group_container"
+        android:checkableBehavior="single"
+        android:menuCategory="container">
         <item
             android:id="@+id/nav_main"
-            android:title="@string/main_nav_item_activity_event_showcase"/>
+            android:icon="@drawable/ic_art_track_black_24dp"
+            android:title="@string/main_nav_item_activity_event_showcase" />
         <item
             android:id="@+id/nav_news"
-            android:title="@string/news_nav_item_activity_event_showcase"/>
+            android:icon="@drawable/ic_chat_black_24dp"
+            android:title="@string/news_nav_item_activity_event_showcase" />
         <item
             android:id="@+id/nav_map"
-            android:title="@string/map_nav_item_activity_event_showcase"/>
+            android:icon="@drawable/ic_map_black_24dp"
+            android:title="@string/map_nav_item_activity_event_showcase" />
         <item
             android:id="@+id/nav_schedule"
-            android:title="@string/schedule_nav_item_activity_event_showcase"/>
+            android:icon="@drawable/ic_event_black_24dp"
+            android:title="@string/schedule_nav_item_activity_event_showcase" />
+        <item
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/ic_thumbs_up_down_black_24dp"
+            android:title="@string/feedback_nav" />
+
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/ic_email_black_24dp"
+            android:title="@string/contact_nav_item_activity_event_showcase" />
+
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:menuCategory="system"
+        android:id="@+id/event_showcase_group_system_admin">
         <item
             android:id="@+id/nav_admin"
+            android:icon="@drawable/ic_build_black_24dp"
             android:title="@string/admin_nav_item_activity_event_showcase"
-            android:visible="false"/>
-        <item android:id="@+id/nav_feedback"
-            android:title="@string/feedback_nav"/>
+            android:visible="false" />
     </group>
 
     <group android:checkableBehavior="single"
@@ -28,9 +47,11 @@
         android:id="@+id/event_showcase_group_system">
         <item
             android:id="@+id/nav_pick_event"
+            android:icon="@drawable/ic_menu_black_24dp"
             android:title="@string/pick_event_nav_item_activity_event_showcase"/>
         <item
             android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_applications_black_24dp"
             android:title="@string/settings"/>
     </group>
 

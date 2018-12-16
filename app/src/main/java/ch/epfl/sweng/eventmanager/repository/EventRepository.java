@@ -1,7 +1,8 @@
 package ch.epfl.sweng.eventmanager.repository;
 
-import androidx.lifecycle.LiveData;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import androidx.lifecycle.LiveData;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
@@ -19,8 +20,6 @@ public interface EventRepository {
 
     LiveData<Event> getEvent(int eventId);
 
-    LiveData<Bitmap> getEventImage(Event event);
-
     LiveData<List<Spot>> getSpots(int eventId);
 
     LiveData<List<ScheduledItem>> getScheduledItems(int eventId);
@@ -31,9 +30,14 @@ public interface EventRepository {
 
     Task<Event> createEvent(Event event);
 
+    void uploadImage(Event event, Uri imageSrc);
+
     /**
      * Updates an event, using the internal eventId of the event to figure out which event to update
      * @param event the event to update
      */
     Task<Event> updateEvent(Event event);
+
+    Task deleteEvent(Event event);
+
 }

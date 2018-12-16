@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,7 +15,6 @@ import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import com.google.android.material.tabs.TabLayout;
 
@@ -33,9 +33,32 @@ public class ScheduleParentFragment extends Fragment {
     ViewPager viewPager;
     @BindView(R.id.tabs)
     TabLayout tabLayout;
+    @BindView(R.id.viewpager_empty)
+    TextView emptyText;
     private ScheduleViewModel scheduleViewModel;
     private ViewPagerAdapter viewPagerAdapter;
     private Bundle savedInstanceState;
+    private static final String TAB_NB_KEY = "TAB_NB_KEY";
+
+    public static ScheduleParentFragment newInstance() {
+        return new ScheduleParentFragment();
+    }
+
+    /**
+     * Returns a new ScheduleParentFragment with the given room displayed.
+     * @param roomName The name of the room we want do display
+     * @return ScheduleParentFragment
+     */
+    public static ScheduleParentFragment newInstance(String roomName) {
+        if(roomName == null) {
+            throw new IllegalArgumentException("The name of the room cannot be null");
+        }
+         Bundle args = new Bundle();
+         args.putString(TAB_NB_KEY,roomName);
+         ScheduleParentFragment fragment = new ScheduleParentFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,7 +100,9 @@ public class ScheduleParentFragment extends Fragment {
 
         scheduleViewModel.getScheduleItemsByRoom().observe(this, map -> {
             if (map != null) {
+                viewPager.setVisibility(View.VISIBLE);
                 tabLayout.setVisibility(View.VISIBLE);
+                emptyText.setVisibility(View.GONE);
                 updateTabs(map.keySet());
                 viewPagerAdapter.notifyDataSetChanged();
                 if (savedInstanceState != null) {
@@ -85,17 +110,18 @@ public class ScheduleParentFragment extends Fragment {
                     viewPager.setCurrentItem(page);
                 }
                 Bundle args = getArguments();
-                if(args != null) {
-                    String room = getArguments().getString(EventMapFragment.TAB_NB_KEY, "");
+                if (args != null) {
+                    String room = getArguments().getString(TAB_NB_KEY, "");
                     int cond = viewPagerAdapter.getTitlePage(room);
-                    if(cond != -1) {
+                    if (cond != -1) {
                         viewPager.postDelayed(() -> viewPager.setCurrentItem(cond), 100);
                     }
                 }
             } else {
                 tabLayout.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
+                emptyText.setVisibility(View.VISIBLE);
                 destroyUnusedFragments(viewPagerAdapter.mFragmentList, Collections.emptySet(), true);
-                viewPagerAdapter.addFragment(new ScheduleFragment(), "");
                 viewPagerAdapter.notifyDataSetChanged();
             }
         });

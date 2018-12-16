@@ -1,21 +1,18 @@
 package ch.epfl.sweng.eventmanager.ui.event.selection;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.ViewAnimationUtils;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -27,11 +24,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.user.LoginActivity;
+import ch.epfl.sweng.eventmanager.ui.user.SignUpActivity;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.circularreveal.CircularRevealRelativeLayout;
 import com.google.android.material.snackbar.Snackbar;
 import dagger.android.AndroidInjection;
 import jp.wasabeef.recyclerview.animators.LandingAnimator;
@@ -43,6 +43,10 @@ public class EventPickingActivity extends AppCompatActivity {
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
     @Inject
     ViewModelFactory factory;
+
+    @Inject
+    ImageLoader loader;
+
     @BindView(R.id.event_picking_joined_events_text)
     TextView joinedHelpText;
     @BindView(R.id.event_picking_bottom_sheet_text)
@@ -66,9 +70,28 @@ public class EventPickingActivity extends AppCompatActivity {
     @BindView(R.id.event_picking_bottom_sheet_arrow_down)
     ImageView arrowDown;
     @BindView(R.id.event_picking_darken_background)
-    FrameLayout darken_background;
+    FrameLayout darkenBackground;
     @BindView(R.id.event_picking_toolbar)
     Toolbar toolbar;
+    @BindView(R.id.event_picking_main_layout) // Parent layout
+    CoordinatorLayout mainLayout;
+    @BindView(R.id.event_picking_login_account) // Account/Login button
+    ImageButton loginAccountButton;
+    @BindView(R.id.event_picking_under_empty_list)
+    AppCompatImageView empty_joined_list_image;
+
+    // Login/Signup layout components
+    @BindView(R.id.layout_login_signup_logged) // Logged UI
+    LinearLayout loggedUI;
+    @BindView(R.id.layout_login_signup_not_logged) // Logged out UI
+    LinearLayout notLoggedUi;
+    @BindView(R.id.layout_login_or_signup) // parent layout of login/account buttons
+    CircularRevealRelativeLayout loginAccountUI;
+
+
+
+    @Inject
+    Session session;
 
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
@@ -89,19 +112,22 @@ public class EventPickingActivity extends AppCompatActivity {
         content.setVisibility(View.GONE);
         layoutBottomSheet.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setLogo(R.drawable.ic_launcher_foreground);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
 
         //BottomSheet
         setupBottomSheet();
 
         setupAdapters();
+
+        onPrepareSignupLoginLayout();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        onPrepareSignupLoginLayout();
     }
 
     /**
@@ -110,9 +136,9 @@ public class EventPickingActivity extends AppCompatActivity {
     private void setupAdapters() {
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
-        eventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.Event);
+        eventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.Event, this);
         setupRecyclerView(eventList, eventsAdapter, new OvershootInRightAnimator());
-        joinedEventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.JoinedEvents);
+        joinedEventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.JoinedEvents, this);
         setupRecyclerView(joinedEventsList, joinedEventsAdapter, new LandingAnimator());
     }
 
@@ -131,17 +157,17 @@ public class EventPickingActivity extends AppCompatActivity {
                     case BottomSheetBehavior.STATE_EXPANDED:
                         arrowUp.setVisibility(View.INVISIBLE);
                         arrowDown.setVisibility(View.VISIBLE);
-                        darken_background.setVisibility(View.VISIBLE);
+                        darkenBackground.setVisibility(View.VISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_COLLAPSED:
                         arrowUp.setVisibility(View.VISIBLE);
                         arrowDown.setVisibility(View.INVISIBLE);
-                        darken_background.setVisibility(View.INVISIBLE);
+                        darkenBackground.setVisibility(View.INVISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                         break;
                     case BottomSheetBehavior.STATE_SETTLING:
-                        darken_background.setVisibility(View.VISIBLE);
+                        darkenBackground.setVisibility(View.VISIBLE);
                         break;
                     case BottomSheetBehavior.STATE_HALF_EXPANDED:
                         break;
@@ -154,9 +180,13 @@ public class EventPickingActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Verifies wether the activity to launch is the Login or Account one, depending on the
+     * current Session's status.
+     */
     private void openLoginOrAccountActivity() {
         Class nextActivity;
-        if (Session.isLoggedIn()) {
+        if (session.isLoggedIn()) {
             nextActivity = DisplayAccountActivity.class;
         } else {
             nextActivity = LoginActivity.class;
@@ -196,54 +226,130 @@ public class EventPickingActivity extends AppCompatActivity {
                 noMoreEventsText.setVisibility(View.GONE);
             }
             if (list.getJoinedEvents().isEmpty()) {
+                empty_joined_list_image.setVisibility(View.VISIBLE);
                 helpText.setText(getString(R.string.help_text_go_join_events));
                 joinedHelpText.setVisibility(View.GONE);
             } else {
+                empty_joined_list_image.setVisibility(View.GONE);
                 helpText.setText(getString(R.string.help_text_activity_event_picking));
                 joinedHelpText.setVisibility(View.VISIBLE);
             }
         });
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_event_picking, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.activity_login_login_button:
+    /**
+     * On click behavior for all the login/account related views
+     * i.e. MyAccount/Signin button and all the buttons in the account/signin layout
+     * @param v view clicked on
+     */
+    @OnClick({R.id.layout_login_signup_login_button,
+            R.id.layout_login_signup_signup_button,
+            R.id.layout_login_signup_account_button,
+            R.id.layout_login_signup_logout_button,
+            R.id.event_picking_login_account,
+            R.id.layout_login_or_signup})
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.event_picking_login_account:
+                revealCircular(false);
+                break;
+            case R.id.layout_login_signup_login_button:
                 openLoginOrAccountActivity();
                 break;
 
-            case R.id.logout_button:
-                Session.logout();
+            case R.id.layout_login_signup_signup_button:
+                Intent intentLogin = new Intent(this, SignUpActivity.class);
+                startActivity(intentLogin);
+                break;
+
+            case R.id.layout_login_signup_logout_button:
+                session.logout();
+                loggedUI.setVisibility(View.GONE);
+                notLoggedUi.setVisibility(View.VISIBLE);
+                revealCircular(true);
+                Intent intentLogout = new Intent(this, EventPickingActivity.class);
+                intentLogout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentLogout);
+                break;
+
+            case R.id.layout_login_signup_account_button:
+                openLoginOrAccountActivity();
+                break;
+
+            case R.id.layout_login_or_signup:
+                onBackPressed();
                 break;
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        if (Session.isLoggedIn()) {
-            menu.findItem(R.id.activity_login_login_button).setTitle(R.string.account_button);
-            menu.findItem(R.id.logout_button).setVisible(true);
+    /**
+     * Depending on Android's version on the device, the method launches an animation to reveal the
+     * account/signin layout
+     */
+    public void revealCircular(boolean hide){
+        int viewState = hide ? View.GONE : View.VISIBLE;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int x = loginAccountButton.getRight();
+            int y = loginAccountButton.getTop();
+
+            int startRadius = 0;
+            int endRadius = (int) Math.hypot(mainLayout.getWidth(), mainLayout.getHeight());
+
+            Animator anim;
+
+            // We want to hide the layout
+            if (hide) {
+                anim = ViewAnimationUtils.createCircularReveal(loginAccountUI, x, y, endRadius, startRadius);
+                anim.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        loginAccountUI.setVisibility(View.GONE);
+                    }
+
+                    // Non redefined methods
+                    @Override
+                    public void onAnimationStart(Animator animation) {}
+                    @Override
+                    public void onAnimationCancel(Animator animation) {}
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {}
+                    // -----
+
+                });
+            } else { // We want to reveal the layout
+                anim = ViewAnimationUtils.createCircularReveal(loginAccountUI, x, y, startRadius, endRadius);
+                loginAccountUI.setVisibility(viewState);
+            }
+
+            anim.start();
         } else {
-            menu.findItem(R.id.activity_login_login_button).setTitle(R.string.login_button);
-            menu.findItem(R.id.logout_button).setVisible(false);
+            loginAccountUI.setVisibility(viewState);
         }
-        return super.onPrepareOptionsMenu(menu);
+    }
+
+    /**
+     * Sets the account/signin layout according to the Session's state
+     */
+    public void onPrepareSignupLoginLayout() {
+        loginAccountUI.setVisibility(View.GONE);
+        if (session.isLoggedIn()) {
+            loggedUI.setVisibility(View.VISIBLE);
+            notLoggedUi.setVisibility(View.GONE);
+        } else {
+            loggedUI.setVisibility(View.GONE);
+            notLoggedUi.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onBackPressed() {
         if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_COLLAPSED) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            return;
+        }
+        if (loginAccountUI.getVisibility()==View.VISIBLE){
+            revealCircular(true);
             return;
         }
         if (doubleBackToExitPressedOnce) {
@@ -274,16 +380,46 @@ public class EventPickingActivity extends AppCompatActivity {
         }
     }
 
-    void joinEvent(Event event) {
-        this.model.joinEvent(event);
-        View contextView = findViewById(R.id.event_picking_main_layout);
-        Snackbar.make(contextView, R.string.event_successfully_joined, Snackbar.LENGTH_SHORT).setAction(R.string.undo
-                , v -> unjoinEvent(event)).show();
+    /**
+     * Sets the state of the Event to joined or unjoined according to the boolean. True means join
+     * and false means unjoin
+     * @param event event to join or unjoin
+     * @param join desired state of the event
+     */
+    void joinOrUnjoinEvent(Event event, boolean join) {
+        Snackbar bar;
+
+        if (join) {
+            this.model.joinEvent(event);
+            bar = Snackbar.make(mainLayout, R.string.event_successfully_joined, Snackbar.LENGTH_SHORT).setAction(R.string.undo
+                    , v -> joinOrUnjoinEvent(event, false));
+        } else {
+            this.model.unjoinEvent(event);
+            bar = Snackbar.make(mainLayout, R.string.event_successfully_unjoined, Snackbar.LENGTH_SHORT);
+        }
+
+        Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) bar.getView();
+        layout.setBackgroundResource(R.color.colorSecondary);
+
+        TextView text = layout.findViewById(com.google.android.material.R.id.snackbar_text);
+        text.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        Button button = layout.findViewById(com.google.android.material.R.id.snackbar_action);
+        button.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        bar.show();
     }
 
-    private void unjoinEvent(Event event) {
-        this.model.unjoinEvent(event);
-        View contextView = findViewById(R.id.event_picking_main_layout);
-        Snackbar.make(contextView, R.string.event_successfully_unjoined, Snackbar.LENGTH_SHORT).show();
+    /**
+     * Force refresh the eventList on new intent to handle change of visibility for events
+     * @param intent
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setupObservers();
+    }
+
+    public ImageLoader getLoader() {
+        return loader;
     }
 }

@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
@@ -16,7 +13,6 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketManagementFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNewsFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
@@ -24,6 +20,8 @@ import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
+
+import javax.inject.Inject;
 
 public class EventAdministrationActivity extends MultiFragmentActivity {
     private static final String TAG = "EventAdministration";
@@ -81,7 +79,8 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
             });
 
             // Set default administration fragment
-            changeFragment(new EventUserManagementFragment(), true);
+            changeFragment(new EventUserManagementFragment(), false);
+            navigationView.setCheckedItem(R.id.nav_user_management);
         }
 
         // Initialize News model
@@ -94,9 +93,6 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        // set item as selected to persist highlight
-        menuItem.setChecked(true);
-
         // close drawer when item is tapped
         mDrawerLayout.closeDrawers();
 
@@ -104,15 +100,19 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
             case R.id.nav_showcase :
                 Intent showcaseIntent = new Intent(this, EventShowcaseActivity.class);
                 showcaseIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
+                showcaseIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(showcaseIntent);
+                menuItem.setChecked(false);
                 break;
 
-            case R.id.nav_schedule :
-                changeFragment(new ScheduleParentFragment(), true);
+            case R.id.nav_user_management :
+                changeFragment(new EventUserManagementFragment(), true);
+                menuItem.setChecked(true);
                 break;
 
             case R.id.nav_send_news :
                 changeFragment(new SendNewsFragment(), true);
+                menuItem.setChecked(true);
                 break;
 
             case R.id.nav_ticket_management :
@@ -128,9 +128,9 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
                 Intent editIntent = new Intent(this, EventCreateActivity.class);
                 editIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
                 startActivity(editIntent);
+                menuItem.setChecked(false);
                 break;
         }
-
-        return true;
+        return false;
     }
 }

@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Louis Vialar
@@ -54,7 +52,7 @@ public class JoinedEventTest {
     public void testCopyConstructor() {
         List<Spot> spotList = new ArrayList<>();
         Event ev = new Event(1, "Event 1", "Descr 1", new Date(0), new Date(0),
-                null, null, null, null, null);
+                null, null, null, null, null, null,false);
         JoinedEvent copy = new JoinedEvent(ev);
 
         assertEquals(1, copy.getUid());

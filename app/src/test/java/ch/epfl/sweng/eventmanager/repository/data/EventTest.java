@@ -1,14 +1,10 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
-import android.graphics.Bitmap;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -16,7 +12,6 @@ import static org.junit.Assert.*;
  * @author Louis Vialar
  */
 public class EventTest {
-    private List<Spot> spotList = new ArrayList<>();
     private EventLocation l1 = new EventLocation("Fake1", new Position(10, 10));
     private final Date start = new Calendar.Builder()
             .setFields(Calendar.YEAR, 2018,
@@ -37,9 +32,10 @@ public class EventTest {
     private final String orgaEmail2 = "fancyemail2@google.com";
 
     private final Event ev1 = new Event(1, "Event1", "Event Description 1",
-            start, end,  orgaEmail1, null, null, null, null);
+            start, end,  orgaEmail1, null, null, null, null,null,true);
     private final Event ev2 = new Event(2, "Event2", "Event Description 2",
-            start, end, orgaEmail2, null, l1, null, null);
+            start, end, orgaEmail2, null, l1, null, null, "faceJapan",false);
+
 
     @Test
     public void getIdTest() {
@@ -74,26 +70,26 @@ public class EventTest {
 
     @Test
     public void getDateTest(){
-        assertEquals(ev1.getBeginDate(), start);
-        assertEquals(ev1.getEndDate(), end);
+        assertEquals(ev1.getBeginDateAsDate(), start);
+        assertEquals(ev1.getEndDateAsDate(), end);
 
         ev2.setBeginDate(end.getTime());
-        assertEquals(ev2.getBeginDate(), end);
+        assertEquals(ev2.getBeginDateAsDate(), end);
         ev2.setBeginDate(start.getTime());
-        assertEquals(ev2.getBeginDate(), start);
+        assertEquals(ev2.getBeginDateAsDate(), start);
 
 
         ev2.setEndDate(start.getTime());
-        assertEquals(ev2.getEndDate(), start);
+        assertEquals(ev2.getEndDateAsDate(), start);
         ev2.setEndDate(end.getTime());
-        assertEquals(ev2.getEndDate(), end);
+        assertEquals(ev2.getEndDateAsDate(), end);
 
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void getWrongDateTest(){
         new Event(1, "Event1", "Event Description 1", end, start, orgaEmail1,
-                null, null, null, null);
+                null, null, null, null, null,false);
     }
 
     @Test
@@ -128,8 +124,22 @@ public class EventTest {
 
     @Test
     public void setAndGetImageTest(){
-        Bitmap img = Mockito.mock(Bitmap.class);
-        ev1.setImage(img);
-        assertEquals(ev1.getImage(), img);
+        String url = "url";
+        ev1.setImageURL(url);
+        assertEquals(ev1.getImageURL(), url);
+    }
+
+    @Test
+    public void getFacebookName() {
+        assertEquals("faceJapan", ev2.getFacebookName());
+    }
+
+    @Test
+    public void setAndGetVisibility() {
+        ev1.setVisibleFromPublic(false);
+        ev2.setVisibleFromPublic(true);
+        assertFalse(ev1.isVisibleFromPublic());
+        assertTrue(ev2.isVisibleFromPublic());
+
     }
 }

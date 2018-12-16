@@ -31,6 +31,11 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/event_showcase_drawer_view"
-        app:headerLayout="@layout/event_showcase_drawer_header" />
+        app:headerLayout="@layout/event_showcase_drawer_header"
+        app:itemTextColor="@color/colorPrimary"
+        app:itemIconTint="@color/colorPrimaryLight"
+        app:itemBackground="@drawable/drawer_item_background"
+
+        />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -24,34 +24,48 @@ exports.addUserToEvent = functions.https.onCall((data, context) => {
   const currentUserUid = context.auth.uid;
   //const currentUserUid = "u0YmYQasWpNaNYZt4iXngV0aTxF3"; // Used locally for debug
 
-  // FIXME: improve robustness
-  admin.database()
-    .ref('/events/' + eventId + '/users/admin/')
-    .once('value', snapshot => {
-      // Object.values() is not supported on NodeJS 6, which is used by Firebase
-      var eventAdmins = snapshot.val();
-      var allowedUids = Object.keys(eventAdmins).map((k) => eventAdmins[k]);
-      if (allowedUids.includes(currentUserUid)) {
-        var users = admin.database().ref('/users/');
-        users.orderByChild('email').equalTo(userEmail).limitToFirst(1).once('value', snapshot => {
-          var match = snapshot.val();
-          if (match === null) {
-            console.log('Could not find user linked to email ' + userEmail);
-            return false;
-          } else {
-            var targetUid = Object.keys(match)[0];
-            console.log('Adding role ' + role + ' for UID ' + targetUid + ' on event ' + eventId);
-            return admin.database()
-              .ref('/events/' + eventId + '/users/' + role)
-              .push()
-              .set(targetUid);
-          }
-        })
-      } else {
-        console.log('Current user ' + currentUserUid + ' is not allowed to write event ' + eventId);
-        return false;
-      }
-    })
+  var ref = admin.database().ref('/events/' + eventId + '/users/');
+  ref.orderByValue().equalTo('admin').once("value", adminUidMap => {
+    var adminUids = Object.keys(adminUidMap.val());
+    if (adminUids.includes(currentUserUid)) { // current user is admin
+      var users = admin.database().ref('/users/');
+      users.orderByChild('email').equalTo(userEmail).limitToFirst(1).once('value', userSnapshot => {
+        var match = userSnapshot.val();
+        if (match === null) {
+          console.log('Could not find user linked to email ' + userEmail);
+          return false;
+        } else {
+          var targetUid = Object.keys(match)[0];
+          return ref.child(targetUid).set(role);
+        }
+      });
+    } else {
+      console.log('Current user ' + currentUserUid + ' is not allowed to write event ' + eventId);
+      return false;
+    }
+  });
+});
+
+exports.removeUserFromEvent = functions.https.onCall((data, context) => {
+  // Extract parameters from client
+  const eventId = data.eventId;
+  const targetUserUid = data.uid;
+  const role = data.role;
+
+  // Auhtenticated user
+  const currentUserUid = context.auth.uid;
+  //const currentUserUid = "u0YmYQasWpNaNYZt4iXngV0aTxF3"; // Used locally for debug
+
+  var ref = admin.database().ref('/events/' + eventId + '/users/');
+  ref.orderByValue().equalTo('admin').once("value", adminUidMap => {
+    var adminUids = Object.keys(adminUidMap.val());
+    if (adminUids.includes(currentUserUid)) { // current user is admin
+        return ref.child(targetUserUid).set(null);
+    } else {
+      console.log('Current user ' + currentUserUid + ' is not allowed to write event ' + eventId);
+      return false;
+    }
+  });
 })
 
 exports.importTickets = function.https.onCall((data, context) => {

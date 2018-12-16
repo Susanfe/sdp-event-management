@@ -1,19 +1,22 @@
-package ch.epfl.sweng.eventmanager.users;
+package ch.epfl.sweng.eventmanager.test.users;
 
 import android.app.Activity;
 import android.content.Intent;
+
 import com.google.android.gms.tasks.OnCompleteListener;
+
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ch.epfl.sweng.eventmanager.repository.data.DummyUser;
 import ch.epfl.sweng.eventmanager.repository.data.User;
 import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
+import ch.epfl.sweng.eventmanager.users.InMemorySession;
 
 /**
  * Dummy InMemorySession class, only used in tests.
  */
 @Singleton
-public class DummyInMemorySession implements InMemorySession{
+public class DummyInMemorySession implements InMemorySession {
     /**
      * Public in order to be used from the tests.
      */
@@ -22,12 +25,15 @@ public class DummyInMemorySession implements InMemorySession{
     public static final String DUMMY_UID = "u0YmYQasWpNaNYZt4iXngV0aTxF3";
     public static final String DUMMY_DISPLAYNAME = "Lamb Da";
 
-    private DummyUser user;
+    private User user;
+
+    @Inject
+    public DummyInMemorySession() {}
 
     @Override
     public void login(String email, String password, Activity context, OnCompleteListener callback) {
         if (email.equals(DUMMY_EMAIL) && password.equals(DUMMY_PASSWORD)) {
-            user = new DummyUser(DUMMY_UID,DUMMY_DISPLAYNAME, DUMMY_EMAIL);
+            user = new User(DUMMY_UID, DUMMY_EMAIL, DUMMY_DISPLAYNAME);
 
             // Switch to DisplayAccountActivity if successfully authenticated
             if (context != null) {

@@ -7,6 +7,8 @@ import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedEventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedEvent;
+import ch.epfl.sweng.eventmanager.users.Role;
+import ch.epfl.sweng.eventmanager.users.Session;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -27,6 +29,9 @@ public class EventPickingModel extends ViewModel {
     private JoinedEventRepository joinedEventRepository;
 
     @Inject
+    Session session;
+
+    @Inject
     public EventPickingModel(EventRepository eventRepository, JoinedEventRepository joinedEventRepository) {
         this.eventRepository = eventRepository;
         this.joinedEventRepository = joinedEventRepository;
@@ -41,7 +46,7 @@ public class EventPickingModel extends ViewModel {
     }
 
     /**
-     * Returns a pair of joined and not joined events
+     * Returns a pair of joined and not joined events which are accessible for the user
      */
     LiveData<EventsPair> getEventsPair() {
         LiveData<List<Integer>> joinedEvents = joinedEventRepository.findAllIds();
@@ -55,8 +60,10 @@ public class EventPickingModel extends ViewModel {
                 List<Event> notJoined = new ArrayList<>();
 
                 for (Event ev : events) {
-                    if (set.contains(ev.getId())) joined.add(ev);
-                    else notJoined.add(ev);
+                    if(ev.isVisibleFromPublic() || session.isClearedFor(Role.ADMIN,ev)) {
+                        if (set.contains(ev.getId())) joined.add(ev);
+                        else notJoined.add(ev);
+                    }
                 }
 
                 return new EventsPair(joined, notJoined);
