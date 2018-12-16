@@ -120,9 +120,14 @@ public class Zone {
         if (ancientPosition == null || newPosition == null)
             throw new IllegalArgumentException();
 
-        if(removePosition(ancientPosition)) {
-            addPosition(newPosition);
-            return true;
+        for (int i = 0; i < positions.size(); i++) {
+            Position p =positions.get(i);
+            if (p.equals(ancientPosition)) {
+                if (!positions.remove(p))
+                    return false;
+                positions.add(i, newPosition);
+                return true;
+            }
         }
         return false;
     }
