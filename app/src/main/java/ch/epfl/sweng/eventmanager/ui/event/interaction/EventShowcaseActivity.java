@@ -110,7 +110,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
 
             if (ev.hasAnImage()) {
                 ImageView header = headerView.findViewById(R.id.drawer_header_image);
-                loader.loadImageWithSpinner(ev,this,header,new BlurTransformation(3));
+                loader.loadImageWithSpinner(ev, this, header, new BlurTransformation(3));
             }
 
             drawer_header_text.setText(ev.getName());
@@ -150,14 +150,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             });
 
             // Set displayed fragment only when no other fragment where previously inflated.
-            if (savedInstanceState == null) {
-                String fragment = intent.getStringExtra("fragment");
-                if (fragment != null && fragment.equals("feedback"))
-                    switchFragment(FragmentType.EVENT_FEEDBACK,true);
-                else {
+            if (savedInstanceState == null)
                     switchFragment(FragmentType.MAIN,true);
-                }
-            }
         }
 
         // Handle drawer events
@@ -166,6 +160,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         //Handle highlighting in drawer menu according to currently displayed fragment
         setHighlightedItemInNavigationDrawer();
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
