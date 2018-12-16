@@ -42,4 +42,12 @@ public class MoveMarkerAction extends MapEditionAction {
 
         return false;
     }
+
+    public LatLng getAncientPos() {
+        return ancientPos;
+    }
+
+    public LatLng getPos() {
+        return pos;
+    }
 }

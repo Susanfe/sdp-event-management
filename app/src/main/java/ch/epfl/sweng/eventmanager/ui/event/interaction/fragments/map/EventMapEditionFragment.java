@@ -292,10 +292,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         if (tag.getMarkerType()==MarkerType.OVERLAY_EDGE)
 
             // If updating the edge's position did not work
-            if (!eventZone.changePositionOfElement(
-                    new Position(ancientPosition.latitude, ancientPosition.longitude),
-                    new Position(newPosition.latitude, newPosition.longitude))){
-
+            if (!updatePosition(ancientPosition, newPosition)){
                 history.pop();
                 Toast.makeText(getContext(), getText(R.string.map_edition_error_not_done),
                         Toast.LENGTH_LONG).show();
@@ -445,11 +442,11 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     }
 
     /**
-     * Reverts the latest action in history if not empty and handles linked actions in history
+     * Reverts the latest action in history if not empty. It handles linked actions in history and
+     * reforming of the polygon
      */
     private void revertLatestAction() {
         MapEditionAction action = history.pop();
-        checkAndRevert(action);
 
         // If the action has a linked action to undo as well
         if (action instanceof ModifyMarkerInfoAction && ((ModifyMarkerInfoAction) action).wasIssudByCreation()) {
@@ -461,13 +458,36 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                 history.push(linkedAction);
         }
 
-        // If it is a creation action it may have been an overlay edge, we need to redraw the overlay
-        else if (action instanceof MarkerCreationAction){
-            LatLng positionOfCreation = ((MarkerCreationAction)action).getPositionOfCreation();
-            eventZone.removePosition(new Position(positionOfCreation.latitude, positionOfCreation.longitude));
-            reformPolygon();
+        // TODO move specific action in specific action's revert
+        // If it is a creation or move action for an overlay edge, we need to redraw the overlay
+        else if (needToReformOverlayFor(action)){
+            if (action instanceof MoveMarkerAction) {
+                updatePosition(((MoveMarkerAction) action).getPos(), ((MoveMarkerAction) action).getAncientPos());
+                reformPolygon();
+                // TODO move this in MoveMarkerAction's revert
+            }
+
+            if (action instanceof MarkerCreationAction) {
+                LatLng positionOfCreation = ((MarkerCreationAction) action).getPositionOfCreation();
+
+                // If the removal was successful
+                if (eventZone.removePosition(new Position(positionOfCreation.latitude, positionOfCreation.longitude)))
+                    reformPolygon();
+                else {
+                    // TODO transform every toast in snackbar because they are displayed for too long
+                    Toast.makeText(getContext(), getText(R.string.map_edition_error_not_done), Toast.LENGTH_SHORT).show();
+                    return; // stops action from being reverted
+                }
+            }
         }
 
+        checkAndRevert(action);
+
+    }
+
+    private boolean needToReformOverlayFor(MapEditionAction action) {
+        return (action instanceof MarkerCreationAction || action instanceof MoveMarkerAction)
+                && action.getMarkerType()==MarkerType.OVERLAY_EDGE;
     }
 
     /**
@@ -491,6 +511,19 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         eventOverlay = mMap.addPolygon(eventZone.addPolygon());
 
     }
+
+    /**
+     * Update position of an edge from the overlay.
+     * @param ancientPosition ancient edge's position
+     * @param newPosition new edge's position
+     * @return true if the position wan successfully changed
+     */
+    private boolean updatePosition(LatLng ancientPosition, LatLng newPosition) {
+        return eventZone.changePositionOfElement(
+                new Position(ancientPosition.latitude, ancientPosition.longitude),
+                new Position(newPosition.latitude, newPosition.longitude));
+    }
+
 
 }
 

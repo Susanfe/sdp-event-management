@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.Marker;
 import java.util.List;
 
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag;
+import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MarkerType;
 
 /**
  * Describes a simple edition action and its ability to be reverted
@@ -36,5 +37,9 @@ public abstract class MapEditionAction {
         }
 
         return null;
+    }
+
+    public MarkerType getMarkerType() {
+        return tag.getMarkerType();
     }
 }
