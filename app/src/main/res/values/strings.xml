@@ -216,5 +216,7 @@
         and HOLD to drag it to the desired position.\n\n To edit a SPOT\'s information, please CLICK
         on the desired spot.\n\n To remove a SPOT or an EDGE of the OVERLAY, please click on the
         desired item.</string>
+    <string name="content_description_facebook_logo">Facebook Logo</string>
+    <string name="content_description_facebook_post_image">Facebook post image</string>
 
 </resources>

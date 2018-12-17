@@ -46,7 +46,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
     private static final int Y_OFFSET_TOAST = 30;
 
-    public static enum FragmentType {
+    public enum FragmentType {
         MAIN, MAP, SCHEDULE, NEWS, FORM, EVENT_FEEDBACK, MAP_EDITION
     }
 

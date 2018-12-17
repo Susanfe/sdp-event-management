@@ -77,7 +77,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
 
                     try {
                         startActivityForResult(Intent.createChooser(i,
-                                getActivity().getResources().getString(R.string.contact_form_choose_mail)),
+                                requireActivity().getResources().getString(R.string.contact_form_choose_mail)),
                                 Activity.RESULT_OK);
                         // TODO handle getResources return nullPointerException
 
@@ -93,7 +93,7 @@ public class EventFormFragment extends AbstractShowcaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Activity.RESULT_OK) getActivity().onBackPressed();
+        if (requestCode == Activity.RESULT_OK) requireActivity().onBackPressed();
         // TODO handle NullPointerException
     }
 

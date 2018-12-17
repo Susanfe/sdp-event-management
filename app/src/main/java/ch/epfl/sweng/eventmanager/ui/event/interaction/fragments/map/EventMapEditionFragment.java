@@ -27,10 +27,9 @@ import java.util.Stack;
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.DialogFragment;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag;
+import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.*;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.history.MapEditionAction;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.history.MarkerCreationAction;
-import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MarkerType;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.history.ModifyMarkerInfoAction;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.history.MoveMarkerAction;
 import ch.epfl.sweng.eventmanager.repository.data.Position;
@@ -168,7 +167,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         try {
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
-            boolean success = mMap.setMapStyle(
+            boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             Objects.requireNonNull(getContext()), R.raw.map_edit_style_json));
 
@@ -180,9 +179,9 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         }
 
         // Set Listeners
-        mMap.setOnMarkerClickListener(this);
-        mMap.setOnMarkerDragListener(this);
-        mMap.setOnMapLongClickListener(this);
+        googleMap.setOnMarkerClickListener(this);
+        googleMap.setOnMarkerDragListener(this);
+        googleMap.setOnMapLongClickListener(this);
 
         addMarkers();
 
@@ -219,7 +218,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * @param position LatLng object representing marker's position
      */
     private Marker addSpotMarker(String title, String snippet, LatLng position, SpotType spotType) {
-        Marker m = mMap.addMarker(new MarkerOptions().title(title).snippet(snippet)
+        Marker m = googleMap.addMarker(new MarkerOptions().title(title).snippet(snippet)
                 .draggable(true).position(position));
 
         m.setTag(createSpotTag(++counterSpot, spotType));
@@ -252,7 +251,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * @param position LatLng obj as position of the marker
      */
     private Marker addOverlayEdgeMarker(LatLng position) {
-        Marker m = mMap.addMarker(new MarkerOptions()
+        Marker m = googleMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.defaultMarker(hueOverlayBlue))
                 .position(position).draggable(true));
 
@@ -546,7 +545,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      */
     private void reformPolygon() {
         eventOverlay.remove();
-        eventOverlay = mMap.addPolygon(eventZone.addPolygon());
+        eventOverlay = googleMap.addPolygon(eventZone.addPolygon());
 
     }
 

@@ -6,6 +6,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 public class FirebaseCloudFunction implements CloudFunction {
@@ -39,9 +41,7 @@ public class FirebaseCloudFunction implements CloudFunction {
                     // This continuation runs on either success or failure, but if the task
                     // has failed then getResult() will throw an Exception which will be
                     // propagated down.
-                    // TODO handle null pointer exception
-                    Boolean result = (Boolean) task.getResult().getData();
-                    return result;
+                    return (Boolean) Objects.requireNonNull(task.getResult()).getData();
                 });
     }
 
@@ -70,8 +70,7 @@ public class FirebaseCloudFunction implements CloudFunction {
                     // This continuation runs on either success or failure, but if the task
                     // has failed then getResult() will throw an Exception which will be
                     // propagated down.
-                    Boolean result = (Boolean) task.getResult().getData();
-                    return result;
+                    return (Boolean) Objects.requireNonNull(task.getResult()).getData();
                 });
     }
 
@@ -96,8 +95,7 @@ public class FirebaseCloudFunction implements CloudFunction {
                     // This continuation runs on either success or failure, but if the task
                     // has failed then getResult() will throw an Exception which will be
                     // propagated down.
-                    Boolean result = (Boolean) task.getResult().getData();
-                    return result;
+                    return (Boolean) Objects.requireNonNull(task.getResult()).getData();
                 });
     }
 }

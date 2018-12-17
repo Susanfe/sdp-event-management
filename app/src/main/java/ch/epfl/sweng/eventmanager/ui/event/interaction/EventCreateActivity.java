@@ -321,7 +321,7 @@ public class EventCreateActivity extends AppCompatActivity {
     /**
      * Handle the cropping and conversion of the image
      *
-     * @param eventImageUri
+     * @param eventImageUri URI of the event's image
      */
     private void cropAndConvertImage(Uri eventImageUri) {
         try {
@@ -342,17 +342,13 @@ public class EventCreateActivity extends AppCompatActivity {
     public void onClickDeleteEventButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.create_event_delete_dialog_content).setTitle(R.string.create_event_delete_dialog_title);
-        builder.setPositiveButton(R.string.button_yes, (dialog, id) -> {
-            this.repository.deleteEvent(event).addOnCompleteListener(m -> {
-                Toast.makeText(this, R.string.delete_successfull, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this,EventPickingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            });
-        });
-        builder.setNegativeButton(R.string.button_no, (dialog, id) -> {
-            dialog.cancel();
-        });
+        builder.setPositiveButton(R.string.button_yes, (dialog, id) -> this.repository.deleteEvent(event).addOnCompleteListener(m -> {
+            Toast.makeText(this, R.string.delete_successfull, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this,EventPickingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }));
+        builder.setNegativeButton(R.string.button_no, (dialog, id) -> dialog.cancel());
         builder.create().show();
     }
 }
