@@ -84,6 +84,7 @@ public class ScheduleEditTest {
         onView(withId(R.id.create_form_genre)).perform(clearText(), typeText("Electro"), closeSoftKeyboard());
         onView(withId(R.id.create_form_room)).perform(clearText(), typeText("Polyv"), closeSoftKeyboard());
         onView(withId(R.id.create_form_description)).perform(clearText(), typeText("Back from the grave!"), closeSoftKeyboard());
+        onView(withId(R.id.create_form_send_button)).perform(click());
 
         ScheduledItem item = repository.getScheduledItems(2).getValue().get(0);
 
