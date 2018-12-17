@@ -38,6 +38,6 @@ public interface EventRepository {
      */
     Task<Event> updateEvent(Event event);
 
-    Task deleteEvent(Event event);
+    Task<Event> deleteEvent(Event event);
 
 }

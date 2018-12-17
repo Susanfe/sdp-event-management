@@ -194,5 +194,7 @@
     <string name="recent_feedback_from_users">Recent feedback from users:</string>
     <string name="starts_on">Starts:</string>
     <string name="Ends_on">Ends:</string>
+    <string name="event_image">Event image</string>
+    <string name="remove_button">Remove</string>
 
 </resources>

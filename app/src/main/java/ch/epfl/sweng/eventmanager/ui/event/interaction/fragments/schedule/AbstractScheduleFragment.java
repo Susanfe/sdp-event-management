@@ -1,17 +1,16 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -24,7 +23,7 @@ import java.util.Objects;
 
 public abstract class AbstractScheduleFragment extends Fragment {
 
-    private static String TAG = "AbstractScheduleFragment";
+    private final static String TAG = "ScheduleFragment";
     protected ScheduleViewModel model;
     private TimeLineAdapter timeLineAdapter;
     @BindView(R.id.recyclerView)

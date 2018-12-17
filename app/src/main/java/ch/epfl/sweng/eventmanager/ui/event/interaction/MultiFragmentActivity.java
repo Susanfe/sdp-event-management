@@ -2,9 +2,6 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
 import android.util.Log;
 import android.view.MenuItem;
-
-import com.google.android.material.navigation.NavigationView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +14,12 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import com.google.android.material.navigation.NavigationView;
 
 /**
  * This class is used to share the changeFragment method between our various multi-fragment classes.
  */
-public class MultiFragmentActivity extends AppCompatActivity
+public abstract class MultiFragmentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.drawer_layout)

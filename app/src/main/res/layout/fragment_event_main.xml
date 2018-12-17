@@ -17,10 +17,7 @@
             android:layout_centerVertical="true"
             android:layout_centerInParent="true"
     />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -126,6 +123,7 @@
                         android:layout_marginEnd="4dp"
                         android:layout_marginStart="4dp"
                         android:background="@drawable/separation_black"
+                        android:contentDescription="@null"
                         />
 
                     <TextView
@@ -159,7 +157,7 @@
                         android:id="@+id/separation_feedback"
                         android:layout_marginStart="4dp"
                         android:background="@drawable/separation_black"
-                        />
+                        android:contentDescription="@null"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -190,5 +188,4 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-    </LinearLayout>
 </RelativeLayout>

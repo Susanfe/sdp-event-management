@@ -28,7 +28,7 @@ import java.util.Set;
  */
 public class ScheduleParentFragment extends Fragment {
 
-    private static String TAG = "ScheduleParentFragment";
+    private final static String TAG = "ScheduleParentFragment";
     @BindView(R.id.viewpager)
     ViewPager viewPager;
     @BindView(R.id.tabs)

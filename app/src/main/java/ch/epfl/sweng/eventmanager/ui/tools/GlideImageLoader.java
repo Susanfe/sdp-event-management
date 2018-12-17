@@ -6,8 +6,6 @@ import android.net.Uri;
 import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
-import ch.epfl.sweng.eventmanager.inject.GlideApp;
-import ch.epfl.sweng.eventmanager.inject.GlideRequest;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import com.bumptech.glide.request.RequestOptions;
 import jp.wasabeef.glide.transformations.BitmapTransformation;

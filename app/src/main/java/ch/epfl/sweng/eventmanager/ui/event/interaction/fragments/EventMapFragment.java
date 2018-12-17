@@ -304,14 +304,10 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         private final ImageView mClusterImageView;
         private final int mDimension;
 
-        public SpotRenderer(Context context) {
+         SpotRenderer(Context context) {
             super(context, googleMap, mClusterManager);
 
-            if (context == null) {
-                throw new NullPointerException("context is null");
-            }
-
-            View multiProfile = getLayoutInflater().inflate(R.layout.custom_marker, null);
+            View multiProfile = View.inflate(context,R.layout.custom_marker, null);
             mClusterIconGenerator.setContentView(multiProfile);
             mClusterImageView = multiProfile.findViewById(R.id.image);
 
@@ -372,7 +368,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         private final View myContentsView;
 
         MyCustomAdapterForItems() {
-            myContentsView = getLayoutInflater().inflate(R.layout.custom_info_window, null);
+            myContentsView = View.inflate(requireContext(),R.layout.custom_info_window, null);
         }
 
         @Override
