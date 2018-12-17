@@ -4,15 +4,13 @@ import android.os.Parcel;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import org.junit.Test;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
 public class ScheduleItemTest {
-    private final Date when = new Calendar.Builder().setFields(Calendar.YEAR, 2018, Calendar.MONTH, Calendar.DECEMBER
-            , Calendar.DAY_OF_MONTH, 25, Calendar.HOUR_OF_DAY, 12, Calendar.MINUTE, 0, Calendar.SECOND, 0).build().getTime();
+    private final Date when = new Date();
     private final String mj = "Michael Jackson";
     private final String pop = "Pop";
     private final String des = "Amazing event as it is the resurrection of the King!";
