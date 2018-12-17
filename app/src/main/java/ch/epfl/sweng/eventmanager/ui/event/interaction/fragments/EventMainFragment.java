@@ -3,16 +3,8 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
-
-
-import java.util.Objects;
 
 import java.util.Collections;
 
@@ -74,6 +66,10 @@ public class EventMainFragment extends AbstractFeedbackFragment {
         super(R.layout.fragment_event_main);
     }
 
+    public static EventMainFragment newInstance() {
+        return new EventMainFragment();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -85,23 +81,24 @@ public class EventMainFragment extends AbstractFeedbackFragment {
             }
 
             // Set window title
-            Objects.requireNonNull(getActivity()).setTitle(ev.getName());
+            requireActivity().setTitle(ev.getName());
 
             eventDescription.setText(ev.getDescription());
             eventDescription.setVisibility(View.VISIBLE);
 
             loader.loadImageWithSpinner(ev, getContext(), eventImage, null);
+
             eventImage.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 
             feedbackBar.setIsIndicator(true);
             repository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
 
-            if(ev.getBeginDateAsDate() != null){
+            if (ev.getBeginDateAsDate() != null) {
                 beginDate.setText(String.format("%s %s", getString(R.string.starts_on), ev.beginDateAsString()));
                 dateLinearLayout.setVisibility(View.VISIBLE);
             }
-            if(ev.getEndDateAsDate() != null){
+            if (ev.getEndDateAsDate() != null) {
                 endDate.setText(String.format("%s   %s", getString(R.string.Ends_on), ev.endDateAsString()));
                 dateLinearLayout.setVisibility(View.VISIBLE);
             }
@@ -121,10 +118,10 @@ public class EventMainFragment extends AbstractFeedbackFragment {
             if (ratings != null && ratings.size() > 0) {
                 //display only the most recent feedback
                 Collections.sort(ratings, (o1, o2) -> -1 * Long.compare(o1.getDate(), o2.getDate()));
-                ratingsRecyclerViewAdapter.setContent(ratings.subList(0,Math.min(3, ratings.size())));
+                ratingsRecyclerViewAdapter.setContent(ratings.subList(0, Math.min(3, ratings.size())));
                 eventFeedback.setVisibility(View.VISIBLE);
                 feedbackBar.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 eventFeedback.setVisibility(View.GONE);
                 feedbackBar.setVisibility(View.GONE);
             }
@@ -133,17 +130,14 @@ public class EventMainFragment extends AbstractFeedbackFragment {
         showcaseActivity = (EventShowcaseActivity) getParentActivity();
 
         // FIXME Handle NullPointerExceptions from the ChangeFragment
-        news.setOnClickListener(v -> showcaseActivity.callChangeFragment(
-                EventShowcaseActivity.FragmentType.NEWS, true));
+        news.setOnClickListener(v -> showcaseActivity.switchFragment(EventShowcaseActivity.FragmentType.NEWS, true));
 
-        map.setOnClickListener(v -> showcaseActivity.callChangeFragment(
-                EventShowcaseActivity.FragmentType.MAP, true));
+        map.setOnClickListener(v -> showcaseActivity.switchFragment(EventShowcaseActivity.FragmentType.MAP, true));
 
-        schedule.setOnClickListener(v -> showcaseActivity.callChangeFragment(
-                EventShowcaseActivity.FragmentType.SCHEDULE, true));
+        schedule.setOnClickListener(v -> showcaseActivity.switchFragment(EventShowcaseActivity.FragmentType.SCHEDULE,
+                true));
 
-        feedback.setOnClickListener(v -> ((EventShowcaseActivity) Objects.requireNonNull(getActivity()))
-                .changeFragment(new EventFeedbackFragment(), true));
+        feedback.setOnClickListener(v -> showcaseActivity.switchFragment(EventShowcaseActivity.FragmentType.EVENT_FEEDBACK, true));
 
         return view;
     }

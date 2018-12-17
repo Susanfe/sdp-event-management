@@ -76,10 +76,6 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_settings));
         pressBack();
-
-        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_tickets));
-
     }
 
     @Test
@@ -101,6 +97,8 @@ public class EventShowcaseActivityTest {
     @Test
     public void joinEventTest() {
         onView(withId(R.id.menu_showcase_activity_join_switch))
+                .perform(click());
+        onView(withId(R.id.menu_showcase_activity_join_id))
                 .perform(click());
     }
 

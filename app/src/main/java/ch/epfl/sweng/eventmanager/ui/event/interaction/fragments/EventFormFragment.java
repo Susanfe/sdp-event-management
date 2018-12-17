@@ -3,7 +3,6 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
@@ -36,6 +35,10 @@ public class EventFormFragment extends AbstractShowcaseFragment {
 
     public EventFormFragment() {
         super(R.layout.fragment_event_form);
+    }
+
+    public static EventFormFragment newInstance() {
+        return new EventFormFragment();
     }
 
 

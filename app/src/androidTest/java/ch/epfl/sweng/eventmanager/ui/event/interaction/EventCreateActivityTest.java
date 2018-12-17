@@ -13,6 +13,7 @@ import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.intent.matcher.IntentMatchers;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ToastMatcher;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.test.TestApplication;
@@ -29,6 +30,7 @@ import java.io.IOException;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.*;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
@@ -89,6 +91,30 @@ public class EventCreateActivityTest {
         }
 
         Assert.assertTrue("Event was not found in repository after creation", found);
+    }
+
+    @Test
+    public void testCreateEmptyEvent() {
+        SystemClock.sleep(5000); // Clear any previous Toast
+        onView(withId(R.id.create_form_send_button)).perform(scrollTo(),click());
+
+        onView(withText(R.string.create_event_name_empty)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+
+        Intents.assertNoUnverifiedIntents();
+    }
+
+    @Test
+    public void testCreateShortEvent() {
+        SystemClock.sleep(5000); // Clear any previous Toast
+
+        onView(withId(R.id.create_form_name)).perform(typeText("Ev"), closeSoftKeyboard());
+
+        SystemClock.sleep(200);
+        onView(withId(R.id.create_form_send_button)).perform(scrollTo(),click());
+
+        onView(withText(R.string.create_event_name_too_short)).inRoot(new ToastMatcher()).check(matches(isDisplayed()));
+
+        Intents.assertNoUnverifiedIntents();
     }
 
     @Test

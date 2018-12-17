@@ -38,6 +38,10 @@ public class EventFeedbackFragment extends AbstractFeedbackFragment {
         super(R.layout.fragment_display_feedback);
     }
 
+    public static EventFeedbackFragment newInstance() {
+        return new EventFeedbackFragment();
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

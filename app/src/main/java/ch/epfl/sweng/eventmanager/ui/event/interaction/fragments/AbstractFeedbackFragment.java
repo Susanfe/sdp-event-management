@@ -3,16 +3,8 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -20,6 +12,11 @@ import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.repository.data.EventRating;
+
+import javax.inject.Inject;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public abstract class AbstractFeedbackFragment extends AbstractShowcaseFragment {
 

@@ -8,6 +8,8 @@ import com.auth0.android.jwt.JWT;
 import java.util.Date;
 
 /**
+ * A class that represents a way to store authentication tokens for an event's ticketing platform
+ *
  * @author Louis Vialar
  */
 public class TokenStorage {
