@@ -178,15 +178,6 @@ public class ScheduleEditFragment extends Fragment {
         this.item = new ScheduledItem();
     }
 
-    @SuppressWarnings("unused")
-    public ScheduleEditFragment(Bundle bundle) {
-        if(bundle == null) {
-            throw new IllegalArgumentException("Bundle cannot be null");
-        }
-        ScheduledItem item = bundle.getParcelable(SCHEDULE_ITEM);
-        this.item = item;
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -203,6 +194,11 @@ public class ScheduleEditFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //get ScheduledItem if non null
+        if (getArguments() != null) {
+            this.item = getArguments().getParcelable(SCHEDULE_ITEM);
+            this.creation = false;
+        }
         //Create view and bindings
         View view = inflater.inflate(R.layout.fragment_schedule_edit, container, false);
         ButterKnife.bind(this, view);
