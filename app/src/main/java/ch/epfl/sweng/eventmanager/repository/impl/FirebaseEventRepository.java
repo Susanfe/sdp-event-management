@@ -223,7 +223,7 @@ public class FirebaseEventRepository implements EventRepository {
     }
 
     @Override
-    public Task deleteScheduledItem(int eventId, ScheduledItem item) {
+    public Task<Void> deleteScheduledItem(int eventId, ScheduledItem item) {
         if (item == null) {
             throw new IllegalArgumentException("item to delete cannot be null");
         }
