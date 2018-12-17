@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
-import android.util.Log;
 import androidx.annotation.NonNull;
 
 import java.util.Date;
@@ -85,16 +84,11 @@ class SchedulerHelper {
      * @param date, not null
      * @return time in milliseconds
      * @throws NullPointerException  if the date is null
-     * @throws IllegalStateException if {@param date} is already past
      */
-    static long getTimeTo(Date date) {
+    static long getTimeTo(Date date){
         if (date == null)
             throw new NullPointerException();
 
-        long timeUntil = date.getTime() - System.currentTimeMillis();
-
-        if (timeUntil < 0) // Event is past
-            return Long.MAX_VALUE;
-        else return timeUntil;
+        return date.getTime() - System.currentTimeMillis();
     }
 }

@@ -25,11 +25,12 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import jp.wasabeef.glide.transformations.BlurTransformation;
+import com.google.android.material.navigation.NavigationView;
 
 /**
  * This class is used to share the changeFragment method between our various multi-fragment classes.
  */
-public class MultiFragmentActivity extends AppCompatActivity
+public abstract class MultiFragmentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.drawer_layout)

@@ -54,22 +54,20 @@ public class SendNotificationFragment extends AbstractShowcaseFragment {
 
         if (view != null) ButterKnife.bind(this, view);
 
-        model.getEvent().observe(this, ev -> {
-            send.setOnClickListener(l -> {
-                NotificationRequest notificationRequest = new NotificationRequest(title.getText().toString(), body.getText().toString(), ev.getId());
+        model.getEvent().observe(this, ev -> send.setOnClickListener(l -> {
+            NotificationRequest notificationRequest = new NotificationRequest(title.getText().toString(), body.getText().toString(), ev.getId());
 
-                send.setClickable(false);
+            send.setClickable(false);
 
-                cloudFunction.sendNotificationToUsers(notificationRequest).addOnSuccessListener(e -> {
-                            Toast.makeText(getContext(), R.string.send_notification_success, Toast.LENGTH_SHORT).show();
-                            getParentActivity().changeFragment(new EventUserManagementFragment(), true);
-                        }
-                ).addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), R.string.send_notification_fails, Toast.LENGTH_LONG).show();
-                    send.setClickable(true);
-                });
+            cloudFunction.sendNotificationToUsers(notificationRequest).addOnSuccessListener(e -> {
+                        Toast.makeText(getContext(), R.string.send_notification_success, Toast.LENGTH_SHORT).show();
+                        getParentActivity().changeFragment(new EventUserManagementFragment(), true);
+                    }
+            ).addOnFailureListener(e -> {
+                Toast.makeText(getContext(), R.string.send_notification_fails, Toast.LENGTH_LONG).show();
+                send.setClickable(true);
             });
-        });
+        }));
 
         return view;
     }

@@ -10,10 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
-import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
-import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
-import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import dagger.android.support.AndroidSupportInjection;
@@ -82,7 +78,6 @@ public class EventMainFragment extends AbstractFeedbackFragment {
                 return;
             }
 
-            // FIXME handle NullPointerException in setTitle
             // Set window title
             requireActivity().setTitle(ev.getName());
 

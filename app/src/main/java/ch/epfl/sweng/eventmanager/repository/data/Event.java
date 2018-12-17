@@ -239,7 +239,7 @@ public final class Event {
 
         // The keys of a Java Map are unique
         for (String uid : getUsers().keySet()) {
-            Role role = Role.valueOf(getUsers().get(uid).toUpperCase());
+            Role role = Role.valueOf(Objects.requireNonNull(getUsers().get(uid)).toUpperCase());
 
             List<String> users;
             if (result.get(role) == null) {
@@ -247,7 +247,7 @@ public final class Event {
                 users.add(uid);
                 result.put(role, users);
             } else {
-                result.get(role).add(uid);
+                Objects.requireNonNull(result.get(role)).add(uid);
             }
         }
 
@@ -260,7 +260,7 @@ public final class Event {
         if (beginDate <= 0) {
             return null;
         }
-        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm",Locale.getDefault());
         return f.format(beginDate);
     }
 
@@ -268,7 +268,7 @@ public final class Event {
         if (endDate <= 0) {
             return null;
         }
-        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm",Locale.getDefault());
         return f.format(endDate);
     }
 

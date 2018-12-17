@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Color;
 import com.google.android.gms.maps.model.PolygonOptions;
+
 import java.util.List;
 
 /**
@@ -36,8 +37,8 @@ public class Zone {
                 .fillColor(Color.argb(33,26, 149,244))
                 .strokeWidth(3)
                 .strokeColor(Color.BLUE);
-        for(int i = 0; i < positions.size(); ++i) {
-            options.add(positions.get(i).asLatLng());
+        for (Position position : positions) {
+            options.add(position.asLatLng());
         }
         return options;
     }

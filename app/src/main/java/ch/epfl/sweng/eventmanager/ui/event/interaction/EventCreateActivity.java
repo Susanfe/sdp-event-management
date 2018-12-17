@@ -293,26 +293,27 @@ public class EventCreateActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (data == null){
+            return;
+        }
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri eventImageUri = data.getData();
             cropAndConvertImage(eventImageUri);
         }
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            eventImageSrc = UCrop.getOutput(data);
-            imageChanged = true;
-
-            imageLoader.displayImage(this, eventImageSrc, eventImage);
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(data);
-            Log.i(TAG, "Unable to crop image");
-            cropError.printStackTrace();
-        }
+                eventImageSrc = UCrop.getOutput(data);
+                imageLoader.displayImage(this, eventImageSrc, eventImage);
+            } else if (resultCode == UCrop.RESULT_ERROR) {
+                final Throwable cropError = UCrop.getError(data);
+                Log.i(TAG, "Unable to crop image");
+                cropError.printStackTrace();
+            }
     }
 
     /**
      * Handle the cropping and conversion of the image
      *
-     * @param eventImageUri
+     * @param eventImageUri the uri to the image
      */
     private void cropAndConvertImage(Uri eventImageUri) {
         try {
@@ -333,17 +334,13 @@ public class EventCreateActivity extends AppCompatActivity {
     public void onClickDeleteEventButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.create_event_delete_dialog_content).setTitle(R.string.create_event_delete_dialog_title);
-        builder.setPositiveButton(R.string.button_yes, (dialog, id) -> {
-            this.repository.deleteEvent(event).addOnCompleteListener(m -> {
-                Toast.makeText(this, R.string.delete_successfull, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this,EventPickingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            });
-        });
-        builder.setNegativeButton(R.string.button_no, (dialog, id) -> {
-            dialog.cancel();
-        });
+        builder.setPositiveButton(R.string.button_yes, (dialog, id) -> this.repository.deleteEvent(event).addOnCompleteListener(m -> {
+            Toast.makeText(this, R.string.delete_successfull, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this,EventPickingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }));
+        builder.setNegativeButton(R.string.button_no, (dialog, id) -> dialog.cancel());
         builder.create().show();
     }
 }
