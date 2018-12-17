@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_arrow_drop_up_24dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginStart="@dimen/fab_margin"
             android:id="@+id/event_picking_bottom_sheet_arrow_up"
             />
 
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_arrow_drop_down_24dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/fab_margin"
+            android:layout_marginStart="@dimen/fab_margin"
             android:id="@+id/event_picking_bottom_sheet_arrow_down"
             android:visibility="gone"
             />

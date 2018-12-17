@@ -55,6 +55,9 @@ public abstract class EventInteractionModule {
     abstract SendNewsFragment contributeSendNewsFragmentInjector();
 
     @ContributesAndroidInjector
+    abstract SendNotificationFragment contributeSendNotificationFragmentInjector();
+
+    @ContributesAndroidInjector
     abstract NewsFragment contributeNewsFragmentInjector();
 
     @ContributesAndroidInjector

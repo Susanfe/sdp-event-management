@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
@@ -18,7 +18,7 @@
                 android:visibility="visible">
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dp"
             android:layout_margin="10dp">
@@ -44,7 +44,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/create_form_begin_date"
-                android:inputType="date"/>
+                android:inputType="date"
+                tools:ignore="KeyboardInaccessibleWidget"/>
 
         <EditText
                 android:hint="@string/create_form_hint_end_date"
@@ -55,7 +56,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/create_form_end_date"
-                android:inputType="date"/>
+                android:inputType="date"
+                tools:ignore="KeyboardInaccessibleWidget"/>
 
         </LinearLayout>
 
@@ -87,7 +89,8 @@
         <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:id="@+id/create_form_image_view"/>
+                android:id="@+id/create_form_image_view"
+                android:contentDescription="@string/event_image"/>
 
         <com.google.android.material.button.MaterialButton android:layout_width="wrap_content"
                                                            android:layout_height="wrap_content"

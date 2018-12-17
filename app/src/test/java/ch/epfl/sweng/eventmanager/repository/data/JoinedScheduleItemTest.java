@@ -12,8 +12,8 @@ import static org.junit.Assert.*;
 public class JoinedScheduleItemTest {
     @Test
     public void testEquals() {
-        UUID uuid1 = UUID.randomUUID();
-        UUID uuid2 = UUID.randomUUID();
+        String uuid1 = UUID.randomUUID().toString();
+        String uuid2 = UUID.randomUUID().toString();
 
         JoinedScheduleItem it1 = new JoinedScheduleItem(uuid1, 1);
         JoinedScheduleItem it2 = new JoinedScheduleItem(uuid1, 1);
@@ -22,27 +22,26 @@ public class JoinedScheduleItemTest {
         JoinedScheduleItem it4 = new JoinedScheduleItem(uuid1, 2);
         JoinedScheduleItem it5 = new JoinedScheduleItem(uuid2, 2);
 
-        assertTrue(it1.equals(it2));
-        assertTrue(it2.equals(it2));
+        assertEquals(it1, it2);
+        assertEquals(it2, it2);
 
-        assertFalse(it1.equals(it4));
-        assertFalse(it1.equals(it5));
-        assertFalse(it3.equals(it4));
-        assertFalse(it3.equals(it5));
-        assertFalse(it4.equals(it5));
+        assertNotEquals(it1, it4);
+        assertNotEquals(it1, it5);
+        assertNotEquals(it3, it4);
+        assertNotEquals(it3, it5);
+        assertNotEquals(it4, it5);
 
-        assertFalse(it1.equals(null));
-        assertFalse(it1.equals("other"));
+        assertNotEquals("other", it1);
     }
 
     @Test
     public void testSetters() {
-        JoinedScheduleItem it = new JoinedScheduleItem(UUID.randomUUID(), 1);
+        JoinedScheduleItem it = new JoinedScheduleItem(UUID.randomUUID().toString(), 1);
 
         it.setEventId(2);
         assertEquals(2, it.getEventId());
 
-        UUID id = UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
         it.setUid(id);
         assertEquals(id, it.getUid());
     }

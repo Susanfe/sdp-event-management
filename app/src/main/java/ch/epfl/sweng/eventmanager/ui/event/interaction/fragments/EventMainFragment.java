@@ -78,7 +78,6 @@ public class EventMainFragment extends AbstractFeedbackFragment {
                 return;
             }
 
-            // FIXME handle NullPointerException in setTitle
             // Set window title
             requireActivity().setTitle(ev.getName());
 
@@ -86,6 +85,7 @@ public class EventMainFragment extends AbstractFeedbackFragment {
             eventDescription.setVisibility(View.VISIBLE);
 
             loader.loadImageWithSpinner(ev, getContext(), eventImage, null);
+
             eventImage.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 

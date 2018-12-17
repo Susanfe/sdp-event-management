@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.repository.impl;
+package ch.epfl.sweng.eventmanager.notifications;
 
 import android.app.Notification;
 import android.content.BroadcastReceiver;
@@ -11,8 +11,8 @@ import androidx.core.app.NotificationManagerCompat;
  */
 public class NotificationPublisher extends BroadcastReceiver {
 
-    private static String NOTIFICATION_ID = "notification-id";
-    private static String NOTIFICATION = "notification";
+    private static final String NOTIFICATION_ID = "notification-id";
+    private static final String NOTIFICATION = "notification";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -25,11 +25,11 @@ public class NotificationPublisher extends BroadcastReceiver {
         notificationManager.notify(id, notification);
     }
 
-    public static String getNotificationId() {
+    static String getNotificationId() {
         return NOTIFICATION_ID;
     }
 
-    public static String getNOTIFICATION() {
+    static String getNOTIFICATION() {
         return NOTIFICATION;
     }
 }

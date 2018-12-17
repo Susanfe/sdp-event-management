@@ -1,14 +1,12 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
 import androidx.annotation.NonNull;
+import com.google.firebase.database.Exclude;
 
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Class describing a single scheduled item (concert, activity...) in an event. The class is for the moment only used by
@@ -43,24 +41,24 @@ public final class ScheduledItem {
      */
     private String id;
     /**
-     * The type of the item<br>
-     * It would make sense to have an enum, but a single string allows the organizer to defines its own types of items
-     */
-    private String itemType;
-    /**
      * The place (room, usually) where the event takes place<br>
      * // FIXME Depending on how the map works, we might want to add more data here so that the user can click and go to the map.
      */
     private String itemLocation;
 
+    @Deprecated
     public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre, @NonNull String description,
-                         double duration, @NonNull UUID id, @NonNull String itemType, @NonNull String itemLocation) {
+                         double duration, @NonNull UUID uuid, @NonNull String itemLocation) {
+        this(date, artist, genre, description, duration, uuid.toString(), itemLocation);
+    }
+
+    public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre, @NonNull String description,
+                         double duration, @NonNull String id, @NonNull String itemLocation) {
         this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
         this.description = description;
-        this.id = id.toString();
-        this.itemType = itemType;
+        this.id = id;
         this.itemLocation = itemLocation;
 
         if (duration <= 0) this.duration = STANDARD_DURATION;
@@ -70,7 +68,12 @@ public final class ScheduledItem {
     public ScheduledItem() {
     }
 
-    public Date getDate() {
+    public long getDate() {
+        return date;
+    }
+
+    @Exclude
+    public Date getJavaDate() {
         if (date <= 0) {
             return null;
         }
@@ -93,8 +96,36 @@ public final class ScheduledItem {
         return duration;
     }
 
-    public UUID getId() {
-        return UUID.fromString(id);
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDuration(double duration) {
+        this.duration = duration;
+    }
+
+    public void setItemLocation(String itemLocation) {
+        this.itemLocation = itemLocation;
     }
 
     @Override
@@ -110,7 +141,6 @@ public final class ScheduledItem {
                 && genre.equals(that.genre)
                 && description.equals(that.description)
                 && id.equals(that.id)
-                && itemType.equals(that.itemType)
                 && itemLocation.equals(that.itemLocation);
     }
 
@@ -118,41 +148,39 @@ public final class ScheduledItem {
         if (date <= 0) {
             return null;
         }
-        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm", Locale.getDefault());
         return f.format(date);
-    }
-
-    public String getItemType() {
-        return itemType;
     }
 
     public String getItemLocation() {
         return itemLocation;
     }
 
+    @Exclude
     public Date getEnd() {
-        if (getDate() == null) {
+        if (getJavaDate() == null) {
             return null;
         }
 
         int durationMinutes = (int) Math.abs(getDuration() * 60);
 
         Calendar calendar = new GregorianCalendar();
-        calendar.setTime(getDate());
+        calendar.setTime(getJavaDate());
         calendar.add(Calendar.MINUTE, durationMinutes);
 
         return calendar.getTime();
     }
 
+    @Exclude
     public ScheduledItemStatus getStatus() {
         // If we don't have a date, it's in the future
-        if (getDate() == null) {
+        if (getJavaDate() == null) {
             return ScheduledItemStatus.NOT_STARTED;
         }
 
         Date currentDate = new Date();
 
-        if (currentDate.after(getDate())) {
+        if (currentDate.after(getJavaDate())) {
             if (currentDate.before(getEnd())) {
                 return ScheduledItemStatus.IN_PROGRESS; // concert is taking place
             } else {
@@ -168,11 +196,11 @@ public final class ScheduledItem {
      * @param out the stream to print this event in
      */
     public void printAsIcalendar(PrintStream out) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss",Locale.US);
 
         out.println("BEGIN:VEVENT");
         out.println("SUMMARY:" + getArtist());
-        out.println("DTSTART;VALUE=DATE-TIME:" + dateFormat.format(getDate()));
+        out.println("DTSTART;VALUE=DATE-TIME:" + dateFormat.format(getJavaDate()));
         out.println("DTEND;VALUE=DATE-TIME:" + dateFormat.format(getEnd()));
         if (getItemLocation() != null) {
             out.println("LOCATION:" + getItemLocation());
@@ -193,5 +221,18 @@ public final class ScheduledItem {
          * The item will happen in the future
          */
         NOT_STARTED
+    }
+
+    @Override
+    public String toString() {
+        return "ScheduledItem{" +
+                "date=" + date +
+                ", artist='" + artist + '\'' +
+                ", genre='" + genre + '\'' +
+                ", description='" + description + '\'' +
+                ", duration=" + duration +
+                ", id='" + id + '\'' +
+                ", itemLocation='" + itemLocation + '\'' +
+                '}';
     }
 }

@@ -12,6 +12,9 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.EventUpdateActivityTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventUserManagementFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragmentTest;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NotificationsFragmentTest;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleCreateTest;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleEditTest;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivityTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.ScanningTest;
 import ch.epfl.sweng.eventmanager.ui.ticketing.activities.NoOpBarcodeViewManagerModule;
@@ -37,6 +40,8 @@ import javax.inject.Singleton;
 @Singleton
 public interface TestComponent extends ApplicationComponent {
     void inject(NewsFragmentTest test);
+    void inject(ScheduleCreateTest test);
+    void inject(ScheduleEditTest test);
 
     void inject(EventUpdateActivityTest test);
 
@@ -50,6 +55,8 @@ public interface TestComponent extends ApplicationComponent {
     void inject(LoginActivityTest test);
 
     void inject(EventPickingActivityTest test);
+
+    void inject(NotificationsFragmentTest test);
 
     @Component.Builder
     interface Builder extends ApplicationComponent.Builder {

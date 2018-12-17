@@ -21,6 +21,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.users.Session;
+import ch.epfl.sweng.eventmanager.utils.DateUtils;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -112,7 +113,6 @@ public class EventCreateActivity extends AppCompatActivity {
     private boolean checkForm() {
         String name = getFieldValue(this.name);
 
-        Log.i("EventCreateActivity", "name='" + name + "'");
         if (name == null) {
             Toast.makeText(this, R.string.create_event_name_empty, Toast.LENGTH_LONG).show();
             return false;
@@ -127,26 +127,11 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     private String formatDate(Date date) {
-        if (date != null) {
-            String format = "dd/MM/yyyy";
-            SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-            return dateFormat.format(date);
-        } else {
-            return null;
-        }
+        return DateUtils.formatDate(date);
     }
 
     private long getDateValue(EditText editText) {
-        String format = "dd/MM/yyyy";
-        long date = 0L;
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-        try {
-            date = dateFormat.parse(editText.getText().toString()).getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.i(TAG, "unable to parse date");
-        }
-        return date;
+        return DateUtils.getDateValue(editText);
     }
 
     private String getFieldValue(EditText field) {
@@ -165,7 +150,7 @@ public class EventCreateActivity extends AppCompatActivity {
         if (eventID <= 0) {
             // Create the event and set the user admin of his event
             Map<String, String> users = new HashMap<>();
-            users.put(session.getCurrentUser().getUid(), "admin");
+            users.put(session.getCurrentUserUid(), "admin");
 
             event.setUsers(users);
 
@@ -299,26 +284,27 @@ public class EventCreateActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (data == null){
+            return;
+        }
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri eventImageUri = data.getData();
             cropAndConvertImage(eventImageUri);
         }
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            eventImageSrc = UCrop.getOutput(data);
-            imageChanged = true;
-
-            imageLoader.displayImage(this, eventImageSrc, eventImage);
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(data);
-            Log.i(TAG, "Unable to crop image");
-            cropError.printStackTrace();
-        }
+                eventImageSrc = UCrop.getOutput(data);
+                imageLoader.displayImage(this, eventImageSrc, eventImage);
+            } else if (resultCode == UCrop.RESULT_ERROR) {
+                final Throwable cropError = UCrop.getError(data);
+                Log.i(TAG, "Unable to crop image");
+                cropError.printStackTrace();
+            }
     }
 
     /**
      * Handle the cropping and conversion of the image
      *
-     * @param eventImageUri
+     * @param eventImageUri the uri to the image
      */
     private void cropAndConvertImage(Uri eventImageUri) {
         try {
@@ -339,17 +325,13 @@ public class EventCreateActivity extends AppCompatActivity {
     public void onClickDeleteEventButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.create_event_delete_dialog_content).setTitle(R.string.create_event_delete_dialog_title);
-        builder.setPositiveButton(R.string.button_yes, (dialog, id) -> {
-            this.repository.deleteEvent(event).addOnCompleteListener(m -> {
-                Toast.makeText(this, R.string.delete_successfull, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this,EventPickingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            });
-        });
-        builder.setNegativeButton(R.string.button_no, (dialog, id) -> {
-            dialog.cancel();
-        });
+        builder.setPositiveButton(R.string.button_yes, (dialog, id) -> this.repository.deleteEvent(event).addOnCompleteListener(m -> {
+            Toast.makeText(this, R.string.delete_successfull, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this,EventPickingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }));
+        builder.setNegativeButton(R.string.button_no, (dialog, id) -> dialog.cancel());
         builder.create().show();
     }
 }
