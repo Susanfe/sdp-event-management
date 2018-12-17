@@ -260,7 +260,7 @@ public final class Event {
         if (beginDate <= 0) {
             return null;
         }
-        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm",Locale.getDefault());
         return f.format(beginDate);
     }
 
@@ -268,7 +268,7 @@ public final class Event {
         if (endDate <= 0) {
             return null;
         }
-        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm",Locale.getDefault());
         return f.format(endDate);
     }
 

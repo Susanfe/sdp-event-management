@@ -220,6 +220,8 @@
     <string name="create_schedule_item_value_missing">The following field cannot be empty</string>
     <string name="create_schedule_item_value_length">The following field needs to be longer</string>
     <string name="schedule_create_form_hint_begin_time">Begin time of the scheduled element</string>
+    <string name="event_image">Event image</string>
+    <string name="remove_button">Remove</string>
 
     <!-- Edition Fragment text-->
     <string name="map_edition_add_overlay">Add overlay edge</string>

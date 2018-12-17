@@ -355,8 +355,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         SpotRenderer(Context context) {
             super(context, googleMap, mClusterManager);
 
-            View multiProfile = getLayoutInflater().inflate(R.layout.custom_marker,
-                    new LinearLayout(getContext()));
+            View multiProfile = View.inflate(context, R.layout.custom_marker,
+                    new LinearLayout(context));
             mClusterIconGenerator.setContentView(multiProfile);
             mClusterImageView = multiProfile.findViewById(R.id.image);
 
@@ -417,8 +417,8 @@ public class EventMapFragment extends AbstractShowcaseFragment implements
         private final View myContentsView;
 
         MyCustomAdapterForItems() {
-            myContentsView = getLayoutInflater().inflate(R.layout.custom_info_window,
-                    new LinearLayout(getContext()));
+            myContentsView = View.inflate(requireContext(),R.layout.custom_info_window,
+                    new LinearLayout(requireContext()));
         }
 
         @Override

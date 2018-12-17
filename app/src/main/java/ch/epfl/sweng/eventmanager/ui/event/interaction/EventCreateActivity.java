@@ -284,20 +284,19 @@ public class EventCreateActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (data == null){
+            return;
+        }
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri eventImageUri = data.getData();
             cropAndConvertImage(eventImageUri);
         }
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            assert data != null;
             eventImageSrc = UCrop.getOutput(data);
-            imageChanged = true;
-
             imageLoader.displayImage(this, eventImageSrc, eventImage);
         } else if (resultCode == UCrop.RESULT_ERROR) {
-            assert data != null;
             final Throwable cropError = UCrop.getError(data);
-            Log.i(TAG,"Unable to crop image");
+            Log.i(TAG, "Unable to crop image");
             assert cropError != null;
             cropError.printStackTrace();
         }

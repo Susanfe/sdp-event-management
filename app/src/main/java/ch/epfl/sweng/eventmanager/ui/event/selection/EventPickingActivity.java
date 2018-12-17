@@ -286,7 +286,7 @@ public class EventPickingActivity extends AppCompatActivity {
      * Depending on Android's version on the device, the method launches an animation to reveal the
      * account/signin layout
      */
-    public void revealCircular(boolean hide){
+    private void revealCircular(boolean hide){
         int viewState = hide ? View.GONE : View.VISIBLE;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -331,7 +331,7 @@ public class EventPickingActivity extends AppCompatActivity {
     /**
      * Sets the account/signin layout according to the Session's state
      */
-    public void onPrepareSignupLoginLayout() {
+    private void onPrepareSignupLoginLayout() {
         loginAccountUI.setVisibility(View.GONE);
         if (session.isLoggedIn()) {
             loggedUI.setVisibility(View.VISIBLE);
@@ -402,10 +402,10 @@ public class EventPickingActivity extends AppCompatActivity {
         layout.setBackgroundResource(R.color.colorSecondary);
 
         TextView text = layout.findViewById(com.google.android.material.R.id.snackbar_text);
-        text.setTextColor(getResources().getColor(R.color.colorPrimary));
+        text.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
 
         Button button = layout.findViewById(com.google.android.material.R.id.snackbar_action);
-        button.setTextColor(getResources().getColor(R.color.colorPrimary));
+        button.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
 
         bar.show();
     }
@@ -415,7 +415,7 @@ public class EventPickingActivity extends AppCompatActivity {
         setupObservers();
     }
 
-    public ImageLoader getLoader() {
+     ImageLoader getLoader() {
         return loader;
     }
 }

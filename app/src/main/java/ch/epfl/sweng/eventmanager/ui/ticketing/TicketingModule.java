@@ -1,10 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.ticketing;
 
-import dagger.Binds;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-
-import javax.inject.Singleton;
 
 /**
  * @author Louis Vialar

@@ -2,6 +2,7 @@ package ch.epfl.sweng.eventmanager.repository.data;
 
 import android.graphics.Color;
 import com.google.android.gms.maps.model.PolygonOptions;
+
 import java.util.List;
 
 import androidx.core.math.MathUtils;
