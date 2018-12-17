@@ -87,16 +87,23 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         this.zonesModel.init(eventID);
     }
 
-    private void setupMenu() {
-        LiveData<EventTicketingConfiguration> data = Transformations.map(model.getEvent(),
-                Event::getTicketingConfiguration);
-        data.observe(this, d -> {
+    private void setupMenu(Event ev) {
+        LiveData<EventTicketingConfiguration> ticketingConfiguration = Transformations.map(
+                model.getEvent(), Event::getTicketingConfiguration);
+
+        if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN, ev)) {
+            MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
+            adminMenuItem.setVisible(true);
+        }
+
+        ticketingConfiguration.observe(this, d -> {
             MenuItem item = navigationView.getMenu().findItem(R.id.nav_scan);
-            if (d != null) {
-                Log.i(TAG, "Got a ticketing configuration, setting button visible");
+            if (d != null && session.isLoggedIn() &&
+                    (session.isClearedFor(Role.STAFF, ev) || session.isClearedFor(Role.ADMIN, ev)))  {
+                Log.i(TAG, "Got a ticketing configuration and cleared user, set scan button visible");
                 item.setVisible(true);
             } else {
-                Log.i(TAG, "Got no ticketing configuration, setting button invisible");
+                Log.i(TAG, "Got no ticketing configuration or no valid/cleared user, setting scan button invisible");
                 item.setVisible(false);
             }
         });
@@ -117,7 +124,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         } else {
             this.initModels();
             super.setupHeader();
-            this.setupMenu();
 
             // Only display admin button if the user is at least staff
             model.getEvent().observe(this, ev -> {
@@ -126,10 +132,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                     return;
                 }
 
-                if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN, ev)) {
-                    MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
-                    adminMenuItem.setVisible(true);
-                }
+                this.setupMenu(ev);
             });
 
             // Set displayed fragment only when no other fragment where previously inflated.

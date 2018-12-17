@@ -78,7 +78,8 @@
         section using the "Public area" at the bottom of the sidebar.\n
         \n
         There is two level of rights, STAFF and ADMIN: while a STAFF is only able to see the
-        "Scan ticket" navigation entry on the public area, an admin is able to:
+        "Scan ticket" (if the event contains a ticketing configuration) navigation entry on the
+        public area, an admin is able to:
             - Manage user roles.\n
             - Publish news.\n
             - Broadcast a notification to any user which joined the event.\n
