@@ -36,11 +36,11 @@ public interface InMemorySession {
     void registerAndLogin(String email, String password, Activity context, OnCompleteListener callback);
 
     /**
-     * Get you any currently logged user.
+     * Get you  the uid of any currently logged user.
      *
-     * @return an User, or null
+     * @return a String, or null
      */
-    User getCurrentUser();
+    String getCurrentUserUid();
 
     /**
      * Log out any currently logged user.

@@ -125,7 +125,7 @@
     <!-- Accessibility text -->
     <string name="event_thumbnail">Event thumbnail</string>
     <!-- &#160; represents a non-breakable space -->
-    <string name="display_account_activity_logged_as">Logged as: &#160;</string>
+    <string name="display_account_activity_logged_as">Logged as:&#160;</string>
 
     <string name="event_list_item_default_title">Event name</string>
     <string name="event_list_item_default_description">This is a quick summary of the event</string>
