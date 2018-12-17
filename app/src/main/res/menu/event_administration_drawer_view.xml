@@ -1,23 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_admin_main"
+            android:icon="@drawable/ic_help_outline_black_24dp"
+            android:title="@string/admin_main_nav_item_activity_event" />
+        <item
             android:id="@+id/nav_user_management"
+            android:icon="@drawable/ic_account_circle_24dp"
             android:title="@string/user_management_nav_item_activity_event" />
         <item
             android:id="@+id/nav_send_news"
+            android:icon="@drawable/ic_rate_review_black_24dp"
             android:title="@string/send_news_nav_item_activity_event" />
         <item
-                android:id="@+id/nav_send_notification"
-                android:title="@string/send_notification_nav_item_activity_event" />
+            android:id="@+id/nav_send_notification"
+            android:icon="@drawable/ic_chat_black_24dp"
+            android:title="@string/send_notification_nav_item_activity_event" />
         <item
             android:id="@+id/nav_edit_schedule"
+            android:icon="@drawable/ic_event_black_24dp"
             android:title="@string/edit_schedule_nav_item_activity_event" />
         <item
-            android:id="@+id/nav_showcase"
-            android:title="@string/showcase_nav_item_activity_event" />
-        <item
             android:id="@+id/nav_edit_event"
+            android:icon="@drawable/ic_palette_black_24dp"
             android:title="@string/edit_nav_item_activity_event" />
+    </group>
+    <group android:checkableBehavior="single"
+        android:menuCategory="system"
+        android:id="@+id/event_showcase_group_system">
+        <item
+            android:id="@+id/nav_showcase"
+            android:icon="@drawable/ic_menu_black_24dp"
+            android:title="@string/showcase_nav_item_activity_event" />
     </group>
 </menu>

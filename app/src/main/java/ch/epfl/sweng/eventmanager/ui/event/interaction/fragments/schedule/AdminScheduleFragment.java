@@ -21,7 +21,7 @@ public class AdminScheduleFragment extends ScheduleFragment {
 
     @Override
     protected void onShortPress(ScheduledItem item) {
-        ((MultiFragmentActivity) requireActivity()).changeFragment(new ScheduleEditFragment(item), true);
+        ((MultiFragmentActivity) requireActivity()).changeFragment(ScheduleEditFragment.newInstance(item), true);
     }
 }
 
