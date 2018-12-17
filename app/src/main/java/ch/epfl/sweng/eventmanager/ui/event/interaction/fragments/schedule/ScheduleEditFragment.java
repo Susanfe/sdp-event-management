@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.room.Ignore;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -25,6 +26,7 @@ import java.util.Calendar;
 
 public class ScheduleEditFragment extends Fragment {
     private static final String TAG = "ScheduleEditFragment";
+    private static final String SHEDULE_ITEM = "schedule_item";
 
     @BindView(R.id.create_form_send_button)
     Button sendButton;
@@ -46,6 +48,7 @@ public class ScheduleEditFragment extends Fragment {
 
     private ScheduledItem item;
     private boolean creation = false;
+
 
     private void populateForm() {
         if (creation)
@@ -158,13 +161,29 @@ public class ScheduleEditFragment extends Fragment {
         dialog.show();
     }
 
-    public ScheduleEditFragment(ScheduledItem item) {
-        this.item = item;
+    public static Fragment newInstance(ScheduledItem item) {
+        if(item == null) {
+            throw new IllegalArgumentException("item cannot be null");
+        }
+        Bundle args = new Bundle();
+        args.putParcelable(ScheduleEditFragment.SHEDULE_ITEM,item);
+        ScheduleEditFragment fragment = new ScheduleEditFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     public ScheduleEditFragment() {
         this.creation = true;
         this.item = new ScheduledItem();
+    }
+
+    @SuppressWarnings("unused")
+    public ScheduleEditFragment(Bundle bundle) {
+        if(bundle == null) {
+            throw new IllegalArgumentException("Bundle cannot be null");
+        }
+        ScheduledItem item = bundle.getParcelable(SHEDULE_ITEM);
+        this.item = item;
     }
 
     @Override

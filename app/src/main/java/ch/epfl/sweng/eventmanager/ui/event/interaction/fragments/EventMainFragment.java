@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -57,7 +58,7 @@ public class EventMainFragment extends AbstractFeedbackFragment {
 
     private EventShowcaseActivity showcaseActivity;
 
-    private RatingsRecyclerViewAdapter ratingsRecyclerViewAdapter = new RatingsRecyclerViewAdapter();
+    private RatingsRecyclerViewAdapter ratingsRecyclerViewAdapter;
 
     public EventMainFragment() {
         // Required empty public constructor
@@ -109,8 +110,22 @@ public class EventMainFragment extends AbstractFeedbackFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) ButterKnife.bind(this, view);
 
-        recyclerView.setAdapter(ratingsRecyclerViewAdapter);
+        ratingsRecyclerViewAdapter = new RatingsRecyclerViewAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(ratingsRecyclerViewAdapter);
+        //The following is to allow smooth scrolling in the main scrollView.
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener()  {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                return true; //Consume the touch event
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {}
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+        });
 
         model.getEvent().observe(this, ev -> repository.getRatings(ev.getId()).observe(this, ratings -> {
             if (ratings != null && ratings.size() > 0) {
