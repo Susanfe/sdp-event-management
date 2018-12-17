@@ -15,20 +15,18 @@ import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Fragment with viewPager holding Schedule with different rooms and mySchedule fragments
  */
 public class ScheduleParentFragment extends Fragment {
 
-    private static String TAG = "ScheduleParentFragment";
+    private static final String TAG = "ScheduleParentFragment";
     @BindView(R.id.viewpager)
     ViewPager viewPager;
     @BindView(R.id.tabs)
@@ -38,7 +36,7 @@ public class ScheduleParentFragment extends Fragment {
     private ScheduleViewModel scheduleViewModel;
     private ViewPagerAdapter viewPagerAdapter;
     private Bundle savedInstanceState;
-    private static final String TAB_NB_KEY = "TAB_NB_KEY";
+    static final String TAB_NB_KEY = "TAB_NB_KEY";
 
     public static ScheduleParentFragment newInstance() {
         return new ScheduleParentFragment();
@@ -46,16 +44,17 @@ public class ScheduleParentFragment extends Fragment {
 
     /**
      * Returns a new ScheduleParentFragment with the given room displayed.
+     *
      * @param roomName The name of the room we want do display
      * @return ScheduleParentFragment
      */
     public static ScheduleParentFragment newInstance(String roomName) {
-        if(roomName == null) {
+        if (roomName == null) {
             throw new IllegalArgumentException("The name of the room cannot be null");
         }
-         Bundle args = new Bundle();
-         args.putString(TAB_NB_KEY,roomName);
-         ScheduleParentFragment fragment = new ScheduleParentFragment();
+        Bundle args = new Bundle();
+        args.putString(TAB_NB_KEY, roomName);
+        ScheduleParentFragment fragment = new ScheduleParentFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -79,7 +78,7 @@ public class ScheduleParentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        createViewPagerAdapter();
+        this.viewPagerAdapter = createViewPagerAdapter();
     }
 
     @Override
@@ -98,41 +97,48 @@ public class ScheduleParentFragment extends Fragment {
 
         Log.i(TAG, "Resumed model from memory : " + scheduleViewModel);
 
-        scheduleViewModel.getScheduleItemsByRoom().observe(this, map -> {
-            if (map != null) {
-                viewPager.setVisibility(View.VISIBLE);
-                tabLayout.setVisibility(View.VISIBLE);
-                emptyText.setVisibility(View.GONE);
-                updateTabs(map.keySet());
-                viewPagerAdapter.notifyDataSetChanged();
-                if (savedInstanceState != null) {
-                    int page = savedInstanceState.getInt("current_item");
-                    viewPager.setCurrentItem(page);
-                }
-                Bundle args = getArguments();
-                if (args != null) {
-                    String room = getArguments().getString(TAB_NB_KEY, "");
-                    int cond = viewPagerAdapter.getTitlePage(room);
-                    if (cond != -1) {
-                        viewPager.postDelayed(() -> viewPager.setCurrentItem(cond), 100);
-                    }
-                }
-            } else {
-                tabLayout.setVisibility(View.GONE);
-                viewPager.setVisibility(View.GONE);
-                emptyText.setVisibility(View.VISIBLE);
-                destroyUnusedFragments(viewPagerAdapter.mFragmentList, Collections.emptySet(), true);
-                viewPagerAdapter.notifyDataSetChanged();
+        scheduleViewModel.getScheduleItemsByRoom().observe(this, this::fillPager);
+    }
+
+    protected void fillPager(Map<String, List<ScheduledItem>> roomSchedules) {
+        if (roomSchedules != null) {
+            viewPager.setVisibility(View.VISIBLE);
+            tabLayout.setVisibility(View.VISIBLE);
+            emptyText.setVisibility(View.GONE);
+            updateTabs(roomSchedules.keySet());
+            viewPagerAdapter.notifyDataSetChanged();
+            if (savedInstanceState != null) {
+                int page = savedInstanceState.getInt("current_item");
+                viewPager.setCurrentItem(page);
             }
-        });
+            Bundle args = getArguments();
+            if (args != null) {
+                String room = getArguments().getString(TAB_NB_KEY, "");
+                int cond = viewPagerAdapter.getTitlePage(room);
+                if (cond != -1) {
+                    viewPager.postDelayed(() -> viewPager.setCurrentItem(cond), 100);
+                }
+            }
+        } else {
+            clearPager();
+        }
+    }
+
+    protected void clearPager() {
+        tabLayout.setVisibility(View.GONE);
+        viewPager.setVisibility(View.GONE);
+        emptyText.setVisibility(View.VISIBLE);
+        destroyUnusedFragments(Collections.emptySet(), true);
+        viewPagerAdapter.notifyDataSetChanged();
     }
 
     /**
      * Take care of setting up the viewPager Adapter and binding it to the viewPager
      */
-    private void createViewPagerAdapter() {
-        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+    protected ViewPagerAdapter createViewPagerAdapter() {
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragment(new MyScheduleFragment(), "My Schedule");
+        return viewPagerAdapter;
     }
 
     /**
@@ -149,25 +155,32 @@ public class ScheduleParentFragment extends Fragment {
         for (String room : rooms) {
             String fragmentName = (room != null && !room.isEmpty()) ? room : "Schedule";
             if (!viewPagerAdapter.mFragmentTitleList.contains(fragmentName)) {
-                ScheduleFragment fragment = new ScheduleFragment();
-                fragment.setRoom(room);
+                ScheduleFragment fragment = createFragmentForRoom(room);
                 fragment.setRetainInstance(true);
                 viewPagerAdapter.addFragment(fragment, fragmentName);
             }
         }
-        destroyUnusedFragments(viewPagerAdapter.mFragmentList, rooms, false);
+        destroyUnusedFragments(rooms, false);
+    }
+
+    protected ScheduleFragment createFragmentForRoom(String room) {
+        ScheduleFragment fragment = new ScheduleFragment();
+        fragment.setRoom(room);
+        return fragment;
     }
 
     /**
      * Destroy all unused fragment in case of removal of Room/Events in DB
      *
-     * @param allFragments      list of all registered fragments
      * @param rooms             current known rooms
      * @param destroyMySchedule true if mySchedule need to be destroyed, false otherwise
      */
-    private void destroyUnusedFragments(@NonNull List<Fragment> allFragments, @NonNull Set<String> rooms,
+    private void destroyUnusedFragments(@NonNull Set<String> rooms,
                                         Boolean destroyMySchedule) {
-        for (Fragment fragment : viewPagerAdapter.mFragmentList) {
+
+        List<Fragment> fragments = new ArrayList<>(viewPagerAdapter.mFragmentList);
+
+        for (Fragment fragment : fragments) {
             if (fragment instanceof ScheduleFragment && !rooms.contains(((ScheduleFragment) fragment).getRoom())) {
                 requireActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                 viewPagerAdapter.mFragmentList.remove(fragment);
@@ -182,7 +195,7 @@ public class ScheduleParentFragment extends Fragment {
     /**
      * Basic Adapter for ViewPager
      */
-    private static class ViewPagerAdapter extends FragmentPagerAdapter {
+    protected static class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 

@@ -40,4 +40,8 @@ public interface EventRepository {
 
     Task deleteEvent(Event event);
 
+    Task<ScheduledItem> updateScheduledItem(int eventId, ScheduledItem item);
+    Task<ScheduledItem> createScheduledItem(int eventId, ScheduledItem item);
+    Task deleteScheduledItem(int eventId, ScheduledItem item);
+
 }
