@@ -1,17 +1,12 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
-import com.google.android.gms.tasks.Continuation;
+import ch.epfl.sweng.eventmanager.notifications.NotificationRequest;
+import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.inject.Inject;
-
-import androidx.annotation.NonNull;
-import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 
 public class FirebaseCloudFunction implements CloudFunction {
 
@@ -59,6 +54,7 @@ public class FirebaseCloudFunction implements CloudFunction {
      * @param role string representation of the role to be removed
      * @return the related task
      */
+
     public Task<Boolean> removeUserFromEvent(String uid, int eventId, String role) {
         // Prepare parameters for the Firebase Cloud Function
         Map<String, Object> data = new HashMap<>();
@@ -70,15 +66,38 @@ public class FirebaseCloudFunction implements CloudFunction {
         return FirebaseFunctions.getInstance()
                 .getHttpsCallable("removeUserFromEvent")
                 .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, Boolean>() {
-                    @Override
-                    public Boolean then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        // This continuation runs on either success or failure, but if the task
-                        // has failed then getResult() will throw an Exception which will be
-                        // propagated down.
-                        Boolean result = (Boolean) task.getResult().getData();
-                        return result;
-                    }
+                .continueWith(task -> {
+                    // This continuation runs on either success or failure, but if the task
+                    // has failed then getResult() will throw an Exception which will be
+                    // propagated down.
+                    Boolean result = (Boolean) task.getResult().getData();
+                    return result;
+                });
+    }
+
+    /**
+     * Calls a dedicated FireBase Cloud Function allowing an event administrator to send a notification to all users
+     * having joined a specified event
+     * @param notificationRequest request by the event administrator
+     * @return the related task
+     * @see NotificationRequest
+     */
+    public Task<Boolean> sendNotificationToUsers(NotificationRequest notificationRequest){
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("title", notificationRequest.getTitle());
+        data.put("body", notificationRequest.getBody());
+        data.put("eventId", notificationRequest.getEventId());
+
+        return FirebaseFunctions.getInstance()
+                .getHttpsCallable("sendNotificationToUsers")
+                .call(data)
+                .continueWith(task -> {
+                    // This continuation runs on either success or failure, but if the task
+                    // has failed then getResult() will throw an Exception which will be
+                    // propagated down.
+                    Boolean result = (Boolean) task.getResult().getData();
+                    return result;
                 });
     }
 }

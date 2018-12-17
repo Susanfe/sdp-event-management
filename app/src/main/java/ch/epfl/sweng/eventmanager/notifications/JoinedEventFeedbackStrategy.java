@@ -9,7 +9,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
  */
 public class JoinedEventFeedbackStrategy extends NotificationStrategy<Event> {
     private static final long ONE_DAY = 86_400_000; //24H in millis
-    private static final String titleText = "Rate this event : ";
+    private static final String descriptionText = "Rate this event !";
 
     public JoinedEventFeedbackStrategy(Context context) {
         super(context);
@@ -29,7 +29,6 @@ public class JoinedEventFeedbackStrategy extends NotificationStrategy<Event> {
     }
 
     private Notification getNotificationFromEvent(Event event) {
-        //TODO make the notification on click action send the user to the feedback fragment
-        return NotificationBuilder.getNotificationFromItem(context, titleText + event.getName(), "", event.getId());
+        return NotificationBuilder.getFeedbackNotificationFrom(context, event.getName(), descriptionText, event.getId());
     }
 }

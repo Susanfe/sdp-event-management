@@ -51,6 +51,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+        See README(https://goo.gl/l4GJaQ) for more. -->
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/ic_marker_active" />
+
         <activity
             android:name=".ui.event.selection.EventPickingActivity"
             android:screenOrientation="portrait"
@@ -109,9 +115,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-        <receiver android:name=".repository.impl.NotificationPublisher" />
-
         <activity android:name=".ui.event.interaction.EventAdministrationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
@@ -138,20 +141,22 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.user.LoginFacebookActivity"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".ui.settings.SettingsActivity"
             android:label="Settings"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.ActionBar"/>
-
         <activity
                 android:name="com.yalantis.ucrop.UCropActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-
+        <service android:name=".repository.impl.FirebaseNotificationService" >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <receiver android:name=".notifications.NotificationPublisher"/>
     </application>
 
 </manifest>
