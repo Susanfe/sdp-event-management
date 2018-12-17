@@ -24,8 +24,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.*;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
-import static ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.myschedule.MyScheduleTest.withIndex;
-import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -79,6 +77,9 @@ public class ScheduleEditTest {
 
     @Test
     public void testEdit() {
+        onView(withId(R.id.text_timeline_description)).perform(click());
+        SystemClock.sleep(100);
+
         onView(withId(R.id.create_form_artist)).perform(clearText(), typeText("Avicii"), closeSoftKeyboard());
         onView(withId(R.id.create_form_genre)).perform(clearText(), typeText("Electro"), closeSoftKeyboard());
         onView(withId(R.id.create_form_room)).perform(clearText(), typeText("Polyv"), closeSoftKeyboard());
