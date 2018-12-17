@@ -287,7 +287,7 @@ public class EventCreateActivity extends AppCompatActivity {
         if (data == null){
             return;
         }
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data.getData() != null) {
             Uri eventImageUri = data.getData();
             cropAndConvertImage(eventImageUri);
         }

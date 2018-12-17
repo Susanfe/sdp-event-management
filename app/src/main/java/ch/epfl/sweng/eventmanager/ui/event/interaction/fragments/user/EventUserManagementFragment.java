@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -82,9 +84,11 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, view);
+        if (view != null) {
+            ButterKnife.bind(this, view);
+        }
 
         // Help text
         helpText.setText(R.string.user_management_help_text);
@@ -133,7 +137,7 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
      * Callback used by the AddUser form to add an user to the current event at a given role.
      * @param ev Event to which to add the user
      */
-    public void addUser(Event ev) {
+    private void addUser(Event ev) {
         setInProgressState(mAddUserButton, true);
         String email = mAddUserEmailField.getText().toString();
         String role = mAddUserSpinner.getSelectedItem().toString().toLowerCase();
@@ -149,8 +153,8 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
 
     /**
      * Callback used to remove an user from the current event at a given role.
-     * @param v
-     * @param ev
+     * @param v Parent View from which to retrieve button to animate
+     * @param ev event to remove user from
      */
     protected void removeUser(View v, Event ev, String uid, Role role) {
         Button removeButton = v.findViewById(R.id.remove_button);
