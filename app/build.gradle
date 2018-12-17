@@ -96,7 +96,7 @@ dependencies {
 
     // Play services
     implementation 'com.google.android.gms:play-services-maps:16.0.0'
-    implementation 'com.google.maps.android:android-maps-utils:0.5+'
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
 
     // Twitter APIs
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'

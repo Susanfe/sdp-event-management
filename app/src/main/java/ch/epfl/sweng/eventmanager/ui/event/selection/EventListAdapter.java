@@ -114,15 +114,11 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void eventOnBindViewHolder(EventViewHolder holder, int position) {
-        holder.eventNameTextView.setText(mEvents.get(position).getName());
-        holder.eventSummary.setText(mEvents.get(position).getDescription());
-        context.getLoader().loadImageWithSpinner(mEvents.get(position), context, holder.eventThumbnail, null);
+        holder.bind(mEvents.get(position));
     }
 
     private void joinedEventOnBindViewHolder(JoinedEventViewHolder holder, int position) {
-        holder.eventNameTextView.setText(mEvents.get(position).getName());
-        holder.eventSummary.setText(mEvents.get(position).getDescription());
-        context.getLoader().loadImageWithSpinner(mEvents.get(position), context, holder.eventThumbnail, null);
+        holder.bind(mEvents.get(position));
     }
 
 
@@ -151,6 +147,12 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @Override
         public void onClick(View view) {
             goToEvent(itemView,getAdapterPosition());
+        }
+
+        void bind(Event ev) {
+            eventNameTextView.setText(ev.getName());
+            eventSummary.setText(ev.getDescription());
+            context.getLoader().loadImageWithSpinner(ev, context, eventThumbnail, null);
         }
 
     }
@@ -182,6 +184,12 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         void onClickJoinButton() {
             Context context = itemView.getContext();
             ((EventPickingActivity) context).joinOrUnjoinEvent(mEvents.get(getAdapterPosition()), true);
+        }
+
+        void bind(Event ev) {
+            eventNameTextView.setText(ev.getName());
+            eventSummary.setText(ev.getDescription());
+            context.getLoader().loadImageWithSpinner(ev, context, eventThumbnail, null);
         }
     }
 
