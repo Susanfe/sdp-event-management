@@ -23,12 +23,8 @@ import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFormFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
+import ch.epfl.sweng.eventmanager.repository.impl.FirebaseNotificationService;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
@@ -346,6 +342,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                     if(ev.getEndDateAsDate() != null){
                         NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
                     }
+                    FirebaseNotificationService.subscribeToNotifications(ev);
                 } else {
                     this.model.unjoinEvent(ev);
                     if(ev.getBeginDateAsDate() != null){
@@ -354,6 +351,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                     if(ev.getEndDateAsDate() != null){
                         NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
                     }
+                    FirebaseNotificationService.unsubscribeFromNotifications(ev);
                 }
             });
 
