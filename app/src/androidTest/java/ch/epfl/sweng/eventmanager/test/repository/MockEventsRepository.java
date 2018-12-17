@@ -300,14 +300,6 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         return Tasks.call(() -> true);
     }
 
-    @Override
-    public Task<Boolean> sendNotificationToUsers(NotificationRequest notificationRequest) {
-        if (notificationRequest.getTitle().contains("fails"))
-            return Tasks.forCanceled();
-
-        return Tasks.call(() -> true);
-    }
-
     public ObservableMap<Integer, List<ScheduledItem>> getScheduledItems() {
         return scheduledItems;
     }
