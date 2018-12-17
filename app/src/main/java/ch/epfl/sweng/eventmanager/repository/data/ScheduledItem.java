@@ -6,10 +6,7 @@ import com.google.firebase.database.Exclude;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Class describing a single scheduled item (concert, activity...) in an event. The class is for the moment only used by
@@ -151,7 +148,7 @@ public final class ScheduledItem {
         if (date <= 0) {
             return null;
         }
-        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm", Locale.getDefault());
         return f.format(date);
     }
 
@@ -199,7 +196,7 @@ public final class ScheduledItem {
      * @param out the stream to print this event in
      */
     public void printAsIcalendar(PrintStream out) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss",Locale.US);
 
         out.println("BEGIN:VEVENT");
         out.println("SUMMARY:" + getArtist());

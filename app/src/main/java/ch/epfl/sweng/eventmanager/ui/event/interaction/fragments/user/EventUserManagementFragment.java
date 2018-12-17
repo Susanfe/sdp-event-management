@@ -1,7 +1,6 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,7 +103,7 @@ public class EventUserManagementFragment extends AbstractShowcaseFragment {
 
         String[] roles = Role.asArrayOfString();
         // TODO handle null pointer exception
-        ArrayAdapter<String> addUserSpinnerAdapter = new ArrayAdapter<>(getActivity(),
+        ArrayAdapter<String> addUserSpinnerAdapter = new ArrayAdapter<>(requireActivity(),
                 android.R.layout.simple_spinner_item, roles);
         addUserSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAddUserSpinner.setAdapter(addUserSpinnerAdapter);

@@ -1,13 +1,12 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
-import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.MultiFragmentActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 
@@ -27,11 +26,11 @@ public abstract class AbstractShowcaseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //TODO handle null exception
-        model = ViewModelProviders.of(getActivity()).get(EventInteractionModel.class);
+        model = ViewModelProviders.of(requireActivity()).get(EventInteractionModel.class);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         this.view = inflater.inflate(resource, container, false);
         return view;
@@ -43,7 +42,7 @@ public abstract class AbstractShowcaseFragment extends Fragment {
 
         if (model == null) {
             // TODO Handle null exception
-            model = ViewModelProviders.of(getActivity()).get(EventInteractionModel.class);
+            model = ViewModelProviders.of(requireActivity()).get(EventInteractionModel.class);
         }
     }
 
