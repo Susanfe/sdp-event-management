@@ -19,7 +19,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary" />
+            style="@style/Toolbar"/>
 
     </FrameLayout>
 
@@ -31,6 +31,9 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/event_showcase_drawer_header"
+        app:itemTextColor="@color/colorPrimary"
+        app:itemIconTint="@color/colorPrimaryLight"
+        app:itemBackground="@drawable/drawer_item_background"
         app:menu="@menu/event_administration_drawer_view" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
