@@ -19,14 +19,18 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Stack;
 
+import javax.inject.Inject;
+
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.DialogFragment;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.MapEditionRepository;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.*;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.history.MapEditionAction;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.history.MarkerCreationAction;
@@ -39,6 +43,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.customViews.CustomAddOptionsDialog;
 import ch.epfl.sweng.eventmanager.ui.customViews.CustomInfoDialog;
 import ch.epfl.sweng.eventmanager.ui.customViews.CustomMarkerDialog;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 
 import static ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag.createOverlayEdgeTag;
 import static ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag.createSpotTag;
@@ -90,6 +95,10 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     public static final String defaultTitle = "New Spot";
     public static final String defaultSnippet = "Amazing description";
     private final SpotType defaultType = SpotType.ROOM;
+
+    @Inject
+    MapEditionRepository repository;
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -149,7 +158,9 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     private void confirmSaveAndQuit(List<Spot> updatedSpots) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setPositiveButton(R.string.button_yes, (dialog1, which) -> {
-            //TODO add the firebase upload beahvior
+            repository.updateSpots(((EventShowcaseActivity)requireActivity()).getEventID(), updatedSpots);
+            repository.updateZones(((EventShowcaseActivity)requireActivity()).getEventID(), Arrays.asList(eventZone));
+            requireActivity().onBackPressed();
         });
         builder.setNegativeButton(R.string.button_no, (dialog, which) -> {
            // Action is dismissed
@@ -578,7 +589,6 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
             return false;
         }
     }
-
 
 }
 
