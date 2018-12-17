@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventAdminMainFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNewsFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.AdminScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNotificationFragment;
@@ -26,7 +27,6 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
     @Inject
     ViewModelFactory factory;
 
-    private EventInteractionModel model;
     private NewsViewModel newsModel;
 
     @Override
@@ -45,6 +45,7 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
         } else {
             this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
             this.model.init(eventID);
+            super.setupHeader();
 
             // Only display admin button if the user is at least staff
             model.getEvent().observe(this, ev -> {
@@ -58,8 +59,8 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
             });
 
             // Set default administration fragment
-            changeFragment(new EventUserManagementFragment(), false);
-            navigationView.setCheckedItem(R.id.nav_user_management);
+            changeFragment(new EventAdminMainFragment(), false);
+            navigationView.setCheckedItem(R.id.nav_admin_main);
         }
 
         // Initialize News model
@@ -88,6 +89,11 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
                 menuItem.setChecked(false);
                 break;
 
+            case R.id.nav_admin_main :
+                changeFragment(new EventAdminMainFragment(), true);
+                menuItem.setChecked(true);
+                break;
+
             case R.id.nav_user_management :
                 changeFragment(new EventUserManagementFragment(), true);
                 menuItem.setChecked(true);
@@ -100,6 +106,7 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
 
             case R.id.nav_send_notification :
                 changeFragment(new SendNotificationFragment(), true);
+                menuItem.setChecked(true);
                 break;
 
             case R.id.nav_edit_schedule :
@@ -114,6 +121,7 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
                 menuItem.setChecked(false);
                 break;
         }
+
         return false;
     }
 }

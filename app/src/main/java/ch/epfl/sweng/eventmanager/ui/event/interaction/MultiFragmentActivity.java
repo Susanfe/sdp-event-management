@@ -2,8 +2,13 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -17,6 +22,9 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
  * This class is used to share the changeFragment method between our various multi-fragment classes.
@@ -31,8 +39,12 @@ public class MultiFragmentActivity extends AppCompatActivity
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @Inject
+    ImageLoader loader;
+
     private static final String TAG = "MultiFragmentActivity";
 
+    protected EventInteractionModel model;
     protected int eventID;
 
     /**
@@ -129,5 +141,29 @@ public class MultiFragmentActivity extends AppCompatActivity
      */
     public int getEventID() {
         return eventID;
+    }
+
+
+    /**
+     * Fill navigation header (in the sidebar).
+     */
+    protected void setupHeader() {
+        // Set window title and configure header
+        View headerView = navigationView.getHeaderView(0);
+        TextView drawer_header_text = headerView.findViewById(R.id.drawer_header_text);
+        model.getEvent().observe(this, ev -> {
+            if (ev == null) {
+                return;
+            }
+
+            if (ev.hasAnImage()) {
+                ImageView header = headerView.findViewById(R.id.drawer_header_image);
+                loader.loadImageWithSpinner(ev, this, header, new BlurTransformation(3));
+            }
+
+            drawer_header_text.setText(ev.getName());
+            setTitle(ev.getName());
+        });
+
     }
 }

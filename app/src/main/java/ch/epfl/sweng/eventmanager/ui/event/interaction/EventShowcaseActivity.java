@@ -6,11 +6,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
@@ -23,9 +23,18 @@ import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFormFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMainFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventMapFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventTicketFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.settings.SettingsActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
@@ -34,9 +43,6 @@ import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
-import jp.wasabeef.glide.transformations.BlurTransformation;
-
-import javax.inject.Inject;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
@@ -52,10 +58,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     TicketingManager ticketingManager;
     @Inject
     Session session;
-    @Inject
-    ImageLoader loader;
 
-    private EventInteractionModel model;
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
@@ -99,26 +102,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         });
     }
 
-    private void setupHeader() {
-        // Set window title and configure header
-        View headerView = navigationView.getHeaderView(0);
-        TextView drawer_header_text = headerView.findViewById(R.id.drawer_header_text);
-        model.getEvent().observe(this, ev -> {
-            if (ev == null) {
-                return;
-            }
-
-            if (ev.hasAnImage()) {
-                ImageView header = headerView.findViewById(R.id.drawer_header_image);
-                loader.loadImageWithSpinner(ev, this, header, new BlurTransformation(3));
-            }
-
-            drawer_header_text.setText(ev.getName());
-            setTitle(ev.getName());
-        });
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidInjection.inject(this);
@@ -133,7 +116,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
             this.initModels();
-            this.setupHeader();
+            super.setupHeader();
             this.setupMenu();
 
             // Only display admin button if the user is at least staff

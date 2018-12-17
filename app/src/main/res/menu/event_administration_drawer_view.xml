@@ -2,22 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_admin_main"
+            android:title="@string/admin_main_nav_item_activity_event" />
+        <item
             android:id="@+id/nav_user_management"
             android:title="@string/user_management_nav_item_activity_event" />
         <item
             android:id="@+id/nav_send_news"
             android:title="@string/send_news_nav_item_activity_event" />
         <item
-                android:id="@+id/nav_send_notification"
-                android:title="@string/send_notification_nav_item_activity_event" />
+            android:id="@+id/nav_send_notification"
+            android:title="@string/send_notification_nav_item_activity_event" />
         <item
             android:id="@+id/nav_edit_schedule"
             android:title="@string/edit_schedule_nav_item_activity_event" />
         <item
-            android:id="@+id/nav_showcase"
-            android:title="@string/showcase_nav_item_activity_event" />
-        <item
             android:id="@+id/nav_edit_event"
             android:title="@string/edit_nav_item_activity_event" />
+        <item
+            android:id="@+id/nav_showcase"
+            android:title="@string/showcase_nav_item_activity_event" />
     </group>
 </menu>

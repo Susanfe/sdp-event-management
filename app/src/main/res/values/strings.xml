@@ -71,6 +71,11 @@
     <string name="showcase_nav_item_activity_event">Public area</string>
     <string name="send_news_nav_item_activity_event">Publish news</string>
     <string name="edit_schedule_nav_item_activity_event">Edit schedule</string>
+    <string name="admin_main_nav_item_activity_event">Help</string>
+
+    <string name="admin_help_text">
+        FIXME: admin help text
+    </string>
 
     <string name="user_management_help_text">This page allows you to add and remove roles specific
         to this event.
