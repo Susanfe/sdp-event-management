@@ -49,8 +49,8 @@ public class DummyInMemorySession implements InMemorySession {
     }
 
     @Override
-    public User getCurrentUser() {
-        return user;
+    public String getCurrentUserUid() {
+        return user.getUid();
     }
 
     @Override
