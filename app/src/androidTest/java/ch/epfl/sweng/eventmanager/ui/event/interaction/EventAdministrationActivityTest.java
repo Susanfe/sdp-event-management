@@ -41,4 +41,17 @@ public class EventAdministrationActivityTest {
 
         onIdle();
     }
+
+    @Test
+    public void testOpenSchedule() {
+        // Open drawer
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+
+        onIdle();
+
+        // Switch to the 'event edition' section
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_edit_schedule));
+
+        onIdle();
+    }
 }

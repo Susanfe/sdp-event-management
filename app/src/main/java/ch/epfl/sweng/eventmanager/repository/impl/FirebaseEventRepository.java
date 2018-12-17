@@ -14,6 +14,7 @@ import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
@@ -81,12 +82,6 @@ public class FirebaseEventRepository implements EventRepository {
         return event.getName().replace(" ", "_") + ".png";
     }
 
-    private <T> LiveData<List<T>> getElems(int eventId, String basePath, Class<T> classOfT) {
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference(basePath).child("event_" + eventId);
-
-        return FirebaseHelper.getList(dbRef, classOfT);
-    }
-
 
     @Override
     public LiveData<List<Spot>> getSpots(int eventId) {
@@ -109,12 +104,19 @@ public class FirebaseEventRepository implements EventRepository {
 
     @Override
     public LiveData<List<ScheduledItem>> getScheduledItems(int eventId) {
-        return this.getElems(eventId, "schedule_items", ScheduledItem.class);
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("schedule_items").child("event_" + eventId);
+
+        return FirebaseHelper.getList(dbRef, ScheduledItem.class, (item, ref) -> {
+            item.setId(ref.getKey());
+            return item;
+        });
     }
 
     @Override
     public LiveData<List<Zone>> getZones(int eventId) {
-        return this.getElems(eventId, "zones", Zone.class);
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("zones").child("event_" + eventId);
+
+        return FirebaseHelper.getList(dbRef, Zone.class);
     }
 
     private String getImageName(Spot spot) {
@@ -181,5 +183,59 @@ public class FirebaseEventRepository implements EventRepository {
                         });
             }
         });
+    }
+
+    @Override
+    public Task<ScheduledItem> updateScheduledItem(int eventId, ScheduledItem item) {
+        if (item == null) {
+            throw new IllegalArgumentException("item to update cannot be null");
+        }
+
+        if (item.getId() == null) {
+            throw new IllegalArgumentException("item to update has no id");
+        }
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("schedule_items")
+                .child("event_" + eventId)
+                .child(item.getId());
+
+        return dbRef.setValue(item).onSuccessTask(v -> Tasks.forResult(item));
+    }
+
+    @Override
+    public Task<ScheduledItem> createScheduledItem(int eventId, ScheduledItem item) {
+        if (item == null) {
+            throw new IllegalArgumentException("item to create cannot be null");
+        }
+
+        if (item.getId() != null) {
+            throw new IllegalArgumentException("item to update already has an id");
+        }
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("schedule_items")
+                .child("event_" + eventId)
+                .push();
+
+        // Set the newly created key to the item
+        item.setId(dbRef.getKey());
+
+        return dbRef.setValue(item).onSuccessTask(v -> Tasks.forResult(item));
+    }
+
+    @Override
+    public Task deleteScheduledItem(int eventId, ScheduledItem item) {
+        if (item == null) {
+            throw new IllegalArgumentException("item to delete cannot be null");
+        }
+
+        if (item.getId() == null) {
+            throw new IllegalArgumentException("item to delete has no id");
+        }
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("schedule_items")
+                .child("event_" + eventId)
+                .child(item.getId());
+
+        return dbRef.removeValue();
     }
 }
