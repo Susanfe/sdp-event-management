@@ -74,7 +74,15 @@
     <string name="admin_main_nav_item_activity_event">Help</string>
 
     <string name="admin_help_text">
-        FIXME: admin help text
+        This section allows you to manage an event. You can go back to the public
+        section using the "Public area" at the bottom of the sidebar.\n
+        \n
+        There is two level of rights, STAFF and ADMIN: while a STAFF is only able to see the
+        "Scan ticket" navigation entry on the public area, an admin is able to:
+            - Manage user roles.\n
+            - Publish news.\n
+            - Broadcast a notification to any user which joined the event.\n
+            - Edit the schedule and the details of the event.\n
     </string>
 
     <string name="user_management_help_text">This page allows you to add and remove roles specific

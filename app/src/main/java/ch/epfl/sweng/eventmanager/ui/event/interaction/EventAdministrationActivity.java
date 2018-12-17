@@ -70,7 +70,7 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
             });
 
             // Set default administration fragment
-            changeFragment(new EventAdminMainFragment(), false);
+            changeFragment(new EventAdminMainFragment(), true);
             navigationView.setCheckedItem(R.id.nav_admin_main);
         }
 
