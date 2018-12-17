@@ -321,7 +321,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     @Override
     public void onBackPressed() {
         Fragment fragment = getCurrentFragment();
-        if (fragment instanceof EventTicketFragment || fragment instanceof EventMapFragment || fragment instanceof ScheduleParentFragment || fragment instanceof NewsFragment) {
+        if (fragment instanceof EventTicketFragment || (fragment instanceof EventMapFragment && !(fragment instanceof EventMapEditionFragment)) ||
+                fragment instanceof ScheduleParentFragment || fragment instanceof NewsFragment) {
             switchFragment(FragmentType.MAIN, true);
         } else {
             int fragments = getSupportFragmentManager().getBackStackEntryCount();
