@@ -41,7 +41,7 @@ public class MyScheduleTest {
     public final EventTestRule<EventShowcaseActivity> mActivityRule =
             new EventTestRule<>(EventShowcaseActivity.class);
 
-    private static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
+    public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
         return new TypeSafeMatcher<View>() {
             int currentIndex = 0;
 

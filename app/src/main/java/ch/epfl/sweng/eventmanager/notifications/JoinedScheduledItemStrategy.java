@@ -29,6 +29,6 @@ public class JoinedScheduledItemStrategy extends NotificationStrategy<ScheduledI
     }
 
     private Notification getNotificationFromScheduleItem(ScheduledItem scheduledItem) {
-        return NotificationBuilder.getNotificationFromItem(context, scheduledItem.getArtist() + " " + scheduledItem.getGenre() + titleText, scheduledItem.getDescription());
+        return NotificationBuilder.getNotificationFrom(context, scheduledItem.getArtist() + " " + scheduledItem.getGenre() + titleText, scheduledItem.getDescription());
     }
 }

@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.test.repository;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import androidx.lifecycle.LiveData;
+import ch.epfl.sweng.eventmanager.notifications.NotificationRequest;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.*;
@@ -13,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.yalantis.ucrop.view.OverlayView;
 
 import java.util.*;
 
@@ -256,7 +258,8 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         if (!scheduledItems.getMap().containsKey(eventId))
             scheduledItems.put(eventId, new ArrayList<>());
 
-        while ((i = iterator.next()) != null) {
+        while (iterator.hasNext()) {
+            i = iterator.next();
             if (i.getId().equalsIgnoreCase(item.getId())) {
                 iterator.remove();
             }
@@ -287,5 +290,17 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         // TODO: we currently only check if this is properly called
 
         return Tasks.call(() -> true);
+    }
+
+    @Override
+    public Task<Boolean> sendNotificationToUsers(NotificationRequest notificationRequest) {
+        if (notificationRequest.getTitle().contains("fails"))
+            return Tasks.forCanceled();
+
+        return Tasks.call(() -> true);
+    }
+
+    public ObservableMap<Integer, List<ScheduledItem>> getScheduledItems() {
+        return scheduledItems;
     }
 }
