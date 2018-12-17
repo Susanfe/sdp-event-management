@@ -7,6 +7,7 @@ import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.JoinedScheduleItemRepository;
 import ch.epfl.sweng.eventmanager.repository.data.JoinedScheduleItem;
 import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
+import com.google.android.gms.tasks.Task;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -65,11 +66,11 @@ public class ScheduleViewModel extends ViewModel {
         return joinedItems;
     }
 
-    public void toggleMySchedule(UUID scheduledItemId) {
+    public void toggleMySchedule(String scheduledItemId) {
         toggleMySchedule(scheduledItemId, null);
     }
 
-    public void toggleMySchedule(UUID scheduledItemId, JoinedScheduleItemRepository.ToggleCallback wasAdded) {
+    public void toggleMySchedule(String scheduledItemId, JoinedScheduleItemRepository.ToggleCallback wasAdded) {
         joinedScheduleItemRepository.toggle(new JoinedScheduleItem(scheduledItemId, eventId), wasAdded);
     }
 
@@ -113,5 +114,17 @@ public class ScheduleViewModel extends ViewModel {
             }
             return scheduleItemsByRoom;
         });
+    }
+
+    public Task<ScheduledItem> updateOrCreateScheduledItem(ScheduledItem item) {
+        if (item.getId() == null) {
+            return repository.createScheduledItem(eventId, item);
+        } else {
+            return repository.updateScheduledItem(eventId, item);
+        }
+    }
+
+    public Task deleteScheduledItem(ScheduledItem item) {
+        return repository.deleteScheduledItem(eventId, item);
     }
 }

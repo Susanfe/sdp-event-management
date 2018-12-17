@@ -20,7 +20,7 @@ public class JoinedScheduledItemStrategy extends NotificationStrategy<ScheduledI
         // get Notification based on scheduled item
         Notification notification = getNotificationFromScheduleItem(scheduledItem);
 
-        SchedulerHelper.scheduleNotification(context, scheduledItem.getId().hashCode(), notification, SchedulerHelper.getTimeTo(scheduledItem.getDate()) - TEN_MINUTES);
+        SchedulerHelper.scheduleNotification(context, scheduledItem.getId().hashCode(), notification, SchedulerHelper.getTimeTo(scheduledItem.getJavaDate()) - TEN_MINUTES);
     }
 
     @Override
@@ -29,6 +29,6 @@ public class JoinedScheduledItemStrategy extends NotificationStrategy<ScheduledI
     }
 
     private Notification getNotificationFromScheduleItem(ScheduledItem scheduledItem) {
-        return NotificationBuilder.getNotificationFrom(context, scheduledItem.getArtist() + " " + scheduledItem.getItemType() + titleText, scheduledItem.getDescription());
+        return NotificationBuilder.getNotificationFrom(context, scheduledItem.getArtist() + " " + scheduledItem.getGenre() + titleText, scheduledItem.getDescription());
     }
 }

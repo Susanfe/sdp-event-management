@@ -8,10 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNewsFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.AdminScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNotificationFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
@@ -64,6 +66,10 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
         this.newsModel = ViewModelProviders.of(this, factory).get(NewsViewModel.class);
         this.newsModel.init(eventID);
 
+        // Initialize Schedule model
+        ScheduleViewModel viewModel = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
+        viewModel.init(eventID);
+
         // Handle drawer events
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -94,6 +100,11 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
 
             case R.id.nav_send_notification :
                 changeFragment(new SendNotificationFragment(), true);
+                break;
+
+            case R.id.nav_edit_schedule :
+                changeFragment(AdminScheduleParentFragment.newInstance(), true);
+                menuItem.setChecked(true);
                 break;
 
             case R.id.nav_edit_event :

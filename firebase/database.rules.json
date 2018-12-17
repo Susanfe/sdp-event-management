@@ -5,10 +5,18 @@
     "events": {
       "$event_id": {
         ".read": true,
-        ".write": "auth != null && (data.child('users').child('admin').val() === auth.uid || (!data.child('users').exists() && !data.child('name').exists()))"
-      },
+        ".write": "auth != null && data.child('users').child(auth.uid).val() === 'admin'"
+      }
     },
     "ratings": {
+      ".read": true,
+      ".write": true
+    },
+    "notificationRequest": {
+      ".read": true,
+      ".write": true
+    },
+    "schedule_items": {
       ".read": true,
       ".write": true
     }

@@ -25,7 +25,7 @@ public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtil
     public TestRule testRule = new InstantTaskExecutorRule();
 
     private List<JoinedScheduleItem> scheduleItems;
-    private List<UUID> uuids;
+    private List<String> uuids;
     private JoinedScheduleItemRepository repository;
 
     @Before
@@ -51,16 +51,16 @@ public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtil
     public void findById() throws InterruptedException {
         // Should find existing
         for (int i = 0; i < 10; ++i)
-            assertEquals(scheduleItems.get(i), getValue(repository.findById(Converters.fromString(RANDOM_FIXED_UUID_TAG + i))));
+            assertEquals(scheduleItems.get(i), getValue(repository.findById(RANDOM_FIXED_UUID_TAG + i)));
 
         // Should not find non existing
-        assertNull(getValue(repository.findById(Converters.fromString("223e4567-e89b-12d3-a456-556642440000"))));
+        assertNull(getValue(repository.findById("223e4567-e89b-12d3-a456-556642440000")));
     }
 
     @Test
     public void insert() throws InterruptedException, ExecutionException {
 
-        UUID uuid0 = Converters.fromString(RANDOM_FIXED_UUID_TAG + "0");
+        String uuid0 = RANDOM_FIXED_UUID_TAG + "0";
 
         // Should insert
         repository.insert(new JoinedScheduleItem(uuid0, 0)).get();
@@ -79,7 +79,7 @@ public class JoinedScheduleItemRepositoryTest extends JoinedScheduleItemTestUtil
     @Test
     public void delete() throws InterruptedException, ExecutionException {
 
-        UUID uuid1 = Converters.fromString(RANDOM_FIXED_UUID_TAG + "1");
+        String uuid1 = RANDOM_FIXED_UUID_TAG + "1";
 
         // Should remove
         repository.delete(new JoinedScheduleItem(uuid1, 1)).get();

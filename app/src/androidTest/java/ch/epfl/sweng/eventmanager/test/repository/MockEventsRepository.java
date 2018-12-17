@@ -227,7 +227,47 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
 
     @Override
     public Task deleteEvent(Event event) {
-        return Tasks.call(()->true);
+        return Tasks.call(() -> true);
+    }
+
+    @Override
+    public Task<ScheduledItem> updateScheduledItem(int eventId, ScheduledItem item) {
+        deleteScheduledItem(eventId, item);
+        return createScheduledItem(eventId, item);
+    }
+
+    @Override
+    public Task<ScheduledItem> createScheduledItem(int eventId, ScheduledItem item) {
+        if (item.getId() == null)
+            item.setId(UUID.randomUUID().toString());
+
+        if (!scheduledItems.getMap().containsKey(eventId))
+            scheduledItems.put(eventId, new ArrayList<>());
+
+        scheduledItems.get(eventId).getValue().add(item);
+        scheduledItems.notifyChanged(eventId);
+
+        return Tasks.forResult(item);
+    }
+
+    @Override
+    public Task deleteScheduledItem(int eventId, ScheduledItem item) {
+        ScheduledItem i;
+        Iterator<ScheduledItem> iterator = scheduledItems.get(eventId).getValue().iterator();
+
+        if (!scheduledItems.getMap().containsKey(eventId))
+            scheduledItems.put(eventId, new ArrayList<>());
+
+        while (iterator.hasNext()) {
+            i = iterator.next();
+            if (i.getId().equalsIgnoreCase(item.getId())) {
+                iterator.remove();
+            }
+        }
+
+        scheduledItems.notifyChanged(eventId);
+
+        return Tasks.forResult(null);
     }
 
     @Override
@@ -258,5 +298,9 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
             return Tasks.forCanceled();
 
         return Tasks.call(() -> true);
+    }
+
+    public ObservableMap<Integer, List<ScheduledItem>> getScheduledItems() {
+        return scheduledItems;
     }
 }

@@ -4,7 +4,6 @@ import ch.epfl.sweng.eventmanager.repository.data.ScheduledItem;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -33,7 +32,7 @@ public class MyScheduleFragmentTest {
     private final String type = "Concert";
     private final String location = "Polyv";
 
-    private ScheduledItem c3 = new ScheduledItem(when, mj, pop, des, dur, uuid, type, location);
+    private ScheduledItem c3 = new ScheduledItem(when, mj, pop, des, dur, uuid, location);
 
     @Test
     public void writeCalendarTest() {
