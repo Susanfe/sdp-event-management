@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager;
 import android.app.Activity;
 import androidx.fragment.app.Fragment;
 import androidx.multidex.MultiDexApplication;
+import ch.epfl.sweng.eventmanager.inject.DaggerApplicationComponent;
 import ch.epfl.sweng.eventmanager.repository.room.RoomModule;
 import com.google.firebase.database.FirebaseDatabase;
 import com.twitter.sdk.android.core.Twitter;
