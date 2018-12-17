@@ -26,7 +26,7 @@ public class FirebaseMapEditionRepository implements MapEditionRepository {
     @Override
     public Task<List<Zone>> updateZones(int eventId, List<Zone> zones) {
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = fdB.getReference(FIREBASE_REF_ZONES).child(String.valueOf(eventId));
+        DatabaseReference dbRef = fdB.getReference(FIREBASE_REF_ZONES).child("event_" + String.valueOf(eventId));
         return dbRef.setValue(zones).continueWith((v) -> {
             v.getResult(); // Forward exceptions
             return zones;
@@ -36,7 +36,7 @@ public class FirebaseMapEditionRepository implements MapEditionRepository {
     @Override
     public Task<List<Spot>> updateSpots(int eventId, List<Spot> spots) {
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = fdB.getReference(FIREBASE_REF_SPOTS).child(String.valueOf(eventId));
+        DatabaseReference dbRef = fdB.getReference(FIREBASE_REF_SPOTS).child("event_" + String.valueOf(eventId));
         return dbRef.setValue(spots).continueWith((v) -> {
             v.getResult(); // Forward exceptions
             return spots;
