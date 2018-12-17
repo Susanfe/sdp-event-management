@@ -78,7 +78,6 @@ public class EventMainFragment extends AbstractFeedbackFragment {
                 return;
             }
 
-            // FIXME handle NullPointerException in setTitle
             // Set window title
             requireActivity().setTitle(ev.getName());
 
