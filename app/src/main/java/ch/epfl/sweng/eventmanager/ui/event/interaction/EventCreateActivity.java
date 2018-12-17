@@ -21,6 +21,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.users.Session;
+import ch.epfl.sweng.eventmanager.utils.DateUtils;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -112,7 +113,6 @@ public class EventCreateActivity extends AppCompatActivity {
     private boolean checkForm() {
         String name = getFieldValue(this.name);
 
-        Log.i("EventCreateActivity", "name='" + name + "'");
         if (name == null) {
             Toast.makeText(this, R.string.create_event_name_empty, Toast.LENGTH_LONG).show();
             return false;
@@ -127,26 +127,11 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     private String formatDate(Date date) {
-        if (date != null) {
-            String format = "dd/MM/yyyy";
-            SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-            return dateFormat.format(date);
-        } else {
-            return null;
-        }
+        return DateUtils.formatDate(date);
     }
 
     private long getDateValue(EditText editText) {
-        String format = "dd/MM/yyyy";
-        long date = 0L;
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-        try {
-            date = dateFormat.parse(editText.getText().toString()).getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.i(TAG, "unable to parse date");
-        }
-        return date;
+        return DateUtils.getDateValue(editText);
     }
 
     private String getFieldValue(EditText field) {

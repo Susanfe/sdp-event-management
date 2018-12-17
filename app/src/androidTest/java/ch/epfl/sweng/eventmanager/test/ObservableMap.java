@@ -59,7 +59,7 @@ public class ObservableMap<K, V> {
         return observers.get(key);
     }
 
-    private void notifyChanged(K key) {
+    public void notifyChanged(K key) {
         valuesObserver.postValue(map.values());
 
         if (key != null) {

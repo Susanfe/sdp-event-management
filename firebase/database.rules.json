@@ -11,6 +11,14 @@
     "ratings": {
       ".read": true,
       ".write": true
+    },
+    "notificationRequest": {
+      ".read": true,
+      ".write": true
+    },
+    "schedule_items": {
+      ".read": true,
+      ".write": true
     }
   }
 }

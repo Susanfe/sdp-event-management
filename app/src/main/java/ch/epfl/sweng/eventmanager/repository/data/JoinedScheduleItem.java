@@ -12,7 +12,7 @@ import java.util.UUID;
 public class JoinedScheduleItem {
 
 
-    public JoinedScheduleItem(@NonNull UUID uid, int eventId) {
+    public JoinedScheduleItem(@NonNull String uid, int eventId) {
         this.uid = uid;
         this.eventId = eventId;
     }
@@ -20,7 +20,7 @@ public class JoinedScheduleItem {
     @PrimaryKey
     @ColumnInfo(name = "schedule_item_id")
     @NonNull
-    private UUID uid;
+    private String uid;
 
     @ColumnInfo(name = "event_id")
     private int eventId;
@@ -28,11 +28,11 @@ public class JoinedScheduleItem {
 
     /* Getters and Setters */
     @NonNull
-    public UUID getUid() {
+    public String getUid() {
         return uid;
     }
 
-    void setUid(@NonNull UUID uid) {
+    void setUid(@NonNull String uid) {
         this.uid = uid;
     }
 
