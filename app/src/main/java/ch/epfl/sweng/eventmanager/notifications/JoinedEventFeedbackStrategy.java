@@ -19,8 +19,11 @@ public class JoinedEventFeedbackStrategy extends NotificationStrategy<Event> {
     void scheduleNotification(Event event) {
         // get Notification based on scheduled item
         Notification notification = getNotificationFromEvent(event);
-        // The user is notified one day after the event is passed
-        SchedulerHelper.scheduleNotification(context, event.getId(), notification, SchedulerHelper.getTimeTo(event.getEndDateAsDate()) + ONE_DAY);
+
+        long timeUntil = SchedulerHelper.getTimeTo(event.getEndDateAsDate()) + ONE_DAY;
+
+        if (timeUntil >= 0)
+            SchedulerHelper.scheduleNotification(context, event.getId(), notification, SchedulerHelper.getTimeTo(event.getEndDateAsDate()) + ONE_DAY);
     }
 
     @Override
