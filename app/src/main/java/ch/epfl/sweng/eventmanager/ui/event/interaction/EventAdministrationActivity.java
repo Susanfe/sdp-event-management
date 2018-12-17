@@ -28,6 +28,18 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
     ViewModelFactory factory;
 
     private NewsViewModel newsModel;
+    private ScheduleViewModel scheduleModel;
+
+    private void initModels() {
+        model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
+        model.init(eventID);
+
+        newsModel = ViewModelProviders.of(this, factory).get(NewsViewModel.class);
+        newsModel.init(eventID);
+
+        scheduleModel = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
+        scheduleModel.init(eventID);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +55,7 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
-            this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
-            this.model.init(eventID);
+            this.initModels();
             super.setupHeader();
 
             // Only display admin button if the user is at least staff
@@ -62,14 +73,6 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
             changeFragment(new EventAdminMainFragment(), false);
             navigationView.setCheckedItem(R.id.nav_admin_main);
         }
-
-        // Initialize News model
-        this.newsModel = ViewModelProviders.of(this, factory).get(NewsViewModel.class);
-        this.newsModel.init(eventID);
-
-        // Initialize Schedule model
-        ScheduleViewModel viewModel = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
-        viewModel.init(eventID);
 
         // Handle drawer events
         navigationView.setNavigationItemSelectedListener(this);
