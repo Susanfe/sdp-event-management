@@ -82,7 +82,7 @@ public class SendNotificationFragment extends AbstractShowcaseFragment {
 
     private boolean isEmptyField(EditText v, String s_from_v) {
         if (s_from_v.trim().isEmpty()) {
-            v.setError(getString(R.string.feedback_form_error));
+            v.setError(getString(R.string.send_notification_form_error));
             v.requestFocus();
             return true;
         } else return false;
