@@ -11,6 +11,9 @@
                 android:id="@+id/nav_send_notification"
                 android:title="@string/send_notification_nav_item_activity_event" />
         <item
+            android:id="@+id/nav_edit_schedule"
+            android:title="@string/edit_schedule_nav_item_activity_event" />
+        <item
             android:id="@+id/nav_showcase"
             android:title="@string/showcase_nav_item_activity_event" />
         <item

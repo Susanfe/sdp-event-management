@@ -28,13 +28,13 @@ public class ScheduledItemTest {
     private final String type = "Concert";
     private final String location = "Polyv";
 
-    private ScheduledItem c1 = new ScheduledItem(now, mj, pop, des, -12, uuid, type, location);
-    private ScheduledItem c2 = new ScheduledItem(now, mj, pop, des, dur, uuid, type, location);
-    private ScheduledItem c3 = new ScheduledItem(when, mj, pop, des, dur, uuid, type, location);
+    private ScheduledItem c1 = new ScheduledItem(now, mj, pop, des, -12, uuid, location);
+    private ScheduledItem c2 = new ScheduledItem(now, mj, pop, des, dur, uuid, location);
+    private ScheduledItem c3 = new ScheduledItem(when, mj, pop, des, dur, uuid, location);
 
     @Test
     public void getDate() {
-        assertEquals(c2.getDate(), now);
+        assertEquals(c2.getJavaDate(), now);
     }
 
     @Test
@@ -64,16 +64,16 @@ public class ScheduledItemTest {
         assertNotEquals(c1, c2);
 
 
-        ScheduledItem copy2 = new ScheduledItem(now, mj, pop, des, dur, uuid, type, location);
+        ScheduledItem copy2 = new ScheduledItem(now, mj, pop, des, dur, uuid, location);
         assertEquals(c2, copy2);
 
-        ScheduledItem fakeName = new ScheduledItem(now, "Michael Fackson", pop, des, dur, uuid, type, location);
-        ScheduledItem fakeGenre = new ScheduledItem(now, mj, "Funky", des, dur, uuid, type, location);
-        ScheduledItem fakeDes = new ScheduledItem(now, mj, pop, "Wow!", dur, uuid, type, location);
-        ScheduledItem fakeDur = new ScheduledItem(now, mj, pop, des, 5, uuid, type, location);
-        ScheduledItem fakeUuid = new ScheduledItem(now, mj, pop, des, 5, UUID.randomUUID(), type, location);
-        ScheduledItem fakeType = new ScheduledItem(now, mj, pop, des, 5, uuid, "Something", location);
-        ScheduledItem fakeLocation = new ScheduledItem(now, mj, pop, des, 5, uuid, type, "Somewhere");
+        ScheduledItem fakeName = new ScheduledItem(now, "Michael Fackson", pop, des, dur, uuid, location);
+        ScheduledItem fakeGenre = new ScheduledItem(now, mj, "Funky", des, dur, uuid, location);
+        ScheduledItem fakeDes = new ScheduledItem(now, mj, pop, "Wow!", dur, uuid, location);
+        ScheduledItem fakeDur = new ScheduledItem(now, mj, pop, des, 5, uuid, location);
+        ScheduledItem fakeUuid = new ScheduledItem(now, mj, pop, des, 5, UUID.randomUUID(), location);
+        ScheduledItem fakeType = new ScheduledItem(now, mj, pop, des, 5, uuid, location);
+        ScheduledItem fakeLocation = new ScheduledItem(now, mj, pop, des, 5, uuid, "Somewhere");
 
 
         assertNotEquals(c2, fakeName);
@@ -102,9 +102,9 @@ public class ScheduledItemTest {
     public void getStatus() {
         Calendar c = new GregorianCalendar();
         c.set(Calendar.YEAR, 2999);
-        ScheduledItem fake1 = new ScheduledItem(c.getTime(), mj, pop, des, dur, uuid, type, location);
+        ScheduledItem fake1 = new ScheduledItem(c.getTime(), mj, pop, des, dur, uuid, location);
         c.set(Calendar.YEAR, 1970);
-        ScheduledItem fake2 = new ScheduledItem(c.getTime(), mj, pop, des, dur, uuid, type, location);
+        ScheduledItem fake2 = new ScheduledItem(c.getTime(), mj, pop, des, dur, uuid, location);
 
         System.out.print(fake1.dateAsString());
         assertEquals("future event should not be started", ScheduledItem.ScheduledItemStatus.NOT_STARTED, fake1.getStatus());
