@@ -101,16 +101,14 @@
             android:text="@string/create_form_upload_image"
             android:textColor="@color/colorSecondary" />
 
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-                android:text="@string/event_form_button_visibility"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/create_form_switch_visibility"
-                android:layout_weight="10"
-                android:layout_margin="@dimen/list_item_spacing"
-                android:textSize="16sp"
-        />
+        <androidx.appcompat.widget.SwitchCompat
+            android:text="@string/event_form_button_visibility"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/create_form_switch_visibility"
+            android:layout_weight="10"
+            android:layout_margin="@dimen/list_item_spacing"
+            android:textSize="16sp"/>
 
         <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/create_form_send_button"

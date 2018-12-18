@@ -30,6 +30,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.lifecycle.LiveData;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,7 +88,7 @@ public class EventCreateActivity extends AppCompatActivity {
     @BindView(R.id.create_form)
     View createForm;
     @BindView(R.id.create_form_switch_visibility)
-    SwitchMaterial eventVisibility;
+    SwitchCompat eventVisibility;
     @BindView(R.id.create_form_delete_event_button)
     Button deleteEventButton;
 
