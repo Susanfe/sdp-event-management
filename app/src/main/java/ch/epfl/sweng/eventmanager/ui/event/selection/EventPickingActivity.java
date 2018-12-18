@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.ui.credits.CreditsActivity;
 import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.user.LoginActivity;
@@ -79,6 +80,8 @@ public class EventPickingActivity extends AppCompatActivity {
     ImageButton loginAccountButton;
     @BindView(R.id.event_picking_under_empty_list)
     AppCompatImageView empty_joined_list_image;
+    @BindView(R.id.event_picking_logo)
+    AppCompatImageView logo;
 
     // Login/Signup layout components
     @BindView(R.id.layout_login_signup_logged) // Logged UI
@@ -93,6 +96,7 @@ public class EventPickingActivity extends AppCompatActivity {
     @Inject
     Session session;
 
+    private int counterCredits = 0;
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -247,7 +251,8 @@ public class EventPickingActivity extends AppCompatActivity {
             R.id.layout_login_signup_account_button,
             R.id.layout_login_signup_logout_button,
             R.id.event_picking_login_account,
-            R.id.layout_login_or_signup})
+            R.id.layout_login_or_signup,
+            R.id.event_picking_logo})
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.event_picking_login_account:
@@ -279,6 +284,14 @@ public class EventPickingActivity extends AppCompatActivity {
             case R.id.layout_login_or_signup:
                 onBackPressed();
                 break;
+
+            case R.id.event_picking_logo:
+                counterCredits++;
+                if (counterCredits == 3){
+                    counterCredits = 0;
+                    Intent intent = new Intent(this, CreditsActivity.class);
+                    startActivity(intent);
+                }
         }
     }
 
