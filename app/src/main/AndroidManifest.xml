@@ -55,7 +55,7 @@
         See README(https://goo.gl/l4GJaQ) for more. -->
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@drawable/ic_marker_active" />
+                android:resource="@drawable/ic_launcher_foreground" />
 
         <activity
             android:name=".ui.event.selection.EventPickingActivity"
