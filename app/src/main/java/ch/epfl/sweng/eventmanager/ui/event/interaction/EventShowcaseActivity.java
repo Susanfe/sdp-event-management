@@ -389,4 +389,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     public ImageLoader getLoader() {
         return loader;
     }
+
+    public Session getSession() {
+        return session;
+    }
 }

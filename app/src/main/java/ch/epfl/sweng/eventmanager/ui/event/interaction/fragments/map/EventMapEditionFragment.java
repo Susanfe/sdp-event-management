@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -40,9 +41,9 @@ import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
-import ch.epfl.sweng.eventmanager.ui.customViews.CustomAddOptionsDialog;
-import ch.epfl.sweng.eventmanager.ui.customViews.CustomInfoDialog;
-import ch.epfl.sweng.eventmanager.ui.customViews.CustomMarkerDialog;
+import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomAddOptionsDialog;
+import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomInfoDialog;
+import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomMarkerDialog;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 
 import static ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag.createOverlayEdgeTag;
@@ -159,7 +160,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setPositiveButton(R.string.button_yes, (dialog1, which) -> {
             repository.updateSpots(((EventShowcaseActivity)requireActivity()).getEventID(), updatedSpots);
-            repository.updateZones(((EventShowcaseActivity)requireActivity()).getEventID(), Arrays.asList(eventZone));
+            repository.updateZones(((EventShowcaseActivity)requireActivity()).getEventID(), Collections.singletonList(eventZone));
             requireActivity().onBackPressed();
         });
         builder.setNegativeButton(R.string.button_no, (dialog, which) -> {

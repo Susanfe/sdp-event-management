@@ -56,6 +56,7 @@ public class Zone {
     /**
      * Adds a new position to the list of registered positions.
      * @param position Position to add to zone as one of its edges
+     * @throws IllegalArgumentException if the given position is null
      */
     public void addPosition(Position position) {
         if (position != null) {

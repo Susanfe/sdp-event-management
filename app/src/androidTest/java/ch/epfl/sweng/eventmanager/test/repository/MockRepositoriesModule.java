@@ -3,6 +3,7 @@ package ch.epfl.sweng.eventmanager.test.repository;
 import ch.epfl.sweng.eventmanager.repository.CloudFunction;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
+import ch.epfl.sweng.eventmanager.repository.MapEditionRepository;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
 import ch.epfl.sweng.eventmanager.repository.UserRepository;
 import dagger.Module;
@@ -64,4 +65,12 @@ public class MockRepositoriesModule {
     public MockUserRepository providesMockUserRepository() {
         return new MockUserRepository();
     }
+
+    @Provides
+    @Singleton
+    public MapEditionRepository providesMapEditionRepository(MockMapEditionRepository repository) {return repository;}
+
+    @Provides
+    @Singleton
+    public MockMapEditionRepository providesMockMapEditionRepository() {return new MockMapEditionRepository();}
 }
