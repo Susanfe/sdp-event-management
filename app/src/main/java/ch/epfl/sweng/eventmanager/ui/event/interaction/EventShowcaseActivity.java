@@ -41,6 +41,7 @@ import javax.inject.Inject;
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
     private static final int Y_OFFSET_TOAST = 30;
+    private static final int TAG_NUMBER_FACEBOOK = 1;
 
     public static enum FragmentType {
         MAIN, MAP, SCHEDULE, NEWS, FORM, EVENT_FEEDBACK
@@ -149,9 +150,15 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 }
             });
 
+            if(getIntent().getIntExtra(getString(R.string.tag_facebook_login_back_button), -1) == TAG_NUMBER_FACEBOOK) {
+                switchFragment(FragmentType.NEWS, true);
+            }
+
             // Set displayed fragment only when no other fragment where previously inflated.
-            if (savedInstanceState == null)
-                    switchFragment(FragmentType.MAIN,true);
+            if (savedInstanceState == null && intent.getIntExtra(getString(R.string.tag_facebook_login_back_button), -1) != 1) {
+                switchFragment(FragmentType.MAIN,true);
+            }
+
         }
 
         // Handle drawer events
