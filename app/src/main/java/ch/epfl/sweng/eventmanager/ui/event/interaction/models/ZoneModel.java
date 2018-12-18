@@ -14,7 +14,7 @@ import java.util.List;
  *
  */
 public class ZoneModel extends ViewModel {
-    private LiveData<List<Zone>> zone;
+    private LiveData<Zone> zone;
 
     private EventRepository repository;
 
@@ -35,7 +35,7 @@ public class ZoneModel extends ViewModel {
         this.zone = repository.getZones(eventId);
     }
 
-    public LiveData<List<Zone>> getZone() {
+    public LiveData<Zone> getZone() {
         return zone;
     }
 }
