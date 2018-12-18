@@ -20,10 +20,12 @@ import java.util.Collection;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.runner.lifecycle.Stage.RESUMED;
 import static ch.epfl.sweng.eventmanager.TestHelper.waitId;
+import static org.hamcrest.core.AllOf.allOf;
 
 public class EventPickingActivityTest {
 
@@ -126,6 +128,16 @@ public class EventPickingActivityTest {
         SystemClock.sleep(1000);
 
         onView(isRoot()).perform(waitId(R.id.activity_login_progress_bar, 2000));
+    }
+
+    @Test
+    public void testCreditsButton(){
+        //need to click three times to go to the credits activity
+        onView(withId(R.id.event_picking_logo)).perform(click());
+        onView(withId(R.id.event_picking_logo)).perform(click());
+        onView(withId(R.id.event_picking_logo)).perform(click());
+
+        onView(allOf(isDisplayed(), withId(R.id.dicaprio_meme_image))).check(matches(isDisplayed()));
     }
 
     /**
