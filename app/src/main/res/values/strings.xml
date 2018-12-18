@@ -165,7 +165,7 @@
     <string name="create_form_hint_end_date">Ending date</string>
     <string name="create_form_upload_image">Upload image</string>
     <string name="image_successfully_uploaded">Event image successfully uploaded !</string>
-    <string name="event_form_button_visibility">Allow access to event</string>
+    <string name="event_form_button_visibility">Allow public access to this event</string>
     <string name="create_form_delete_event_button">Delete this event !</string>
     <string name="button_yes">YES !</string>
     <string name="button_no">NO !</string>

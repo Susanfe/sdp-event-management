@@ -138,6 +138,7 @@
                         android:layout_height="match_parent"
                         android:id="@+id/event_end_date"
                         android:layout_marginStart="8dp"
+                        android:visibility="gone"
                         android:textSize="@dimen/big_size_text"/>
                 </LinearLayout>
 
