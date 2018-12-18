@@ -228,6 +228,6 @@
     <string name="send_notification_form_error">Field cannot be empty</string>
     <string name="congratulations">Congratulations, you have found the secret credits ! We really hope that you enjoy &app_name; !</string>
     <string name="credits">This app was proposed to you by the Susanfe team, including :</string>
-    <string name="names_of_the_authors">Antoine Crettenand\nLouis\nVialar Nicolas\nd\'Argenlieu\nRobin Zbinden\nStanislas Jouven\nTimothée Floure\nValentin Quelquejay</string>
+    <string name="names_of_the_authors">Antoine Crettenand\nLouis Vialar\nNicolas d\'Argenlieu\nRobin Zbinden\nStanislas Jouven\nTimothée Floure\nValentin Quelquejay</string>
 
 </resources>
