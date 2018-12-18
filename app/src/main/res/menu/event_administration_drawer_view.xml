@@ -12,11 +12,11 @@
             android:title="@string/user_management_nav_item_activity_event" />
         <item
             android:id="@+id/nav_send_news"
-            android:icon="@drawable/ic_rate_review_black_24dp"
+            android:icon="@drawable/ic_chat_black_24dp"
             android:title="@string/send_news_nav_item_activity_event" />
         <item
             android:id="@+id/nav_send_notification"
-            android:icon="@drawable/ic_chat_black_24dp"
+            android:icon="@drawable/ic_launcher_foreground"
             android:title="@string/send_notification_nav_item_activity_event" />
         <item
             android:id="@+id/nav_edit_schedule"
@@ -32,7 +32,7 @@
         android:id="@+id/event_showcase_group_system">
         <item
             android:id="@+id/nav_showcase"
-            android:icon="@drawable/ic_menu_black_24dp"
+            android:icon="@drawable/ic_public_black_24dp"
             android:title="@string/showcase_nav_item_activity_event" />
     </group>
 </menu>
