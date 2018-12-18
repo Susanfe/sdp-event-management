@@ -13,7 +13,10 @@ import org.junit.Test;
 import static android.os.SystemClock.sleep;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.core.AllOf.allOf;
+
 public class LoginFacebookNewsFragmentTest {
     @Rule
     public final EventTestRule<EventShowcaseActivity> mActivityRule =
@@ -33,7 +36,10 @@ public class LoginFacebookNewsFragmentTest {
         SystemClock.sleep(500);
         onView(withId(R.id.menu_facebook_login_edit)).perform(click());
         SystemClock.sleep(500);
-        onView(withId(R.id.loginButton)).perform(click());
+        onView(allOf(isDisplayed(), withId(R.id.loginButton)));
+        SystemClock.sleep(500);
+        onView(withId(R.id.loginButton)).perform(click());// cannot check anything because after it is part of facebook
+
     }
 
 }
