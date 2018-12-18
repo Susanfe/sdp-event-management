@@ -115,11 +115,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <activity android:name=".ui.event.interaction.EventAdministrationActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.event.interaction.EventCreateActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar"/>
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
