@@ -100,6 +100,9 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     @Inject
     MapEditionRepository repository;
 
+    public static EventMapEditionFragment newInstance() {
+        return new EventMapEditionFragment();
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

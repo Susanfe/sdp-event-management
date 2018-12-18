@@ -8,6 +8,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
@@ -29,6 +33,8 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.Schedu
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
+import ch.epfl.sweng.eventmanager.users.Role;
+import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -83,6 +89,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+
         if (mapView != null) {
             mapView.onCreate(savedInstanceState);
         }
@@ -94,6 +103,28 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         }
         if (scheduleViewModel == null) {
             scheduleViewModel = ViewModelProviders.of(requireActivity(), factory).get(ScheduleViewModel.class);
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Session session = ((EventShowcaseActivity)requireActivity()).getSession();
+        Event event = ((EventShowcaseActivity)requireActivity()).getEvent();
+        if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN, event)) {
+            menu.findItem(R.id.menu_showcase_activity_map_edition_edit).setVisible(true);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_showcase_activity_map_edition_edit:
+                ((EventShowcaseActivity)requireActivity()).switchFragment(EventShowcaseActivity.FragmentType.MAP_EDITION, true);
+                return true;
+
+            default :
+                return false;
         }
     }
 
@@ -248,7 +279,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     /**
      * Callback when the map is ready : we setup location, clusters and overlay
      *
-     * @param googleMap
+     * @param googleMap map to be customized and set up
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
