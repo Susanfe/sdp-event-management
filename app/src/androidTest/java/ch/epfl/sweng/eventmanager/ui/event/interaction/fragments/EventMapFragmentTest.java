@@ -99,7 +99,7 @@ public class EventMapFragmentTest {
             device.click(xPolyv,yPolyv - 200);
             sleep(800);
 
-            onView(allOf(isDisplayed(), withId(R.id.viewpager)));
+            onView(allOf(withId(R.id.viewpager))).check(matches(isDisplayed()));
 
         } catch (UiObjectNotFoundException e) {
             e.printStackTrace();
