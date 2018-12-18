@@ -58,9 +58,7 @@ public class SubmitFeedbackFragment extends AbstractShowcaseFragment {
         model.getEvent().observe(this, ev -> {
             AtomicReference<Boolean> ratingExists = new AtomicReference<>();
             repository.ratingFromDeviceExists(ev.getId(), UNIQUE_DEVICE_ID).observe(this, ratingExists::set);
-            sendButton.setOnClickListener(l -> {
-                submitEventRating(ratingExists.get(), ev);
-            });
+            sendButton.setOnClickListener(l -> submitEventRating(ratingExists.get(), ev));
         });
     }
 

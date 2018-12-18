@@ -6,11 +6,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
@@ -23,9 +23,14 @@ import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
 import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
+import ch.epfl.sweng.eventmanager.repository.impl.FirebaseNotificationService;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.models.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.ui.settings.SettingsActivity;
 import ch.epfl.sweng.eventmanager.ui.ticketing.TicketingManager;
@@ -34,9 +39,6 @@ import ch.epfl.sweng.eventmanager.users.Role;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
-import jp.wasabeef.glide.transformations.BlurTransformation;
-
-import javax.inject.Inject;
 
 public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final String TAG = "EventShowcaseActivity";
@@ -53,10 +55,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     TicketingManager ticketingManager;
     @Inject
     Session session;
-    @Inject
-    ImageLoader loader;
 
-    private EventInteractionModel model;
     private ScheduleViewModel scheduleModel;
     private NewsViewModel newsModel;
     private SpotsModel spotsModel;
@@ -85,39 +84,26 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         this.zonesModel.init(eventID);
     }
 
-    private void setupMenu() {
-        LiveData<EventTicketingConfiguration> data = Transformations.map(model.getEvent(),
-                Event::getTicketingConfiguration);
-        data.observe(this, d -> {
+    private void setupMenu(Event ev) {
+        LiveData<EventTicketingConfiguration> ticketingConfiguration = Transformations.map(
+                model.getEvent(), Event::getTicketingConfiguration);
+
+        if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN, ev)) {
+            MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
+            adminMenuItem.setVisible(true);
+        }
+
+        ticketingConfiguration.observe(this, d -> {
             MenuItem item = navigationView.getMenu().findItem(R.id.nav_scan);
-            if (d != null) {
-                Log.i(TAG, "Got a ticketing configuration, setting button visible");
+            if (d != null && session.isLoggedIn() &&
+                    (session.isClearedFor(Role.STAFF, ev) || session.isClearedFor(Role.ADMIN, ev)))  {
+                Log.i(TAG, "Got a ticketing configuration and cleared user, set scan button visible");
                 item.setVisible(true);
             } else {
-                Log.i(TAG, "Got no ticketing configuration, setting button invisible");
+                Log.i(TAG, "Got no ticketing configuration or no valid/cleared user, setting scan button invisible");
                 item.setVisible(false);
             }
         });
-    }
-
-    private void setupHeader() {
-        // Set window title and configure header
-        View headerView = navigationView.getHeaderView(0);
-        TextView drawer_header_text = headerView.findViewById(R.id.drawer_header_text);
-        model.getEvent().observe(this, ev -> {
-            if (ev == null) {
-                return;
-            }
-
-            if (ev.hasAnImage()) {
-                ImageView header = headerView.findViewById(R.id.drawer_header_image);
-                loader.loadImageWithSpinner(ev, this, header, new BlurTransformation(3));
-            }
-
-            drawer_header_text.setText(ev.getName());
-            setTitle(ev.getName());
-        });
-
     }
 
     @Override
@@ -134,8 +120,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
             this.initModels();
-            this.setupHeader();
-            this.setupMenu();
+            super.setupHeader();
 
             // Only display admin button if the user is at least staff
             model.getEvent().observe(this, ev -> {
@@ -144,10 +129,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                     return;
                 }
 
-                if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN, ev)) {
-                    MenuItem adminMenuItem = navigationView.getMenu().findItem(R.id.nav_admin);
-                    adminMenuItem.setVisible(true);
-                }
+                this.setupMenu(ev);
             });
 
             if(getIntent().getIntExtra(getString(R.string.tag_facebook_login_back_button), -1) == TAG_NUMBER_FACEBOOK) {
@@ -367,6 +349,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                     if(ev.getEndDateAsDate() != null){
                         NotificationScheduler.scheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
                     }
+                    FirebaseNotificationService.subscribeToNotifications(ev);
                 } else {
                     this.model.unjoinEvent(ev);
                     if(ev.getBeginDateAsDate() != null){
@@ -375,6 +358,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                     if(ev.getEndDateAsDate() != null){
                         NotificationScheduler.unscheduleNotification(ev, new JoinedEventFeedbackStrategy(getApplicationContext()));
                     }
+                    FirebaseNotificationService.unsubscribeFromNotifications(ev);
                 }
             });
 

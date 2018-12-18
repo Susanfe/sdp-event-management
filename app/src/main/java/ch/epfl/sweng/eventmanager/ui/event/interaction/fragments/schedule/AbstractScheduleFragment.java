@@ -27,7 +27,7 @@ import java.util.Objects;
 
 public abstract class AbstractScheduleFragment extends Fragment {
 
-    private static String TAG = "AbstractScheduleFragment";
+    private final static String TAG = "ScheduleFragment";
     protected ScheduleViewModel model;
     private TimeLineAdapter timeLineAdapter;
     @BindView(R.id.recyclerView)

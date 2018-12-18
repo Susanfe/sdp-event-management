@@ -13,7 +13,7 @@ import ch.epfl.sweng.eventmanager.repository.room.daos.JoinedScheduleItemDao;
  * @see androidx.room.RoomDatabase
  * More info {https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#0}
  */
-@Database(entities = {JoinedEvent.class, JoinedScheduleItem.class}, version = 1)
+@Database(entities = {JoinedEvent.class, JoinedScheduleItem.class}, version = 1, exportSchema = false)
 public abstract class AppDataBase extends RoomDatabase {
     public abstract JoinedEventDao getJoinedEventDao();
 

@@ -25,12 +25,12 @@
             android:inputType="textMultiLine"
             android:layout_weight="70"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/feedback_form_send_button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:text="@string/contact_form_send_button_text"
-            android:layout_weight="10"
+            android:layout_weight="7"
             style="@style/Button_global"/>
 
 

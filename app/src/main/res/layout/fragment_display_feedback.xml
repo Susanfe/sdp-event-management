@@ -13,6 +13,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/feedback_relative_layout"
+                    android:layout_marginBottom="@dimen/default_small_padding"
                     tools:context="ch.epfl.sweng.eventmanager.ui.event.interaction.MultiFragmentActivity">
 
         <androidx.appcompat.widget.AppCompatButton
@@ -20,7 +21,9 @@
                 android:id="@+id/feedback_submit_feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_small_padding"
                 android:visibility="visible"
+                style="@style/Button_global"
                 android:gravity="center"
                 app:layout_anchorGravity="bottom"
                 android:layout_alignParentStart="true" android:layout_alignParentBottom="true"/>
@@ -30,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:padding="10dp"
+                android:paddingBottom="@dimen/default_huge_padding"
                 tools:listitem="@layout/item_feedback" android:visibility="visible"
                 android:layout_alignParentStart="true" android:layout_alignParentTop="true">
         </androidx.recyclerview.widget.RecyclerView>

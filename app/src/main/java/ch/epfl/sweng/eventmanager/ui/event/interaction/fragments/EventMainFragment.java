@@ -5,21 +5,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
-import ch.epfl.sweng.eventmanager.notifications.JoinedEventFeedbackStrategy;
-import ch.epfl.sweng.eventmanager.notifications.JoinedEventStrategy;
-import ch.epfl.sweng.eventmanager.notifications.NotificationScheduler;
-import ch.epfl.sweng.eventmanager.repository.FeedbackRepository;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
+
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Locale;
 
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
@@ -61,7 +61,7 @@ public class EventMainFragment extends AbstractFeedbackFragment {
 
     private EventShowcaseActivity showcaseActivity;
 
-    private RatingsRecyclerViewAdapter ratingsRecyclerViewAdapter = new RatingsRecyclerViewAdapter();
+    private RatingsRecyclerViewAdapter ratingsRecyclerViewAdapter;
 
     public EventMainFragment() {
         // Required empty public constructor
@@ -82,7 +82,6 @@ public class EventMainFragment extends AbstractFeedbackFragment {
                 return;
             }
 
-            // FIXME handle NullPointerException in setTitle
             // Set window title
             requireActivity().setTitle(ev.getName());
 
@@ -98,14 +97,20 @@ public class EventMainFragment extends AbstractFeedbackFragment {
             repository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
 
             if (ev.getBeginDateAsDate() != null) {
-                beginDate.setText(String.format("%s %s", getString(R.string.starts_on), ev.beginDateAsString()));
+                SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+                String beginDateAsString = f.format(ev.getBeginDateAsDate());
+                beginDate.setText(String.format("%s %s", getString(R.string.starts_on), beginDateAsString));
                 dateLinearLayout.setVisibility(View.VISIBLE);
+                if (ev.getEndDateAsDate() != null) {
+                    String endDateAsString = f.format(ev.getEndDate());
+                    if (!endDateAsString.equals(beginDateAsString)) {
+                        endDate.setText(String.format("%s   %s", getString(R.string.Ends_on), endDateAsString));
+                        endDate.setVisibility(View.VISIBLE);
+                    } else {
+                        endDate.setVisibility(View.GONE);
+                    }
+                }
             }
-            if (ev.getEndDateAsDate() != null) {
-                endDate.setText(String.format("%s   %s", getString(R.string.Ends_on), ev.endDateAsString()));
-                dateLinearLayout.setVisibility(View.VISIBLE);
-            }
-
         });
     }
 
@@ -114,8 +119,22 @@ public class EventMainFragment extends AbstractFeedbackFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (view != null) ButterKnife.bind(this, view);
 
-        recyclerView.setAdapter(ratingsRecyclerViewAdapter);
+        ratingsRecyclerViewAdapter = new RatingsRecyclerViewAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(ratingsRecyclerViewAdapter);
+        //The following is to allow smooth scrolling in the main scrollView.
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener()  {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                return true; //Consume the touch event
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {}
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+        });
 
         model.getEvent().observe(this, ev -> repository.getRatings(ev.getId()).observe(this, ratings -> {
             if (ratings != null && ratings.size() > 0) {

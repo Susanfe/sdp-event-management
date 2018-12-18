@@ -71,6 +71,20 @@
     <string name="showcase_nav_item_activity_event">Public area</string>
     <string name="send_news_nav_item_activity_event">Publish news</string>
     <string name="edit_schedule_nav_item_activity_event">Edit schedule</string>
+    <string name="admin_main_nav_item_activity_event">Help</string>
+
+    <string name="admin_help_text">
+        This section allows you to manage an event. You can go back to the public
+        section using the "Public area" at the bottom of the sidebar.\n
+        \n
+        There is two level of rights, STAFF and ADMIN: while a STAFF is only able to see the
+        "Scan ticket" (if the event contains a ticketing configuration) navigation entry on the
+        public area, an admin is able to:
+            - Manage user roles.\n
+            - Publish news.\n
+            - Broadcast a notification to any user which joined the event.\n
+            - Edit the schedule and the details of the event.\n
+    </string>
 
     <string name="user_management_help_text">This page allows you to add and remove roles specific
         to this event.
@@ -153,7 +167,7 @@
     <string name="create_form_hint_end_date">Ending date</string>
     <string name="create_form_upload_image">Upload image</string>
     <string name="image_successfully_uploaded">Event image successfully uploaded !</string>
-    <string name="event_form_button_visibility">Allow access to event</string>
+    <string name="event_form_button_visibility">Allow public access to this event</string>
     <string name="create_form_delete_event_button">Delete this event !</string>
     <string name="button_yes">YES !</string>
     <string name="button_no">NO !</string>
@@ -211,5 +225,8 @@
     <string name="create_schedule_item_value_missing">The following field cannot be empty</string>
     <string name="create_schedule_item_value_length">The following field needs to be longer</string>
     <string name="schedule_create_form_hint_begin_time">Begin time of the scheduled element</string>
+    <string name="event_image">Event image</string>
+    <string name="remove_button">Remove</string>
+    <string name="send_notification_form_error">Field cannot be empty</string>
 
 </resources>

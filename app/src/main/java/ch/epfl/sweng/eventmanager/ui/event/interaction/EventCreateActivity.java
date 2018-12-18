@@ -8,9 +8,29 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.lifecycle.LiveData;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,17 +43,7 @@ import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.utils.DateUtils;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.yalantis.ucrop.UCrop;
 import dagger.android.AndroidInjection;
-
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";
@@ -78,7 +88,7 @@ public class EventCreateActivity extends AppCompatActivity {
     @BindView(R.id.create_form)
     View createForm;
     @BindView(R.id.create_form_switch_visibility)
-    SwitchMaterial eventVisibility;
+    SwitchCompat eventVisibility;
     @BindView(R.id.create_form_delete_event_button)
     Button deleteEventButton;
 
@@ -284,26 +294,27 @@ public class EventCreateActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (data == null){
+            return;
+        }
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri eventImageUri = data.getData();
             cropAndConvertImage(eventImageUri);
         }
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            eventImageSrc = UCrop.getOutput(data);
-            imageChanged = true;
-
-            imageLoader.displayImage(this, eventImageSrc, eventImage);
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(data);
-            Log.i(TAG, "Unable to crop image");
-            cropError.printStackTrace();
-        }
+                eventImageSrc = UCrop.getOutput(data);
+                imageLoader.displayImage(this, eventImageSrc, eventImage);
+            } else if (resultCode == UCrop.RESULT_ERROR) {
+                final Throwable cropError = UCrop.getError(data);
+                Log.i(TAG, "Unable to crop image");
+                cropError.printStackTrace();
+            }
     }
 
     /**
      * Handle the cropping and conversion of the image
      *
-     * @param eventImageUri
+     * @param eventImageUri the uri to the image
      */
     private void cropAndConvertImage(Uri eventImageUri) {
         try {
@@ -324,17 +335,13 @@ public class EventCreateActivity extends AppCompatActivity {
     public void onClickDeleteEventButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.create_event_delete_dialog_content).setTitle(R.string.create_event_delete_dialog_title);
-        builder.setPositiveButton(R.string.button_yes, (dialog, id) -> {
-            this.repository.deleteEvent(event).addOnCompleteListener(m -> {
-                Toast.makeText(this, R.string.delete_successfull, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this,EventPickingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            });
-        });
-        builder.setNegativeButton(R.string.button_no, (dialog, id) -> {
-            dialog.cancel();
-        });
+        builder.setPositiveButton(R.string.button_yes, (dialog, id) -> this.repository.deleteEvent(event).addOnCompleteListener(m -> {
+            Toast.makeText(this, R.string.delete_successfull, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this,EventPickingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }));
+        builder.setNegativeButton(R.string.button_no, (dialog, id) -> dialog.cancel());
         builder.create().show();
     }
 }

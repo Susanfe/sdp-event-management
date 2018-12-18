@@ -70,8 +70,8 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 "    \"latitude\" : 46.523,\n" +
                 "    \"longitude\" : 6.567822\n" +
                 "  },\n" +
-                "  \"spotType\" : \"NURSERY\",\n" +
-                "  \"title\" : \"test3\"\n" +
+                "  \"spotType\" : \"ROOM\",\n" +
+                "  \"title\" : \"Polyv\"\n" +
                 "}, {\n" +
                 "  \"position\" : {\n" +
                 "    \"latitude\" : 46.520433,\n" +

@@ -8,7 +8,7 @@
     <color name="colorSecondaryDark">#c5a600</color>
     <color name="colorPrimaryText">#ffffff</color>
     <color name="colorSecondaryText">#000000</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ff0000</color>
 
     <color name="light_gray">#C0C0C0</color>
     <color name="colorCheckEnabled">#2e7d32</color>

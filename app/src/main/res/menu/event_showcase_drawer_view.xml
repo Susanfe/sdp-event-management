@@ -20,22 +20,14 @@
             android:id="@+id/nav_schedule"
             android:icon="@drawable/ic_event_black_24dp"
             android:title="@string/schedule_nav_item_activity_event_showcase" />
-
-        <item
-            android:id="@+id/nav_scan"
-            android:icon="@drawable/ic_photo_camera_black_24dp"
-            android:title="@string/scan_nav_item_activity_event_showcase"
-            android:visible="false" />
         <item
             android:id="@+id/nav_feedback"
             android:icon="@drawable/ic_thumbs_up_down_black_24dp"
             android:title="@string/feedback_nav" />
-
         <item
             android:id="@+id/nav_contact"
             android:icon="@drawable/ic_email_black_24dp"
             android:title="@string/contact_nav_item_activity_event_showcase" />
-
     </group>
 
     <group android:checkableBehavior="single"
@@ -45,6 +37,11 @@
             android:id="@+id/nav_admin"
             android:icon="@drawable/ic_build_black_24dp"
             android:title="@string/admin_nav_item_activity_event_showcase"
+            android:visible="false" />
+        <item
+            android:id="@+id/nav_scan"
+            android:icon="@drawable/ic_photo_camera_black_24dp"
+            android:title="@string/scan_nav_item_activity_event_showcase"
             android:visible="false" />
     </group>
 

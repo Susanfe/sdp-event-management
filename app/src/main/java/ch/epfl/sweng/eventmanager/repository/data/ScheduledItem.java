@@ -1,21 +1,20 @@
 package ch.epfl.sweng.eventmanager.repository.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import com.google.firebase.database.Exclude;
 
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Class describing a single scheduled item (concert, activity...) in an event. The class is for the moment only used by
  * the ScheduleFragment.
  */
-public final class ScheduledItem {
+public final class ScheduledItem implements Parcelable {
     public static final double STANDARD_DURATION = 1;
     /**
      * Indicates the time of the item, precision required is minutes.
@@ -45,18 +44,21 @@ public final class ScheduledItem {
     private String id;
     /**
      * The place (room, usually) where the event takes place<br>
-     * // FIXME Depending on how the map works, we might want to add more data here so that the user can click and go to the map.
+     * // FIXME Depending on how the map works, we might want to add more data here so that the user can click and go
+     * to the map.
      */
     private String itemLocation;
 
     @Deprecated
-    public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre, @NonNull String description,
-                         double duration, @NonNull UUID uuid, @NonNull String itemLocation) {
+    public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre,
+                         @NonNull String description, double duration, @NonNull UUID uuid,
+                         @NonNull String itemLocation) {
         this(date, artist, genre, description, duration, uuid.toString(), itemLocation);
     }
 
-    public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre, @NonNull String description,
-                         double duration, @NonNull String id, @NonNull String itemLocation) {
+    public ScheduledItem(@NonNull Date date, @NonNull String artist, @NonNull String genre,
+                         @NonNull String description, double duration, @NonNull String id,
+                         @NonNull String itemLocation) {
         this.date = date.getTime();
         this.artist = artist;
         this.genre = genre;
@@ -68,8 +70,7 @@ public final class ScheduledItem {
         else this.duration = duration;
     }
 
-    public ScheduledItem() {
-    }
+    public ScheduledItem() {}
 
     public long getDate() {
         return date;
@@ -138,20 +139,14 @@ public final class ScheduledItem {
 
         ScheduledItem that = (ScheduledItem) o;
 
-        return date == that.date
-                && Double.compare(that.duration, duration) == 0
-                && artist.equals(that.artist)
-                && genre.equals(that.genre)
-                && description.equals(that.description)
-                && id.equals(that.id)
-                && itemLocation.equals(that.itemLocation);
+        return date == that.date && Double.compare(that.duration, duration) == 0 && artist.equals(that.artist) && genre.equals(that.genre) && description.equals(that.description) && id.equals(that.id) && itemLocation.equals(that.itemLocation);
     }
 
     public String dateAsString() {
         if (date <= 0) {
             return null;
         }
-        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm");
+        SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy 'at' kk'h'mm", Locale.getDefault());
         return f.format(date);
     }
 
@@ -196,10 +191,11 @@ public final class ScheduledItem {
 
     /**
      * Print this event as an iCalendar event to the given output stream
+     *
      * @param out the stream to print this event in
      */
     public void printAsIcalendar(PrintStream out) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.US);
 
         out.println("BEGIN:VEVENT");
         out.println("SUMMARY:" + getArtist());
@@ -228,14 +224,47 @@ public final class ScheduledItem {
 
     @Override
     public String toString() {
-        return "ScheduledItem{" +
-                "date=" + date +
-                ", artist='" + artist + '\'' +
-                ", genre='" + genre + '\'' +
-                ", description='" + description + '\'' +
-                ", duration=" + duration +
-                ", id='" + id + '\'' +
-                ", itemLocation='" + itemLocation + '\'' +
-                '}';
+        return "ScheduledItem{" + "date=" + date + ", artist='" + artist + '\'' + ", genre='" + genre + '\'' + ", " +
+                "description='" + description + '\'' + ", duration=" + duration + ", id='" + id + '\'' + ", " +
+                "itemLocation='" + itemLocation + '\'' + '}';
     }
+
+    protected ScheduledItem(Parcel in) {
+        date = in.readLong();
+        artist = in.readString();
+        genre = in.readString();
+        description = in.readString();
+        duration = in.readDouble();
+        id = in.readString();
+        itemLocation = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(date);
+        dest.writeString(artist);
+        dest.writeString(genre);
+        dest.writeString(description);
+        dest.writeDouble(duration);
+        dest.writeString(id);
+        dest.writeString(itemLocation);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<ScheduledItem> CREATOR = new Parcelable.Creator<ScheduledItem>() {
+        @Override
+        public ScheduledItem createFromParcel(Parcel in) {
+            return new ScheduledItem(in);
+        }
+
+        @Override
+        public ScheduledItem[] newArray(int size) {
+            return new ScheduledItem[size];
+        }
+    };
 }

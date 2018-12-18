@@ -89,7 +89,7 @@ class NotificationBuilder {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, SchedulerHelper.CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(description)
-                .setSmallIcon(R.drawable.ic_marker_active)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
