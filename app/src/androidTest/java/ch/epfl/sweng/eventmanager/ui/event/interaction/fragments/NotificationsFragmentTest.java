@@ -1,6 +1,8 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
 
+import android.content.Context;
 import android.view.Gravity;
+import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
@@ -22,8 +24,7 @@ import org.junit.Test;
 import javax.inject.Inject;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.action.ViewActions.*;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
@@ -67,7 +68,7 @@ public class NotificationsFragmentTest {
 
     @Ignore
     @Test
-    public void createNotificationFailTest(){
+    public void alreadySubmittedFeedbackTest(){
         onView(withId(R.id.drawer_layout))
                 .perform(DrawerActions.open());
 
@@ -91,8 +92,20 @@ public class NotificationsFragmentTest {
     }
 
     @Test
+    public void cannotSendEmptyBodyNotification(){
+        onView(withId(R.id.notification_title)).perform(typeText(notificationTitle), closeSoftKeyboard());
+
+        onView(withId(R.id.notification_send)).perform(click());
+        onView(withId(R.id.notification_content)).check(matches(hasErrorText(getResourceString(R.string.send_notification_form_error))));
+    }
+
+    @Test
     public void scheduleNotificationDoesntThrowExceptionTest(){
         NotificationScheduler.scheduleNotification(new NotificationRequestResponse("title", "body", "Sysmic"), new CloudMessageEventStrategy(mActivityRule.getActivity().getApplicationContext()));
     }
 
+    private String getResourceString(int id) {
+        Context targetContext = InstrumentationRegistry.getTargetContext();
+        return targetContext.getResources().getString(id);
+    }
 }

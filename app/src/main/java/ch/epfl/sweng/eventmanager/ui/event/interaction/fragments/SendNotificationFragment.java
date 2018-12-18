@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import butterknife.BindView;
@@ -29,9 +29,9 @@ public class SendNotificationFragment extends AbstractShowcaseFragment {
     CloudFunction cloudFunction;
 
     @BindView(R.id.notification_title)
-    TextView title;
+    EditText title;
     @BindView(R.id.notification_content)
-    TextView body;
+    EditText body;
     @BindView(R.id.notification_send)
     Button send;
 
@@ -55,7 +55,9 @@ public class SendNotificationFragment extends AbstractShowcaseFragment {
         if (view != null) ButterKnife.bind(this, view);
 
         model.getEvent().observe(this, ev -> send.setOnClickListener(l -> {
-            NotificationRequest notificationRequest = new NotificationRequest(title.getText().toString(), body.getText().toString(), ev.getId());
+            if (isEmptyField(body, body.getText().toString()))
+                return;
+            NotificationRequest notificationRequest = new NotificationRequest(formatNotificationTitle(ev.getName(), title.getText().toString()), body.getText().toString(), ev.getId());
 
             send.setClickable(false);
 
@@ -70,6 +72,20 @@ public class SendNotificationFragment extends AbstractShowcaseFragment {
         }));
 
         return view;
+    }
+
+    private static String formatNotificationTitle(String evName, String title) {
+        if (title.trim().isEmpty())
+            return evName;
+        else return evName + " - " + title;
+    }
+
+    private boolean isEmptyField(EditText v, String s_from_v) {
+        if (s_from_v.trim().isEmpty()) {
+            v.setError(getString(R.string.send_notification_form_error));
+            v.requestFocus();
+            return true;
+        } else return false;
     }
 
     @Override
