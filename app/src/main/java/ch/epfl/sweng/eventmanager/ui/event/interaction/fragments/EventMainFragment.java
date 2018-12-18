@@ -101,16 +101,16 @@ public class EventMainFragment extends AbstractFeedbackFragment {
                 String beginDateAsString = f.format(ev.getBeginDateAsDate());
                 beginDate.setText(String.format("%s %s", getString(R.string.starts_on), beginDateAsString));
                 dateLinearLayout.setVisibility(View.VISIBLE);
-                if (ev.getEndDateAsDate() != null && !ev.getBeginDateAsDate().equals(ev.getEndDateAsDate())) {
+                if (ev.getEndDateAsDate() != null) {
                     String endDateAsString = f.format(ev.getEndDate());
-                    endDate.setText(String.format("%s   %s", getString(R.string.Ends_on), endDateAsString));
-                    endDate.setVisibility(View.VISIBLE);
-                }
-                else{
-                    endDate.setVisibility(View.GONE);
+                    if (!endDateAsString.equals(beginDateAsString)) {
+                        endDate.setText(String.format("%s   %s", getString(R.string.Ends_on), endDateAsString));
+                        endDate.setVisibility(View.VISIBLE);
+                    } else {
+                        endDate.setVisibility(View.GONE);
+                    }
                 }
             }
-
         });
     }
 
