@@ -55,7 +55,7 @@
         See README(https://goo.gl/l4GJaQ) for more. -->
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@drawable/ic_marker_active" />
+                android:resource="@drawable/ic_launcher_foreground" />
 
         <activity
             android:name=".ui.event.selection.EventPickingActivity"
@@ -100,7 +100,6 @@
         <activity
             android:name=".ui.event.interaction.EventShowcaseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop"/>
         <activity android:name=".ui.ticketing.TicketingConfigurationPickerActivity" />
         <activity android:name=".ui.ticketing.TicketingLoginActivity" />
@@ -116,11 +115,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <activity android:name=".ui.event.interaction.EventAdministrationActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.event.interaction.EventCreateActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar"/>
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -146,7 +143,7 @@
         <activity android:name=".ui.settings.SettingsActivity"
             android:label="Settings"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar"/>
+            android:theme="@style/AppTheme.ActionBar.setting"/>
         <activity
                 android:name="com.yalantis.ucrop.UCropActivity"
                 android:screenOrientation="portrait"
