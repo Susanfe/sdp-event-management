@@ -88,13 +88,4 @@ public class FirebaseHelper {
 
         return dbRef.setValue(elem);
     }
-
-    public static <T> Task<Void> replaceElement(int eventId, String ref, T elem){
-        DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                .getReference(ref)
-                .child("event_" + eventId)
-                .push(); // Create a new key in the list
-
-        return dbRef.setValue(null).addOnCompleteListener(command -> dbRef.setValue(elem));
-    }
 }

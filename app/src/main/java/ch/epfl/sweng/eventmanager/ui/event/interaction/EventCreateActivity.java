@@ -307,7 +307,6 @@ public class EventCreateActivity extends AppCompatActivity {
         } else if (resultCode == UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);
             Log.i(TAG, "Unable to crop image");
-            assert cropError != null;
             cropError.printStackTrace();
         }
     }

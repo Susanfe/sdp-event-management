@@ -47,9 +47,7 @@ public class EventFeedbackFragment extends AbstractFeedbackFragment {
                              Bundle savedInstanceState) {
 
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        if (view != null) {
-            ButterKnife.bind(this, view);
-        }
+        ButterKnife.bind(this, view);
 
         recyclerView.setAdapter(ratingsRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
