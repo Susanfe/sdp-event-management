@@ -16,7 +16,10 @@ import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
+
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Locale;
 
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
@@ -94,12 +97,18 @@ public class EventMainFragment extends AbstractFeedbackFragment {
             repository.getMeanRating(ev.getId()).observe(this, feedbackBar::setRating);
 
             if (ev.getBeginDateAsDate() != null) {
-                beginDate.setText(String.format("%s %s", getString(R.string.starts_on), ev.beginDateAsString()));
+                SimpleDateFormat f = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+                String beginDateAsString = f.format(ev.getBeginDateAsDate());
+                beginDate.setText(String.format("%s %s", getString(R.string.starts_on), beginDateAsString));
                 dateLinearLayout.setVisibility(View.VISIBLE);
-            }
-            if (ev.getEndDateAsDate() != null) {
-                endDate.setText(String.format("%s   %s", getString(R.string.Ends_on), ev.endDateAsString()));
-                dateLinearLayout.setVisibility(View.VISIBLE);
+                if (ev.getEndDateAsDate() != null && !ev.getBeginDateAsDate().equals(ev.getEndDateAsDate())) {
+                    String endDateAsString = f.format(ev.getEndDate());
+                    endDate.setText(String.format("%s   %s", getString(R.string.Ends_on), endDateAsString));
+                    endDate.setVisibility(View.VISIBLE);
+                }
+                else{
+                    endDate.setVisibility(View.GONE);
+                }
             }
 
         });
