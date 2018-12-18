@@ -102,7 +102,7 @@
         <activity
             android:name=".ui.event.interaction.EventShowcaseActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.ticketing.TicketingConfigurationPickerActivity" />
         <activity android:name=".ui.ticketing.TicketingLoginActivity" />
         <activity android:name=".ui.ticketing.TicketingScanActivity" />
