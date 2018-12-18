@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <ProgressBar
@@ -92,11 +93,13 @@
                 android:id="@+id/create_form_image_view"
                 android:contentDescription="@string/event_image"/>
 
-        <com.google.android.material.button.MaterialButton android:layout_width="wrap_content"
-                                                           android:layout_height="wrap_content"
-                                                           android:layout_gravity="center_horizontal"
-        android:text="@string/create_form_upload_image"
-        android:id="@+id/create_form_upload_image"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/create_form_upload_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/create_form_upload_image"
+            android:textColor="@color/colorSecondary" />
 
 
         <com.google.android.material.switchmaterial.SwitchMaterial
