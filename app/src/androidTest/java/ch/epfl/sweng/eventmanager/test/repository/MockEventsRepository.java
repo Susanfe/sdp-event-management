@@ -42,7 +42,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     private final ObservableMap<Integer, Uri> eventImagesUri = new ObservableMap<>();
     private final ObservableMap<Integer, List<Spot>> spots = new ObservableMap<>();
     private final ObservableMap<Integer, List<ScheduledItem>> scheduledItems = new ObservableMap<>();
-    private final ObservableMap<Integer, List<Zone>> zones = new ObservableMap<>();
+    private final ObservableMap<Integer, Zone> zone = new ObservableMap<>();
 
     {
         String orgaEmail = EVENT_EMAIL;
@@ -89,7 +89,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 "} ]\n";
 
 
-        TypeToken<List<Zone>> zonesToken = new TypeToken<List<Zone>>() {
+        TypeToken<List<Zone>> zoneToken = new TypeToken<List<Zone>>() {
         };
 
         String jsonZone = "[ {\n      \"positions\" : [ {\n        " +
@@ -119,7 +119,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
                 CONFIG_BY_EVENT.get(3), true));
 
-        addZones(1, new Gson().fromJson(jsonZone, zonesToken.getType()));
+        zone.put(1, new Gson().fromJson(jsonZone, zoneToken.getType()));
         addSpots(1, new Gson().fromJson(jsonSpots, spotsToken.getType()));
 
         List<ScheduledItem> items;
@@ -169,10 +169,6 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         eventImagesUri.put(event.getId(), event.getImageURLasURI());
     }
 
-    private void addZones(int event, List<Zone> list) {
-        zones.put(event, list);
-    }
-
     private void addSpots(int event, List<Spot> list) {
         spots.put(event, list);
     }
@@ -199,8 +195,8 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     }
 
     @Override
-    public LiveData<List<Zone>> getZones(int eventId) {
-        return zones.get(eventId);
+    public LiveData<Zone> getZone(int eventId) {
+        return zone.get(eventId);
     }
 
     @Override

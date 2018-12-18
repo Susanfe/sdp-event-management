@@ -113,7 +113,7 @@ public class FirebaseEventRepository implements EventRepository {
     }
 
     @Override
-    public LiveData<Zone> getZones(int eventId) {
+    public LiveData<Zone> getZone(int eventId) {
         final MutableLiveData<Event> zone = new MutableLiveData<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("zones").child("event_" + eventId);
         return FirebaseHelper.getElement(dbRef, Zone.class);
