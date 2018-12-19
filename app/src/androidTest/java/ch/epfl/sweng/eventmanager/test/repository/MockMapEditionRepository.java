@@ -13,7 +13,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Zone;
 
 public class MockMapEditionRepository implements MapEditionRepository {
 
-    private String zonesJson = "[ {\n" +
+    private String zonesJson = "{\n" +
             "      \"positions\" : [ {\n" +
             "        \"latitude\" : 35.69436,\n" +
             "        \"longitude\" : 139.747854\n" +
@@ -27,10 +27,9 @@ public class MockMapEditionRepository implements MapEditionRepository {
             "        \"latitude\" : 35.69278523609325,\n" +
             "        \"longitude\" : 139.75525248795748\n" +
             "      } ]\n" +
-            "    } ]";
+            "    }";
 
-    private TypeToken<List<Zone>> zonesToken = new TypeToken<List<Zone>>() {};
-    private List<Zone> zones = new Gson().fromJson(zonesJson, zonesToken.getType());
+    private Zone zones = new Gson().fromJson(zonesJson, Zone.class);
 
     private String spotsJson = "[ {\n" +
             "      \"position\" : {\n" +
@@ -51,17 +50,17 @@ public class MockMapEditionRepository implements MapEditionRepository {
             "    } ]";
 
     private TypeToken<List<Spot>> spotsToken = new TypeToken<List<Spot>>() {};
-    List<Spot> spots = new Gson().fromJson(spotsJson, spotsToken.getType());
+    private List<Spot> spot = new Gson().fromJson(spotsJson, spotsToken.getType());
 
     MockMapEditionRepository() { }
 
     @Override
     public Task<Zone> updateZones(int eventId, Zone zone) {
-        return Tasks.forResult(zone);
+        return Tasks.forResult(zones);
     }
 
     @Override
     public Task<List<Spot>> updateSpots(int eventId, List<Spot> spots) {
-        return Tasks.forResult(spots);
+        return Tasks.forResult(spot);
     }
 }
