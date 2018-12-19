@@ -56,8 +56,8 @@ public class MockMapEditionRepository implements MapEditionRepository {
     MockMapEditionRepository() { }
 
     @Override
-    public Task<List<Zone>> updateZones(int eventId, List<Zone> zone) {
-        return Tasks.forResult(zones);
+    public Task<Zone> updateZones(int eventId, Zone zone) {
+        return Tasks.forResult(zone);
     }
 
     @Override
