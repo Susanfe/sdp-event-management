@@ -13,6 +13,7 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventUserManage
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventFeedbackFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NewsFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.NotificationsFragmentTest;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.EventMapEditionFragmentTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleCreateTest;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleEditTest;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivityTest;
@@ -57,6 +58,8 @@ public interface TestComponent extends ApplicationComponent {
     void inject(EventPickingActivityTest test);
 
     void inject(NotificationsFragmentTest test);
+
+    void inject(EventMapEditionFragmentTest test);
 
     @Component.Builder
     interface Builder extends ApplicationComponent.Builder {
