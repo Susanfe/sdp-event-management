@@ -147,6 +147,8 @@
             android:label="Settings"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.ActionBar.setting"/>
+        <activity android:name=".ui.credits.CreditsActivity"
+            android:screenOrientation="portrait"/>
         <activity
                 android:name="com.yalantis.ucrop.UCropActivity"
                 android:screenOrientation="portrait"
