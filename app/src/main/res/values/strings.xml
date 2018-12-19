@@ -135,6 +135,8 @@
     <string name="cancel_login_facebook">cancel login</string>
     <string name="error_login_facebook">error login</string>
 
+    <string name="tag_facebook_login_back_button">tag back button from facebook login</string>
+    <string name="tag_eventID__from_news">tag eventID from the news</string>
 
     <!-- Accessibility text -->
     <string name="event_thumbnail">Event thumbnail</string>

@@ -78,6 +78,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
         LiveData<String> twitterName = Transformations.map(super.model.getEvent(), Event::getTwitterName);
         LiveData<String> facebookName = Transformations.map(super.model.getEvent(), Event::getFacebookName);
 
+
         this.model.getNews(twitterName, facebookName).observe(this, news -> {
             if (news != null && news.size() > 0) {
                 emptyListTextView.setVisibility(View.GONE);
@@ -116,6 +117,7 @@ public class NewsFragment extends AbstractShowcaseFragment {
             case R.id.menu_showcase_activity_news_facebook_login:
 
                 Intent intent = new Intent(getActivity(), LoginFacebookActivity.class);
+                intent.putExtra(getString(R.string.tag_eventID__from_news), getParentActivity().getEventID());
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 
