@@ -35,6 +35,9 @@ public class MarkerCreationActionTest {
     public void createAction() {
         MarkerCreationAction creationAction = new MarkerCreationAction(tag, pos);
         assertThat(creationAction.getMarkerType(), is(MarkerType.SPOT));
+
+        MarkerCreationAction creationAction2 = new MarkerCreationAction(tag, pos);
+        assertThat(creationAction.equals(creationAction2), is(true));
     }
 
     @Test(expected = IllegalArgumentException.class)

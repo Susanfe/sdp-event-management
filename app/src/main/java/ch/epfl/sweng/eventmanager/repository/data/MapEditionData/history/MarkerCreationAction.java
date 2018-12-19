@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag;
 
 public class MarkerCreationAction extends MapEditionAction {
@@ -37,5 +38,16 @@ public class MarkerCreationAction extends MapEditionAction {
 
     public LatLng getPositionOfCreation() {
         return positionOfCreation;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof MarkerCreationAction) {
+            MarkerCreationAction other = (MarkerCreationAction) obj;
+            return other.getPositionOfCreation().equals(getPositionOfCreation()) &&
+                    other.getMarkerType().equals(getMarkerType());
+        }
+
+        return false;
     }
 }
