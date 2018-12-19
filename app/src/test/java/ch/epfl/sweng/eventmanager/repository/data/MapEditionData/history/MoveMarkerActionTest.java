@@ -43,6 +43,22 @@ public class MoveMarkerActionTest {
         assertThat(action.getPos(), is(pos));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void createNullTagAction() {
+        new MoveMarkerAction(null, pos1, pos);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createNullAncientPosAction() {
+        new MoveMarkerAction(tag, null, pos);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createNullCurrentPostAction() {
+        new MoveMarkerAction(tag, pos1, null);
+    }
+
+
     @Test
     public void revertWorks() {
         // Testing with markers is impossible because Marker cannot be directly instanciated

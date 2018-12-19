@@ -37,6 +37,14 @@ public class EventEditionTagTest {
         assertNull(edge.getSpotType());
     }
 
+    @Test
+    public void assertDifferent() {
+        EventEditionTag spotTag = EventEditionTag.createSpotTag(0, SpotType.ATM);
+        EventEditionTag spotTag1 = EventEditionTag.createSpotTag(1, SpotType.BAR);
+
+        assertThat(spotTag.equals(spotTag1), is(false));
+    }
+
 
 
 

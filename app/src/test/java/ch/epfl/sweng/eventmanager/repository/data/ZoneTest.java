@@ -97,6 +97,14 @@ public class ZoneTest {
 
     }
 
+    @Test
+    public void changePositionNotFound() {
+        boolean result = zone1.changePositionOfElement(new Position(0, 2),
+                new Position(2, 0));
+
+        assertThat(result, is(false));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void changePositionOfNullFirst(){
         zone1.changePositionOfElement(null, new Position(0, 1));

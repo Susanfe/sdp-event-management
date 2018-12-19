@@ -73,6 +73,14 @@ public class MarkerCreationActionTest {
         assertThat(result, is(false));
     }
 
+    @Test
+    public void assertNotEquals() {
+        MarkerCreationAction action = new MarkerCreationAction(tag, pos);
+        MarkerCreationAction action1 = new MarkerCreationAction(tag1, pos1);
+
+        assertThat(action.equals(action1), is(false));
+    }
+
 
 
 }
