@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="@dimen/event_list_cardview_unjoinded_height"
@@ -18,6 +19,17 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/event_default_cover"
                 android:contentDescription="@string/event_thumbnail"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/ic_clear_24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:alpha="0.7"
+                android:id="@+id/unjoined_btn_clear"/>
 
             <TextView
                 android:id="@+id/event_name"
