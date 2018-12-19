@@ -89,7 +89,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 "} ]\n";
 
 
-        String jsonZone = "[ {\n      \"positions\" : [ {\n        " +
+        String jsonZone = "{\n      \"positions\" : [ {\n        " +
                 "\"latitude\" : 46.51859,\n        \"longitude\" " +
                 ": 6.561272\n      }, {\n        \"latitude\" : 46.522148,\n " +
                 "       \"longitude\" : 6.563289\n      }, {\n       " +
@@ -97,7 +97,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 "6.5717\n      }, {\n        \"latitude\" : 46.518295,\n" +
                 "        \"longitude\" : 6.571958\n      }, {\n       " +
                 " \"latitude\" : 46.517365,\n        \"longitude\" :" +
-                " 6.566036\n      } ]\n    } ]";
+                " 6.566036\n      } ]\n    }";
 
         Map<String, String> usersMap = new HashMap<>();
         usersMap.put(DummyInMemorySession.DUMMY_UID, "admin");
