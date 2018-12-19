@@ -118,8 +118,10 @@
         </provider>
         <activity android:name=".ui.event.interaction.EventAdministrationActivity"
             android:screenOrientation="portrait"/>
+
         <activity android:name=".ui.event.interaction.EventCreateActivity"
-            android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme.ActionBar"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
