@@ -1,18 +1,18 @@
 package ch.epfl.sweng.eventmanager.users;
 
 import android.app.Activity;
-import ch.epfl.sweng.eventmanager.repository.data.FirebaseBackedUser;
-import ch.epfl.sweng.eventmanager.repository.data.User;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
 public class InMemoryFirebaseSession implements InMemorySession {
     private final FirebaseAuth mAuth;
-    private FirebaseBackedUser user;
 
+    @Inject
     public InMemoryFirebaseSession() {
         mAuth = FirebaseAuth.getInstance();
     }
@@ -28,13 +28,12 @@ public class InMemoryFirebaseSession implements InMemorySession {
     }
 
     @Override
-    public User getCurrentUser() {
+    public String getCurrentUserUid() {
         if (mAuth.getCurrentUser() == null) {
-            user = null;
-        } else if (user == null || !user.getUid().equals(mAuth.getCurrentUser().getUid())) {
-            user = new FirebaseBackedUser(mAuth.getCurrentUser());
+            return null;
+        } else {
+            return mAuth.getCurrentUser().getUid();
         }
-        return user;
     }
 
     @Override

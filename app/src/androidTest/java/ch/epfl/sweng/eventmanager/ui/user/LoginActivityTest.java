@@ -3,51 +3,44 @@ package ch.epfl.sweng.eventmanager.ui.user;
 import android.content.Context;
 import android.os.SystemClock;
 import android.util.Log;
-
-import junit.framework.AssertionFailedError;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.TestHelper;
+import ch.epfl.sweng.eventmanager.test.TestApplication;
 import ch.epfl.sweng.eventmanager.users.Session;
+import junit.framework.AssertionFailedError;
+import org.junit.*;
+
+import javax.inject.Inject;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.action.ViewActions.*;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.CoreMatchers.containsString;
 
 public class LoginActivityTest {
     private final int MAX_RETRY_COUNT = 10;
 
-    @Before
-    public void disableFirebaseAuth() {
-        Session.enforceDummySessions();
-        Session.logout();
-    }
+    @Inject
+    Session session;
 
     @After
     public void autoLogOut() {
-        Session.logout();
+        session.logout();
     }
 
     @Rule
     public final ActivityTestRule<LoginActivity> mActivityRule =
             new ActivityTestRule<>(LoginActivity.class);
+
+    @Before
+    public void setUp() {
+        TestApplication.component.inject(this);
+    }
 
     @Test
     public void testSuccessfulLogin() {

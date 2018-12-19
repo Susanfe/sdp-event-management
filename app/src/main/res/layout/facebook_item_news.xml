@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center_vertical"
+    app:cardElevation="1dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:contentPadding="15dp"
+    app:cardBackgroundColor="@color/colorPrimary"
+    style="@style/cardView_rounded"
+    android:layout_margin="@dimen/default_medium_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="start"
+        android:orientation="vertical"
+        android:padding="@dimen/default_big_padding">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/default_medium_margin">
+
+            <ImageView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/facebook_logo"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:background="@drawable/ic_facebook_login"
+                    android:contentDescription="@null"/>
+
+            <TextView
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/facebook_detail_time"
+                android:textColor="@color/colorSecondary"/>
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:layout_marginBottom="@dimen/default_medium_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/facebook_detail_author"
+            android:textColor="@color/colorSecondary"/>
+
+        <TextView
+            android:layout_marginBottom="@dimen/default_medium_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/facebook_detail_content"
+            android:textColor="@color/colorSecondary"/>
+
+        <TextView
+            android:layout_marginBottom="@dimen/default_medium_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/facebook_description"
+            android:textColor="@color/colorSecondary"/>
+
+        <ImageView
+            android:id="@+id/image_from_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorSecondary"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

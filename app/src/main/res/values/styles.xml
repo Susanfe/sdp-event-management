@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorSecondary</item>
         <item name="actionOverflowButtonStyle">@style/Toolbar.OverFlow</item>
 
     </style>
@@ -21,7 +21,19 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
-    <style name="AppTheme.ActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar"/>
+    <style name="AppTheme.ActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorSecondary</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.setting" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+    </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
@@ -50,6 +62,12 @@
     <style name="Button_global">
         <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:background">@drawable/button_lateral_navigation</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
+    <style name="Button_important">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:background">@drawable/button_important</item>
         <item name="android:layout_margin">8dp</item>
     </style>
 

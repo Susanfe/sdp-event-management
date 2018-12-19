@@ -2,17 +2,16 @@ package ch.epfl.sweng.eventmanager.repository.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.annotation.NonNull;
-import android.util.Log;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.*;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +47,28 @@ public class FirebaseHelper {
         return data;
     }
 
+    public static <T> LiveData<T> getElement(DatabaseReference dbRef, Class<T> classOfT) {
+        return getElement(dbRef, classOfT, Mapper.unit());
+    }
+
+    public static <T> LiveData<T> getElement(DatabaseReference dbRef, Class<T> classOfT, Mapper<T> mapper) {
+        final MutableLiveData<T> data = new MutableLiveData<>();
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                data.postValue(mapper.map(dataSnapshot.getValue(classOfT), dataSnapshot));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("FirebaseHelper", "Error when getting data element.", databaseError.toException());
+            }
+        });
+
+        return data;
+    }
+
     public static LiveData<Bitmap> getImage(StorageReference ref) {
         final MutableLiveData<Bitmap> img = new MutableLiveData<>();
 
@@ -60,10 +81,15 @@ public class FirebaseHelper {
             Log.w("FirebaseHelper", "Could not load image " + img.toString());
             img.setValue(null);
         });
+
         return img;
     }
 
-    public static interface Mapper<T> {
+    public static UploadTask uploadFileToStorage(StorageReference ref, Uri fileUri, StorageMetadata metadata) {
+        return ref.putFile(fileUri, metadata);
+    }
+
+    public interface Mapper<T> {
         static <T> Mapper<T> unit() {
             return (in, snapshot) -> in;
         }

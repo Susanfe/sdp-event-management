@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.event.interaction.EventShowcaseActivity">
 
-    <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+    <!-- Layout to contain contents of main name of screen (drawer will slide over this) -->
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
@@ -32,6 +32,10 @@
         android:fitsSystemWindows="true"
         app:menu="@menu/event_showcase_drawer_view"
         app:headerLayout="@layout/event_showcase_drawer_header"
-        app:itemTextColor="@color/colorPrimary"/>
+        app:itemTextColor="@color/colorPrimary"
+        app:itemIconTint="@color/colorPrimaryLight"
+        app:itemBackground="@drawable/drawer_item_background"
+
+        />
 
 </androidx.drawerlayout.widget.DrawerLayout>

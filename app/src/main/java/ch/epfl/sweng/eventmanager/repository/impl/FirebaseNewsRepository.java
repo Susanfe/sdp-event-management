@@ -1,10 +1,15 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
+import android.os.Bundle;
+import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import android.util.Log;
 import ch.epfl.sweng.eventmanager.repository.NewsRepository;
+import ch.epfl.sweng.eventmanager.repository.data.FacebookPost;
 import ch.epfl.sweng.eventmanager.repository.data.News;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.HttpMethod;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -14,14 +19,18 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.TimelineResult;
 import com.twitter.sdk.android.tweetui.UserTimeline;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * @author Louis Vialar
+ * This class enables to retrieve all types of news and also push a news into firebase.
+ *
  */
 @Singleton
 public class FirebaseNewsRepository implements NewsRepository {
@@ -32,11 +41,23 @@ public class FirebaseNewsRepository implements NewsRepository {
     public FirebaseNewsRepository() {
     }
 
+    /**
+     * Enables to push into firebase a News into the event "eventId"
+     *
+     * @param eventId the id of the event
+     * @param news the news that have to be pushed
+     */
     @Override
     public Task<Void> publishNews(int eventId, News news) {
         return FirebaseHelper.publishElement(eventId, FIREBASE_REF, news);
     }
 
+    /**
+     * retrieve all the news contained into firebase for the event "eventId"
+     *
+     * @param eventId the id of the event
+     * @return list of News
+     */
     @Override
     public LiveData<List<News>> getNews(int eventId) {
         DatabaseReference dbRef = FirebaseDatabase.getInstance()
@@ -69,6 +90,43 @@ public class FirebaseNewsRepository implements NewsRepository {
             data.setValue(Collections.emptyList());
         }
 
+        return data;
+    }
+
+    /**
+     * Request to the graph API of facebook all the post contained into the page screeName
+     *
+     * @param screenName the name of the facebook page(oage id)
+     * @return a list of the FacebookPost contain into the page
+     */
+    @Override
+    public LiveData<List<FacebookPost>> getFacebookNews(String screenName) {
+        MutableLiveData<List<FacebookPost>> data = new MutableLiveData<>();
+        List<FacebookPost> facebookPostList = new ArrayList<>();
+
+        Bundle params = new Bundle();
+        params.putString("fields", "description, message,created_time,id, full_picture,status_type,source, name");
+
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + screenName + "/feed", params, HttpMethod.GET,
+                response -> {
+                    /* handle the result */
+                    try {
+                        Log.v("facebook request", "start");
+                        JSONObject jObjResponse = new JSONObject(String.valueOf(response.getJSONObject()));
+                        JSONArray jArray = jObjResponse.getJSONArray("data");
+
+                        for (int i = 0; i < jArray.length(); i++) {
+                            JSONObject jObject = jArray.getJSONObject(i);
+                            FacebookPost facebookPost = new FacebookPost(jObject);
+                            facebookPostList.add(facebookPost);
+                        }
+                        data.setValue(facebookPostList);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        data.setValue(Collections.EMPTY_LIST);
+                    }
+                }
+        ).executeAsync();
         return data;
     }
 }

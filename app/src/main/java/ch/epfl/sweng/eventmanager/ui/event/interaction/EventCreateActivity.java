@@ -1,12 +1,36 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.lifecycle.LiveData;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,26 +39,31 @@ import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.EventRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.users.Session;
+import ch.epfl.sweng.eventmanager.utils.DateUtils;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
-import com.google.android.gms.tasks.Task;
 import dagger.android.AndroidInjection;
-
-import javax.inject.Inject;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";
+    private static final int PICK_IMAGE = 1;
+    private static final String FILE_EXTENSION_WEBP = "webp";
+    private static final int IMAGE_COMPRESS_QUALITY = 70;
+    private static final int MAX_IMAGE_WIDTH = 600;
+    private static final int MAX_IMAGE_HEIGHT = 300;
 
     @Inject
     ViewModelFactory factory;
 
     @Inject
     EventRepository repository;
+
+    @Inject
+    Session session;
+
+    @Inject
+    ImageLoader imageLoader;
 
     @BindView(R.id.create_form_send_button)
     Button sendButton;
@@ -52,11 +81,21 @@ public class EventCreateActivity extends AppCompatActivity {
     EditText description;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
+    @BindView(R.id.create_form_upload_image)
+    Button uploadImageBtn;
+    @BindView(R.id.create_form_image_view)
+    ImageView eventImage;
     @BindView(R.id.create_form)
     View createForm;
+    @BindView(R.id.create_form_switch_visibility)
+    SwitchCompat eventVisibility;
+    @BindView(R.id.create_form_delete_event_button)
+    Button deleteEventButton;
 
     private int eventID;
     private Event event;
+    private Uri eventImageSrc;
+    private Boolean imageChanged = false;
     private boolean loading = true;
 
     private void populateForm(Event event) {
@@ -67,6 +106,8 @@ public class EventCreateActivity extends AppCompatActivity {
         this.description.setText(event.getDescription(), TextView.BufferType.EDITABLE);
         this.beginDate.setText(formatDate(event.getBeginDateAsDate()));
         this.endDate.setText(formatDate(event.getBeginDateAsDate()));
+        this.eventVisibility.setChecked(event.isVisibleFromPublic());
+        imageLoader.loadImageWithSpinner(event, this, this.eventImage, null);
     }
 
     private void populateEvent() {
@@ -76,25 +117,31 @@ public class EventCreateActivity extends AppCompatActivity {
         this.event.setDescription(getFieldValue(this.description));
         this.event.setBeginDate(getDateValue(this.beginDate));
         this.event.setEndDate(getDateValue(this.endDate));
+        this.event.setVisibleFromPublic(eventVisibility.isChecked());
+    }
+
+    private boolean checkForm() {
+        String name = getFieldValue(this.name);
+
+        if (name == null) {
+            Toast.makeText(this, R.string.create_event_name_empty, Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (name.length() < 4) {
+            Toast.makeText(this, R.string.create_event_name_too_short, Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
     }
 
     private String formatDate(Date date) {
-        String format = "dd/MM/yyyy";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-        return dateFormat.format(date);
+        return DateUtils.formatDate(date);
     }
 
     private long getDateValue(EditText editText) {
-        String format = "dd/MM/yyyy";
-        long date = 0L;
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.getDefault());
-        try {
-            date = dateFormat.parse(editText.getText().toString()).getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.i(TAG, "unable to parse date");
-        }
-        return date;
+        return DateUtils.getDateValue(editText);
     }
 
     private String getFieldValue(EditText field) {
@@ -113,7 +160,7 @@ public class EventCreateActivity extends AppCompatActivity {
         if (eventID <= 0) {
             // Create the event and set the user admin of his event
             Map<String, String> users = new HashMap<>();
-            users.put(Session.getCurrentUser().getUid(), "admin");
+            users.put(session.getCurrentUserUid(), "admin");
 
             event.setUsers(users);
 
@@ -123,10 +170,22 @@ public class EventCreateActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.create_form_upload_image)
+    public void setupSelectImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE);
+    }
+
     private void setupButton() {
         this.sendButton.setOnClickListener(v -> {
             if (loading) {
                 return; // The button should not be displayed anyway
+            }
+
+            if (!checkForm()) {
+                return; // Cannot process if the form is not valid
             }
 
             this.sendButton.setEnabled(false);
@@ -134,6 +193,11 @@ public class EventCreateActivity extends AppCompatActivity {
             populateEvent(); // Update the event object
 
             prepareCreationTask().addOnSuccessListener(event -> {
+                //upload event image to storage if changed
+                if (imageChanged) {
+                    this.repository.uploadImage(event, eventImageSrc);
+                    imageChanged = false;
+                }
                 // Start event administration activity
                 if (eventID <= 0) {
                     Toast.makeText(this, R.string.create_event_success, Toast.LENGTH_LONG).show();
@@ -181,15 +245,8 @@ public class EventCreateActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
-
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_event_create);
-
-        ButterKnife.bind(this);
-        this.setupButton();
+    protected void onResume() {
+        super.onResume();
 
         // Fetch event from passed ID
         Intent intent = getIntent();
@@ -219,5 +276,72 @@ public class EventCreateActivity extends AppCompatActivity {
                 event.removeObservers(this);
             });
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_event_create);
+
+        ButterKnife.bind(this);
+        this.setupButton();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null){
+            return;
+        }
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri eventImageUri = data.getData();
+            cropAndConvertImage(eventImageUri);
+        }
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+                eventImageSrc = UCrop.getOutput(data);
+                imageLoader.displayImage(this, eventImageSrc, eventImage);
+            } else if (resultCode == UCrop.RESULT_ERROR) {
+                final Throwable cropError = UCrop.getError(data);
+                Log.i(TAG, "Unable to crop image");
+                cropError.printStackTrace();
+            }
+    }
+
+    /**
+     * Handle the cropping and conversion of the image
+     *
+     * @param eventImageUri the uri to the image
+     */
+    private void cropAndConvertImage(Uri eventImageUri) {
+        try {
+            File eventImageCropped = File.createTempFile("event_cover", FILE_EXTENSION_WEBP);
+            eventImageCropped.deleteOnExit();
+            Uri eventImageCroppedUri = Uri.fromFile(eventImageCropped);
+            UCrop.Options compressOptions = new UCrop.Options();
+            compressOptions.setCompressionFormat(Bitmap.CompressFormat.WEBP);
+            compressOptions.setCompressionQuality(IMAGE_COMPRESS_QUALITY);
+            UCrop.of(eventImageUri, eventImageCroppedUri).withMaxResultSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT).withAspectRatio(16, 9).withOptions(compressOptions).start(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.i(TAG, "Unable to create tempFile for cropping event image");
+        }
+    }
+
+    @OnClick(R.id.create_form_delete_event_button)
+    public void onClickDeleteEventButton() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.create_event_delete_dialog_content).setTitle(R.string.create_event_delete_dialog_title);
+        builder.setPositiveButton(R.string.button_yes, (dialog, id) -> this.repository.deleteEvent(event).addOnCompleteListener(m -> {
+            Toast.makeText(this, R.string.delete_successfull, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this,EventPickingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }));
+        builder.setNegativeButton(R.string.button_no, (dialog, id) -> dialog.cancel());
+        builder.create().show();
     }
 }

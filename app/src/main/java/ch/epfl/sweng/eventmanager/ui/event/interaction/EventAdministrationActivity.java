@@ -4,20 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-
-import javax.inject.Inject;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.EventAdminMainFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNewsFragment;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.AdminScheduleParentFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.SendNotificationFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.user.EventUserManagementFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import dagger.android.AndroidInjection;
+
+import javax.inject.Inject;
 
 public class EventAdministrationActivity extends MultiFragmentActivity {
     private static final String TAG = "EventAdministration";
@@ -25,8 +27,19 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
     @Inject
     ViewModelFactory factory;
 
-    private EventInteractionModel model;
     private NewsViewModel newsModel;
+    private ScheduleViewModel scheduleModel;
+
+    private void initModels() {
+        model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
+        model.init(eventID);
+
+        newsModel = ViewModelProviders.of(this, factory).get(NewsViewModel.class);
+        newsModel.init(eventID);
+
+        scheduleModel = ViewModelProviders.of(this, factory).get(ScheduleViewModel.class);
+        scheduleModel.init(eventID);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +55,8 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
         if (eventID <= 0) { // Suppose that negative or null event ID are invalids
             Log.e(TAG, "Got invalid event ID#" + eventID + ".");
         } else {
-            this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
-            this.model.init(eventID);
+            this.initModels();
+            super.setupHeader();
 
             // Only display admin button if the user is at least staff
             model.getEvent().observe(this, ev -> {
@@ -57,12 +70,9 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
             });
 
             // Set default administration fragment
-            changeFragment(new EventUserManagementFragment(), true);
+            changeFragment(new EventAdminMainFragment(), true);
+            navigationView.setCheckedItem(R.id.nav_admin_main);
         }
-
-        // Initialize News model
-        this.newsModel = ViewModelProviders.of(this, factory).get(NewsViewModel.class);
-        this.newsModel.init(eventID);
 
         // Handle drawer events
         navigationView.setNavigationItemSelectedListener(this);
@@ -70,9 +80,6 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        // set item as selected to persist highlight
-        menuItem.setChecked(true);
-
         // close drawer when item is tapped
         mDrawerLayout.closeDrawers();
 
@@ -80,24 +87,44 @@ public class EventAdministrationActivity extends MultiFragmentActivity {
             case R.id.nav_showcase :
                 Intent showcaseIntent = new Intent(this, EventShowcaseActivity.class);
                 showcaseIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
+                showcaseIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(showcaseIntent);
+                menuItem.setChecked(false);
                 break;
 
-            case R.id.nav_schedule :
-                changeFragment(new ScheduleParentFragment(), true);
+            case R.id.nav_admin_main :
+                changeFragment(new EventAdminMainFragment(), true);
+                menuItem.setChecked(true);
+                break;
+
+            case R.id.nav_user_management :
+                changeFragment(new EventUserManagementFragment(), true);
+                menuItem.setChecked(true);
                 break;
 
             case R.id.nav_send_news :
                 changeFragment(new SendNewsFragment(), true);
+                menuItem.setChecked(true);
+                break;
+
+            case R.id.nav_send_notification :
+                changeFragment(new SendNotificationFragment(), true);
+                menuItem.setChecked(true);
+                break;
+
+            case R.id.nav_edit_schedule :
+                changeFragment(AdminScheduleParentFragment.newInstance(), true);
+                menuItem.setChecked(true);
                 break;
 
             case R.id.nav_edit_event :
                 Intent editIntent = new Intent(this, EventCreateActivity.class);
                 editIntent.putExtra(EventPickingActivity.SELECTED_EVENT_ID, eventID);
                 startActivity(editIntent);
+                menuItem.setChecked(false);
                 break;
         }
 
-        return true;
+        return false;
     }
 }

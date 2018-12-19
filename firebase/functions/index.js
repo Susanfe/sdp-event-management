@@ -2,6 +2,8 @@
 // triggers.
 const functions = require('firebase-functions');
 
+const request = require('request');
+
 // The Firebase Admin SDK to access the Firebase Realtime Database.
 const admin = require('firebase-admin');
 admin.initializeApp();
@@ -24,32 +26,73 @@ exports.addUserToEvent = functions.https.onCall((data, context) => {
   const currentUserUid = context.auth.uid;
   //const currentUserUid = "u0YmYQasWpNaNYZt4iXngV0aTxF3"; // Used locally for debug
 
-  // FIXME: improve robustness
-  admin.database()
-    .ref('/events/' + eventId + '/users/admin/')
-    .once('value', snapshot => {
-      // Object.values() is not supported on NodeJS 6, which is used by Firebase
-      var eventAdmins = snapshot.val();
-      var allowedUids = Object.keys(eventAdmins).map((k) => eventAdmins[k]);
-      if (allowedUids.includes(currentUserUid)) {
-        var users = admin.database().ref('/users/');
-        users.orderByChild('email').equalTo(userEmail).limitToFirst(1).once('value', snapshot => {
-          var match = snapshot.val();
-          if (match === null) {
-            console.log('Could not find user linked to email ' + userEmail);
-            return false;
-          } else {
-            var targetUid = Object.keys(match)[0];
-            console.log('Adding role ' + role + ' for UID ' + targetUid + ' on event ' + eventId);
-            return admin.database()
-              .ref('/events/' + eventId + '/users/' + role)
-              .push()
-              .set(targetUid);
-          }
-        })
-      } else {
-        console.log('Current user ' + currentUserUid + ' is not allowed to write event ' + eventId);
-        return false;
-      }
-    })
+  var ref = admin.database().ref('/events/' + eventId + '/users/');
+  ref.orderByValue('admin').on("value", adminsSnapshot => {
+    if (adminsSnapshot.val().includes(currentUserUid)) { // current user is admin
+      var users = admin.database().ref('/users/');
+      users.orderByChild('email').equalTo(userEmail).limitToFirst(1).once('value', userSnapshot => {
+        var match = userSnapshot.val();
+        if (match === null) {
+          console.log('Could not find user linked to email ' + userEmail);
+          return false;
+        } else {
+          var targetUid = Object.keys(match)[0];
+          return ref.child(targetUid).set(role);
+        }
+      });
+    } else {
+      console.log('Current user ' + currentUserUid + ' is not allowed to write event ' + eventId);
+      return false;
+    }
+  });
+});
+
+exports.removeUserFromEvent = functions.https.onCall((data, context) => {
+  // Extract parameters from client
+  const eventId = data.eventId;
+  const targetUserUid = data.uid;
+  const role = data.role;
+
+  // Auhtenticated user
+  const currentUserUid = context.auth.uid;
+  //const currentUserUid = "u0YmYQasWpNaNYZt4iXngV0aTxF3"; // Used locally for debug
+
+  var ref = admin.database().ref('/events/' + eventId + '/users/');
+  ref.orderByValue('admin').on("value", adminsSnapshot => {
+    if (adminsSnapshot.val().includes(currentUserUid)) { // current user is admin
+        return ref.child(targetUserUid).set(null);
+    } else {
+      console.log('Current user ' + currentUserUid + ' is not allowed to write event ' + eventId);
+      return false;
+    }
+  });
 })
+
+const API_KEY = "AAAAlIAvtxI:APA91bHnmNkZWIQzzWcxypS45bpVKBXkLNwtxM-gU6UCfZt2TI-jd02Typ8ACtLpGbHCASrWlwKHDT9EsRpqrUj7hAH8GdhvKp3_UaF_Vx4k3yqgXLqMQv2py-FiUODmG2hy2QuTGdUI"; // Firebase Cloud Messaging Server API key
+ref = admin.database().ref();
+
+exports.sendNotificationToUsers  = functions.https.onCall((data, context) => {
+    const title = data.title;
+    const body = data.body;
+    const eventId = data.eventId;
+    request({
+        url: 'https://fcm.googleapis.com/fcm/send',
+        method: 'POST',
+        headers: {
+            'Content-Type' :' application/json',
+            'Authorization': 'key='+API_KEY
+        },
+        body: JSON.stringify({
+            notification: {
+                title: title,
+                body: body
+            },
+            to : '/topics/' + eventId
+        })
+    }, function(error, response, body) {
+        if (error) { console.error(error); }
+        else if (response.statusCode >= 400) {
+            console.error('HTTP Error: '+response.statusCode+' - '+response.statusMessage);
+        }
+    });
+});

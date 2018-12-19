@@ -6,6 +6,8 @@ import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import com.android.volley.RequestQueue;
 
 /**
+ * A helper class that provides a {@link TicketingService} instance
+ *
  * @author Louis Vialar
  */
 public abstract class TicketingServiceManager {
@@ -18,6 +20,14 @@ public abstract class TicketingServiceManager {
         return new TokenStorage(eventId, context.getSharedPreferences(PREFERENCE_KEY, Context.MODE_PRIVATE));
     }
 
+    /**
+     * Gets the {@link TicketingService} for a given event and configuration
+     *
+     * @param eventId       the event corresponding to the service
+     * @param configuration the configuration of the service
+     * @param context       a context, to create the service
+     * @return the service associated with the given id
+     */
     public TicketingService getService(int eventId, EventTicketingConfiguration configuration, Context context) {
         if (services.get(eventId) == null) {
             services.put(eventId, new TicketingService(configuration, getTokenStorage(eventId, context), getRequestQueue(context)));

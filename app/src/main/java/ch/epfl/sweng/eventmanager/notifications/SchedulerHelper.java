@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
 import androidx.annotation.NonNull;
-import ch.epfl.sweng.eventmanager.repository.impl.NotificationPublisher;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,6 +43,12 @@ class SchedulerHelper {
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, future, pendingIntent);
     }
 
+    /**
+     * Unschedule a notification with specific (@param itemId)
+     *
+     * @param context non null
+     * @param itemId  unique id to notification
+     */
     static void unscheduleNotification(@NonNull Context context, int itemId) {
         Intent intent = new Intent(context, NotificationPublisher.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), itemId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -53,6 +58,12 @@ class SchedulerHelper {
         pendingIntent.cancel();
     }
 
+    /**
+     * Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel.
+     * @param context non null
+     * @link https://developer.android.com/training/notify-user/channels
+     * @see NotificationChannel
+     */
     private static void setupNotificationChannel(@NonNull Context context) {
 
         if (!isNotificationChannelSet.get()) {
@@ -73,16 +84,11 @@ class SchedulerHelper {
      * @param date, not null
      * @return time in milliseconds
      * @throws NullPointerException  if the date is null
-     * @throws IllegalStateException if {@param date} is already past
      */
-    static long getTimeTo(Date date) {
+    static long getTimeTo(Date date){
         if (date == null)
             throw new NullPointerException();
 
-        long timeUntil = date.getTime() - System.currentTimeMillis();
-
-        if (timeUntil < 0) // Event is past
-            return Long.MAX_VALUE;
-        else return timeUntil;
+        return date.getTime() - System.currentTimeMillis();
     }
 }

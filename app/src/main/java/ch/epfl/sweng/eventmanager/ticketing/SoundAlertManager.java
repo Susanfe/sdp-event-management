@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
@@ -52,7 +53,14 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
         try (AssetFileDescriptor file = activity.getResources().openRawResourceFd(sound)) {
             mediaPlayer.setDataSource(file.getFileDescriptor(), file.getStartOffset(), file.getLength());
             mediaPlayer.setOnErrorListener(this);
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                AudioAttributes attr = new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
+                mediaPlayer.setAudioAttributes(attr);
+            } else {
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            }
             mediaPlayer.setLooping(false);
             mediaPlayer.setVolume(BEEP_VOLUME, BEEP_VOLUME);
             mediaPlayer.prepare();
@@ -66,7 +74,7 @@ public class SoundAlertManager implements MediaPlayer.OnErrorListener, Closeable
 
     @Override
     public synchronized boolean onError(MediaPlayer mp, int what, int extra) {
-        if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
+        if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED && context instanceof Activity) {
             ((Activity) context).finish();
         } else {
             // possibly media player error, so release and recreate

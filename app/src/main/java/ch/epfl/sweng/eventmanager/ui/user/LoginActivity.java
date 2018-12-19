@@ -16,6 +16,8 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import com.google.android.gms.tasks.OnCompleteListener;
 import dagger.android.AndroidInjection;
 
+import javax.inject.Inject;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -36,6 +38,9 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar mProgressBar;
     @BindView(R.id.activity_login_toolbar)
     Toolbar toolbar;
+
+    @Inject
+    Session session;
 
     private void setupFields() {
         mEmailView.setOnEditorActionListener(UserManagerHelper.nextButtonHandler(mEmailView));
@@ -94,8 +99,8 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             UserManagerHelper.showProgress(mLoginButton, mProgressBar, true);
             OnCompleteListener callback = UserManagerHelper.getAuthOnCompleteListener(this, mPasswordView,
-                    mLoginButton, mProgressBar);
-            Session.login(email, password, this, callback);
+                    mSignUpButton, mProgressBar);
+            session.login(email, password, this, callback);
         }
     }
 }

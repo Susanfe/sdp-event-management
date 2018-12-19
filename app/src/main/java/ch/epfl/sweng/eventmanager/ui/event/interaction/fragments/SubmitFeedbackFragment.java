@@ -19,6 +19,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventRating;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import dagger.android.support.AndroidSupportInjection;
+
 import javax.inject.Inject;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -57,9 +58,7 @@ public class SubmitFeedbackFragment extends AbstractShowcaseFragment {
         model.getEvent().observe(this, ev -> {
             AtomicReference<Boolean> ratingExists = new AtomicReference<>();
             repository.ratingFromDeviceExists(ev.getId(), UNIQUE_DEVICE_ID).observe(this, ratingExists::set);
-            sendButton.setOnClickListener(l -> {
-                submitEventRating(ratingExists.get(), ev);
-            });
+            sendButton.setOnClickListener(l -> submitEventRating(ratingExists.get(), ev));
         });
     }
 
@@ -70,14 +69,14 @@ public class SubmitFeedbackFragment extends AbstractShowcaseFragment {
         super.onAttach(context);
     }
 
-    public void submitEventRating(Boolean ratingExists, Event ev){
+    private void submitEventRating(Boolean ratingExists, Event ev){
         EventRating newEventRating = new EventRating(UNIQUE_DEVICE_ID, rating.getRating(), description.getText().toString(), System.currentTimeMillis());
         if (!ratingExists) {
             //Publish the rating and shows that feedback has been published
             repository.publishRating(ev.getId(), newEventRating).addOnSuccessListener(aVoid -> {
                 Toast.makeText(getActivity(), R.string.event_feedback_submitted, Toast.LENGTH_SHORT).show();
                 // Returns to main showcase event screen
-                ((EventShowcaseActivity) getActivity()).changeFragment(new EventMainFragment(), true);
+                ((EventShowcaseActivity) getActivity()).switchFragment(EventShowcaseActivity.FragmentType.MAIN,true);
             });
         } else {
             Toast.makeText(getActivity(), R.string.event_feedback_already_submitted, Toast.LENGTH_SHORT).show();

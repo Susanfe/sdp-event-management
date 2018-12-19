@@ -2,8 +2,13 @@ package ch.epfl.sweng.eventmanager.ui.event.interaction;
 
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+
+import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -17,11 +22,15 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import com.google.android.material.navigation.NavigationView;
 
 /**
  * This class is used to share the changeFragment method between our various multi-fragment classes.
  */
-public class MultiFragmentActivity extends AppCompatActivity
+public abstract class MultiFragmentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.drawer_layout)
@@ -31,8 +40,12 @@ public class MultiFragmentActivity extends AppCompatActivity
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @Inject
+    ImageLoader loader;
+
     private static final String TAG = "MultiFragmentActivity";
 
+    protected EventInteractionModel model;
     protected int eventID;
 
     /**
@@ -79,18 +92,29 @@ public class MultiFragmentActivity extends AppCompatActivity
     /**
      * Change the current displayed fragment by a new one.
      * - if the fragment is in backstack, it will pop it
+     * - if the fragment is already displayed (trying to change the fragment with the same), it will not do anything   
+ * @param frag            the new fragment to display
+     * @param saveInBackstack if we want the fragment to be in backstack
+     */
+    public void changeFragment(Fragment frag, boolean saveInBackstack) {
+        changeFragment(frag, saveInBackstack, false);
+    }
+
+    /**
+     * Change the current displayed fragment by a new one.
+     * - if the fragment is in backstack, it will pop it
      * - if the fragment is already displayed (trying to change the fragment with the same), it will not do anything
      *  @param frag            the new fragment to display
      * @param saveInBackstack if we want the fragment to be in backstack
      */
-    public void changeFragment(Fragment frag, boolean saveInBackstack) {
+    public void changeFragment(Fragment frag, boolean saveInBackstack, boolean force) {
         String backStateName = ((Object) frag).getClass().getName();
 
         try {
             FragmentManager manager = getSupportFragmentManager();
             boolean fragmentPopped = manager.popBackStackImmediate(backStateName, 0);
 
-            if (!fragmentPopped && manager.findFragmentByTag(backStateName) == null) {
+            if (force || (!fragmentPopped && manager.findFragmentByTag(backStateName) == null)) {
                 // fragment not in back stack, create it.
                 FragmentTransaction transaction = manager.beginTransaction();
 
@@ -118,5 +142,29 @@ public class MultiFragmentActivity extends AppCompatActivity
      */
     public int getEventID() {
         return eventID;
+    }
+
+
+    /**
+     * Fill navigation header (in the sidebar).
+     */
+    protected void setupHeader() {
+        // Set window title and configure header
+        View headerView = navigationView.getHeaderView(0);
+        TextView drawer_header_text = headerView.findViewById(R.id.drawer_header_text);
+        model.getEvent().observe(this, ev -> {
+            if (ev == null) {
+                return;
+            }
+
+            if (ev.hasAnImage()) {
+                ImageView header = headerView.findViewById(R.id.drawer_header_image);
+                loader.loadImageWithSpinner(ev, this, header, new BlurTransformation(3));
+            }
+
+            drawer_header_text.setText(ev.getName());
+            setTitle(ev.getName());
+        });
+
     }
 }

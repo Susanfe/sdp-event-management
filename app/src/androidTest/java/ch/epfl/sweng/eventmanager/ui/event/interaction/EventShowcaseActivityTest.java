@@ -4,35 +4,29 @@ import android.Manifest;
 import android.content.Context;
 import android.os.SystemClock;
 import android.view.Gravity;
-
-import androidx.test.rule.GrantPermissionRule;
-import org.hamcrest.Matchers;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.NavigationViewActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.intent.matcher.IntentMatchers;
+import androidx.test.rule.GrantPermissionRule;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.RecyclerViewButtonClick;
 import ch.epfl.sweng.eventmanager.ToastMatcher;
 import ch.epfl.sweng.eventmanager.test.EventTestRule;
 import ch.epfl.sweng.eventmanager.ui.event.selection.EventPickingActivity;
+import org.hamcrest.Matchers;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
-import static androidx.test.espresso.Espresso.onIdle;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.Espresso.*;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.CoreMatchers.allOf;
 
 public class EventShowcaseActivityTest {
@@ -60,12 +54,12 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_map));
 
         onIdle();
-        SystemClock.sleep(1000);
+        SystemClock.sleep(200);
         //test back navigation
         onView(withId(R.id.drawer_layout)).check(matches(isClosed(Gravity.LEFT))).perform(DrawerActions.open());
 
 
-        SystemClock.sleep(1000);
+        SystemClock.sleep(200);
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_schedule));
 
         pressBack();
@@ -73,6 +67,14 @@ public class EventShowcaseActivityTest {
 
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
         onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_map));
+        pressBack();
+
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_contact));
+        pressBack();
+
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.nav_view)).perform(NavigationViewActions.navigateTo(R.id.nav_settings));
         pressBack();
     }
 
@@ -94,7 +96,9 @@ public class EventShowcaseActivityTest {
 
     @Test
     public void joinEventTest() {
-        onView(withId(R.id.join_event_button))
+        onView(withId(R.id.menu_showcase_activity_join_id))
+                .perform(click());
+        onView(withId(R.id.menu_showcase_activity_join_id))
                 .perform(click());
     }
 

@@ -8,14 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +24,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.epfl.sweng.eventmanager.R;
 import ch.epfl.sweng.eventmanager.repository.data.Event;
+import ch.epfl.sweng.eventmanager.ui.credits.CreditsActivity;
+import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.ui.user.DisplayAccountActivity;
 import ch.epfl.sweng.eventmanager.ui.user.LoginActivity;
 import ch.epfl.sweng.eventmanager.ui.user.SignUpActivity;
@@ -49,6 +44,10 @@ public class EventPickingActivity extends AppCompatActivity {
     public static final String SELECTED_EVENT_ID = "ch.epfl.sweng.SELECTED_EVENT_ID";
     @Inject
     ViewModelFactory factory;
+
+    @Inject
+    ImageLoader loader;
+
     @BindView(R.id.event_picking_joined_events_text)
     TextView joinedHelpText;
     @BindView(R.id.event_picking_bottom_sheet_text)
@@ -81,6 +80,8 @@ public class EventPickingActivity extends AppCompatActivity {
     ImageButton loginAccountButton;
     @BindView(R.id.event_picking_under_empty_list)
     AppCompatImageView empty_joined_list_image;
+    @BindView(R.id.event_picking_logo)
+    AppCompatImageView logo;
 
     // Login/Signup layout components
     @BindView(R.id.layout_login_signup_logged) // Logged UI
@@ -92,6 +93,10 @@ public class EventPickingActivity extends AppCompatActivity {
 
 
 
+    @Inject
+    Session session;
+
+    private int counterCredits = 0;
     private Boolean doubleBackToExitPressedOnce = false;
     private EventPickingModel model;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -135,9 +140,9 @@ public class EventPickingActivity extends AppCompatActivity {
     private void setupAdapters() {
         LinearLayoutManager eventListLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventListLayoutManager);
-        eventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.Event);
+        eventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.Event, this);
         setupRecyclerView(eventList, eventsAdapter, new OvershootInRightAnimator());
-        joinedEventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.JoinedEvents);
+        joinedEventsAdapter = EventListAdapter.newInstance(EventListAdapter.ItemType.JoinedEvents, this);
         setupRecyclerView(joinedEventsList, joinedEventsAdapter, new LandingAnimator());
     }
 
@@ -185,7 +190,7 @@ public class EventPickingActivity extends AppCompatActivity {
      */
     private void openLoginOrAccountActivity() {
         Class nextActivity;
-        if (Session.isLoggedIn()) {
+        if (session.isLoggedIn()) {
             nextActivity = DisplayAccountActivity.class;
         } else {
             nextActivity = LoginActivity.class;
@@ -246,7 +251,8 @@ public class EventPickingActivity extends AppCompatActivity {
             R.id.layout_login_signup_account_button,
             R.id.layout_login_signup_logout_button,
             R.id.event_picking_login_account,
-            R.id.layout_login_or_signup})
+            R.id.layout_login_or_signup,
+            R.id.event_picking_logo})
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.event_picking_login_account:
@@ -257,15 +263,18 @@ public class EventPickingActivity extends AppCompatActivity {
                 break;
 
             case R.id.layout_login_signup_signup_button:
-                Intent intent = new Intent(this, SignUpActivity.class);
-                startActivity(intent);
+                Intent intentLogin = new Intent(this, SignUpActivity.class);
+                startActivity(intentLogin);
                 break;
 
             case R.id.layout_login_signup_logout_button:
-                Session.logout();
+                session.logout();
                 loggedUI.setVisibility(View.GONE);
                 notLoggedUi.setVisibility(View.VISIBLE);
                 revealCircular(true);
+                Intent intentLogout = new Intent(this, EventPickingActivity.class);
+                intentLogout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intentLogout);
                 break;
 
             case R.id.layout_login_signup_account_button:
@@ -275,6 +284,14 @@ public class EventPickingActivity extends AppCompatActivity {
             case R.id.layout_login_or_signup:
                 onBackPressed();
                 break;
+
+            case R.id.event_picking_logo:
+                counterCredits++;
+                if (counterCredits == 3){
+                    counterCredits = 0;
+                    Intent intent = new Intent(this, CreditsActivity.class);
+                    startActivity(intent);
+                }
         }
     }
 
@@ -282,7 +299,7 @@ public class EventPickingActivity extends AppCompatActivity {
      * Depending on Android's version on the device, the method launches an animation to reveal the
      * account/signin layout
      */
-    public void revealCircular(boolean hide){
+    private void revealCircular(boolean hide){
         int viewState = hide ? View.GONE : View.VISIBLE;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -327,9 +344,9 @@ public class EventPickingActivity extends AppCompatActivity {
     /**
      * Sets the account/signin layout according to the Session's state
      */
-    public void onPrepareSignupLoginLayout() {
+    private void onPrepareSignupLoginLayout() {
         loginAccountUI.setVisibility(View.GONE);
-        if (Session.isLoggedIn()) {
+        if (session.isLoggedIn()) {
             loggedUI.setVisibility(View.VISIBLE);
             notLoggedUi.setVisibility(View.GONE);
         } else {
@@ -398,11 +415,24 @@ public class EventPickingActivity extends AppCompatActivity {
         layout.setBackgroundResource(R.color.colorSecondary);
 
         TextView text = layout.findViewById(com.google.android.material.R.id.snackbar_text);
-        text.setTextColor(getResources().getColor(R.color.colorPrimary));
+        text.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
 
         Button button = layout.findViewById(com.google.android.material.R.id.snackbar_action);
-        button.setTextColor(getResources().getColor(R.color.colorPrimary));
+        button.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
 
         bar.show();
+    }
+
+    /**
+     * Force refresh the eventList on new intent to handle change of visibility for events
+     * @param intent
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setupObservers();
+    }
+
+     ImageLoader getLoader() {
+        return loader;
     }
 }
