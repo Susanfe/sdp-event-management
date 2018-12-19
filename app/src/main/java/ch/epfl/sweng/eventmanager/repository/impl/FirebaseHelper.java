@@ -47,6 +47,28 @@ public class FirebaseHelper {
         return data;
     }
 
+    public static <T> LiveData<T> getElement(DatabaseReference dbRef, Class<T> classOfT) {
+        return getElement(dbRef, classOfT, Mapper.unit());
+    }
+
+    public static <T> LiveData<T> getElement(DatabaseReference dbRef, Class<T> classOfT, Mapper<T> mapper) {
+        final MutableLiveData<T> data = new MutableLiveData<>();
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                data.postValue(mapper.map(dataSnapshot.getValue(classOfT), dataSnapshot));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("FirebaseHelper", "Error when getting data element.", databaseError.toException());
+            }
+        });
+
+        return data;
+    }
+
     public static LiveData<Bitmap> getImage(StorageReference ref) {
         final MutableLiveData<Bitmap> img = new MutableLiveData<>();
 

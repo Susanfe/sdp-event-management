@@ -29,13 +29,13 @@ public class ZoneModelTest {
 
     private ZoneModel zoneModel;
     private MockZoneRepository mockZoneRepository = new MockZoneRepository();
-    private LiveData<List<Zone>> data;
+    private LiveData<Zone> data;
 
     @Before
     public void setUp() {
         data = mockZoneRepository.getZone(2);
         MockitoAnnotations.initMocks(this);
-        Mockito.when(eventRepository.getZones(anyInt())).thenReturn(data);
+        Mockito.when(eventRepository.getZone(anyInt())).thenReturn(data);
         zoneModel = new ZoneModel(eventRepository);
         zoneModel.init(anyInt());
     }

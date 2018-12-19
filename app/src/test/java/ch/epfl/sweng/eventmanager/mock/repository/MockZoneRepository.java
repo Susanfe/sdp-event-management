@@ -10,24 +10,20 @@ import ch.epfl.sweng.eventmanager.repository.data.Zone;
 
 public class MockZoneRepository {
     private static final String TAG = "ZoneRepository";
-    private List<Zone> zones = new ArrayList<>();
+    private Zone zone;
 
     public MockZoneRepository(){
-        List<Position> positions1 = new ArrayList<>();
-        positions1.add(new Position(0,0));
-        positions1.add(new Position(2,2));
-        Zone zone1 = new Zone(positions1);
-        List<Position> positions2 = new ArrayList<>();
-        positions2.add(new Position(0,0));
-        positions2.add(new Position(2,2));
-        Zone zone2 = new Zone(positions2);
-        zones.add(zone1);
-        zones.add(zone2);
+        List<Position> positions = new ArrayList<>();
+        positions.add(new Position(0,0));
+        positions.add(new Position(2,2));
+        positions.add(new Position(1,2));
+        positions.add(new Position(2,1));
+        zone = new Zone(positions);
     }
 
-    public LiveData<List<Zone>> getZone(int eventId) {
-        final MutableLiveData<List<Zone>> data = new MutableLiveData<>();
-        data.postValue(zones);
+    public LiveData<Zone> getZone(int eventId) {
+        final MutableLiveData<Zone> data = new MutableLiveData<>();
+        data.postValue(zone);
 
         return data;
     }

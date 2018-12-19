@@ -41,7 +41,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     private final ObservableMap<Integer, Uri> eventImagesUri = new ObservableMap<>();
     private final ObservableMap<Integer, List<Spot>> spots = new ObservableMap<>();
     private final ObservableMap<Integer, List<ScheduledItem>> scheduledItems = new ObservableMap<>();
-    private final ObservableMap<Integer, List<Zone>> zones = new ObservableMap<>();
+    private final ObservableMap<Integer, Zone> zones = new ObservableMap<>();
 
     {
         String orgaEmail = EVENT_EMAIL;
@@ -88,10 +88,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 "} ]\n";
 
 
-        TypeToken<List<Zone>> zonesToken = new TypeToken<List<Zone>>() {
-        };
-
-        String jsonZone = "[ {\n      \"positions\" : [ {\n        " +
+        String jsonZone = "{\n      \"positions\" : [ {\n        " +
                 "\"latitude\" : 46.51859,\n        \"longitude\" " +
                 ": 6.561272\n      }, {\n        \"latitude\" : 46.522148,\n " +
                 "       \"longitude\" : 6.563289\n      }, {\n       " +
@@ -99,7 +96,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 "6.5717\n      }, {\n        \"latitude\" : 46.518295,\n" +
                 "        \"longitude\" : 6.571958\n      }, {\n       " +
                 " \"latitude\" : 46.517365,\n        \"longitude\" :" +
-                " 6.566036\n      } ]\n    } ]";
+                " 6.566036\n      } ]\n    }";
 
         Map<String, String> usersMap = new HashMap<>();
         usersMap.put(DummyInMemorySession.DUMMY_UID, "admin");
@@ -118,7 +115,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
                 CONFIG_BY_EVENT.get(3), true));
 
-        addZones(1, new Gson().fromJson(jsonZone, zonesToken.getType()));
+        zones.put(1, new Gson().fromJson(jsonZone, Zone.class));
         addSpots(1, new Gson().fromJson(jsonSpots, spotsToken.getType()));
 
         List<ScheduledItem> items;
@@ -168,10 +165,6 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
         eventImagesUri.put(event.getId(), event.getImageURLasURI());
     }
 
-    private void addZones(int event, List<Zone> list) {
-        zones.put(event, list);
-    }
-
     private void addSpots(int event, List<Spot> list) {
         spots.put(event, list);
     }
@@ -198,7 +191,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     }
 
     @Override
-    public LiveData<List<Zone>> getZones(int eventId) {
+    public LiveData<Zone> getZone(int eventId) {
         return zones.get(eventId);
     }
 
