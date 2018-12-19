@@ -24,7 +24,7 @@ public interface EventRepository {
 
     LiveData<List<ScheduledItem>> getScheduledItems(int eventId);
 
-    LiveData<Zone> getZones(int eventId);
+    LiveData<Zone> getZone(int eventId);
 
     LiveData<Bitmap> getSpotImage(Spot spot);
 

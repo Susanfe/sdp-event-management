@@ -116,7 +116,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
                 orgaEmail, null, new EventLocation("EPFL", Position.EPFL), usersMap, tweeterToken, facebookToken,
                 CONFIG_BY_EVENT.get(3), true));
 
-        addZones(1, new Gson().fromJson(jsonZone, Zone.class));
+        zones.put(1, new Gson().fromJson(jsonZone, Zone.class));
         addSpots(1, new Gson().fromJson(jsonSpots, spotsToken.getType()));
 
         List<ScheduledItem> items;
@@ -164,10 +164,6 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     private void addEvent(Event event) {
         events.put(event.getId(), event);
         eventImagesUri.put(event.getId(), event.getImageURLasURI());
-    }
-
-    private void addZones(int event, Zone zone) {
-        zones.put(event, zone);
     }
 
     private void addSpots(int event, List<Spot> list) {

@@ -32,7 +32,7 @@ public class ZoneModel extends ViewModel {
         }
 
         this.eventId = eventId;
-        this.zone = repository.getZones(eventId);
+        this.zone = repository.getZone(eventId);
     }
 
     public LiveData<Zone> getZone() {
