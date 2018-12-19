@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag;
+import ch.epfl.sweng.eventmanager.repository.data.MapEditionData.MarkerType;
 import ch.epfl.sweng.eventmanager.repository.data.SpotType;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -28,6 +29,12 @@ public class MarkerCreationActionTest {
         tag1 = EventEditionTag.createOverlayEdgeTag(0);
         pos1 = new LatLng(1, 1);
         pos = new LatLng(0, 0);
+    }
+
+    @Test
+    public void createAction() {
+        MarkerCreationAction creationAction = new MarkerCreationAction(tag, pos);
+        assertThat(creationAction.getMarkerType(), is(MarkerType.SPOT));
     }
 
     @Test(expected = IllegalArgumentException.class)
