@@ -11,9 +11,9 @@ import ch.epfl.sweng.eventmanager.repository.MapEditionRepository;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 
-class MockMapEditionRepository implements MapEditionRepository {
+public class MockMapEditionRepository implements MapEditionRepository {
 
-    String zonesJson = "[ {\n" +
+    private String zonesJson = "[ {\n" +
             "      \"positions\" : [ {\n" +
             "        \"latitude\" : 35.69436,\n" +
             "        \"longitude\" : 139.747854\n" +
@@ -32,7 +32,7 @@ class MockMapEditionRepository implements MapEditionRepository {
     private TypeToken<List<Zone>> zonesToken = new TypeToken<List<Zone>>() {};
     private List<Zone> zones = new Gson().fromJson(zonesJson, zonesToken.getType());
 
-    String spotsJson = "[ {\n" +
+    private String spotsJson = "[ {\n" +
             "      \"position\" : {\n" +
             "        \"latitude\" : 35.68773,\n" +
             "        \"longitude\" : 139.756204\n" +
