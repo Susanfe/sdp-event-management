@@ -120,6 +120,18 @@ public class ZoneTest {
         zone1.changePositionOfElement(null, null);
     }
 
+    @Test
+    public void addPositionInEmptyZone() {
+        zone1.removePosition(new Position(0,0));
+        zone1.removePosition(new Position(2, 2));
+
+        assertThat(zone1.getPositions().isEmpty(), is(true));
+
+        zone1.addPosition(new Position(3, 3));
+        assertThat(zone1.getPositions().size(), is(1));
+        assertThat(zone1.getPositions().get(0), is(new Position(3, 3)));
+    }
+
 
 
 }
