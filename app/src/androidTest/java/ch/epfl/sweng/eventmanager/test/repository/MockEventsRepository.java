@@ -192,7 +192,7 @@ public class MockEventsRepository implements EventRepository, CloudFunction {
     }
 
     @Override
-    public LiveData<Zone> getZones(int eventId) {
+    public LiveData<Zone> getZone(int eventId) {
         return zones.get(eventId);
     }
 
