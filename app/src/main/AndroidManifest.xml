@@ -145,10 +145,10 @@
         </activity>
         <activity android:name=".ui.user.LoginFacebookActivity" />
         <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:label="Settings"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar.setting"/>
+                android:name=".ui.settings.SettingsActivity"
+                android:label="Settings"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.ActionBar"/>
         <activity android:name=".ui.credits.CreditsActivity"
             android:screenOrientation="portrait"/>
         <activity
