@@ -250,11 +250,9 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
         if (getActivity() != null){
             this.zonesModel.getZone().observe(getActivity(), zones -> {
                 if (zones != null) {
-                    for (Zone z : zones) {
-                        eventZone = z;
-                        for (Position p : z.getPositions()){
-                            addOverlayEdgeMarker(p.asLatLng());
-                        }
+                    eventZone = zones;
+                    for (Position p : zones.getPositions()){
+                        addOverlayEdgeMarker(p.asLatLng());
                     }
                 }
             });
