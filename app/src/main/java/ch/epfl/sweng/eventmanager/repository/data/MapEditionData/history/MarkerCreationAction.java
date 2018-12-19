@@ -23,6 +23,8 @@ public class MarkerCreationAction extends MapEditionAction {
 
     @Override
     public boolean revert(List<Marker> markers, SparseArray<LatLng> positions) {
+        if (markers == null) return false;
+
         Marker m = findMarkerByTag(markers);
         if (m != null && m.getPosition().equals(positionOfCreation)) {
             markers.remove(m);
