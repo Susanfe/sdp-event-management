@@ -8,26 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.switchmaterial.SwitchMaterial;
-import com.yalantis.ucrop.UCrop;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.inject.Inject;
-
+import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
@@ -43,7 +24,17 @@ import ch.epfl.sweng.eventmanager.ui.tools.ImageLoader;
 import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.utils.DateUtils;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
+import com.google.android.gms.tasks.Task;
+import com.yalantis.ucrop.UCrop;
 import dagger.android.AndroidInjection;
+
+import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EventCreateActivity extends AppCompatActivity {
     private static final String TAG = "EventCreate";
@@ -302,13 +293,14 @@ public class EventCreateActivity extends AppCompatActivity {
             cropAndConvertImage(eventImageUri);
         }
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            eventImageSrc = UCrop.getOutput(data);
-            imageLoader.displayImage(this, eventImageSrc, eventImage);
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            final Throwable cropError = UCrop.getError(data);
-            Log.i(TAG, "Unable to crop image");
-            cropError.printStackTrace();
-        }
+                eventImageSrc = UCrop.getOutput(data);
+                imageLoader.displayImage(this, eventImageSrc, eventImage);
+            imageChanged = true;
+            } else if (resultCode == UCrop.RESULT_ERROR) {
+                final Throwable cropError = UCrop.getError(data);
+                Log.i(TAG, "Unable to crop image");
+                cropError.printStackTrace();
+            }
     }
 
     /**

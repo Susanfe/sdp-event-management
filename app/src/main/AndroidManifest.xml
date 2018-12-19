@@ -118,8 +118,10 @@
         </provider>
         <activity android:name=".ui.event.interaction.EventAdministrationActivity"
             android:screenOrientation="portrait"/>
+
         <activity android:name=".ui.event.interaction.EventCreateActivity"
-            android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme.ActionBar"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -143,10 +145,10 @@
         </activity>
         <activity android:name=".ui.user.LoginFacebookActivity" />
         <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:label="Settings"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.ActionBar.setting"/>
+                android:name=".ui.settings.SettingsActivity"
+                android:label="Settings"
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.ActionBar"/>
         <activity android:name=".ui.credits.CreditsActivity"
             android:screenOrientation="portrait"/>
         <activity
