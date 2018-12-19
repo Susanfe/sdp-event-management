@@ -135,6 +135,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 }
 
                 this.setupMenu(ev);
+
+                event = ev;
             });
 
             if(getIntent().getIntExtra(getString(R.string.tag_facebook_login_back_button), -1) == TAG_NUMBER_FACEBOOK) {

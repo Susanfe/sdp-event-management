@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,7 +28,6 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
-import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcaseFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
@@ -67,16 +68,16 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     private static final float ZOOMLEVEL = 15.0f; //This goes up to 21
 
     private ClusterManager<Spot> mClusterManager;
-    protected SpotsModel spotsModel;
-    protected ZoneModel zonesModel;
+    SpotsModel spotsModel;
+    ZoneModel zonesModel;
     private ScheduleViewModel scheduleViewModel;
     private Spot clickedClusterItem;
-    protected GoogleMap googleMap;
+    GoogleMap googleMap;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     @BindView(R.id.mapview)
     MapView mapView;
-    protected Polygon eventOverlay;
+    Polygon eventOverlay;
 
     public EventMapFragment() {
         super(R.layout.fragment_event_map);
@@ -129,7 +130,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_event_map, container, false);
         ButterKnife.bind(this, v);
         mapView.onCreate(savedInstanceState);
