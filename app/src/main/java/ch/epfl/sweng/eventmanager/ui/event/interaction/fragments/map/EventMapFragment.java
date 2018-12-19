@@ -173,7 +173,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     private void setUpOverlay() {
         this.zonesModel.getZone().observe(this, zones -> {
             if (zones != null) {
-                googleMap.addPolygon(zones.addPolygon());
+                eventOverlay = googleMap.addPolygon(zones.addPolygon());
             }
         });
     }

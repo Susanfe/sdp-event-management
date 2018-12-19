@@ -8,7 +8,7 @@ import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 
 public interface MapEditionRepository {
-    Task<List<Zone>> updateZones(int eventId, List<Zone> zone);
+    Task<Zone> updateZones(int eventId, Zone zone);
 
     Task<List<Spot>> updateSpots(int eventId, List<Spot> spots);
 }

@@ -1,6 +1,7 @@
 package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
@@ -19,8 +20,6 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +44,7 @@ import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomAddOptionsDialog;
 import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomInfoDialog;
 import ch.epfl.sweng.eventmanager.ui.CustomViews.CustomMarkerDialog;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
+import dagger.android.support.AndroidSupportInjection;
 
 import static ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag.createOverlayEdgeTag;
 import static ch.epfl.sweng.eventmanager.repository.data.MapEditionData.EventEditionTag.createSpotTag;
@@ -98,10 +98,16 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     private final SpotType defaultType = SpotType.ROOM;
 
     @Inject
-    MapEditionRepository repository;
+    protected MapEditionRepository repository;
 
     public static EventMapEditionFragment newInstance() {
         return new EventMapEditionFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
     }
 
     @Override
@@ -162,8 +168,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
     private void confirmSaveAndQuit(List<Spot> updatedSpots) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setPositiveButton(R.string.button_yes, (dialog1, which) -> {
-            repository.updateSpots(((EventShowcaseActivity)requireActivity()).getEventID(), updatedSpots);
-            repository.updateZones(((EventShowcaseActivity)requireActivity()).getEventID(), Collections.singletonList(eventZone));
+            repository.updateSpots(((EventShowcaseActivity) requireActivity()).getEventID(), updatedSpots);
+            repository.updateZones(((EventShowcaseActivity) requireActivity()).getEventID(), eventZone);
             requireActivity().onBackPressed();
         });
         builder.setNegativeButton(R.string.button_no, (dialog, which) -> {
@@ -379,8 +385,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
             Marker m = findMarkerById(onClickSavedMarkerID);
 
-            if (m!=null && !title.equals(m.getTitle()) && !snippet.equals(m.getSnippet()) &&
-                    type != ((EventEditionTag)Objects.requireNonNull(m.getTag())).getSpotType()) {
+            if (m!=null && (!title.equals(m.getTitle()) || !snippet.equals(m.getSnippet()) ||
+                    type != ((EventEditionTag)Objects.requireNonNull(m.getTag())).getSpotType())) {
 
                 history.push(new ModifyMarkerInfoAction(
                         (EventEditionTag) m.getTag(),

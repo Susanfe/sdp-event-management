@@ -1,5 +1,7 @@
 package ch.epfl.sweng.eventmanager.repository.impl;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -10,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import ch.epfl.sweng.eventmanager.repository.MapEditionRepository;
+import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
 import ch.epfl.sweng.eventmanager.repository.data.Zone;
 
@@ -24,7 +27,10 @@ public class FirebaseMapEditionRepository implements MapEditionRepository {
     }
 
     @Override
-    public Task<List<Zone>> updateZones(int eventId, List<Zone> zones) {
+    public Task<Zone> updateZones(int eventId, Zone zones) {
+        Log.i("TAGTEST", "eventId " + eventId);
+        for (Position p : zones.getPositions())
+            Log.i("TAGTEST", String.valueOf(p.asLatLng()));
         FirebaseDatabase fdB = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = fdB.getReference(FIREBASE_REF_ZONES).child("event_" + String.valueOf(eventId));
         return dbRef.setValue(zones).continueWith((v) -> {
