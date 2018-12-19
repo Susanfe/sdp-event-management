@@ -5,7 +5,7 @@
     "events": {
       "$event_id": {
         ".read": true,
-        ".write": "auth != null && data.child('users').child(auth.uid).val() === 'admin'"
+        ".write": "auth != null && (!data.exists() || data.child('users').child(auth.uid).val() === 'admin')"
       }
     },
     "ratings": {
