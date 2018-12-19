@@ -113,10 +113,10 @@ public class FirebaseEventRepository implements EventRepository {
     }
 
     @Override
-    public LiveData<List<Zone>> getZones(int eventId) {
+    public LiveData<Zone> getZone(int eventId) {
+        final MutableLiveData<Event> zone = new MutableLiveData<>();
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("zones").child("event_" + eventId);
-
-        return FirebaseHelper.getList(dbRef, Zone.class);
+        return FirebaseHelper.getElement(dbRef, Zone.class);
     }
 
     private String getImageName(Spot spot) {
