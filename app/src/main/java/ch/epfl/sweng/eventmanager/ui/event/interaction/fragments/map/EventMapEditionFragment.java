@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -260,6 +261,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
                     for (Position p : zones.getPositions()){
                         addOverlayEdgeMarker(p.asLatLng());
                     }
+                } else {
+                    eventZone = new Zone(new ArrayList<>());
                 }
             });
         }
@@ -313,6 +316,7 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
 
     @Override
     public void onMapLongClick(LatLng latLng) {
+        Log.i("TAGTEST", String.valueOf(latLng));
         onLongClickSavedLatLng = latLng;
         DialogFragment dialogFragment = new CustomAddOptionsDialog();
         dialogFragment.setTargetFragment(this, ADD_OVERLAY_OR_SPOT_REQUEST_CODE);
@@ -563,7 +567,8 @@ public class EventMapEditionFragment extends EventMapFragment implements GoogleM
      * Reforms the overlay that represents on the event
      */
     private void reformPolygon() {
-        eventOverlay.remove();
+        if (eventOverlay != null)
+            eventOverlay.remove();
         eventOverlay = googleMap.addPolygon(eventZone.addPolygon());
 
     }

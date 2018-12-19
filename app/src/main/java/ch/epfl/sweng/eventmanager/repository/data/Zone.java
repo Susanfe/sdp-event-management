@@ -59,9 +59,11 @@ public class Zone {
      * @throws IllegalArgumentException if the given position is null
      */
     public void addPosition(Position position) {
-        if (position != null) {
+        if (position != null && positions.size() > 0) {
             int indexToPlace = computeIndexForPosition(position);
             positions.add(indexToPlace, position);
+        } else if(positions.size() == 0) {
+            positions.add(position);
         } else throw new IllegalArgumentException("Trying to add null position!");
     }
 
