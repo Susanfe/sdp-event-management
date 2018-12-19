@@ -46,7 +46,7 @@ public abstract class AbstractShowcaseFragment extends Fragment {
         }
     }
 
-    public MultiFragmentActivity getParentActivity() {
+    MultiFragmentActivity getParentActivity() {
         return (MultiFragmentActivity) getActivity();
     }
 }

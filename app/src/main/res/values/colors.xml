@@ -22,5 +22,7 @@
     <color name="text_normal">@color/colorPrimary</color>
     <color name="text_pressed">@color/colorSecondary</color>
 
+    <color name="overlay_blue">#211A95F4</color>
+
 
 </resources>

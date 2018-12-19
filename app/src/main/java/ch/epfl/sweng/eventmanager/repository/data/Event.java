@@ -174,13 +174,13 @@ public final class Event {
     /**
      * Allows to change the visibility of the event
      *
-     * @param visibleFromPublic
+     * @param visibleFromPublic states the wanted public visibility
      */
     public void setVisibleFromPublic(boolean visibleFromPublic) {
         this.visibleFromPublic = visibleFromPublic;
     }
 
-    public void setLocation(EventLocation location) {
+    void setLocation(EventLocation location) {
         this.location = location;
     }
 

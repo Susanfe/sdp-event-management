@@ -1,4 +1,4 @@
-package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments;
+package ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map;
 
 import android.Manifest;
 import android.content.Context;
@@ -8,27 +8,34 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.epfl.sweng.eventmanager.R;
+import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventLocation;
 import ch.epfl.sweng.eventmanager.repository.data.Position;
 import ch.epfl.sweng.eventmanager.repository.data.Spot;
-import ch.epfl.sweng.eventmanager.repository.data.Zone;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
-import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.MultiDrawable;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.AbstractShowcaseFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ScheduleViewModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.SpotsModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.ZoneModel;
+import ch.epfl.sweng.eventmanager.users.Role;
+import ch.epfl.sweng.eventmanager.users.Session;
 import ch.epfl.sweng.eventmanager.viewmodel.ViewModelFactory;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -61,15 +68,16 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     private static final float ZOOMLEVEL = 15.0f; //This goes up to 21
 
     private ClusterManager<Spot> mClusterManager;
-    private SpotsModel spotsModel;
-    private ZoneModel zonesModel;
+    SpotsModel spotsModel;
+    ZoneModel zonesModel;
     private ScheduleViewModel scheduleViewModel;
     private Spot clickedClusterItem;
-    private GoogleMap googleMap;
+    GoogleMap googleMap;
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     @BindView(R.id.mapview)
     MapView mapView;
+    Polygon eventOverlay;
 
     public EventMapFragment() {
         super(R.layout.fragment_event_map);
@@ -82,6 +90,9 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+
         if (mapView != null) {
             mapView.onCreate(savedInstanceState);
         }
@@ -97,7 +108,29 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Session session = ((EventShowcaseActivity)requireActivity()).getSession();
+        Event event = ((EventShowcaseActivity)requireActivity()).getEvent();
+        if (session.isLoggedIn() && session.isClearedFor(Role.ADMIN, event)) {
+            menu.findItem(R.id.menu_showcase_activity_map_edition_edit).setVisible(true);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_showcase_activity_map_edition_edit:
+                ((EventShowcaseActivity)requireActivity()).switchFragment(EventShowcaseActivity.FragmentType.MAP_EDITION, true);
+                return true;
+
+            default :
+                return false;
+        }
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_event_map, container, false);
         ButterKnife.bind(this, v);
         mapView.onCreate(savedInstanceState);
@@ -140,7 +173,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     private void setUpOverlay() {
         this.zonesModel.getZone().observe(this, zones -> {
             if (zones != null) {
-                googleMap.addPolygon(zones.addPolygon());
+                eventOverlay = googleMap.addPolygon(zones.addPolygon());
             }
         });
     }
@@ -148,7 +181,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     /**
      * Setup the cluster manager
      */
-    private void setUpCluster() {
+    protected void setUpCluster() {
         mClusterManager = new ClusterManager<>(requireActivity(), googleMap);
         mClusterManager.setOnClusterItemInfoWindowClickListener(this);
         mClusterManager.setOnClusterClickListener(this);
@@ -173,18 +206,18 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     private void addItemToCluster() {
         this.scheduleViewModel.getScheduledItems().observe(this,
                 items -> this.spotsModel.getSpots().observe(this, spots -> {
-            if (spots == null) {
-                return;
-            }
-            // 1. clear old spots
-            mClusterManager.clearItems();
-            // 2. Add new spots
-            for (Spot s : spots) {
-                s.setScheduleList(items);
-            }
-            mClusterManager.addItems(spots);
-            mClusterManager.cluster();
-        }));
+                    if (spots == null) {
+                        return;
+                    }
+                    // 1. clear old spots
+                    mClusterManager.clearItems();
+                    // 2. Add new spots
+                    for (Spot s : spots) {
+                        s.setScheduleList(items);
+                    }
+                    mClusterManager.addItems(spots);
+                    mClusterManager.cluster();
+                }));
 
     }
 
@@ -245,7 +278,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
     /**
      * Callback when the map is ready : we setup location, clusters and overlay
      *
-     * @param googleMap
+     * @param googleMap map to be customized and set up
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -302,7 +335,7 @@ public class EventMapFragment extends AbstractShowcaseFragment implements Cluste
         private final ImageView mClusterImageView;
         private final int mDimension;
 
-         SpotRenderer(Context context) {
+        SpotRenderer(Context context) {
             super(context, googleMap, mClusterManager);
 
             View multiProfile = View.inflate(context,R.layout.custom_marker, null);

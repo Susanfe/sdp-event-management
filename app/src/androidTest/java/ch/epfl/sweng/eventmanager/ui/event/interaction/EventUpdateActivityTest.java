@@ -12,6 +12,8 @@ import ch.epfl.sweng.eventmanager.users.Session;
 import org.hamcrest.Matchers;
 import org.junit.*;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -57,6 +59,7 @@ public class EventUpdateActivityTest {
 
         // Find event
 
-        Assert.assertEquals("Event Test 2", repository.getEvent(1).getValue().getName());
+        Assert.assertEquals("Event Test 2",
+                Objects.requireNonNull(repository.getEvent(1).getValue()).getName());
     }
 }

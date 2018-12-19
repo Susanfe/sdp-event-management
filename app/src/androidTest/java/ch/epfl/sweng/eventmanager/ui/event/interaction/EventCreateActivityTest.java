@@ -34,6 +34,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 
 public class EventCreateActivityTest {
@@ -72,7 +73,7 @@ public class EventCreateActivityTest {
         onView(withId(R.id.create_form_description)).perform(typeText("Event Test 1 description"), closeSoftKeyboard());
         onView(withId(R.id.create_form_upload_image)).perform(scrollTo(),click());
         SystemClock.sleep(200);
-        onView(withId(R.id.create_form_send_button)).perform(scrollTo(),click());
+        onView(withId(R.id.create_form_send_button)).perform(scrollTo(), closeSoftKeyboard(), click());
 
         Intents.intended(Matchers.allOf(IntentMatchers.hasComponent(EventAdministrationActivity.class.getName()), IntentMatchers.hasExtraWithKey(EventPickingActivity.SELECTED_EVENT_ID)));
 
@@ -84,8 +85,6 @@ public class EventCreateActivityTest {
 
                 Assert.assertEquals("you@test.com", e.getOrganizerEmail());
                 Assert.assertEquals("Event Test 1 description", e.getDescription());
-                Assert.assertNotNull(e.getBeginDate());
-                Assert.assertNotNull(e.getEndDate());
                 Assert.assertNull(e.getTwitterName());
             }
         }
@@ -147,7 +146,7 @@ public class EventCreateActivityTest {
 
     private Uri getPickedImage() {
         Bitmap bm = BitmapFactory.decodeResource(mActivityRule.getActivity().getResources(), R.drawable.event_default_cover);
-        assertTrue(bm != null);
+        assertNotNull(bm);
         File dir = mActivityRule.getActivity().getExternalCacheDir();
         File file = null;
         try {

@@ -25,6 +25,8 @@ import ch.epfl.sweng.eventmanager.repository.data.Event;
 import ch.epfl.sweng.eventmanager.repository.data.EventTicketingConfiguration;
 import ch.epfl.sweng.eventmanager.repository.impl.FirebaseNotificationService;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.*;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.EventMapEditionFragment;
+import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.map.EventMapFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.fragments.schedule.ScheduleParentFragment;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.EventInteractionModel;
 import ch.epfl.sweng.eventmanager.ui.event.interaction.models.NewsViewModel;
@@ -45,8 +47,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private static final int Y_OFFSET_TOAST = 30;
     private static final int TAG_NUMBER_FACEBOOK = 1;
 
-    public static enum FragmentType {
-        MAIN, MAP, SCHEDULE, NEWS, FORM, EVENT_FEEDBACK
+    public enum FragmentType {
+        MAIN, MAP, SCHEDULE, NEWS, FORM, EVENT_FEEDBACK, MAP_EDITION
     }
 
     @Inject
@@ -66,6 +68,9 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     private Fragment eventMapFragment;
     private Fragment eventFormFragment;
     private Fragment eventFeedbackFragment;
+
+    private int eventID;
+    private Event event;
 
     private void initModels() {
         this.model = ViewModelProviders.of(this, factory).get(EventInteractionModel.class);
@@ -130,6 +135,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 }
 
                 this.setupMenu(ev);
+
+                event = ev;
             });
 
             if(getIntent().getIntExtra(getString(R.string.tag_facebook_login_back_button), -1) == TAG_NUMBER_FACEBOOK) {
@@ -149,7 +156,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         //Handle highlighting in drawer menu according to currently displayed fragment
         setHighlightedItemInNavigationDrawer();
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -257,6 +263,11 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
                 }
                 changeFragment(newsFragment, saveToBackstack);
                 break;
+
+            case MAP_EDITION:
+                changeFragment(new EventMapEditionFragment(), saveToBackstack);
+                break;
+
             case EVENT_FEEDBACK:
                 if(eventFeedbackFragment == null) {
                     eventFeedbackFragment = EventFeedbackFragment.newInstance();
@@ -278,6 +289,7 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
             if (current instanceof NewsFragment) navigationView.setCheckedItem(R.id.nav_news);
             if (current instanceof EventMapFragment) navigationView.setCheckedItem(R.id.nav_map);
             if (current instanceof ScheduleParentFragment) navigationView.setCheckedItem(R.id.nav_schedule);
+            if (current instanceof EventMapEditionFragment) navigationView.setCheckedItem(R.id.nav_map);
             if (current instanceof EventFormFragment) navigationView.setCheckedItem(R.id.nav_contact);
             if (current instanceof EventFeedbackFragment) navigationView.setCheckedItem(R.id.nav_feedback);
         });
@@ -296,7 +308,8 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     @Override
     public void onBackPressed() {
         Fragment fragment = getCurrentFragment();
-        if (fragment instanceof EventTicketFragment || fragment instanceof EventMapFragment || fragment instanceof ScheduleParentFragment || fragment instanceof NewsFragment) {
+        if (fragment instanceof EventTicketFragment || (fragment instanceof EventMapFragment && !(fragment instanceof EventMapEditionFragment)) ||
+                fragment instanceof ScheduleParentFragment || fragment instanceof NewsFragment) {
             switchFragment(FragmentType.MAIN, true);
         } else {
             int fragments = getSupportFragmentManager().getBackStackEntryCount();
@@ -313,19 +326,6 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_facebook_login_edit:
-                return false;
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            default:
-               return false;
-        }
-    }
-
-    @Override
     public void setTitle(CharSequence title) {
         toolbar.setTitle(title);
     }
@@ -334,10 +334,13 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         return eventID;
     }
 
+    public Event getEvent() {return event;}
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_showcase_activity, menu);
-        Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_join_id).getActionView();
+        Switch s = (Switch) menu.findItem(R.id.menu_showcase_activity_join_switch).getActionView();
+
         model.getEvent().observe(this, ev -> {
             this.model.isJoined(ev).observe(this, s::setChecked);
             s.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -380,7 +383,23 @@ public class EventShowcaseActivity extends MultiFragmentActivity {
         toast.show();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            default:
+                // Action was not consumed
+                return false;
+        }
+    }
+
     public ImageLoader getLoader() {
         return loader;
+    }
+
+    public Session getSession() {
+        return session;
     }
 }

@@ -83,7 +83,7 @@
         <item name="android:background">@drawable/button_barbutton_checkbutton</item>
     </style>
 
-    <!-- Button that looks like a textView but oultines as button when clicked -->
+    <!-- Button which looks like a clickable textview-->
     <style name="button_clickable_textview">
         <item name="android:background">@drawable/button_transparent</item>
         <item name="android:textColor">@drawable/text_clickable</item>
@@ -114,7 +114,10 @@
         <item name="android:thicknessRatio">1.9</item>
     </style>
 
-    <!-- -->
+    <!-- ############################ DIALOG UI ##############################################-->
+    <style name="CustomDialog_TransparentBackground" parent="Base.Theme.MaterialComponents.Dialog.Alert">
+        <item name="panelBackground">@android:color/transparent</item>
+    </style>
 
 
 </resources>

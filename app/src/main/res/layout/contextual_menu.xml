@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_margin="@dimen/default_medium_margin"
+    style="@style/cardView_rounded"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/default_medium_padding"
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/event_list_item_default_title"
+            android:inputType="textAutoCorrect"
+            android:hint="@string/event_list_item_default_title"
+            android:id="@+id/contextual_edit_marker_title"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:text="@string/event_list_item_default_description"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:hint="@string/event_list_item_default_description"
+            android:id="@+id/contextual_edit_marker_snippet"
+            />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/contextual_menu_spotType_spinner">
+
+        </androidx.appcompat.widget.AppCompatSpinner>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

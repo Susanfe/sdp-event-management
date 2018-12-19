@@ -19,6 +19,14 @@
     "schedule_items": {
       ".read": true,
       ".write": true
+    },
+    "spots": {
+      ".read": true,
+      ".write": true
+    },
+    "zones": {
+      ".read": true,
+      ".write": true
     }
   }
 }

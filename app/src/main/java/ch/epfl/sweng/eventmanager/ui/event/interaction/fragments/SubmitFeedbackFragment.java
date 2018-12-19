@@ -21,6 +21,8 @@ import ch.epfl.sweng.eventmanager.ui.event.interaction.EventShowcaseActivity;
 import dagger.android.support.AndroidSupportInjection;
 
 import javax.inject.Inject;
+
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class SubmitFeedbackFragment extends AbstractShowcaseFragment {
@@ -76,7 +78,7 @@ public class SubmitFeedbackFragment extends AbstractShowcaseFragment {
             repository.publishRating(ev.getId(), newEventRating).addOnSuccessListener(aVoid -> {
                 Toast.makeText(getActivity(), R.string.event_feedback_submitted, Toast.LENGTH_SHORT).show();
                 // Returns to main showcase event screen
-                ((EventShowcaseActivity) getActivity()).switchFragment(EventShowcaseActivity.FragmentType.MAIN,true);
+                ((EventShowcaseActivity) requireActivity()).switchFragment(EventShowcaseActivity.FragmentType.MAIN,true);
             });
         } else {
             Toast.makeText(getActivity(), R.string.event_feedback_already_submitted, Toast.LENGTH_SHORT).show();

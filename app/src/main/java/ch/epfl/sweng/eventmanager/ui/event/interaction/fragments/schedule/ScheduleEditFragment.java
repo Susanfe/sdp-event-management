@@ -48,8 +48,7 @@ public class ScheduleEditFragment extends Fragment {
     ScheduleViewModel model;
 
     private ScheduledItem item;
-    private boolean creation = false;
-
+    private boolean creation;
 
     private void populateForm() {
         if (creation)

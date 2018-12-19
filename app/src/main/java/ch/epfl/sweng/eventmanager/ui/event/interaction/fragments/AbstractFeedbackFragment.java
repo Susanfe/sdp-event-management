@@ -23,7 +23,7 @@ public abstract class AbstractFeedbackFragment extends AbstractShowcaseFragment 
     @Inject
     protected FeedbackRepository repository;
 
-    public AbstractFeedbackFragment(int resource) {
+    AbstractFeedbackFragment(int resource) {
         super(resource);
     }
 

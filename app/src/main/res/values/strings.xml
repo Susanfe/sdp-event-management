@@ -159,6 +159,15 @@
     <!-- Generic text -->
     <string name="undo">Undo</string>
     <string name="welcome">Welcome on &app_name; !</string>
+    <string name="done">Done</string>
+    <string name="help">Help</string>
+    <string name="save">Save</string>
+    <string name="undone">Undone</string>
+    <string name="undo_empty">Nothing to undo</string>
+    <string name="ok">OK</string>
+    <string name="save_and_exit">Do you want to save and exit ?</string>
+
+    <!-- Creation form text-->
     <string name="create_form_hint_name">Name of the event</string>
     <string name="create_form_hint_description">Description of the event</string>
     <string name="create_form_hint_email">Email of the event organizer</string>
@@ -184,6 +193,8 @@
     <string name="create_event_delete_dialog_content">Deleting this event is irreversible ! Are you sure you still want to delete it?</string>
     <string name="feedback_form_main_go_button">Feedback</string>
     <string name="feedback_nav">Feedback</string>
+
+    <string name="simple_edit_text">Edit</string>
 
     <!-- Settings -->
     <string name="settings">Settings</string>
@@ -218,7 +229,7 @@
     <string name="schedule_create_form_hint_name">Name of the scheduled element</string>
     <string name="schedule_create_form_hint_begin_date">Begin date of the scheduled element</string>
     <string name="schedule_create_form_hint_artist">Artist / Speaker</string>
-    <string name="schedule_create_form_hint_genre">Type of the element (Rock Concert, Conference, ...)</string>
+    <string name="schedule_create_form_hint_genre">Type of the element (Rock Concert, Conference, …)</string>
     <string name="schedule_create_form_hint_room">Room</string>
     <string name="schedule_create_form_hint_description">Description</string>
     <string name="schedule_create_form_hint_duration">Duration</string>
@@ -231,5 +242,18 @@
     <string name="congratulations">Congratulations, you have found the secret credits ! We really hope that you enjoy &app_name; !</string>
     <string name="credits">This app was proposed to you by the Susanfe team, including :</string>
     <string name="names_of_the_authors">Antoine Crettenand\nLouis Vialar\nNicolas d\'Argenlieu\nRobin Zbinden\nStanislas Jouven\nTimothée Floure\nValentin Quelquejay</string>
+
+    <!-- Edition Fragment text-->
+    <string name="map_edition_add_overlay">Add overlay edge</string>
+    <string name="map_edition_add_spot">Add spot</string>
+    <string name="map_edition_error_undo">Could not undo action. Dismissed it.</string>
+    <string name="map_edition_error_not_done">Could not perform action. Dismissed it.</string>
+    <string name="map_edition_info_text">To add a new SPOT or an EDGE to the OVERLAY, please LONG
+        PRESS on the desired location.\n\n To move a SPOT or an EDGE of the OVERLAY, please CLICK
+        and HOLD to drag it to the desired position.\n\n To edit a SPOT\'s information, please CLICK
+        on the desired spot.\n\n To remove a SPOT or an EDGE of the OVERLAY, please click on the
+        desired item.</string>
+    <string name="content_description_facebook_logo">Facebook Logo</string>
+    <string name="content_description_facebook_post_image">Facebook post image</string>
 
 </resources>

@@ -37,7 +37,7 @@ public class LoginFacebookNewsFragmentTest {
     @Test
     public void loginFacebookTest() {
         SystemClock.sleep(500);
-        onView(withId(R.id.menu_facebook_login_edit)).perform(click());
+        onView(withId(R.id.menu_showcase_activity_news_facebook_login)).perform(click());
         SystemClock.sleep(500);
         onView(allOf(isDisplayed(), withId(R.id.loginButton))).check(matches(isDisplayed()));
         SystemClock.sleep(500);
@@ -48,9 +48,9 @@ public class LoginFacebookNewsFragmentTest {
     @Test
     public void pressedBckOnFacebookActivityWork() {
         SystemClock.sleep(500);
-        onView(withId(R.id.menu_facebook_login_edit)).perform(click());
+        onView(withId(R.id.menu_showcase_activity_news_facebook_login)).perform(click());
         Espresso.pressBack();
-        onView(allOf(isDisplayed(), withId(R.id.menu_facebook_login_edit))).check(matches(isDisplayed()));
+        onView(allOf(isDisplayed(), withId(R.id.menu_showcase_activity_news_facebook_login))).check(matches(isDisplayed()));
     }
 
 }

@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
+
+import java.util.Collections;
+
 import androidx.annotation.NonNull;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -20,7 +24,6 @@ import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Locale;
-
 /**
  * Our main view on the 'visitor' side of the event. Displays a general description of the event.
  */
@@ -178,7 +181,7 @@ public class EventMainFragment extends AbstractFeedbackFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem menuItem = menu.findItem(R.id.menu_showcase_activity_join_id);
+        MenuItem menuItem = menu.findItem(R.id.menu_showcase_activity_join_switch);
         menuItem.setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }

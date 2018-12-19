@@ -9,7 +9,7 @@ public abstract class SocialNetworkPost<T> implements Comparable<SocialNetworkPo
     private final long time;
     private final T post;
 
-    public SocialNetworkPost(long time, T post) {
+    SocialNetworkPost(long time, T post) {
         this.time = time;
         this.post = post;
     }
