@@ -19,13 +19,28 @@
         android:orientation="vertical"
         android:padding="@dimen/default_big_padding">
 
-        <TextView
-            android:layout_marginBottom="@dimen/default_medium_margin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/text_news_date"
-            android:textColor="@color/colorSecondary"
-            android:layout_gravity="end"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/default_medium_margin">
+
+            <ImageView
+                android:layout_marginTop="5dp"
+                android:id="@+id/app_logo"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/splash_logo"/>
+
+            <TextView
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_news_date"
+                android:textColor="@color/colorSecondary"/>
+
+        </RelativeLayout>
 
         <TextView
             android:layout_marginBottom="@dimen/default_medium_margin"

@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/*
+/**
 This class enable to store every component(message, post time, author) of a facebook post.
  */
 public class FacebookPost {
