@@ -9,8 +9,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.ColumnInfo;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -149,6 +151,12 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             goToEvent(itemView,getAdapterPosition());
         }
 
+        @OnClick(R.id.unjoined_btn_clear)
+        public void onUnjoinedClick() {
+            Context context = itemView.getContext();
+            ((EventPickingActivity) context).joinOrUnjoinEvent(mEvents.get(getAdapterPosition()), false);
+        }
+
         void bind(Event ev) {
             eventNameTextView.setText(ev.getName());
             eventSummary.setText(ev.getDescription());
@@ -165,8 +173,8 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView eventSummary;
         @BindView(R.id.event_thumbnail)
         ImageView eventThumbnail;
-        @BindView(R.id.goto_event_btn)
-        Button goToEvent;
+        @BindView(R.id.goto_event)
+        CardView goToEvent;
         @BindView(R.id.join_event_btn)
         Button joinEvent;
 
@@ -175,7 +183,7 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ButterKnife.bind(this, itemView);
         }
 
-        @OnClick(R.id.goto_event_btn)
+        @OnClick(R.id.goto_event)
         void onClickEventButton() {
             goToEvent(itemView,getAdapterPosition());
         }
@@ -194,7 +202,6 @@ public class EventListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     private void goToEvent(View itemView, int eventPosition) {
-        // TODO: display animation on click?
         Context context = itemView.getContext();
         Intent intent = new Intent(context, EventShowcaseActivity.class);
         Event selectedEvent = mEvents.get(eventPosition);

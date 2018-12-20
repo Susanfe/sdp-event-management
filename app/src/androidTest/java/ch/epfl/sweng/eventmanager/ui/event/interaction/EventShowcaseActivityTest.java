@@ -119,7 +119,7 @@ public class EventShowcaseActivityTest {
         onView(withId(R.id.event_picking_bottom_sheet_text)).perform(click());
 
         onView(withId(R.id.not_joined_event_list)).perform(RecyclerViewActions.actionOnItemAtPosition(0,
-                RecyclerViewButtonClick.clickChildViewWithId(R.id.goto_event_btn)));
+                RecyclerViewButtonClick.clickChildViewWithId(R.id.goto_event)));
 
         Intents.intended(Matchers.allOf(IntentMatchers.hasComponent(EventShowcaseActivity.class.getName()),
                 IntentMatchers.hasExtraWithKey(EventPickingActivity.SELECTED_EVENT_ID)));
